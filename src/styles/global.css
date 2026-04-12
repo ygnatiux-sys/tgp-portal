@@ -1,1 +1,63 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@300;700&display=swap');
+
+@theme {
+  --color-racing-green: #0A1C15;
+  --color-copper-ember: #B87333;
+  
+  --font-serif: "Bodoni Moda", serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-racing-green);
+}
+
+@layer components {
+  /* =========================================
+     PRESET DE REDACCIÓN EDITORIAL (TGP)
+     ========================================= */
+  
+  /* Absorbe las configuraciones sutiles (links, borders, bullets) */
+  .prose-tgp {
+    --tw-prose-links: var(--color-copper-ember);
+    --tw-prose-quotes: var(--color-copper-ember);
+    --tw-prose-quote-borders: var(--color-copper-ember);
+    --tw-prose-bullets: var(--color-copper-ember);
+  }
+
+  /* EL H1 (HERO STYLE) - Imponente */
+  .prose-tgp h1 {
+    @apply font-serif text-5xl md:text-7xl leading-none tracking-tighter text-white/90 mb-8;
+  }
+
+  /* EL H2 (SECCIÓN DE PERIÓDICO) - Clásico */
+  .prose-tgp h2 {
+    @apply font-serif text-3xl md:text-4xl leading-tight text-white/80 mt-12 mb-6 border-b border-white/10 pb-4;
+  }
+
+  /* EL H3 / H4 (EL TOQUE CIENTÍFICO) - Tecnológico y crudo */
+  .prose-tgp h3, .prose-tgp h4 {
+    @apply font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-copper-ember mt-10 mb-4 font-bold;
+  }
+
+  /* EL PÁRRAFO (CUERPO DE LECTURA INMERSIVA) */
+  .prose-tgp p {
+    @apply font-sans text-lg md:text-xl leading-relaxed text-slate-300 mb-6;
+  }
+
+  /* AFINANDO DETALLES (Mapeados desde tu solicitud anterior) */
+  .prose-tgp a {
+    @apply underline-offset-4 decoration-copper-ember/50 transition-all duration-300;
+  }
+  .prose-tgp a:hover {
+    @apply text-copper-ember drop-shadow-[0_0_8px_rgba(184,115,51,0.6)];
+  }
+  .prose-tgp blockquote p {
+    @apply text-white font-serif text-2xl italic tracking-wide;
+  }
+}
