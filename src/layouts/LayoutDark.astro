@@ -7,28 +7,10 @@ interface Props {
 const { title, hero_image = '' } = Astro.props;
 ---
 <Layout title={title}>
-  <div class="bg-[#0A1C15] text-[#e2e8f0] min-h-screen">
-    <section class="dark-hero relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0A1C15]">
-      <!-- Infinite Marquee Background -->
-      <div class="absolute inset-0 z-0 opacity-40">
-        <div class="marquee-container flex h-full w-[200vw]">
-          <img src={hero_image} alt="Background Marquee 1" class="w-1/2 h-full object-cover" />
-          <img src={hero_image} alt="Background Marquee 2" class="w-1/2 h-full object-cover" />
-        </div>
-      </div>
-      
-      <!-- Gradient overlay -->
-      <div class="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-[#0A1C15]"></div>
-      
-      <!-- Massive Title -->
-      <div class="title-container relative z-10 text-center px-6 w-full max-w-6xl mx-auto">
-        <h1 class="font-serif text-7xl md:text-[10rem] text-[#c4a484] font-black uppercase tracking-tighter leading-none mix-blend-lighten">
-          {title}
-        </h1>
-      </div>
-    </section>
+  <div class="bg-racing-green text-[#e2e8f0] min-h-screen">
+    <slot name="hero" />
 
-    <section class="max-w-4xl mx-auto px-6 py-20 pb-48 relative z-20 bg-[#0A1C15]">
+    <section class="max-w-4xl mx-auto px-6 py-20 pb-48 relative z-20 bg-racing-green">
       <div class="prose prose-invert prose-tgp mx-auto max-w-none">
         <slot />
       </div>
@@ -37,46 +19,7 @@ const { title, hero_image = '' } = Astro.props;
 </Layout>
 
 <style>
-  .marquee-container {
-    animation: marquee 40s linear infinite;
-  }
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const heroSection = document.querySelector('.dark-hero');
-  const titleContainer = document.querySelector('.title-container');
-  
-  if (heroSection) {
-    gsap.to(heroSection, {
-      scrollTrigger: {
-        trigger: '.dark-hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-      opacity: 0,
-    });
-  }
-
-  if (titleContainer) {
-    gsap.to(titleContainer, {
-      scrollTrigger: {
-        trigger: '.dark-hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-      y: 200,
-      opacity: 0,
-    });
-  }
 </script>

@@ -1,0 +1,80 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  imageUrl?: string;
+}
+const { title, subtitle = 'Apple Editorial', imageUrl = '' } = Astro.props;
+---
+<section class="apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-racing-green">
+  <!-- Pinned Marquee Background Layer -->
+  <div class="apple-bg-pin absolute inset-0 z-0">
+    <div class="absolute inset-0 opacity-60">
+      <div class="apple-marquee-container flex h-full w-[200vw]">
+        <img src={imageUrl} alt="Panoramic 1" class="w-1/2 h-full object-cover" />
+        <img src={imageUrl} alt="Panoramic 2" class="w-1/2 h-full object-cover" />
+      </div>
+    </div>
+    
+    <!-- Universal Scrim Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-racing-green via-racing-green/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+  </div>
+
+  <!-- Glassmorphism Container with Typography -->
+  <div class="apple-title-box relative z-10 p-12 rounded-3xl backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl max-w-4xl mx-6 flex flex-col items-center">
+    <p class="font-sans text-sm uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/20 pb-2">
+      {subtitle}
+    </p>
+    <h1 class="font-serif text-6xl md:text-8xl text-white tracking-tighter leading-none drop-shadow-2xl text-center">
+      {title}
+    </h1>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Marquee infinito (Opción B lograda antes, ahora mantenemos)
+  const appleMarquee = document.querySelector('.apple-marquee-container');
+  if (appleMarquee) {
+    gsap.to(appleMarquee, {
+      xPercent: -50,
+      ease: "none",
+      repeat: -1,
+      duration: 60 // Linear and very slow
+    });
+  }
+
+  // Pinning and Organic scroll effects
+  const appleHero = document.querySelector('.apple-hero');
+  const appleBgPin = document.querySelector('.apple-bg-pin');
+  const titleBox = document.querySelector('.apple-title-box');
+
+  if (appleHero && appleBgPin && titleBox) {
+    // Pin background exactly when hero hits top
+    ScrollTrigger.create({
+      trigger: appleHero,
+      start: 'top top',
+      end: 'bottom top',
+      pin: appleBgPin,
+      pinSpacing: false // Important so article content flows over it naturally
+    });
+
+    gsap.to(titleBox, {
+      scrollTrigger: {
+        trigger: appleHero,
+        start: 'top top',
+        end: 'top -50%',
+        scrub: 1,
+      },
+      y: -100, // Move title up slightly as user scrolls
+      opacity: 0,
+      scale: 0.95,
+      ease: "power3.out"
+    });
+  }
+</script>

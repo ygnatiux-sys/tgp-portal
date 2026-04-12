@@ -8,21 +8,7 @@ const { title, hero_image = '' } = Astro.props;
 ---
 <Layout title={title}>
   <div class="bg-[#f4f0ec] text-[#2c2b29] min-h-screen">
-    <section class="vintage-hero relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
-      <!-- Grainy Image -->
-      <div class="hero-bg absolute inset-0 z-0">
-        <img src={hero_image} alt={title} class="w-full h-full object-cover sepia-[0.3]" />
-        <!-- Hardcoded Grain Overlay -->
-        <div class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')] opacity-20 mix-blend-overlay"></div>
-      </div>
-      
-      <!-- Title -->
-      <div class="relative z-10 text-center px-6">
-        <h1 class="font-serif text-6xl md:text-8xl text-[#f4f0ec] tracking-wider uppercase drop-shadow-md mix-blend-difference">
-          {title}
-        </h1>
-      </div>
-    </section>
+    <slot name="hero" />
 
     <section class="max-w-3xl mx-auto px-8 py-24 pb-48 relative z-20 bg-[#f4f0ec]">
       <div class="prose prose-tgp mx-auto max-w-none">
@@ -33,23 +19,4 @@ const { title, hero_image = '' } = Astro.props;
 </Layout>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  const heroBg = document.querySelector('.vintage-hero .hero-bg');
-  
-  if (heroBg) {
-    gsap.to(heroBg, {
-      scrollTrigger: {
-        trigger: '.vintage-hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-      opacity: 0,
-      ease: 'none',
-    });
-  }
 </script>

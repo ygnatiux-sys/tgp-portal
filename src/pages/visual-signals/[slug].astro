@@ -1,0 +1,74 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import LayoutApple from '../../layouts/LayoutApple.astro';
+import LayoutVintage from '../../layouts/LayoutVintage.astro';
+import LayoutDark from '../../layouts/LayoutDark.astro';
+
+import HeroParallax from '../../components/HeroParallax.astro';
+import HeroKenBurns from '../../components/HeroKenBurns.astro';
+import HeroMarquee from '../../components/HeroMarquee.astro';
+import HeroMagazine from '../../components/HeroMagazine.astro';
+import FloatingBackButton from '../../components/FloatingBackButton.astro';
+
+export async function getStaticPaths() {
+  const visualSignals = await getCollection('visual_signals');
+
+  // Filtramos por si hay algún documento en borrador o sin slug
+  return visualSignals.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+console.log('Rendering post:', post.id, 'from collection:', post.collection);
+
+let Content;
+let renderError = null;
+
+try {
+  const rendered = await render(post);
+  Content = rendered.Content;
+} catch (e) {
+  console.error('Error rendering post:', post.id, e);
+  renderError = e;
+}
+
+const layoutStyle = post.data.layout_style || 'cinematic-dark';
+
+// Elegimos el Layout correspondiente basado en el CMS
+const LayoutComponent = 
+  layoutStyle === 'apple-os' ? LayoutApple :
+  layoutStyle === 'cinematic-vintage' ? LayoutVintage :
+  LayoutDark; // magazine-luxury uses LayoutDark as the base "Void"
+
+// Elegimos el Hero correspondiente basado en el Layout
+const HeroComponent = 
+  layoutStyle === 'magazine-luxury' ? HeroMagazine :
+  layoutStyle === 'apple-os' ? HeroParallax :
+  layoutStyle === 'cinematic-vintage' ? HeroKenBurns :
+  HeroMarquee;
+---
+
+<LayoutComponent title={post.data.title}>
+  <FloatingBackButton />
+  <HeroComponent slot="hero" title={post.data.title} imageUrl={post.data.hero_image} />
+  
+  {renderError ? (
+    <div class="prose prose-invert mx-auto py-20 px-6">
+      <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-lg">
+        <h2 class="text-red-400 font-serif mb-4">Error de Sincronización</h2>
+        <p class="text-red-200/70">
+          No se pudo procesar el contenido de <strong>{post.id}</strong>. 
+          Esto suele ocurrir si hay múltiples servidores de desarrollo corriendo.
+        </p>
+        <pre class="mt-4 p-4 bg-black/40 rounded text-xs text-red-300 overflow-x-auto">
+          {renderError instanceof Error ? renderError.message : String(renderError)}
+        </pre>
+      </div>
+    </div>
+  ) : (
+    <Content />
+  )}
+</LayoutComponent>

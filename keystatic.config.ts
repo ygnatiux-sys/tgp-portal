@@ -14,6 +14,7 @@ const commonSchema = {
       { label: 'Cinematic Dark', value: 'cinematic-dark' },
       { label: 'Cinematic Vintage', value: 'cinematic-vintage' },
       { label: 'Apple OS Theme', value: 'apple-os' },
+      { label: 'Magazine / Luxury', value: 'magazine-luxury' },
     ],
     defaultValue: 'cinematic-dark',
   }),

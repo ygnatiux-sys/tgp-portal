@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 const commonSchema = z.object({
   title: z.string(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
-  layout_style: z.enum(['cinematic-dark', 'cinematic-vintage', 'apple-os']).default('cinematic-dark'),
+  layout_style: z.enum(['cinematic-dark', 'cinematic-vintage', 'apple-os', 'magazine-luxury']).default('cinematic-dark'),
 });
 
 export const collections = {

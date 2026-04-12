@@ -1,0 +1,67 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  imageUrl?: string;
+}
+const { title, subtitle = 'The Great Puzzle', imageUrl = '' } = Astro.props;
+---
+<section class="dark-hero relative w-full h-[80vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green">
+  <!-- Infinite Marquee Background -->
+  <div class="absolute inset-0 z-0 opacity-40">
+    <div class="marquee-container flex h-full w-[200vw]">
+      <img src={imageUrl} alt="Background Marquee 1" class="w-1/2 h-full object-cover" />
+      <img src={imageUrl} alt="Background Marquee 2" class="w-1/2 h-full object-cover" />
+    </div>
+  </div>
+  
+  <!-- Universal Scrim Overlay (Aggressive for Dark) -->
+  <div class="absolute inset-0 z-0 bg-gradient-to-t from-racing-green via-racing-green/80 to-transparent"></div>
+  <div class="absolute inset-0 z-0 bg-black/30 mix-blend-multiply"></div>
+  
+  <!-- Massive Title & Subtitle -->
+  <div class="title-container relative z-10 text-center px-6 w-full max-w-6xl mx-auto py-12">
+    <p class="font-sans text-sm uppercase tracking-[0.2em] text-[#c4a484]/80 mb-6 drop-shadow-md">
+      {subtitle}
+    </p>
+    <h1 class="font-serif text-6xl md:text-8xl text-[#c4a484] font-black uppercase tracking-tighter leading-none drop-shadow-2xl">
+      {title}
+    </h1>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // El Loop infinito de GSAP
+  const marqueeContainer = document.querySelector('.marquee-container');
+  if (marqueeContainer) {
+    gsap.to(marqueeContainer, {
+      xPercent: -50,
+      ease: "none",
+      repeat: -1,
+      duration: 50 // Muy lento
+    });
+  }
+
+  // Animación orgánica del título al scrollear
+  const heroSection = document.querySelector('.dark-hero');
+  const titleContainer = document.querySelector('.title-container');
+  
+  if (heroSection && titleContainer) {
+    gsap.to(titleContainer, {
+      scrollTrigger: {
+        trigger: '.dark-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1, // Smoothing exacto
+      },
+      y: 200,
+      opacity: 0,
+      ease: "power3.out"
+    });
+  }
+</script>

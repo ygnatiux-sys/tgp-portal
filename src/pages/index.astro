@@ -22,15 +22,15 @@ const postsToRender = displayPosts.length > 0 ? displayPosts : [
 ---
 
 <Layout title="TGP | Xavier Benítez">
-  <main class="min-h-screen bg-[#050a09] text-white">
+  <main class="min-h-screen bg-racing-green text-white">
     
     <section class="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
       
-      <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#c4a48420_0%,transparent_70%)] pointer-events-none"></div>
+      <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,var(--color-copper-ember)_0%,transparent_70%)] opacity-20 pointer-events-none"></div>
       
       <div class="relative z-10 text-center px-6">
         <h1 class="font-serif text-7xl md:text-9xl font-black tracking-tighter leading-none mb-4">
-          The Great <span class="text-[#c4a484] italic">Puzzle</span>
+          The Great <span class="text-copper-ember italic">Puzzle</span>
         </h1>
         <p class="font-sans text-lg md:text-xl tracking-[0.4em] uppercase text-gray-400 border-t border-white/10 pt-4">
           Arqueosemiótica • Neurognosis
@@ -45,14 +45,14 @@ const postsToRender = displayPosts.length > 0 ? displayPosts : [
         const colSpanClass = isFeatured ? 'md:col-span-2' : 'md:col-span-1';
         
         // Estilos condicionales por si no hay hero_image
-        const fallbackBg = isFeatured ? 'bg-[#c4a484]' : 'bg-white/5 border border-white/10';
+        const fallbackBg = isFeatured ? 'bg-copper-ember' : 'bg-white/5 border border-white/10';
         const fallbackText = isFeatured ? 'text-black' : 'text-white';
         const hasImage = post.data.hero_image && post.data.hero_image !== '';
 
         return (
           <a 
-            href={`/posts/${post.id}`} 
-            class={`group relative rounded-3xl p-8 flex flex-col justify-end overflow-hidden transition-all duration-700 hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-[#c4a484] ${colSpanClass} ${!hasImage ? fallbackBg : ''} ${!hasImage ? fallbackText : ''}`}
+            href={`/${post.collection.replace('_', '-')}/${post.id}`} 
+            class={`group relative rounded-3xl p-8 flex flex-col justify-end overflow-hidden transition-all duration-700 hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-copper-ember ${colSpanClass} ${!hasImage ? fallbackBg : ''} ${!hasImage ? fallbackText : ''}`}
           >
             {/* Capa de Imagen */}
             {hasImage && (
@@ -62,14 +62,14 @@ const postsToRender = displayPosts.length > 0 ? displayPosts : [
                   alt={post.data.title} 
                   class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-[#050a09] via-transparent to-transparent z-10 opacity-90 group-hover:opacity-70 transition-opacity duration-700"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-racing-green via-transparent to-transparent z-10 opacity-90 group-hover:opacity-70 transition-opacity duration-700"></div>
               </div>
             )}
 
             {/* Capa de Texto */}
             <div class={`relative z-20 ${hasImage ? 'text-white drop-shadow-md' : ''}`}>
               <div class="flex items-center gap-2 mb-3">
-                <span class={`block w-2 h-2 rounded-full ${isFeatured && !hasImage ? 'bg-black' : 'bg-[#c4a484]'}`}></span>
+                <span class={`block w-2 h-2 rounded-full ${isFeatured && !hasImage ? 'bg-black' : 'bg-copper-ember'}`}></span>
                 <p class={`font-sans text-xs tracking-widest uppercase ${isFeatured && !hasImage ? 'text-black/70' : 'text-gray-300'}`}>
                   {post.collection.replace('_', ' ')}
                 </p>
