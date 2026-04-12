@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import LayoutApple from '../../layouts/LayoutApple.astro';
+import LayoutVintage from '../../layouts/LayoutVintage.astro';
+import LayoutDark from '../../layouts/LayoutDark.astro';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays');
+  const architectures = await getCollection('architectures');
+  const visualSignals = await getCollection('visual_signals');
+
+  const allPosts = [...essays, ...architectures, ...visualSignals];
+
+  // Filtramos por si hay algún documento en borrador o sin slug
+  return allPosts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const layoutStyle = post.data.layout_style || 'cinematic-dark';
+
+// Elegimos el Layout correspondiente basado en el CMS
+const LayoutComponent = 
+  layoutStyle === 'apple-os' ? LayoutApple :
+  layoutStyle === 'cinematic-vintage' ? LayoutVintage :
+  LayoutDark;
+---
+
+<LayoutComponent title={post.data.title} hero_image={post.data.hero_image}>
+  <!-- Astro Content Collection Renderer inyecta los nodos del Markdown/MDX -->
+  <Content />
+</LayoutComponent>

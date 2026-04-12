@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Utilizamos la API de Astro Content (que está conectada a Keystatic vía content.config.ts)
+const essays = await getCollection('essays');
+const architectures = await getCollection('architectures');
+const visualSignals = await getCollection('visual_signals');
+
+// Juntamos todos los posts (equivalente a reader.collections.posts.all())
+const allPosts = [...essays, ...architectures, ...visualSignals];
+
+// Como no tenemos fecha por ahora, simplemente tomamos la colección al revés para simular "más recientes"
+const displayPosts = allPosts.reverse();
+
+// Si no hay posts todavía, inyectamos placeholders estéticos para mantener el Bento Grid vivo
+const postsToRender = displayPosts.length > 0 ? displayPosts : [
+  { id: 'mock-1', data: { title: 'El Silencio de las Estructuras', hero_image: 'https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=1000' }, collection: 'architectures' },
+  { id: 'mock-2', data: { title: 'Visual Signals', hero_image: '' }, collection: 'visual_signals' },
+  { id: 'mock-3', data: { title: 'Neurognosis', hero_image: '' }, collection: 'essays' },
+];
+---
+
+<Layout title="TGP | Xavier Benítez">
+  <main class="min-h-screen bg-[#050a09] text-white">
+    
+    <section class="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
+      
+      <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#c4a48420_0%,transparent_70%)] pointer-events-none"></div>
+      
+      <div class="relative z-10 text-center px-6">
+        <h1 class="font-serif text-7xl md:text-9xl font-black tracking-tighter leading-none mb-4">
+          The Great <span class="text-[#c4a484] italic">Puzzle</span>
+        </h1>
+        <p class="font-sans text-lg md:text-xl tracking-[0.4em] uppercase text-gray-400 border-t border-white/10 pt-4">
+          Arqueosemiótica • Neurognosis
+        </p>
+      </div>
+
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 auto-rows-[20rem] gap-6 pb-20">
+      {postsToRender.map((post, index) => {
+        const isFeatured = index === 0; // El primer post toma el lugar destacado
+        const colSpanClass = isFeatured ? 'md:col-span-2' : 'md:col-span-1';
+        
+        // Estilos condicionales por si no hay hero_image
+        const fallbackBg = isFeatured ? 'bg-[#c4a484]' : 'bg-white/5 border border-white/10';
+        const fallbackText = isFeatured ? 'text-black' : 'text-white';
+        const hasImage = post.data.hero_image && post.data.hero_image !== '';
+
+        return (
+          <a 
+            href={`/posts/${post.id}`} 
+            class={`group relative rounded-3xl p-8 flex flex-col justify-end overflow-hidden transition-all duration-700 hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-[#c4a484] ${colSpanClass} ${!hasImage ? fallbackBg : ''} ${!hasImage ? fallbackText : ''}`}
+          >
+            {/* Capa de Imagen */}
+            {hasImage && (
+              <div class="absolute inset-0 z-0 bg-black">
+                <img 
+                  src={post.data.hero_image} 
+                  alt={post.data.title} 
+                  class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050a09] via-transparent to-transparent z-10 opacity-90 group-hover:opacity-70 transition-opacity duration-700"></div>
+              </div>
+            )}
+
+            {/* Capa de Texto */}
+            <div class={`relative z-20 ${hasImage ? 'text-white drop-shadow-md' : ''}`}>
+              <div class="flex items-center gap-2 mb-3">
+                <span class={`block w-2 h-2 rounded-full ${isFeatured && !hasImage ? 'bg-black' : 'bg-[#c4a484]'}`}></span>
+                <p class={`font-sans text-xs tracking-widest uppercase ${isFeatured && !hasImage ? 'text-black/70' : 'text-gray-300'}`}>
+                  {post.collection.replace('_', ' ')}
+                </p>
+              </div>
+              <h3 class={`font-serif leading-tight ${isFeatured ? 'text-4xl md:text-5xl font-black' : 'text-2xl font-bold'}`}>
+                {post.data.title}
+              </h3>
+            </div>
+            
+            {/* Glow Hover Effect (Opcional, sutil detalle) */}
+            {!hasImage && (
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity duration-500 bg-white"></div>
+            )}
+          </a>
+        );
+      })}
+    </section>
+
+  </main>
+</Layout>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,900;1,900&family=Outfit:wght@300;700&display=swap');
+  
+  body {
+    background-color: #050a09;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  h1, h2, h3, .font-serif {
+    font-family: 'Bodoni Moda', serif !important;
+  }
+</style>
