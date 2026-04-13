@@ -1,0 +1,136 @@
+---
+/**
+ * Stratigraphic.astro
+ * Sistema de secciones horizontales con un ligero overlap (superposición)
+ * mediante sticky positioning, simulando capas arqueológicas.
+ */
+interface Stratum {
+  title: string;
+  subtitle?: string;
+  image: string;
+  link: string;
+}
+
+interface Props {
+  items: Stratum[];
+  vibeClass?: string;
+}
+
+const { items, vibeClass = "" } = Astro.props;
+
+// Tactile check for depth physics
+const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics') || vibeClass.includes('80s');
+---
+
+<div class={`stratigraphic-container relative bg-racing-green ${vibeClass}`}>
+  {items.map((item, index) => (
+    <div 
+      class="stratum sticky top-0 h-[75vh] w-full flex items-center justify-center overflow-hidden border-t border-white/5"
+      style={`z-index: ${10 + index};`}
+    >
+      {/* Background with cinematic textures */}
+      <div class="absolute inset-0 z-0 overflow-hidden stratum-bg">
+        <img 
+          src={item.image} 
+          alt={item.title} 
+          class="w-full h-full object-cover grayscale brightness-[0.4] transition-all duration-1000"
+        />
+        <div class="texture-grain opacity-30"></div>
+        <div class="atmospheric-dust opacity-20"></div>
+        <div class="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/80"></div>
+      </div>
+
+      {/* Stratum Content */}
+      <div class="relative z-10 px-8 max-w-5xl text-center stratum-content">
+        <div class="mb-4">
+          <span class="font-sans text-[8px] tracking-[0.6em] uppercase text-copper-ember/80 font-bold italic">
+            Layer 0{items.length - index} • Stratum Analysis
+          </span>
+        </div>
+        
+        <h2 class="font-gloock text-6xl md:text-8xl text-white mb-6 tracking-tight leading-none drop-shadow-2xl">
+          {item.title}
+        </h2>
+        
+        {item.subtitle && (
+          <p class="font-sans text-[10px] tracking-[0.4em] uppercase text-gray-400 font-light mb-12">
+            {item.subtitle}
+          </p>
+        )}
+
+        <a 
+          href={item.link} 
+          class="inline-block border border-white/10 px-10 py-3 text-[9px] tracking-[0.3em] uppercase text-white hover:bg-white hover:text-black transition-all duration-500 rounded-sm"
+        >
+          Desenterrar Hallazgo
+        </a>
+      </div>
+
+      {/* Physics: Tactile Shadows on the "Ledge" */}
+      {isTactile && (
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-black/80 to-transparent pointer-events-none z-20"></div>
+      )}
+    </div>
+  ))}
+</div>
+
+<style>
+  .stratum {
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .stratigraphic-container {
+    padding-bottom: 25vh;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initStratigraphic = () => {
+    const strata = document.querySelectorAll('.stratum');
+    
+    strata.forEach((stratum, i) => {
+      const content = stratum.querySelector('.stratum-content');
+      const bg = stratum.querySelector('.stratum-bg img');
+
+      // Parallax for the background image within the layer
+      if (bg) {
+        gsap.to(bg, {
+          scrollTrigger: {
+            trigger: stratum,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+          },
+          yPercent: 15,
+          ease: "none"
+        });
+      }
+
+      // Content reveal animation
+      if (content) {
+        gsap.fromTo(content, 
+          { opacity: 0, y: 50 },
+          {
+            scrollTrigger: {
+              trigger: stratum,
+              start: "top 80%",
+              end: "top 20%",
+              scrub: 1
+            },
+            opacity: 1,
+            y: 0,
+            ease: "power2.out"
+          }
+        );
+      }
+    });
+  };
+
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initStratigraphic);
+</script>

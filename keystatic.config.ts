@@ -3,7 +3,7 @@ import { config, fields, collection } from '@keystatic/core';
 // --- MODULOS DE CONFIGURACIÓN (Arquitectura Refactorizada) ---
 
 const baseSchema = {
-  title: fields.slug({ name: { label: 'Título' } }),
+  title: fields.text({ label: 'Título' }),
   hero_image: fields.image({
     label: 'Imagen Principal (Hero)',
     directory: 'public/images/posts',

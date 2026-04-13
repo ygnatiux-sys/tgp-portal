@@ -9,12 +9,17 @@ const { title, subtitle = 'The Great Puzzle', imageUrl = '', vibeClass = '' } = 
 ---
 <section class={`dark-hero relative w-full h-[80vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Infinite Marquee Background -->
-  <div class="absolute inset-0 z-0 opacity-40 marquee-bg-pin">
-    <div class="marquee-container flex h-full w-[200vw]">
-      <img src={imageUrl} alt="Background Marquee 1" class="w-1/2 h-full object-cover" />
-      <img src={imageUrl} alt="Background Marquee 2" class="w-1/2 h-full object-cover" />
+  <div class="absolute inset-0 z-0 opacity-40 marquee-bg-pin flex">
+    <div class="marquee-track flex h-full w-[200vw]">
+      <img src={imageUrl} alt="Background Marquee 1" class="w-1/2 h-full object-cover dark-img-target" />
+      <img src={imageUrl} alt="Background Marquee 2" class="w-1/2 h-full object-cover dark-img-target" />
     </div>
   </div>
+  
+  <!-- Cinematic Overlays (from global.css) -->
+  <div class="texture-grain"></div>
+  <div class="texture-scratches"></div>
+  <div class="atmospheric-dust"></div>
   
   <!-- Universal Scrim Overlay (Aggressive for Dark) -->
   <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/80 to-transparent"></div>
@@ -44,47 +49,66 @@ const { title, subtitle = 'The Great Puzzle', imageUrl = '', vibeClass = '' } = 
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // El Loop infinito de GSAP
-  const marqueeContainer = document.querySelector('.marquee-container');
-  if (marqueeContainer) {
-    gsap.to(marqueeContainer, {
-      xPercent: -50,
-      ease: "none",
-      repeat: -1,
-      duration: 50 // Muy lento
-    });
-  }
+  const initDarkHero = () => {
+    const heroSection = document.querySelector('.dark-hero');
+    const marqueeTrack = document.querySelector('.dark-hero .marquee-track');
+    const bgPin = document.querySelector('.dark-hero .marquee-bg-pin');
+    const titleContainer = document.querySelector('.dark-hero .title-container');
+    const images = document.querySelectorAll('.dark-hero .dark-img-target');
 
-  // Animación orgánica del título al scrollear
-  const heroSection = document.querySelector('.dark-hero');
-  const titleContainer = document.querySelector('.title-container');
-  const bgPin = document.querySelector('.marquee-bg-pin');
-  
-  if (heroSection && bgPin) {
-    gsap.to(bgPin, {
-      scrollTrigger: {
-        trigger: heroSection,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-      opacity: 0.15,
-      y: 100,
-      ease: "power3.out"
-    });
+    if (marqueeTrack) {
+      gsap.to(marqueeTrack, {
+        xPercent: -50,
+        ease: "none",
+        repeat: -1,
+        duration: 90 
+      });
+    }
 
-    if (titleContainer) {
-      gsap.to(titleContainer, {
+    if (heroSection && bgPin) {
+      // 1. ZOOM-OUT & DIM
+      gsap.to(images, {
         scrollTrigger: {
           trigger: heroSection,
           start: 'top top',
           end: 'bottom top',
-          scrub: 1,
+          scrub: true,
         },
-        y: 150,
-        opacity: 0,
-        ease: "power3.out"
+        scale: 0.8,
+        opacity: 0.1,
+        ease: "power2.inOut"
       });
+
+      // 2. PARALLAX DRIFT
+      gsap.to(bgPin, {
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+        y: 100,
+        ease: "none"
+      });
+
+      // 3. TITLE TRANSITION
+      if (titleContainer) {
+        gsap.to(titleContainer, {
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+          y: 250,
+          opacity: 0,
+          scale: 0.9,
+          ease: "power3.out"
+        });
+      }
     }
-  }
+  };
+
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initDarkHero);
 </script>

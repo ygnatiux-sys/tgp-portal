@@ -12,10 +12,15 @@ const { title, subtitle = 'Apple Editorial', imageUrl = '', vibeClass = '' } = A
   <div class="apple-bg-pin absolute inset-0 z-0">
     <div class="absolute inset-0 opacity-60 apple-bg-layer">
       <div class="apple-marquee-container flex h-full w-[200vw]">
-        <img src={imageUrl} alt="Panoramic 1" class="w-1/2 h-full object-cover" />
-        <img src={imageUrl} alt="Panoramic 2" class="w-1/2 h-full object-cover" />
+        <img src={imageUrl} alt="Panoramic 1" class="w-1/2 h-full object-cover apple-img-target" />
+        <img src={imageUrl} alt="Panoramic 2" class="w-1/2 h-full object-cover apple-img-target" />
       </div>
     </div>
+    
+    <!-- Cinematic Overlays (from global.css) -->
+    <div class="texture-grain"></div>
+    <div class="texture-scratches"></div>
+    <div class="atmospheric-dust"></div>
     
     <!-- Universal Scrim Overlay -->
     <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent"></div>
@@ -46,58 +51,64 @@ const { title, subtitle = 'Apple Editorial', imageUrl = '', vibeClass = '' } = A
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Marquee infinito
-  const appleMarquee = document.querySelector('.apple-marquee-container');
-  if (appleMarquee) {
-    gsap.to(appleMarquee, {
-      xPercent: -50,
-      ease: "none",
-      repeat: -1,
-      duration: 60 
-    });
-  }
+  const initAppleHero = () => {
+    const appleHero = document.querySelector('.apple-hero');
+    const appleMarquee = document.querySelector('.apple-hero .apple-marquee-container');
+    const appleBgPin = document.querySelector('.apple-hero .apple-bg-pin');
+    const appleBgLayer = document.querySelector('.apple-hero .apple-bg-layer');
+    const titleBox = document.querySelector('.apple-hero .apple-title-box');
+    const images = document.querySelectorAll('.apple-hero .apple-img-target');
 
-  // Pinning and Organic scroll effects
-  const appleHero = document.querySelector('.apple-hero');
-  const appleBgPin = document.querySelector('.apple-bg-pin');
-  const appleBgLayer = document.querySelector('.apple-bg-layer');
-  const titleBox = document.querySelector('.apple-title-box');
+    if (appleMarquee) {
+      gsap.to(appleMarquee, {
+        xPercent: -50,
+        ease: "none",
+        repeat: -1,
+        duration: 80 
+      });
+    }
 
-  if (appleHero && appleBgPin && titleBox) {
-    // Pin background
-    ScrollTrigger.create({
-      trigger: appleHero,
-      start: 'top top',
-      end: 'bottom top',
-      pin: appleBgPin,
-      pinSpacing: false 
-    });
+    if (appleHero && appleBgPin && titleBox) {
+      // 1. PIN BACKGROUND
+      ScrollTrigger.create({
+        trigger: appleHero,
+        start: 'top top',
+        end: 'bottom top',
+        pin: appleBgPin,
+        pinSpacing: false 
+      });
 
-    // Fade background smoothly to 0.15
-    if (appleBgLayer) {
-      gsap.to(appleBgLayer, {
+      // 2. ZOOM-OUT & FADE PHYSICS
+      gsap.to(images, {
         scrollTrigger: {
           trigger: appleHero,
           start: 'top top',
           end: 'bottom top',
           scrub: true,
         },
-        opacity: 0.15,
+        scale: 0.85,
+        opacity: 0.3,
+        rotation: 0.01, // Force hardware acceleration
+        ease: "power2.inOut"
+      });
+
+      // 3. TITLE BOX PARALLAX (With higher inertia)
+      gsap.to(titleBox, {
+        scrollTrigger: {
+          trigger: appleHero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+        y: -300, 
+        opacity: 0,
+        scale: 0.9,
+        rotationX: 10,
         ease: "power3.out"
       });
     }
+  };
 
-    gsap.to(titleBox, {
-      scrollTrigger: {
-        trigger: appleHero,
-        start: 'top top',
-        end: 'top -50%',
-        scrub: 1,
-      },
-      y: -100, 
-      opacity: 0,
-      scale: 0.95,
-      ease: "power3.out"
-    });
-  }
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initAppleHero);
 </script>

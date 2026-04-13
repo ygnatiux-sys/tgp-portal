@@ -10,13 +10,18 @@ const { title, subtitle = 'Editorial Magazine', imageUrl = '', vibeClass = '' } 
 <section class={`magazine-hero relative w-full h-screen min-h-[850px] overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Seamless GSAP Background -->
   <div class="absolute inset-0 z-0 magazine-bg-pin overflow-hidden">
-    <div class="absolute inset-0 opacity-70">
+    <div class="absolute inset-0 opacity-70 flex">
       <div class="magazine-marquee-container flex h-full w-[200vw] will-change-transform">
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110" />
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110" />
+        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110 magazine-img-target" />
+        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110 magazine-img-target" />
       </div>
     </div>
     
+    <!-- Cinematic Overlays (from global.css) -->
+    <div class="texture-grain"></div>
+    <div class="texture-scratches"></div>
+    <div class="atmospheric-dust"></div>
+
     <!-- The Scrim: Deep luxury gradient -->
     <div class="absolute inset-0 bg-linear-to-t from-racing-green via-racing-green/60 to-transparent z-10"></div>
     <div class="absolute inset-0 bg-black/30 mix-blend-multiply z-10"></div>
@@ -60,54 +65,72 @@ const { title, subtitle = 'Editorial Magazine', imageUrl = '', vibeClass = '' } 
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // 1. Infinite Seamless Marquee (Lento hacia la derecha)
-  const marquee = document.querySelector('.magazine-marquee-container');
-  if (marquee) {
-    gsap.fromTo(marquee, 
-      { xPercent: -50 },
-      { 
-        xPercent: 0, 
-        ease: "none", 
-        repeat: -1, 
-        duration: 90 // Ultra lento, inmersivo
-      }
-    );
-  }
+  const initMagazineHero = () => {
+    const hero = document.querySelector('.magazine-hero');
+    const marquee = document.querySelector('.magazine-hero .magazine-marquee-container');
+    const bgPin = document.querySelector('.magazine-hero .magazine-bg-pin');
+    const images = document.querySelectorAll('.magazine-hero .magazine-img-target');
+    const titleBox = document.querySelector('.magazine-hero .magazine-title-box');
+    const metaBox = document.querySelector('.magazine-hero .magazine-meta-box');
 
-  // 2. Scroll Animation: Parallax & Fade-out to 0.15
-  const hero = document.querySelector('.magazine-hero');
-  const bgPin = document.querySelector('.magazine-bg-pin');
-  const titleBox = document.querySelector('.magazine-title-box');
-  const metaBox = document.querySelector('.magazine-meta-box');
+    // 1. Marquee Loop
+    if (marquee) {
+      gsap.fromTo(marquee, 
+        { xPercent: -50 },
+        { 
+          xPercent: 0, 
+          ease: "none", 
+          repeat: -1, 
+          duration: 90 
+        }
+      );
+    }
 
-  if (hero && bgPin) {
-    // Background fade-out smoothly to 0.15
-    gsap.to(bgPin, {
-      scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: "bottom top",
-        scrub: true
-      },
-      opacity: 0.15,
-      y: 100, // Slight parallax push
-      ease: "power3.out"
-    });
-
-    // Text fade and drift
-    if (titleBox && metaBox) {
-      gsap.to([titleBox, metaBox], {
+    if (hero && bgPin) {
+      // 2. ZOOM-OUT & FADE Scroll Physics
+      gsap.to(images, {
         scrollTrigger: {
           trigger: hero,
           start: "top top",
-          end: "40% top",
+          end: "bottom top",
           scrub: true
         },
-        y: 150,
-        opacity: 0,
-        stagger: 0.05,
-        ease: "power3.out"
+        scale: 0.85,
+        opacity: 0.1,
+        ease: "power2.inOut"
       });
+
+      // 3. BG PARALLAX DRIFT
+      gsap.to(bgPin, {
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        },
+        y: 120,
+        ease: "none"
+      });
+
+      // 4. TEXT TRANSITION
+      if (titleBox && metaBox) {
+        gsap.to([titleBox, metaBox], {
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "40% top",
+            scrub: 1.5
+          },
+          y: 200,
+          opacity: 0,
+          scale: 0.95,
+          stagger: 0.1,
+          ease: "power3.out"
+        });
+      }
     }
-  }
+  };
+
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initMagazineHero);
 </script>

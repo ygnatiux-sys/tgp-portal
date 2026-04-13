@@ -2,93 +2,247 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-// Utilizamos la API de Astro Content (que está conectada a Keystatic vía content.config.ts)
-const essays = await getCollection('essays');
-const architectures = await getCollection('architectures');
-const visualSignals = await getCollection('visual_signals');
+// Premium Component Bundle
+import CinematographicHero from '../components/CinematographicHero.astro';
+import Stratigraphic from '../components/Stratigraphic.astro';
+import BentoTrilitico from '../components/BentoTrilitico.astro';
 
-// Juntamos todos los posts (equivalente a reader.collections.posts.all())
-const allPosts = [...essays, ...architectures, ...visualSignals];
+// 1. DATA PHASE: Recuperación y Refino de Alta Fidelidad
+const essaysRaw = await getCollection('essays');
+const architecturesRaw = await getCollection('architectures');
+const visualSignalsRaw = await getCollection('visual_signals');
 
-// Como no tenemos fecha por ahora, simplemente tomamos la colección al revés para simular "más recientes"
-const displayPosts = allPosts.reverse();
+// Sorting helper by ID as proxy for date (Desc)
+const sortByLatest = (a: any, b: any) => b.id.localeCompare(a.id);
 
-// Si no hay posts todavía, inyectamos placeholders estéticos para mantener el Bento Grid vivo
-const postsToRender = displayPosts.length > 0 ? displayPosts : [
-  { id: 'mock-1', data: { title: 'El Silencio de las Estructuras', hero_image: 'https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=1000' }, collection: 'architectures' },
-  { id: 'mock-2', data: { title: 'Visual Signals', hero_image: '' }, collection: 'visual_signals' },
-  { id: 'mock-3', data: { title: 'Neurognosis', hero_image: '' }, collection: 'essays' },
-];
+const essays = [...essaysRaw].sort(sortByLatest).slice(0, 3);
+const architectures = [...architecturesRaw].sort(sortByLatest).slice(0, 3);
+const visualSignals = [...visualSignalsRaw].sort(sortByLatest).slice(0, 5);
+
+// Identificar el post global más reciente para el HERO (Protagonista)
+const allPosts = [...essaysRaw, ...architecturesRaw, ...visualSignalsRaw].sort(sortByLatest);
+const featuredPost = allPosts[0];
+
+// Inyección de "Física Condicionada" para Landing
+const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registration
 ---
 
-<Layout title="TGP | Xavier Benítez">
-  <main class="min-h-screen bg-racing-green text-white">
+<Layout title="The Great Puzzle | Cinematic Portal">
+  
+  <main class="bg-racing-green overflow-x-hidden">
     
-    <section class="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
-      
-      <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,var(--color-copper-ember)_0%,transparent_70%)] opacity-20 pointer-events-none"></div>
-      
-      <div class="relative z-10 text-center px-6">
-        <h1 class="font-serif text-7xl md:text-9xl font-black tracking-tighter leading-none mb-4">
-          The Great <span class="text-copper-ember italic">Puzzle</span>
+    {/* FASE 0: IDENTIDAD DE MARCA (BRAND INTRO) */}
+    <section id="phase-intro" class="relative h-screen w-full flex items-center justify-center bg-racing-green z-60 overflow-hidden">
+      <div class="relative z-10 text-center">
+        <h1 class="font-gloock text-[10vw] md:text-[8rem] text-white tracking-[0.3em] uppercase leading-none opacity-0 translate-y-12 animate-intro-load">
+          The Great Puzzle
         </h1>
-        <p class="font-sans text-lg md:text-xl tracking-[0.4em] uppercase text-gray-400 border-t border-white/10 pt-4">
-          Arqueosemiótica • Neurognosis
+        <p class="mt-12 font-sans text-[11px] tracking-[1.5em] uppercase text-copper-ember/60 font-medium opacity-0 animate-intro-load delay-500">
+          Project 2026 • Editorial Collective
         </p>
       </div>
-
+      {/* Sutil textura táctil bg overlay */}
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');"></div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 auto-rows-[20rem] gap-6 pb-20">
-      {postsToRender.map((post, index) => {
-        const isFeatured = index === 0; // El primer post toma el lugar destacado
-        const colSpanClass = isFeatured ? 'md:col-span-2' : 'md:col-span-1';
-        
-        // Estilos condicionales por si no hay hero_image
-        const fallbackBg = isFeatured ? 'bg-copper-ember' : 'bg-white/5 border border-white/10';
-        const fallbackText = isFeatured ? 'text-black' : 'text-white';
-        const hasImage = post.data.hero_image && post.data.hero_image !== '';
-
-        return (
-          <a 
-            href={`/${post.collection.replace('_', '-')}/${post.id}`} 
-            class={`group relative rounded-3xl p-8 flex flex-col justify-end overflow-hidden transition-all duration-700 hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-copper-ember ${colSpanClass} ${!hasImage ? fallbackBg : ''} ${!hasImage ? fallbackText : ''}`}
-          >
-            {/* Capa de Imagen */}
-            {hasImage && (
-              <div class="absolute inset-0 z-0 bg-black">
-                <img 
-                  src={post.data.hero_image} 
-                  alt={post.data.title} 
-                  class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
-                />
-                <div class="absolute inset-0 bg-linear-to-t from-racing-green via-transparent to-transparent z-10 opacity-90 group-hover:opacity-70 transition-opacity duration-700"></div>
-              </div>
-            )}
-
-            {/* Capa de Texto */}
-            <div class={`relative z-20 ${hasImage ? 'text-white drop-shadow-md' : ''}`}>
-              <div class="flex items-center gap-2 mb-3">
-                <span class={`block w-2 h-2 rounded-full ${isFeatured && !hasImage ? 'bg-black' : 'bg-copper-ember'}`}></span>
-                <p class={`font-sans text-xs tracking-widest uppercase ${isFeatured && !hasImage ? 'text-black/70' : 'text-gray-300'}`}>
-                  {post.collection.replace('_', ' ')}
-                </p>
-              </div>
-              <h3 class={`font-serif leading-tight ${isFeatured ? 'text-4xl md:text-5xl font-black' : 'text-2xl font-bold'}`}>
-                {post.data.title}
-              </h3>
-            </div>
-            
-            {/* Glow Hover Effect (Opcional, sutil detalle) */}
-            {!hasImage && (
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity duration-500 bg-white"></div>
-            )}
-          </a>
-        );
-      })}
+    {/* FASE 1: EL GRAN PROTAGONISTA (PREMIUM HERO) */}
+    <section id="phase-hero" class="relative z-50">
+      <CinematographicHero 
+        title={featuredPost?.data.title || "TGP ARCHIVE"}
+        subtitle={`Latest Archetype • ${featuredPost?.collection.replace('_', ' ')}`}
+        image={featuredPost?.data.hero_image || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670'}
+        link={`/${featuredPost?.collection.replace('_', '-')}/${featuredPost?.id}`}
+        vibeClass={landingVibe}
+      />
     </section>
 
+    {/* FASE 2: CUERPO EDITORIAL (THE PILLARS) */}
+    <div id="content-body" class="relative z-40 bg-racing-green">
+      
+      {/* 2.1: SECCIÓN ESSAYS (MARQUEE PHYSICS) */}
+      <section id="essays-section" class="relative py-48 overflow-hidden pointer-events-none">
+        <div class="max-w-7xl mx-auto px-6 mb-24 pointer-events-auto">
+          <h3 class="font-gloock text-8xl md:text-9xl text-white italic opacity-20">Essays</h3>
+          <p class="text-[10px] tracking-[0.5em] text-copper-ember uppercase mt-6 font-bold">Infinite Meta-Theory</p>
+        </div>
+
+        {/* Horizontal Marquee for ESSAY CARDS */}
+        <div class="essays-marquee-container flex gap-12 select-none pointer-events-auto hover:pause-marquee">
+          <div class="essays-marquee-track flex gap-12 py-10">
+            {[1, 2].map(() => (
+              essays.map((post) => (
+                <a href={`/essays/${post.id}`} class="group relative block w-[400px] aspect-4/5 bg-white/5 overflow-hidden rounded-sm border border-white/5 transition-all duration-700 hover:border-copper-ember/50 card-lut-fade">
+                  <img src={post.data.hero_image} class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000" />
+                  <div class="absolute inset-0 bg-linear-to-t from-black/90 to-transparent p-12 flex flex-col justify-end">
+                    <h4 class="font-serif text-4xl text-white group-hover:text-copper-ember transition-colors">{post.data.title}</h4>
+                    <span class="text-[8px] tracking-[0.4em] uppercase text-gray-500 mt-4">Research V-01</span>
+                  </div>
+                </a>
+              ))
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2.2: SECCIÓN ARCHITECTURES (STRATIGRAPHIC PHYSICS) */}
+      <section id="architectures-section" class="relative bg-black/20 border-y border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto py-32 px-6 relative z-60">
+          <h3 class="font-gloock text-8xl md:text-9xl text-white italic text-right">Form</h3>
+          <p class="text-[10px] tracking-[0.5em] text-copper-ember uppercase mt-6 font-bold text-right">Spatial Ontologies</p>
+        </div>
+
+        <Stratigraphic 
+          vibeClass={landingVibe}
+          items={architectures.map(post => ({
+            title: post.data.title,
+            subtitle: "Spatial Ontology Research",
+            image: post.data.hero_image,
+            link: `/architectures/${post.id}`
+          }))}
+        />
+      </section>
+
+      {/* 2.3: SECCIÓN VISUAL SIGNALS (BENTO TRILÍTICO) */}
+      <section id="signals-section" class="relative bg-racing-green/20">
+        <div class="max-w-7xl mx-auto pt-48 px-6">
+          <h3 class="font-gloock text-8xl md:text-9xl text-white italic">Signals</h3>
+          <p class="text-[10px] tracking-[0.5em] text-copper-ember uppercase mt-6 font-bold">Semiotic Markers</p>
+        </div>
+
+        <BentoTrilitico 
+          vibeClass={landingVibe}
+          posts={visualSignals.map(post => ({
+            title: post.data.title,
+            image: post.data.hero_image,
+            link: `/visual-signals/${post.id}`,
+            category: "Visual Signals",
+            id: post.id
+          }))}
+        />
+      </section>
+
+      {/* FASE 3: FOOTER INSTITUCIONAL */}
+      <footer class="relative bg-black pt-64 pb-24 px-8 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-24 mb-48">
+          <div class="lg:col-span-2">
+            <h5 class="font-gloock text-6xl text-white mb-10 tracking-tighter">The Great Puzzle</h5>
+            <p class="text-gray-500 max-w-md font-sans font-light tracking-wide leading-relaxed">
+              Exploración experimental de la intersección entre memoria arquitectónica y lenguaje visual. Un laboratorio de diseño especulativo.
+            </p>
+          </div>
+          <div>
+            <h6 class="text-[11px] tracking-[0.4em] uppercase text-copper-ember mb-8 font-bold">Exploración</h6>
+            <ul class="space-y-4 text-xs tracking-widest text-gray-400 font-sans">
+              <li><a href="/essays" class="hover:text-white transition-colors">// Essays</a></li>
+              <li><a href="/architectures" class="hover:text-white transition-colors">// Architectures</a></li>
+              <li><a href="/visual-signals" class="hover:text-white transition-colors">// Signals</a></li>
+              <li><a href="/capsulas" class="hover:text-white transition-colors">// Cápsulas</a></li>
+            </ul>
+          </div>
+          <div>
+            <h6 class="text-[11px] tracking-[0.4em] uppercase text-copper-ember mb-8 font-bold">Contacto</h6>
+            <a href="mailto:archive@thegreatpuzzle.com" class="text-xl text-white font-serif block mb-6 hover:text-copper-ember transition-colors">archive@tgp.com</a>
+            <p class="text-[9px] tracking-[0.3em] uppercase text-gray-600">Alvear • Buenos Aires • 2026</p>
+          </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-12 border-t border-white/5 flex justify-between items-center text-[8px] tracking-[0.4em] uppercase text-gray-700">
+          <p>The Great Puzzle Project © Xavier Benítez</p>
+          <p>Built with Deep Atrophic Vision</p>
+        </div>
+      </footer>
+    </div>
   </main>
+
+  <script>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener('astro:page-load', () => {
+      // 0. INITIAL LOAD ANIMATIONS
+      gsap.to('.animate-intro-load', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.3,
+        duration: 2,
+        ease: "power4.out"
+      });
+
+      // 1. PHASE 0 -> PHASE 1 REVEAL (The Intro Slide-up)
+      const introTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#phase-intro',
+          start: 'top top',
+          end: '+=100%',
+          scrub: true,
+          pin: true,
+          snap: 1
+        }
+      });
+      introTl.to('#phase-intro h1', { scale: 1.5, opacity: 0, duration: 1 })
+            .to('#phase-intro p', { y: 100, opacity: 0, duration: 1 }, 0);
+
+      // 2. PHASE 1 HERO ORCHESTRATION
+      // Infinite Marquee Track
+      gsap.to('.marquee-track', {
+        xPercent: -66.666,
+        duration: 120,
+        ease: "none",
+        repeat: -1
+      });
+
+      // 4. PHASE 2 PHYSICS: ESSAYS MARQUEE
+      gsap.to('.essays-marquee-track', {
+        x: "-50%",
+        ease: "none",
+        repeat: -1,
+        duration: 40,
+        scrollTrigger: {
+          trigger: '#essays-section',
+          start: "top bottom",
+          end: "bottom top",
+          toggleActions: "play pause resume pause"
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .font-gloock { font-family: 'Gloock', serif; }
+    
+    /* Discovery LUT Effect */
+    .card-lut-fade img {
+      filter: grayscale(1) contrast(1.1) brightness(0.6) sepia(0.2);
+      transition: filter 1s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .card-lut-fade:hover img {
+      filter: grayscale(0) contrast(1) brightness(1) sepia(0);
+    }
+
+    /* Selection Color */
+    ::selection {
+      background: #B87333;
+      color: black;
+    }
+
+    /* Grainy Overlay */
+    main::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    /* Section Headings Background Glow */
+    section h3 {
+      text-shadow: 0 0 100px rgba(184, 115, 51, 0.2);
+    }
+  </style>
 </Layout>
-
-

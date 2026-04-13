@@ -1,0 +1,167 @@
+---
+/**
+ * CinematographicHero.astro
+ * Un layout de impacto tipo Netflix para el post destacado.
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  image: string;
+  vibeClass?: string;
+  link?: string;
+  category?: string;
+}
+
+const { title, subtitle, image, vibeClass = "", link = "#", category = "Featured" } = Astro.props;
+
+// Is it a "Tactile" vibe? (Heuristic: victorian, ethnics, 80s)
+const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics') || vibeClass.includes('80s');
+---
+
+<section class={`cinematographic-hero relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-center ${vibeClass}`}>
+  
+  {/* Background Engine with Vignette & Scrim */}
+  <div class="absolute inset-0 z-0">
+    <img 
+      src={image} 
+      alt={title} 
+      class="hero-img-target w-full h-full object-cover grayscale-[0.2] contrast-[1.1] brightness-[0.7] transform scale-105"
+    />
+    
+    {/* Cinematic Overlays (from global.css) */}
+    <div class="texture-grain opacity-40"></div>
+    <div class="texture-scratches"></div>
+    <div class="atmospheric-dust opacity-30"></div>
+
+    {/* The Scrim (Bottom-to-Top Gradient) */}
+    <div class="absolute inset-0 bg-linear-to-t from-racing-green via-racing-green/40 to-black/20 z-10"></div>
+    
+    {/* The Deep Vignette */}
+    <div class="absolute inset-0 z-15 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.95)] opacity-80 backdrop-blur-[1px]"></div>
+    <div class="absolute inset-0 z-15 pointer-events-none ring-100 ring-inset ring-black/30 blur-3xl opacity-50"></div>
+  </div>
+
+  {/* Content Layer */}
+  <div class="relative z-30 px-6 max-w-7xl w-full text-center md:text-left">
+    <div class="mb-8 opacity-0 translate-y-8 animate-reveal">
+      <span class="inline-block px-4 py-1.5 border border-copper-ember/30 text-copper-ember text-[9px] tracking-[0.5em] uppercase rounded-full bg-black/40 backdrop-blur-md">
+        {category}
+      </span>
+    </div>
+    
+    <h1 class={`hero-title font-gloock text-[12vw] md:text-[8rem] lg:text-[10rem] font-bold leading-[0.85] tracking-[-0.04em] text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)] mb-10 opacity-0 translate-y-12 animate-reveal animation-delay-300 ${isTactile ? 'tactile-glow' : ''}`}>
+      {title}
+    </h1>
+    
+    {subtitle && (
+      <p class="font-sans text-[10px] md:text-xs tracking-[1em] md:tracking-[1.5em] uppercase text-gray-400 font-light max-w-4xl leading-relaxed opacity-0 animate-reveal animation-delay-600 mb-16">
+        {subtitle}
+      </p>
+    )}
+
+    <div class="opacity-0 animate-reveal animation-delay-900 group">
+      <a href={link} class="inline-flex items-center gap-6 px-12 py-5 bg-white text-black font-sans text-[10px] tracking-[0.4em] uppercase font-bold rounded-sm hover:bg-copper-ember hover:text-white transition-all duration-700 hover:scale-105 shadow-xl shadow-black/50">
+        Entrar al Archivo
+        <span class="w-8 h-px bg-current group-hover:w-16 transition-all duration-700"></span>
+      </a>
+    </div>
+  </div>
+
+  {/* Physical Border (Tactile Mode) */}
+  {isTactile && (
+    <div class="absolute inset-10 border border-white/5 pointer-events-none z-40 opacity-30"></div>
+  )}
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initHero = () => {
+    const hero = document.querySelector('.cinematographic-hero');
+    const img = document.querySelector('.hero-img-target');
+    const title = document.querySelector('.hero-title');
+    const scratches = document.querySelector('.texture-scratches');
+    const dust = document.querySelector('.atmospheric-dust');
+
+    if (hero && img) {
+      // 1. ZOOM-OUT PHYSICS
+      gsap.to(img, {
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        },
+        scale: 0.9,
+        opacity: 0.2,
+        ease: "power2.inOut"
+      });
+
+      // 2. TEXT PARALLAX (Out of sync for depth)
+      if (title) {
+        gsap.to(title, {
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2
+          },
+          y: -150,
+          opacity: 0.3,
+          scale: 0.95,
+          ease: "power3.out"
+        });
+      }
+
+      // 3. TEXTURE DEPTH synchronization
+      if (scratches && dust) {
+        gsap.to([scratches, dust], {
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+          },
+          y: 50,
+          opacity: 0.1,
+          ease: "none"
+        });
+      }
+    }
+  };
+
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initHero);
+</script>
+
+<style>
+  .cinematographic-hero {
+    background-color: var(--color-racing-green, #0A1C15);
+  }
+
+  .tactile-glow {
+    text-shadow: 0 0 30px rgba(184, 115, 51, 0.4);
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(3rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-reveal {
+    animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-900 { animation-delay: 900ms; }
+
+  /* Selection Override */
+  ::selection {
+    background: #B87333;
+    color: black;
+  }
+</style>

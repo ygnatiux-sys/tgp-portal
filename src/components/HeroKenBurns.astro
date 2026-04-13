@@ -12,16 +12,23 @@ const { title, subtitle = 'Vintage Archives', imageUrl = '', vibeClass = '' } = 
   <div class="hero-bg absolute inset-0 z-0 ken-burns-container" style="box-shadow: inset 0 0 100px rgba(0,0,0,0.8);">
     <img src={imageUrl} alt={title} class="w-full h-full object-cover sepia-[0.3] ken-burns-img" />
     
-    <!-- Hardcoded Grain Overlay -->
-    <div class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')] opacity-20 mix-blend-overlay"></div>
+    <!-- Cinematic Overlays (from global.css) -->
+    <div class="texture-grain"></div>
+    <div class="texture-scratches"></div>
+    <div class="atmospheric-dust"></div>
     
     <!-- Universal Scrim Overlay -->
     <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent"></div>
     <div class="absolute inset-0 z-10 bg-black/40 mix-blend-multiply"></div>
   </div>
 
+  <!-- Focal Square Brackets -->
+  <div class="focal-square">
+    <span class="focal-label">AF FOCUS L:12</span>
+  </div>
+
   <!-- Folio / Editorial Header -->
-  <div class="absolute top-12 left-12 z-30 pointer-events-none">
+  <div class="absolute top-12 left-12 z-40 pointer-events-none">
     <div class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === 'vibe-travel-senses' ? 'vibe-vertical' : ''}`}>
       TGP Editorial // {vibeClass.replace('vibe-', '').replace(/-/g, ' ')}
     </div>
@@ -48,13 +55,8 @@ const { title, subtitle = 'Vintage Archives', imageUrl = '', vibeClass = '' } = 
   }
   
   @keyframes kenburns {
-    0% {
-      transform: scale(1) translate(0, 0);
-    }
-    100% {
-      /* scale(1.15) and slight translation for vintage documentary feel */
-      transform: scale(1.15) translate(-2%, -1%);
-    }
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.15) translate(-2%, -1%); }
   }
 </style>
 
@@ -64,34 +66,69 @@ const { title, subtitle = 'Vintage Archives', imageUrl = '', vibeClass = '' } = 
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const heroSection = document.querySelector('.vintage-hero');
-  const heroBg = document.querySelector('.vintage-hero .hero-bg');
-  const titleContainer = document.querySelector('.vintage-hero .title-container');
-  
-  if (heroSection && heroBg) {
-    gsap.to(heroBg, {
-      scrollTrigger: {
-        trigger: heroSection,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-      opacity: 0.15,
-      ease: 'power3.out',
-    });
-
-    if (titleContainer) {
-      gsap.to(titleContainer, {
+  const initHero = () => {
+    const heroSection = document.querySelector('.vintage-hero');
+    const heroBg = document.querySelector('.vintage-hero .hero-bg');
+    const titleContainer = document.querySelector('.vintage-hero .title-container');
+    const focalSquare = document.querySelector('.vintage-hero .focal-square');
+    const img = document.querySelector('.vintage-hero .ken-burns-img');
+    
+    if (heroSection && heroBg) {
+      // 1. ZOOM-OUT TRANSITION (The "Aperture" Feel)
+      gsap.to(img, {
         scrollTrigger: {
           trigger: heroSection,
           start: 'top top',
           end: 'bottom top',
-          scrub: 1,
+          scrub: true,
         },
-        y: 150,
-        opacity: 0,
-        ease: 'power3.out'
+        scale: 0.9,
+        opacity: 0.2,
+        ease: 'power2.inOut',
       });
+
+      // 2. FOCAL SQUARE PULSE
+      if (focalSquare) {
+        gsap.to(focalSquare, {
+          scale: 1.1,
+          opacity: 0.5,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+
+        gsap.to(focalSquare, {
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: 'center top',
+            scrub: true,
+          },
+          scale: 2,
+          opacity: 0,
+          ease: "expo.in"
+        });
+      }
+
+      // 3. TITLE PARALLAX
+      if (titleContainer) {
+        gsap.to(titleContainer, {
+          scrollTrigger: {
+            trigger: heroSection,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+          },
+          y: 200,
+          scale: 0.95,
+          opacity: 0,
+          ease: 'power3.out'
+        });
+      }
     }
-  }
+  };
+
+  // Lifecycle Protocol
+  document.addEventListener('astro:page-load', initHero);
 </script>

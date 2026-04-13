@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FloatingBackButton from '../../components/FloatingBackButton.astro';
+
+const posts = (await getCollection('visual_signals')).sort((a, b) => b.id.localeCompare(a.id));
+---
+
+<Layout title="Archive: Visual Signals | The Great Puzzle">
+  <main class="bg-racing-green min-h-screen text-white overflow-hidden relative">
+    <FloatingBackButton />
+
+    <header class="relative pt-48 pb-32 px-6 max-w-7xl mx-auto z-10">
+      <div class="mb-8 opacity-0 translate-y-8 animate-reveal">
+        <span class="text-copper-ember text-[10px] tracking-[0.5em] uppercase font-bold border-l-2 border-copper-ember pl-4">
+          Semiotic Record
+        </span>
+      </div>
+      <h1 class="font-gloock text-[13vw] md:text-[10rem] font-bold leading-[0.8] tracking-[-0.04em] text-white opacity-0 translate-y-12 animate-reveal animation-delay-300">
+        Visual Signals
+      </h1>
+      <p class="mt-12 font-sans text-xs md:text-sm tracking-[0.6em] uppercase text-gray-400 opacity-0 animate-reveal animation-delay-700 max-w-2xl px-2">
+        Symbols • Patterns • Markers • Visual Memory
+      </p>
+    </header>
+
+    <section class="relative z-10 px-6 max-w-7xl mx-auto pb-48">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+        {posts.map((post, index) => (
+          <a 
+            href={`/visual-signals/${post.id}`} 
+            class="group relative block aspect-video overflow-hidden rounded-sm bg-white/5 border border-white/5 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-copper-ember/30 animate-reveal"
+            style={`animation-delay: ${800 + (index * 100)}ms`}
+          >
+            <div class="absolute inset-0 overflow-hidden">
+              <img 
+                src={post.data.hero_image || '/images/default-hero.jpg'} 
+                alt={post.data.title} 
+                class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-1000"
+              />
+              <div class="absolute inset-0 ring-1 shadow-[inset_0_0_60px_rgba(0,0,0,0.9)] pointer-events-none"></div>
+            </div>
+            
+            <div class="absolute inset-0 z-20 p-8 flex flex-col justify-end bg-linear-to-t from-black/80 via-transparent to-transparent">
+              <h2 class="font-serif text-3xl font-bold text-white group-hover:text-copper-ember transition-colors duration-500">
+                {post.data.title}
+              </h2>
+              <p class="text-[8px] tracking-[0.4em] uppercase text-gray-500 mt-2">Signal Analysis 0.{index + 1}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <div class="fixed inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 80px 80px;"></div>
+  </main>
+</Layout>
+
+<style>
+  .font-gloock { font-family: 'Gloock', serif; }
+  
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(3rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-reveal {
+    animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+</style>

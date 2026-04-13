@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FloatingBackButton from '../../components/FloatingBackButton.astro';
+
+const posts = (await getCollection('essays')).sort((a, b) => b.id.localeCompare(a.id));
+---
+
+<Layout title="Archive: Essays | The Great Puzzle">
+  <main class="bg-racing-green min-h-screen text-white overflow-hidden relative">
+    <FloatingBackButton />
+
+    {/* Header Section */}
+    <header class="relative pt-48 pb-32 px-6 max-w-7xl mx-auto z-10">
+      <div class="mb-8 opacity-0 translate-y-8 animate-reveal">
+        <span class="text-copper-ember text-[10px] tracking-[0.5em] uppercase font-bold border-l-2 border-copper-ember pl-4">
+          Collection Volume I
+        </span>
+      </div>
+      <h1 class="font-gloock text-[15vw] md:text-[12rem] font-bold leading-[0.8] tracking-[-0.04em] text-white opacity-0 translate-y-12 animate-reveal animation-delay-300">
+        Essays
+      </h1>
+      <p class="mt-12 font-sans text-xs md:text-sm tracking-[0.6em] uppercase text-gray-400 opacity-0 animate-reveal animation-delay-700 max-w-2xl px-2">
+        Deep Theory • Philosophical Narratives • Semiotic Fragments
+      </p>
+    </header>
+
+    {/* Grid Section */}
+    <section class="relative z-10 px-6 max-w-7xl mx-auto pb-48">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+        {posts.map((post, index) => (
+          <a 
+            href={`/essays/${post.id}`} 
+            class="group relative block aspect-3/4 overflow-hidden rounded-sm bg-white/5 border border-white/5 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-4 hover:shadow-[0_40px_100px_rgba(0,0,0,0.6)] animate-reveal"
+            style={`animation-delay: ${800 + (index * 100)}ms`}
+          >
+            <div class="absolute inset-0 overflow-hidden">
+              <img 
+                src={post.data.hero_image || '/images/default-hero.jpg'} 
+                alt={post.data.title} 
+                class="w-full h-full object-cover grayscale-[0.4] brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000 ease-out"
+              />
+              <div class="absolute inset-0 bg-racing-green/40 mix-blend-multiply opacity-80 group-hover:opacity-10 transition-opacity duration-700"></div>
+              <div class="absolute inset-0 bg-linear-to-t from-racing-green via-transparent to-transparent z-10"></div>
+            </div>
+            
+            <div class="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-[8px] tracking-[0.4em] uppercase text-copper-ember font-bold">Archive Ref: {post.id}</span>
+              </div>
+              <h2 class="font-serif text-3xl font-bold leading-tight text-white group-hover:text-copper-ember transition-colors duration-500">
+                {post.data.title}
+              </h2>
+              <div class="mt-6 w-0 group-hover:w-full h-px bg-copper-ember transition-all duration-700"></div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* Background Pattern */}
+    <div class="fixed inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 80px 80px;"></div>
+  </main>
+</Layout>
+
+<style>
+  .font-gloock { font-family: 'Gloock', serif; }
+  
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(3rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-reveal {
+    animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  // Custom entrance orchestration if needed
+  gsap.from('main', { opacity: 0, duration: 1, ease: 'power2.out' });
+</script>

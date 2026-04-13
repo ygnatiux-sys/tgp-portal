@@ -1,3 +1,5 @@
+@charset "UTF-8";
+/* @tailwind base; */
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100;300;700&family=Prata&family=GFS+Didot&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Gloock&family=Fraunces:opsz,wght@9..144,100..900&family=DM+Serif+Display&family=Syne:wght@400..800&family=Raleway:wght@100..900&family=IBM+Plex+Mono:wght@100..700&family=Space+Mono:wght@400;700&family=Montserrat:wght@100..900&family=Jost:wght@100..900&family=Epilogue:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
@@ -10,11 +12,18 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
 }
 
+:root {
+  --bg-current: #0A1C15;
+  --text-current: #ffffff;
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--color-racing-green);
+  background-color: var(--bg-current);
+  color: var(--text-current);
 }
+
 
 @layer components {
   /* =========================================
@@ -60,7 +69,10 @@ body {
 
   /* 01. MUSEUM LUXURY */
   .vibe-museum-luxury {
+    --bg-current: #f4f0ec;
+    --text-current: #2c2b29;
     --vibe-h1-font: 'Prata', serif;
+
     --vibe-h1-weight: 400; /* Prata is single weight but heavy */
     --vibe-h1-tracking: -0.1em;
     --vibe-h1-leading: 0.8;
@@ -95,7 +107,10 @@ body {
 
   /* 02. KINFOLK HIGH DESIGN */
   .vibe-kinfolk-high-design {
+    --bg-current: #ffffff;
+    --text-current: #000000;
     --vibe-h1-font: 'Cormorant Garamond', serif;
+
     --vibe-h1-weight: 400;
     --vibe-h1-tracking: 0.05em;
     --vibe-h1-leading: 1.1;
@@ -128,7 +143,10 @@ body {
 
   /* 03. VICTORIAN ARCHEO */
   .vibe-victorian-archeo {
+    --bg-current: #0A1C15;
+    --text-current: #ffffff;
     --vibe-h1-font: 'Gloock', serif;
+
     --vibe-h1-tracking: -0.02em;
     --vibe-h1-leading: 1.0;
 
@@ -157,7 +175,10 @@ body {
 
   /* 04. TRAVEL & SENSES */
   .vibe-travel-senses {
+    --bg-current: #fdfcf2;
+    --text-current: #333333;
     --vibe-h1-font: 'Bodoni Moda', serif;
+
     --vibe-h1-weight: 500;
     --vibe-h1-style: italic;
 
@@ -186,7 +207,10 @@ body {
 
   /* 05. 80's ITALIAN INTERIORS */
   .vibe-80s-italian {
+    --bg-current: #050505;
+    --text-current: #ffffff;
     --vibe-h1-font: 'Fraunces', serif;
+
     --vibe-h1-weight: 900;
     --vibe-h1-tracking: -0.08em;
     --vibe-h1-leading: 0.85;
@@ -218,7 +242,10 @@ body {
 
   /* 06. ETHNICS & ARTS */
   .vibe-ethnics-arts {
+    --bg-current: #2d241e;
+    --text-current: #f4f0ec;
     --vibe-h1-font: 'DM Serif Display', serif;
+
     --vibe-h1-weight: 400;
     --vibe-h1-tracking: 0;
     --vibe-h1-leading: 1.0;
@@ -248,7 +275,10 @@ body {
 
   /* 07. MID-90's ARTSY */
   .vibe-mid-90s-artsy {
+    --bg-current: #ffffff;
+    --text-current: #000000;
     --vibe-h1-font: 'Syne', sans-serif;
+
     --vibe-h1-weight: 800;
     --vibe-h1-tracking: -0.07em;
     --vibe-h1-leading: 0.82;
@@ -535,4 +565,119 @@ body {
   .vibe-kinfolk-high-design .spread-caption { font-family: 'Raleway', sans-serif; font-weight: 400; color: #fff; }
   .vibe-victorian-archeo .spread-caption { font-family: 'IBM Plex Mono', monospace; font-weight: 300; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); }
   .vibe-mid-90s-artsy .spread-caption { font-family: 'Space Grotesk', sans-serif; font-weight: 300; }
+  .vibe-victorian-archeo .spread-caption { font-family: 'IBM Plex Mono', monospace; font-weight: 300; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); }
+  .vibe-mid-90s-artsy .spread-caption { font-family: 'Space Grotesk', sans-serif; font-weight: 300; }
+
+  /* =========================================
+     CINEMATIC TEXTURES & ATMOSPHERES
+     ========================================= */
+
+  /* 01. Film Grain Layer */
+  .texture-grain {
+    position: fixed;
+    inset: -200%;
+    width: 400%;
+    height: 400%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 200;
+    animation: grain-shift 8s steps(10) infinite;
+  }
+
+  @keyframes grain-shift {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -10%); }
+    30% { transform: translate(3%, -15%); }
+    50% { transform: translate(-10%, 5%); }
+    70% { transform: translate(7%, 10%); }
+    90% { transform: translate(-3%, 5%); }
+  }
+
+  /* 02. Film Scratches (Vintage Trigger) */
+  .texture-scratches {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/scratches.png');
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 201;
+    mix-blend-mode: overlay;
+    display: none;
+  }
+  :is(.vibe-victorian-archeo, .vibe-mid-90s-artsy, .vibe-museum-luxury, .vibe-80s-italian) .texture-scratches {
+    display: block;
+    animation: scratch-flicker 0.2s steps(1) infinite;
+  }
+
+  @keyframes scratch-flicker {
+    0% { opacity: 0.05; transform: translateX(0); }
+    50% { opacity: 0.12; transform: translateX(2px) scaleX(-1); }
+    100% { opacity: 0.08; transform: translateX(-1px); }
+  }
+
+  /* 03. Atmospheric Dust (Floating Particles) */
+  .atmospheric-dust {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    overflow: hidden;
+  }
+  .atmospheric-dust::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+    background-size: 100px 100px;
+    opacity: 0.1;
+    animation: dust-float 60s linear infinite;
+  }
+
+  @keyframes dust-float {
+    from { transform: rotate(0deg) translate(-5%, -5%); }
+    to { transform: rotate(10deg) translate(5%, 5%); }
+  }
+
+  /* 04. Focal Square UI (Ken Burns Enhancement) */
+  .focal-square {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 30;
+  }
+  .focal-square::before, .focal-square::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: #B87333;
+    border-style: solid;
+  }
+  .focal-square::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+  .focal-square::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+
+  .focal-label {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    color: #B87333;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
 }
