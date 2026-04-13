@@ -21,7 +21,7 @@ const commonSchema = z.object({
   })).optional(),
 });
 
-const archetypeSchema = z.object({
+const capsulaSchema = z.object({
   title: z.string(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
   master_archetype: z.enum(['tactile-archive', 'expansive-gallery', 'kinetic-manifesto', 'field-notebook']),
@@ -50,8 +50,8 @@ export const collections = {
     loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/visual_signals" }),
     schema: commonSchema
   }),
-  'master_archetypes': defineCollection({
-    loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/master_archetypes" }),
-    schema: archetypeSchema
+  'capsulas': defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/capsulas" }),
+    schema: capsulaSchema
   }),
 };

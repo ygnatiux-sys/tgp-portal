@@ -8,7 +8,7 @@ import HeroMagazine from '../../components/HeroMagazine.astro';
 import FloatingBackButton from '../../components/FloatingBackButton.astro';
 
 export async function getStaticPaths() {
-  const archetypes = await getCollection('master_archetypes');
+  const archetypes = await getCollection('capsulas');
   return archetypes.map(entry => ({
     params: { slug: entry.id },
     props: { entry },
@@ -58,8 +58,8 @@ const HERO_MAP = {
 
 const HeroComponent = HERO_MAP[config.hero];
 
-console.log(`[VOGUE ARCHETYPE] Rendering ${entry.id}`);
-console.log(`[VOGUE ARCHETYPE] Archetype: ${entry.data.master_archetype} -> Vibe: ${config.vibe}`);
+console.log(`[VOGUE CAPSULA] Rendering ${entry.id}`);
+console.log(`[VOGUE CAPSULA] Archetype: ${entry.data.master_archetype} -> Vibe: ${config.vibe}`);
 ---
 
 <LayoutDark title={entry.data.title}>

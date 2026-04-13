@@ -1,13 +1,27 @@
 import { config, fields, collection } from '@keystatic/core';
 
-// Esquema Maestro con toda la artillería editorial refinada
-const commonSchema = {
-  title: fields.slug({ name: { label: 'Título del Ensayo' } }),
+// --- MODULOS DE CONFIGURACIÓN (Arquitectura Refactorizada) ---
+
+const baseSchema = {
+  title: fields.slug({ name: { label: 'Título' } }),
   hero_image: fields.image({
     label: 'Imagen Principal (Hero)',
     directory: 'public/images/posts',
     publicPath: '/images/posts',
   }),
+  content: fields.document({
+    label: 'Contenido',
+    formatting: true,
+    dividers: true,
+    links: true,
+    images: {
+      directory: 'public/images/posts',
+      publicPath: '/images/posts',
+    },
+  }),
+};
+
+const cinematicEngine = {
   layout_style: fields.select({
     label: 'Arquitectura del Hero (Comportamiento)',
     options: [
@@ -18,8 +32,9 @@ const commonSchema = {
     ],
     defaultValue: 'cinematic-dark',
   }),
+};
 
-  // Control de escala y grilla (A5, A4, A3)
+const vogueEngine = {
   format_scale: fields.select({
     label: 'Escala Editorial (Ancho de Página)',
     options: [
@@ -29,8 +44,6 @@ const commonSchema = {
     ],
     defaultValue: 'max-w-4xl',
   }),
-
-  // El Corazón del Sistema: Motor Editorial Vogue Luxury
   editorial_vibe: fields.conditional(
     fields.select({
       label: 'Estilo de Diseño Editorial',
@@ -57,15 +70,14 @@ const commonSchema = {
       }),
     }
   ),
-
-  // Laboratorio Tipográfico (Stress Test)
   enable_stress_test: fields.checkbox({
     label: 'Activar Modo Laboratorio (Stress Test)',
     defaultValue: false,
     description: 'Reemplaza el contenido con un manifiesto para auditar las fuentes y pesos.',
   }),
+};
 
-  // Spreads Fotográficos (Dípticos y Panorámicas)
+const spreadsEngine = {
   editorial_spreads: fields.blocks(
     {
       image_spread: {
@@ -100,23 +112,19 @@ const commonSchema = {
       description: 'Añade bloques de imágenes para intercalar en el ensayo.',
     }
   ),
-
-  content: fields.document({
-    label: 'Contenido del Ensayo',
-    formatting: true,
-    dividers: true,
-    links: true,
-    images: {
-      directory: 'public/images/posts',
-      publicPath: '/images/posts',
-    },
-  }),
 };
 
-// Nuevo Esquema de Arquetipos (Pilar Paralelo)
-const archetypeSchema = {
-  title: fields.slug({ name: { label: 'Título del Arquetipo' } }),
-  hero_image: commonSchema.hero_image,
+// --- ESQUEMAS FINALES (Ensamblaje) ---
+
+const fullEditorialSchema = {
+  ...baseSchema,
+  ...cinematicEngine,
+  ...vogueEngine,
+  ...spreadsEngine,
+};
+
+const capsulaSchema = {
+  ...baseSchema,
   master_archetype: fields.select({
     label: 'Arquetipo Maestro',
     options: [
@@ -127,8 +135,7 @@ const archetypeSchema = {
     ],
     defaultValue: 'tactile-archive',
   }),
-  editorial_spreads: commonSchema.editorial_spreads,
-  content: commonSchema.content,
+  ...spreadsEngine,
 };
 
 export default config({
@@ -139,28 +146,28 @@ export default config({
       slugField: 'title',
       path: 'src/content/essays/*',
       format: { contentField: 'content' },
-      schema: commonSchema,
+      schema: fullEditorialSchema,
     }),
     architectures: collection({
       label: 'Architectures',
       slugField: 'title',
       path: 'src/content/architectures/*',
       format: { contentField: 'content' },
-      schema: commonSchema,
+      schema: fullEditorialSchema,
     }),
     visual_signals: collection({
       label: 'Visual Signals',
       slugField: 'title',
       path: 'src/content/visual_signals/*',
       format: { contentField: 'content' },
-      schema: commonSchema,
+      schema: fullEditorialSchema,
     }),
-    master_archetypes: collection({
-      label: 'Master Archetypes',
+    capsulas: collection({
+      label: 'Cápsulas',
       slugField: 'title',
-      path: 'src/content/master_archetypes/*',
+      path: 'src/content/capsulas/*',
       format: { contentField: 'content' },
-      schema: archetypeSchema,
+      schema: capsulaSchema,
     }),
   },
 });
