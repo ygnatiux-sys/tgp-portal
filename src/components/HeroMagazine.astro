@@ -3,36 +3,44 @@ interface Props {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  vibeClass?: string;
 }
-const { title, subtitle = 'Editorial Magazine', imageUrl = '' } = Astro.props;
+const { title, subtitle = 'Editorial Magazine', imageUrl = '', vibeClass = '' } = Astro.props;
 ---
-<section class="magazine-hero relative w-full h-screen min-h-[850px] overflow-hidden bg-racing-green">
+<section class={`magazine-hero relative w-full h-screen min-h-[850px] overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Seamless GSAP Background -->
   <div class="absolute inset-0 z-0 magazine-bg-pin overflow-hidden">
     <div class="absolute inset-0 opacity-70">
       <div class="magazine-marquee-container flex h-full w-[200vw] will-change-transform">
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-[20%] contrast-[110%]" />
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-[20%] contrast-[110%]" />
+        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110" />
+        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110" />
       </div>
     </div>
     
     <!-- The Scrim: Deep luxury gradient -->
-    <div class="absolute inset-0 bg-gradient-to-t from-racing-green via-racing-green/60 to-transparent z-10"></div>
+    <div class="absolute inset-0 bg-linear-to-t from-racing-green via-racing-green/60 to-transparent z-10"></div>
     <div class="absolute inset-0 bg-black/30 mix-blend-multiply z-10"></div>
+  </div>
+
+  <!-- Folio / Editorial Header (Absolute Floating) -->
+  <div class="absolute top-12 left-12 md:top-16 md:left-16 z-30 pointer-events-none">
+    <div class={`vibe-target-folio text-white/40 text-[9px] md:text-[10px] uppercase ${vibeClass === 'vibe-travel-senses' ? 'vibe-vertical' : ''}`}>
+      TGP Editorial // {vibeClass.replace('vibe-', '').replace(/-/g, ' ')} // Vol. 2026
+    </div>
   </div>
 
   <!-- Asymmetric High-Hierarchy Typography -->
   <div class="relative z-20 w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex flex-col justify-end pb-24 md:pb-32">
-    <!-- Metadata: Ultra-thin luxury vibe -->
+    <!-- Metadata: H2 style for the "Ensayo" intro -->
     <div class="magazine-meta-box mb-8 md:mb-12 overflow-hidden">
-      <p class="font-sans text-[10px] md:text-xs font-thin uppercase tracking-[0.6em] text-[#c4a484] opacity-80 leading-relaxed">
+      <p class="vibe-target-h2 font-sans text-white/80 opacity-80 leading-relaxed max-w-xl">
         {subtitle}
       </p>
     </div>
 
-    <!-- H1: Massive Serif Title -->
+    <!-- H1: Massive Title -->
     <div class="magazine-title-box max-w-[90%] md:max-w-[80%]">
-      <h1 class="font-serif text-7xl md:text-[9rem] lg:text-[11rem] text-white/95 font-bold tracking-tighter leading-[0.82] uppercase drop-shadow-2xl">
+      <h1 class="vibe-target-h1 text-white/95 drop-shadow-2xl">
         {title}
       </h1>
     </div>

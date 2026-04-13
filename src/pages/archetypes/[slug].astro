@@ -1,0 +1,112 @@
+---
+import { getCollection, render } from 'astro:content';
+import LayoutDark from '../../layouts/LayoutDark.astro';
+import HeroMarquee from '../../components/HeroMarquee.astro';
+import HeroKenBurns from '../../components/HeroKenBurns.astro';
+import HeroParallax from '../../components/HeroParallax.astro';
+import HeroMagazine from '../../components/HeroMagazine.astro';
+import FloatingBackButton from '../../components/FloatingBackButton.astro';
+
+export async function getStaticPaths() {
+  const archetypes = await getCollection('master_archetypes');
+  return archetypes.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// DICCIONARIO DE ARQUETIPOS (Arquitectura Cerrada)
+const ARCHETYPE_CONFIG = {
+  'tactile-archive': {
+    hero: 'cinematic-vintage', // HeroKenBurns
+    scale: 'max-w-2xl',
+    vibe: 'vibe-victorian-archeo',
+    label: 'The Tactile Archive'
+  },
+  'expansive-gallery': {
+    hero: 'magazine-luxury', // HeroMagazine
+    scale: 'w-full',
+    vibe: 'vibe-museum-luxury',
+    label: 'The Expansive Gallery'
+  },
+  'kinetic-manifesto': {
+    hero: 'cinematic-dark', // HeroMarquee
+    scale: 'max-w-4xl',
+    vibe: 'vibe-mid-90s-artsy',
+    label: 'The Kinetic Manifesto'
+  },
+  'field-notebook': {
+    hero: 'apple-os', // HeroParallax
+    scale: 'max-w-4xl',
+    vibe: 'vibe-kinfolk-high-design',
+    label: 'The Field Notebook'
+  }
+};
+
+const config = ARCHETYPE_CONFIG[entry.data.master_archetype] || ARCHETYPE_CONFIG['tactile-archive'];
+
+// Mapeo de Componentes Hero
+const HERO_MAP = {
+  'cinematic-dark': HeroMarquee,
+  'cinematic-vintage': HeroKenBurns,
+  'apple-os': HeroParallax,
+  'magazine-luxury': HeroMagazine,
+};
+
+const HeroComponent = HERO_MAP[config.hero];
+
+console.log(`[VOGUE ARCHETYPE] Rendering ${entry.id}`);
+console.log(`[VOGUE ARCHETYPE] Archetype: ${entry.data.master_archetype} -> Vibe: ${config.vibe}`);
+---
+
+<LayoutDark title={entry.data.title}>
+  <main class={`bg-[#0a0a0a] text-white min-h-screen ${config.vibe}`}>
+    <FloatingBackButton />
+
+    <HeroComponent 
+      title={entry.data.title}
+      image={entry.data.hero_image}
+    />
+
+    <article class="relative py-24 px-6 md:px-12">
+      <div class={`${config.scale} mx-auto`}>
+        
+        {/* Renderizado de Spreads Editoriales Inyectados */}
+        {entry.data.editorial_spreads && entry.data.editorial_spreads.length > 0 && (
+          <div class="editorial-gallery mb-24 space-y-32">
+            {entry.data.editorial_spreads.map((spread) => {
+              const { spread_type, images, caption } = spread.value;
+              return (
+                <div class={`spread-wrapper ${spread_type}`}>
+                  <div class="grid gap-4">
+                    {images.map((img) => (
+                      <img 
+                        src={img} 
+                        alt={caption || 'Editorial Spread'} 
+                        class="w-full h-auto object-cover"
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                  {caption && <p class="spread-caption">{caption}</p>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div class="prose prose-invert prose-tgp max-w-none">
+          <Content />
+        </div>
+      </div>
+    </article>
+  </main>
+</LayoutDark>
+
+<style is:global>
+  /* Local Overrides for Archetype Spreads */
+  .vibe-victorian-archeo.vibe-target-h1 { font-family: 'Gloock', serif !important; }
+</style>

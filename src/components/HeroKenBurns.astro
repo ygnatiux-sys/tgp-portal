@@ -3,10 +3,11 @@ interface Props {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  vibeClass?: string;
 }
-const { title, subtitle = 'Vintage Archives', imageUrl = '' } = Astro.props;
+const { title, subtitle = 'Vintage Archives', imageUrl = '', vibeClass = '' } = Astro.props;
 ---
-<section class="vintage-hero relative w-full h-[85vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green">
+<section class={`vintage-hero relative w-full h-[85vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Grainy Image with Ken Burns animation & Vignette -->
   <div class="hero-bg absolute inset-0 z-0 ken-burns-container" style="box-shadow: inset 0 0 100px rgba(0,0,0,0.8);">
     <img src={imageUrl} alt={title} class="w-full h-full object-cover sepia-[0.3] ken-burns-img" />
@@ -15,16 +16,23 @@ const { title, subtitle = 'Vintage Archives', imageUrl = '' } = Astro.props;
     <div class="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')] opacity-20 mix-blend-overlay"></div>
     
     <!-- Universal Scrim Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-racing-green via-racing-green/50 to-transparent"></div>
-    <div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+    <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent"></div>
+    <div class="absolute inset-0 z-10 bg-black/40 mix-blend-multiply"></div>
+  </div>
+
+  <!-- Folio / Editorial Header -->
+  <div class="absolute top-12 left-12 z-30 pointer-events-none">
+    <div class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === 'vibe-travel-senses' ? 'vibe-vertical' : ''}`}>
+      TGP Editorial // {vibeClass.replace('vibe-', '').replace(/-/g, ' ')}
+    </div>
   </div>
   
   <!-- Title & Subtitle -->
-  <div class="title-container relative z-10 text-center px-6 w-full max-w-5xl mx-auto py-12">
-    <p class="font-sans text-sm uppercase tracking-[0.2em] text-[#f4f0ec]/70 mb-8 border-b border-[#f4f0ec]/20 pb-2 inline-block">
+  <div class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-12">
+    <p class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-[#f4f0ec]/70 mb-8 border-b border-[#f4f0ec]/20 pb-2 inline-block">
       {subtitle}
     </p>
-    <h1 class="font-serif text-6xl md:text-8xl text-[#f4f0ec] tracking-tighter uppercase leading-none drop-shadow-2xl mix-blend-difference">
+    <h1 class="vibe-target-h1 font-serif text-6xl md:text-8xl text-[#f4f0ec] tracking-tighter uppercase leading-none drop-shadow-2xl mix-blend-difference">
       {title}
     </h1>
   </div>
@@ -56,31 +64,34 @@ const { title, subtitle = 'Vintage Archives', imageUrl = '' } = Astro.props;
 
   gsap.registerPlugin(ScrollTrigger);
 
+  const heroSection = document.querySelector('.vintage-hero');
   const heroBg = document.querySelector('.vintage-hero .hero-bg');
   const titleContainer = document.querySelector('.vintage-hero .title-container');
   
-  if (heroBg && titleContainer) {
+  if (heroSection && heroBg) {
     gsap.to(heroBg, {
       scrollTrigger: {
-        trigger: '.vintage-hero',
+        trigger: heroSection,
         start: 'top top',
         end: 'bottom top',
-        scrub: 1,
+        scrub: true,
       },
-      opacity: 0,
+      opacity: 0.15,
       ease: 'power3.out',
     });
 
-    gsap.to(titleContainer, {
-      scrollTrigger: {
-        trigger: '.vintage-hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-      y: 150,
-      opacity: 0,
-      ease: 'power3.out'
-    });
+    if (titleContainer) {
+      gsap.to(titleContainer, {
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+        y: 150,
+        opacity: 0,
+        ease: 'power3.out'
+      });
+    }
   }
 </script>

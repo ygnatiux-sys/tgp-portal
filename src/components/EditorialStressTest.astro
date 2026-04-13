@@ -1,0 +1,78 @@
+---
+/**
+ * EditorialStressTest.astro
+ * Provee una visualización de jerarquía tipográfica para testing de los estilos Vogue.
+ * Este componente no utiliza clases de fuentes; delega el diseño al CSS global.
+ */
+---
+
+<div class="editorial-stress-test">
+  <h1>La Arquitectura del Silencio</h1>
+  <h2>Una aproximación a la memoria de la piedra</h2>
+  <p>
+    El tiempo no borra, esculpe. Lo que hoy consideramos ruina fue una vez el centro de gravedad de una civilización. 
+    A través de los siglos, el mármol y la diorita han mantenido un diálogo mudo con la gravedad, 
+    esperando que el ojo humano redescubra la proporción divina en lo que parece azar.
+  </p>
+  
+  <h3>Falla Estructural y Anomalía</h3>
+  <blockquote>
+    "No excavamos buscando objetos, excavamos buscando el vacío que dejaron." 
+    <cite>— Xavier Benítez</cite>
+  </blockquote>
+  
+  <h4>Coordenadas del Vacío</h4>
+  <h5>Registro Secundario</h5>
+  <h6>FIN DEL MANIFIESTO — TGP ARCHIVES</h6>
+
+  <!-- Visual Rhythm Showcase: Phase 3 Automation -->
+  <div class="visual-rhythm-showcase mt-40 pt-20 border-t border-white/5">
+    <div class="showcase-header mb-16 text-center">
+      <span class="vibe-target-folio text-white/20 text-[10px] uppercase tracking-[0.5em]">Visual Rhythm Showcase</span>
+      <h2 class="mt-4">Testing Spreads Editoriales</h2>
+    </div>
+
+    <!-- Mock 1: Asymmetric Diptych -->
+    <div class="spread-wrapper mb-40">
+      <div class="spread-asymmetric-diptych">
+        <img src="https://images.unsplash.com/photo-1449156001437-37c6412789b7?q=80&w=1000&auto=format&fit=crop" alt="Mock Architecture 1" class="w-full" />
+        <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1000&auto=format&fit=crop" alt="Mock Architecture 2" class="w-full" />
+      </div>
+      <p class="spread-caption">Díptico Asimétrico: Desfase vertical y balance de blancos.</p>
+    </div>
+
+    <!-- Mock 2: Tactile Overlap -->
+    <div class="spread-wrapper mb-40">
+      <div class="spread-tactile-overlap">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Mock Interior Overlap" class="w-full" />
+      </div>
+      <p class="spread-caption">Superposición Táctil: Profundidad de papel y sombreado 2XL.</p>
+    </div>
+
+    <!-- Mock 3: Kinfolk Grid -->
+    <div class="spread-wrapper mb-20">
+      <div class="spread-kinfolk-grid">
+        <img src="https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 1" />
+        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 2" />
+        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 3" />
+      </div>
+      <p class="spread-caption">Grilla Kinfolk: Composición geométrica y ritmo limpio.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 
+     El estilo base aquí es mínimo para asegurar legibilidad, 
+     pero los pesos y familias se controlarán por el vibeClass del padre.
+  */
+  .editorial-stress-test {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  /* Aseguramos que los párrafos tengan un interlineado base decente antes de la inyección de estilos */
+  p {
+    margin-bottom: 2rem;
+  }
+</style>

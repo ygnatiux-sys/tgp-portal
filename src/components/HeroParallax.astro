@@ -3,13 +3,14 @@ interface Props {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  vibeClass?: string;
 }
-const { title, subtitle = 'Apple Editorial', imageUrl = '' } = Astro.props;
+const { title, subtitle = 'Apple Editorial', imageUrl = '', vibeClass = '' } = Astro.props;
 ---
-<section class="apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-racing-green">
+<section class={`apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Pinned Marquee Background Layer -->
   <div class="apple-bg-pin absolute inset-0 z-0">
-    <div class="absolute inset-0 opacity-60">
+    <div class="absolute inset-0 opacity-60 apple-bg-layer">
       <div class="apple-marquee-container flex h-full w-[200vw]">
         <img src={imageUrl} alt="Panoramic 1" class="w-1/2 h-full object-cover" />
         <img src={imageUrl} alt="Panoramic 2" class="w-1/2 h-full object-cover" />
@@ -17,16 +18,23 @@ const { title, subtitle = 'Apple Editorial', imageUrl = '' } = Astro.props;
     </div>
     
     <!-- Universal Scrim Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-racing-green via-racing-green/50 to-transparent"></div>
-    <div class="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+    <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent"></div>
+    <div class="absolute inset-0 z-10 bg-black/40 mix-blend-multiply"></div>
+  </div>
+
+  <!-- Folio / Editorial Header -->
+  <div class="absolute top-12 left-12 z-30 pointer-events-none">
+    <div class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === 'vibe-travel-senses' ? 'vibe-vertical' : ''}`}>
+      TGP Editorial // {vibeClass.replace('vibe-', '').replace(/-/g, ' ')}
+    </div>
   </div>
 
   <!-- Glassmorphism Container with Typography -->
-  <div class="apple-title-box relative z-10 p-12 rounded-3xl backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl max-w-4xl mx-6 flex flex-col items-center">
-    <p class="font-sans text-sm uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/20 pb-2">
+  <div class="apple-title-box relative z-20 p-12 rounded-3xl backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl max-w-4xl mx-6 flex flex-col items-center">
+    <p class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/20 pb-2">
       {subtitle}
     </p>
-    <h1 class="font-serif text-6xl md:text-8xl text-white tracking-tighter leading-none drop-shadow-2xl text-center">
+    <h1 class="vibe-target-h1 font-serif text-6xl md:text-8xl text-white tracking-tighter leading-none drop-shadow-2xl text-center">
       {title}
     </h1>
   </div>
@@ -38,31 +46,46 @@ const { title, subtitle = 'Apple Editorial', imageUrl = '' } = Astro.props;
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Marquee infinito (Opción B lograda antes, ahora mantenemos)
+  // Marquee infinito
   const appleMarquee = document.querySelector('.apple-marquee-container');
   if (appleMarquee) {
     gsap.to(appleMarquee, {
       xPercent: -50,
       ease: "none",
       repeat: -1,
-      duration: 60 // Linear and very slow
+      duration: 60 
     });
   }
 
   // Pinning and Organic scroll effects
   const appleHero = document.querySelector('.apple-hero');
   const appleBgPin = document.querySelector('.apple-bg-pin');
+  const appleBgLayer = document.querySelector('.apple-bg-layer');
   const titleBox = document.querySelector('.apple-title-box');
 
   if (appleHero && appleBgPin && titleBox) {
-    // Pin background exactly when hero hits top
+    // Pin background
     ScrollTrigger.create({
       trigger: appleHero,
       start: 'top top',
       end: 'bottom top',
       pin: appleBgPin,
-      pinSpacing: false // Important so article content flows over it naturally
+      pinSpacing: false 
     });
+
+    // Fade background smoothly to 0.15
+    if (appleBgLayer) {
+      gsap.to(appleBgLayer, {
+        scrollTrigger: {
+          trigger: appleHero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+        opacity: 0.15,
+        ease: "power3.out"
+      });
+    }
 
     gsap.to(titleBox, {
       scrollTrigger: {
@@ -71,7 +94,7 @@ const { title, subtitle = 'Apple Editorial', imageUrl = '' } = Astro.props;
         end: 'top -50%',
         scrub: 1,
       },
-      y: -100, // Move title up slightly as user scrolls
+      y: -100, 
       opacity: 0,
       scale: 0.95,
       ease: "power3.out"

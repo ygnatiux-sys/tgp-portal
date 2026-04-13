@@ -3,12 +3,13 @@ interface Props {
   title: string;
   subtitle?: string;
   imageUrl?: string;
+  vibeClass?: string;
 }
-const { title, subtitle = 'The Great Puzzle', imageUrl = '' } = Astro.props;
+const { title, subtitle = 'The Great Puzzle', imageUrl = '', vibeClass = '' } = Astro.props;
 ---
-<section class="dark-hero relative w-full h-[80vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green">
+<section class={`dark-hero relative w-full h-[80vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}>
   <!-- Infinite Marquee Background -->
-  <div class="absolute inset-0 z-0 opacity-40">
+  <div class="absolute inset-0 z-0 opacity-40 marquee-bg-pin">
     <div class="marquee-container flex h-full w-[200vw]">
       <img src={imageUrl} alt="Background Marquee 1" class="w-1/2 h-full object-cover" />
       <img src={imageUrl} alt="Background Marquee 2" class="w-1/2 h-full object-cover" />
@@ -16,15 +17,22 @@ const { title, subtitle = 'The Great Puzzle', imageUrl = '' } = Astro.props;
   </div>
   
   <!-- Universal Scrim Overlay (Aggressive for Dark) -->
-  <div class="absolute inset-0 z-0 bg-gradient-to-t from-racing-green via-racing-green/80 to-transparent"></div>
-  <div class="absolute inset-0 z-0 bg-black/30 mix-blend-multiply"></div>
+  <div class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/80 to-transparent"></div>
+  <div class="absolute inset-0 z-10 bg-black/30 mix-blend-multiply"></div>
+
+  <!-- Folio / Editorial Header -->
+  <div class="absolute top-12 left-12 z-30 pointer-events-none">
+    <div class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === 'vibe-travel-senses' ? 'vibe-vertical' : ''}`}>
+      TGP Editorial // {vibeClass.replace('vibe-', '').replace(/-/g, ' ')}
+    </div>
+  </div>
   
   <!-- Massive Title & Subtitle -->
-  <div class="title-container relative z-10 text-center px-6 w-full max-w-6xl mx-auto py-12">
-    <p class="font-sans text-sm uppercase tracking-[0.2em] text-[#c4a484]/80 mb-6 drop-shadow-md">
+  <div class="title-container relative z-20 text-center px-6 w-full max-w-6xl mx-auto py-12">
+    <p class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-[#c4a484]/80 mb-6 drop-shadow-md">
       {subtitle}
     </p>
-    <h1 class="font-serif text-6xl md:text-8xl text-[#c4a484] font-black uppercase tracking-tighter leading-none drop-shadow-2xl">
+    <h1 class="vibe-target-h1 font-serif text-6xl md:text-8xl text-[#c4a484] font-black uppercase tracking-tighter leading-none drop-shadow-2xl">
       {title}
     </h1>
   </div>
@@ -50,18 +58,33 @@ const { title, subtitle = 'The Great Puzzle', imageUrl = '' } = Astro.props;
   // Animación orgánica del título al scrollear
   const heroSection = document.querySelector('.dark-hero');
   const titleContainer = document.querySelector('.title-container');
+  const bgPin = document.querySelector('.marquee-bg-pin');
   
-  if (heroSection && titleContainer) {
-    gsap.to(titleContainer, {
+  if (heroSection && bgPin) {
+    gsap.to(bgPin, {
       scrollTrigger: {
-        trigger: '.dark-hero',
+        trigger: heroSection,
         start: 'top top',
         end: 'bottom top',
-        scrub: 1, // Smoothing exacto
+        scrub: true,
       },
-      y: 200,
-      opacity: 0,
+      opacity: 0.15,
+      y: 100,
       ease: "power3.out"
     });
+
+    if (titleContainer) {
+      gsap.to(titleContainer, {
+        scrollTrigger: {
+          trigger: heroSection,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+        y: 150,
+        opacity: 0,
+        ease: "power3.out"
+      });
+    }
   }
 </script>

@@ -3,10 +3,11 @@ import Layout from './Layout.astro';
 interface Props {
   title: string;
   hero_image?: string;
+  vibeClass?: string;
 }
-const { title, hero_image = '' } = Astro.props;
+const { title, hero_image = '', vibeClass = '' } = Astro.props;
 ---
-<Layout title={title}>
+<Layout title={title} vibeClass={vibeClass}>
   <div class="bg-[#f4f0ec] text-[#2c2b29] min-h-screen">
     <slot name="hero" />
 
