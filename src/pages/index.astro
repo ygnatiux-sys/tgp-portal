@@ -6,11 +6,13 @@ import { getCollection } from 'astro:content';
 import CinematographicHero from '../components/CinematographicHero.astro';
 import Stratigraphic from '../components/Stratigraphic.astro';
 import BentoTrilitico from '../components/BentoTrilitico.astro';
+import CardEnsayo from '../components/CardEnsayo.astro';
 
 // 1. DATA PHASE: Recuperación y Refino de Alta Fidelidad
 const essaysRaw = await getCollection('essays');
 const architecturesRaw = await getCollection('architectures');
 const visualSignalsRaw = await getCollection('visual_signals');
+const ensayosRaw = await getCollection('ensayos');
 
 // Sorting helper by ID as proxy for date (Desc)
 const sortByLatest = (a: any, b: any) => b.id.localeCompare(a.id);
@@ -18,9 +20,10 @@ const sortByLatest = (a: any, b: any) => b.id.localeCompare(a.id);
 const essays = [...essaysRaw].sort(sortByLatest).slice(0, 3);
 const architectures = [...architecturesRaw].sort(sortByLatest).slice(0, 3);
 const visualSignals = [...visualSignalsRaw].sort(sortByLatest).slice(0, 5);
+const ensayos = [...ensayosRaw].sort(sortByLatest).slice(0, 3);
 
 // Identificar el post global más reciente para el HERO (Protagonista)
-const allPosts = [...essaysRaw, ...architecturesRaw, ...visualSignalsRaw].sort(sortByLatest);
+const allPosts = [...essaysRaw, ...architecturesRaw, ...visualSignalsRaw, ...ensayosRaw].sort(sortByLatest);
 const featuredPost = allPosts[0];
 
 // Inyección de "Física Condicionada" para Landing
@@ -46,11 +49,11 @@ const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registr
     </section>
 
     {/* FASE 1: EL GRAN PROTAGONISTA (PREMIUM HERO) */}
-    <section id="phase-hero" class="relative z-50">
+    <section id="phase-hero" class="relative z-50 transition-colors duration-1000" style={featuredPost?.collection === 'ensayos' ? `background-color: ${featuredPost.data.accentColor}` : ''}>
       <CinematographicHero 
         title={featuredPost?.data.title || "TGP ARCHIVE"}
         subtitle={`Latest Archetype • ${featuredPost?.collection.replace('_', ' ')}`}
-        image={featuredPost?.data.hero_image || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670'}
+        image={featuredPost?.data.hero_image || featuredPost?.data.coverImage || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670'}
         link={`/${featuredPost?.collection.replace('_', '-')}/${featuredPost?.id}`}
         vibeClass={landingVibe}
       />
@@ -121,6 +124,29 @@ const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registr
         />
       </section>
 
+      {/* 2.4: SECCIÓN ENSAYOS (SUBSTACK FEED) */}
+      <section id="ensayos-feed-section" class="relative bg-black py-48 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto mb-24">
+          <h3 class="font-gloock text-8xl md:text-9xl text-white italic">Feed</h3>
+          <p class="text-[10px] tracking-[0.5em] text-copper-ember uppercase mt-6 font-bold">Inmersive Thoughts</p>
+        </div>
+
+        <div class="max-w-7xl mx-auto flex flex-col items-center gap-12">
+          {ensayos.map(ensayo => (
+            <CardEnsayo ensayo={ensayo} />
+          ))}
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-24 text-center">
+          <a 
+            href="/ensayos" 
+            class="inline-block px-12 py-4 border border-white/10 hover:border-copper-ember/50 transition-colors text-[10px] tracking-[0.4em] uppercase text-white hover:text-copper-ember"
+          >
+            Explorar todo el archivo
+          </a>
+        </div>
+      </section>
+
       {/* FASE 3: FOOTER INSTITUCIONAL */}
       <footer class="relative bg-black pt-64 pb-24 px-8 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-24 mb-48">
@@ -133,6 +159,7 @@ const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registr
           <div>
             <h6 class="text-[11px] tracking-[0.4em] uppercase text-copper-ember mb-8 font-bold">Exploración</h6>
             <ul class="space-y-4 text-xs tracking-widest text-gray-400 font-sans">
+              <li><a href="/ensayos" class="hover:text-white transition-colors">// Ensayos</a></li>
               <li><a href="/essays" class="hover:text-white transition-colors">// Essays</a></li>
               <li><a href="/architectures" class="hover:text-white transition-colors">// Architectures</a></li>
               <li><a href="/visual-signals" class="hover:text-white transition-colors">// Signals</a></li>

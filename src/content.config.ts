@@ -21,6 +21,15 @@ const commonSchema = z.object({
   })).optional(),
 });
 
+const ensayosFeedSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  coverImage: z.string(),
+  author: z.string().default('Xavier Benítez'),
+  accentColor: z.string().default('#1a1a1a'),
+  date: z.coerce.string(),
+});
+
 const capsulaSchema = z.object({
   title: z.string(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
@@ -53,5 +62,9 @@ export const collections = {
   'capsulas': defineCollection({
     loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/capsulas" }),
     schema: capsulaSchema
+  }),
+  'ensayos': defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/ensayos" }),
+    schema: ensayosFeedSchema
   }),
 };

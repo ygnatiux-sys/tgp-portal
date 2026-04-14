@@ -62,9 +62,9 @@ const vogueEngine = {
           { label: 'Kinfolk High Design', value: 'kinfolk-high-design' },
           { label: 'Victorian Archeo', value: 'victorian-archeo' },
           { label: 'Travel & Senses', value: 'travel-senses' },
-          { label: '80\'s Italian Interiors', value: '80s-italian' },
+          { label: "80's Italian Interiors", value: "80s-italian" },
           { label: 'Ethnics & Arts', value: 'ethnics-arts' },
-          { label: 'Mid-90\'s Artsy', value: 'mid-90s-artsy' },
+          { label: "Mid-90's Artsy", value: "mid-90s-artsy" },
         ],
         defaultValue: 'museum-luxury',
       }),
@@ -168,6 +168,31 @@ export default config({
       path: 'src/content/capsulas/*',
       format: { contentField: 'content' },
       schema: capsulaSchema,
+    }),
+    ensayos: collection({
+      label: 'Ensayos (Substack Feed)',
+      slugField: 'title',
+      path: 'src/content/ensayos/*/',
+      format: { contentField: 'content' },
+      schema: {
+        title: fields.slug({ 
+          name: { 
+            label: 'Título',
+            validation: { isRequired: true }
+          }
+        }),
+        subtitle: fields.text({ label: 'Subtítulo' }),
+        coverImage: fields.image({
+          label: 'Imagen de Portada',
+          directory: 'public/images/ensayos',
+          publicPath: '/images/ensayos',
+          validation: { isRequired: true }
+        }),
+        author: fields.text({ label: 'Autor', defaultValue: 'Xavier Benítez' }),
+        accentColor: fields.text({ label: 'Color de Acento', defaultValue: '#1a1a1a' }),
+        date: fields.date({ label: 'Fecha' }),
+        content: fields.document({ label: 'Contenido principal', formatting: true, dividers: true, links: true }),
+      },
     }),
   },
 });
