@@ -1,5 +1,6 @@
 ---
 import LayoutSubstack from '../../layouts/LayoutSubstack.astro';
+import FloatingBackButton from '../../components/FloatingBackButton.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -30,6 +31,8 @@ const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
 
 <LayoutSubstack title={`${title} | The Great Puzzle`}>
   
+  <FloatingBackButton />
+
   <article class="w-full max-w-2xl mx-auto pt-16 md:pt-32 pb-32 px-4 md:px-0">
     
     {/* Post Header */}

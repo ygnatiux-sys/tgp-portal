@@ -12,7 +12,6 @@ import CardEnsayo from '../components/CardEnsayo.astro';
 const essaysRaw = await getCollection('essays');
 const architecturesRaw = await getCollection('architectures');
 const visualSignalsRaw = await getCollection('visual_signals');
-const ensayosRaw = await getCollection('ensayos');
 
 // Sorting helper by ID as proxy for date (Desc)
 const sortByLatest = (a: any, b: any) => b.id.localeCompare(a.id);
@@ -20,7 +19,17 @@ const sortByLatest = (a: any, b: any) => b.id.localeCompare(a.id);
 const essays = [...essaysRaw].sort(sortByLatest).slice(0, 3);
 const architectures = [...architecturesRaw].sort(sortByLatest).slice(0, 3);
 const visualSignals = [...visualSignalsRaw].sort(sortByLatest).slice(0, 5);
+
+let ensayosRaw: any[] = [];
+try { ensayosRaw = await getCollection('ensayos'); } catch (e) {}
 const ensayos = [...ensayosRaw].sort(sortByLatest).slice(0, 3);
+const latestEnsayo = ensayosRaw.length > 0
+  ? [...ensayosRaw].sort((a: any, b: any) => {
+      const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+      const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+      return dateB - dateA || b.id.localeCompare(a.id);
+    })[0]
+  : null;
 
 // Identificar el post global más reciente para el HERO (Protagonista)
 const allPosts = [...essaysRaw, ...architecturesRaw, ...visualSignalsRaw, ...ensayosRaw].sort(sortByLatest);
@@ -125,24 +134,72 @@ const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registr
       </section>
 
       {/* 2.4: SECCIÓN ENSAYOS (SUBSTACK FEED) */}
-      <section id="ensayos-feed-section" class="relative bg-black py-48 px-6 border-t border-white/5">
-        <div class="max-w-7xl mx-auto mb-24">
+      <section id="ensayos-feed-section" class="relative bg-black py-48 overflow-hidden pointer-events-none border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 mb-16 pointer-events-auto">
           <h3 class="font-gloock text-8xl md:text-9xl text-white italic">Feed</h3>
-          <p class="text-[10px] tracking-[0.5em] text-copper-ember uppercase mt-6 font-bold">Inmersive Thoughts</p>
+          <p class="text-[10px] tracking-[0.5em] text-[#FF6719] uppercase mt-6 font-bold">Inmersive Thoughts</p>
         </div>
 
-        <div class="max-w-7xl mx-auto flex flex-col items-center gap-12">
-          {ensayos.map(ensayo => (
-            <CardEnsayo ensayo={ensayo} />
-          ))}
-        </div>
+        {ensayos.length > 0 ? (
+          <div class="ensayos-marquee-container flex gap-8 select-none pointer-events-auto">
+            <div class="ensayos-marquee-track flex gap-8 py-6">
+              {[1, 2].map(() =>
+                ensayos.map((ensayo: any) => (
+                  <a
+                    href={`/ensayos/${ensayo.id}`}
+                    class="ensayo-card group relative shrink-0 w-[340px] h-[440px] bg-[#0a0a0a] overflow-hidden rounded-sm border border-white/5 transition-all duration-700 hover:border-[#FF6719]/40 card-lut-fade block"
+                  >
+                    {ensayo.data.coverImage ? (
+                      <img
+                        src={ensayo.data.coverImage}
+                        alt={ensayo.data.title}
+                        class="w-full h-full object-cover grayscale brightness-40 group-hover:grayscale-0 group-hover:brightness-90 group-hover:scale-105 transition-all duration-1000"
+                      />
+                    ) : (
+                      <div class="w-full h-full" style={`background: linear-gradient(135deg, ${ensayo.data.accentColor || '#1a1a1a'}, #050505)`} />
+                    )}
+                    <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/30 to-transparent p-8 flex flex-col justify-end">
+                      {ensayo.id === latestEnsayo?.id && (
+                        <span class="mb-3 inline-flex items-center gap-1.5 text-[9px] tracking-[0.35em] uppercase text-[#FF6719] font-bold">
+                          <span class="w-1.5 h-1.5 rounded-full bg-[#FF6719] animate-pulse"></span>
+                          Último
+                        </span>
+                      )}
+                      <h4 class="font-gloock text-3xl text-white group-hover:text-[#FF6719] transition-colors duration-500 leading-tight mb-3">
+                        {ensayo.data.title || 'Sin título'}
+                      </h4>
+                      {ensayo.data.subtitle && (
+                        <p class="text-gray-500 text-xs leading-relaxed line-clamp-2 group-hover:text-gray-300 transition-colors duration-500">
+                          {ensayo.data.subtitle}
+                        </p>
+                      )}
+                      <div class="mt-4 flex items-center justify-between">
+                        <span class="text-[8px] tracking-[0.4em] uppercase text-gray-600">
+                          {ensayo.data.author || 'Xavier Benítez'}
+                        </span>
+                        <svg class="w-4 h-4 text-white/20 group-hover:text-[#FF6719] group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </a>
+                ))
+              )}
+            </div>
+          </div>
+        ) : (
+          <p class="text-center text-gray-700 text-sm pointer-events-auto px-6">Próximamente en el Feed.</p>
+        )}
 
-        <div class="max-w-7xl mx-auto mt-24 text-center">
-          <a 
-            href="/ensayos" 
-            class="inline-block px-12 py-4 border border-white/10 hover:border-copper-ember/50 transition-colors text-[10px] tracking-[0.4em] uppercase text-white hover:text-copper-ember"
+        <div class="max-w-7xl mx-auto px-6 mt-16 pointer-events-auto">
+          <a
+            href="/ensayos"
+            class="inline-flex items-center gap-3 text-[10px] tracking-[0.4em] uppercase text-white/30 hover:text-[#FF6719] transition-colors group"
           >
-            Explorar todo el archivo
+            Ver todos los ensayos
+            <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </a>
         </div>
       </section>
@@ -232,6 +289,29 @@ const landingVibe = "vibe-victorian-archeo"; // Default premium vibe for registr
           toggleActions: "play pause resume pause"
         }
       });
+
+      // 5. ENSAYOS FEED MARQUEE — slow, Substack-style
+      const ensayosTrack = document.querySelector('.ensayos-marquee-track');
+      if (ensayosTrack) {
+        const ensayosTween = gsap.to('.ensayos-marquee-track', {
+          x: "-50%",
+          ease: "none",
+          repeat: -1,
+          duration: 60,
+          scrollTrigger: {
+            trigger: '#ensayos-feed-section',
+            start: "top bottom",
+            end: "bottom top",
+            toggleActions: "play pause resume pause"
+          }
+        });
+
+        // Pause on individual card hover
+        document.querySelectorAll('.ensayo-card').forEach(card => {
+          card.addEventListener('mouseenter', () => ensayosTween.pause());
+          card.addEventListener('mouseleave', () => ensayosTween.resume());
+        });
+      }
     });
   </script>
 

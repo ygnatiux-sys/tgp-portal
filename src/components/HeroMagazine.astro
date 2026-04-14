@@ -12,8 +12,8 @@ const { title, subtitle = 'Editorial Magazine', imageUrl = '', vibeClass = '' } 
   <div class="absolute inset-0 z-0 magazine-bg-pin overflow-hidden">
     <div class="absolute inset-0 opacity-70 flex">
       <div class="magazine-marquee-container flex h-full w-[200vw] will-change-transform">
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110 magazine-img-target" />
-        <img src={imageUrl} alt="" class="w-1/2 h-full object-cover grayscale-20 contrast-110 magazine-img-target" />
+        <div class="cine-wrapper"><img src={imageUrl} alt="" class="w-full h-full object-cover grayscale-20 contrast-110 magazine-img-target" style="transform-origin: center center;" /></div>
+        <div class="cine-wrapper"><img src={imageUrl} alt="" class="w-full h-full object-cover grayscale-20 contrast-110 magazine-img-target" style="transform-origin: center center;" /></div>
       </div>
     </div>
     
@@ -56,6 +56,40 @@ const { title, subtitle = 'Editorial Magazine', imageUrl = '', vibeClass = '' } 
   /* Ensuring Outfit thin weight is applied if available as fallback */
   .font-thin {
     font-weight: 100;
+  }
+
+  /* Cinemagraph drift en wrapper — sobre el marquee y el zoom GSAP */
+  @keyframes cine-drift {
+    0%   { transform: scale(1.06) translate(0%, 0%); }
+    25%  { transform: scale(1.09) translate(-0.4%, 0.3%); }
+    50%  { transform: scale(1.07) translate(-0.8%, -0.2%); }
+    75%  { transform: scale(1.09) translate(-0.35%, 0.35%); }
+    100% { transform: scale(1.06) translate(0%, 0%); }
+  }
+
+  .cine-wrapper {
+    width: 100vw;
+    height: 110%;
+    flex-shrink: 0;
+    position: relative;
+    top: -5%;
+    animation: cine-drift 34s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .cine-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .magazine-hero:hover .cine-wrapper {
+    animation-duration: 17s;
+  }
+
+  .magazine-hero:hover .magazine-img-target {
+    filter: brightness(0.8) contrast(1.08);
+    transition: filter 1.8s ease;
   }
 </style>
 

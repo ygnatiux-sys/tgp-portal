@@ -30,11 +30,14 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
     >
       {/* Background with cinematic textures */}
       <div class="absolute inset-0 z-0 overflow-hidden stratum-bg">
-        <img 
-          src={item.image} 
-          alt={item.title} 
-          class="w-full h-full object-cover grayscale brightness-[0.4] transition-all duration-1000"
-        />
+        <div class="cinemagraph-wrapper w-full h-full">
+          <img 
+            src={item.image} 
+            alt={item.title} 
+            class="stratum-img w-full h-[130%] object-cover grayscale brightness-[0.4] transition-all duration-1000"
+            style="transform-origin: center center;"
+          />
+        </div>
         <div class="texture-grain opacity-30"></div>
         <div class="atmospheric-dust opacity-20"></div>
         <div class="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/80"></div>
@@ -82,6 +85,27 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   .stratigraphic-container {
     padding-bottom: 25vh;
   }
+
+  /* Cinemagraph drift — seamless slow breathing loop */
+  @keyframes cine-drift {
+    0%   { transform: scale(1.08) translate(0%, 0%); }
+    25%  { transform: scale(1.12) translate(-0.6%, 0.4%); }
+    50%  { transform: scale(1.10) translate(-1%, -0.3%); }
+    75%  { transform: scale(1.12) translate(-0.4%, 0.5%); }
+    100% { transform: scale(1.08) translate(0%, 0%); }
+  }
+
+  .stratum-img {
+    animation: cine-drift 28s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Hover — acelera suavemente el drift como foco de lente */
+  .stratum:hover .stratum-img {
+    animation-duration: 14s;
+    filter: grayscale(0.2) brightness(0.55) !important;
+    transition: filter 1.5s ease;
+  }
 </style>
 
 <script>
@@ -95,7 +119,7 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
     
     strata.forEach((stratum, i) => {
       const content = stratum.querySelector('.stratum-content');
-      const bg = stratum.querySelector('.stratum-bg img');
+      const bg = stratum.querySelector('.cinemagraph-wrapper');
 
       // Parallax for the background image within the layer
       if (bg) {
@@ -106,7 +130,7 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
             end: "bottom top",
             scrub: true
           },
-          yPercent: 15,
+          yPercent: 10, // reduced from 15 to give cinemagraph more room
           ease: "none"
         });
       }
