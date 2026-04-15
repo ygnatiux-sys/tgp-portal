@@ -3,10 +3,12 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
+import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  // CAMBIO CLAVE: Modo estático para desarrollo local sin errores de Cloudflare
-  output: 'static', 
+  // MODO SERVIDOR: Necesario para Cloudflare SSR
+  output: 'server', 
+  adapter: cloudflare(),
   
   integrations: [react(), markdoc(), keystatic()],
   
