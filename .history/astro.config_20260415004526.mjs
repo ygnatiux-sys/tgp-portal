@@ -27,7 +27,7 @@ export default defineConfig({
   // 4. TU CONFIGURACIÓN DE VITE COMPLETA (GSAP, Módulos y Warnings)
   vite: {
     optimizeDeps: {
-      exclude: ['@keystatic/astro', 'virtual:keystatic-config'],
+      exclude: ['@keystatic/astro', 'virtual:keystatic-config']
     },
     plugins: [
       tailwindcss(),
@@ -39,16 +39,16 @@ export default defineConfig({
             if (msg.includes('points to missing source files')) return;
             originalLogger(msg, options);
           };
-        },
-      },
+        }
+      }
     ],
     ssr: {
-      noExternal: ['gsap', 'markdoc'],
+      noExternal: ['gsap', 'markdoc']
     },
     build: {
       commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-    },
-  },
+        transformMixedEsModules: true
+      }
+    }
+  }
 });

@@ -17,9 +17,9 @@ const {
   class={`apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}
 >
   <div class="apple-bg-pin absolute inset-0 z-0">
-    <div class="absolute inset-0 opacity-90 apple-bg-layer z-0">
+    <div class="absolute inset-0 opacity-90 apple-bg-layer">
       <div class="apple-marquee-container flex h-full w-[200vw]">
-        <div class="cine-wrapper z-10">
+        <div class="cine-wrapper">
           <img
             src={imageUrl}
             alt="Panoramic 1"
@@ -27,7 +27,7 @@ const {
             style="transform-origin: center center;"
           />
         </div>
-        <div class="cine-wrapper z-10">
+        <div class="cine-wrapper">
           <img
             src={imageUrl}
             alt="Panoramic 2"
@@ -38,9 +38,9 @@ const {
       </div>
     </div>
 
-    <div class="texture-grain z-10"></div>
-    <div class="texture-scratches z-10"></div>
-    <div class="atmospheric-dust z-10"></div>
+    <div class="texture-grain"></div>
+    <div class="texture-scratches"></div>
+    <div class="atmospheric-dust"></div>
 
     <div
       class="absolute inset-0 z-10 bg-gradient-to-t from-racing-green via-racing-green/40 to-transparent"
@@ -75,11 +75,21 @@ const {
 
 <style>
   @keyframes cine-drift {
-    0% { transform: scale(1.06) translate(0%, 0%); }
-    25% { transform: scale(1.09) translate(-0.4%, 0.25%); }
-    50% { transform: scale(1.07) translate(-0.7%, -0.15%); }
-    75% { transform: scale(1.09) translate(-0.3%, 0.3%); }
-    100% { transform: scale(1.06) translate(0%, 0%); }
+    0% {
+      transform: scale(1.06) translate(0%, 0%);
+    }
+    25% {
+      transform: scale(1.09) translate(-0.4%, 0.25%);
+    }
+    50% {
+      transform: scale(1.07) translate(-0.7%, -0.15%);
+    }
+    75% {
+      transform: scale(1.09) translate(-0.3%, 0.3%);
+    }
+    100% {
+      transform: scale(1.06) translate(0%, 0%);
+    }
   }
 
   .cine-wrapper {
@@ -103,6 +113,7 @@ const {
   }
 
   .apple-hero:hover .apple-img-target {
+    /* Mantenemos más brillo en el hover */
     filter: brightness(0.85) contrast(1.05);
     transition: filter 1.8s ease;
   }
@@ -116,8 +127,11 @@ const {
 
   const initAppleHero = () => {
     const appleHero = document.querySelector(".apple-hero");
-    const appleMarquee = document.querySelector(".apple-hero .apple-marquee-container");
+    const appleMarquee = document.querySelector(
+      ".apple-hero .apple-marquee-container",
+    );
     const appleBgPin = document.querySelector(".apple-hero .apple-bg-pin");
+    const appleBgLayer = document.querySelector(".apple-hero .apple-bg-layer");
     const titleBox = document.querySelector(".apple-hero .apple-title-box");
     const images = document.querySelectorAll(".apple-hero .apple-img-target");
 
@@ -131,17 +145,13 @@ const {
     }
 
     if (appleHero && appleBgPin && titleBox) {
-      // FIX: Eliminamos el 'pin' que colapsaba la imagen. 
-      // Ahora usamos el parallax limpio que tienen los demás.
-      gsap.to(appleBgPin, {
-        scrollTrigger: {
-          trigger: appleHero,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-        y: 120,
-        ease: "none",
+      // 1. PIN BACKGROUND
+      ScrollTrigger.create({
+        trigger: appleHero,
+        start: "top top",
+        end: "bottom top",
+        pin: appleBgPin,
+        pinSpacing: false,
       });
 
       // 2. ZOOM-OUT & FADE PHYSICS
@@ -153,7 +163,7 @@ const {
           scrub: true,
         },
         scale: 0.85,
-        opacity: 0.6,
+        opacity: 0.6, // Subido de 0.3 a 0.6 para que no se apague tanto al scrollear
         rotation: 0.01,
         ease: "power2.inOut",
       });
