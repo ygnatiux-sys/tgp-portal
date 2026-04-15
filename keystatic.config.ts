@@ -3,7 +3,12 @@ import { config, fields, collection } from '@keystatic/core';
 // --- MODULOS DE CONFIGURACIÓN (Arquitectura Refactorizada) ---
 
 const baseSchema = {
-  title: fields.text({ label: 'Título' }),
+  title: fields.slug({ 
+    name: { 
+      label: 'Título',
+      validation: { isRequired: true }
+    }
+  }),
   hero_image: fields.image({
     label: 'Imagen Principal (Hero)',
     directory: 'public/images/posts',
@@ -172,7 +177,7 @@ export default config({
     ensayos: collection({
       label: 'Ensayos (Substack Feed)',
       slugField: 'title',
-      path: 'src/content/ensayos/*/',
+      path: 'src/content/ensayos/*',
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ 

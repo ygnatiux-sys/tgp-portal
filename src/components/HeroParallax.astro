@@ -14,7 +14,8 @@ const {
 ---
 
 <section
-  class={`apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-racing-green ${vibeClass}`}
+  class={`apple-hero relative w-full h-[90vh] min-h-[700px] flex items-center justify-center overflow-hidden ${vibeClass}`}
+  style="background-color: #0A1C15;"
 >
   <div class="apple-bg-pin absolute inset-0 z-0">
     <div class="absolute inset-0 opacity-90 apple-bg-layer z-0">
@@ -43,7 +44,8 @@ const {
     <div class="atmospheric-dust z-10"></div>
 
     <div
-      class="absolute inset-0 z-10 bg-gradient-to-t from-racing-green via-racing-green/40 to-transparent"
+      class="absolute inset-0 z-10 bg-gradient-to-t"
+      style="background-image: linear-gradient(to top, var(--bg-current), transparent);"
     >
     </div>
     <div class="absolute inset-0 z-10 bg-black/20"></div>

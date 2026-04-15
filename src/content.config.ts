@@ -1,3 +1,4 @@
+// Content Layer Configuration - Forced Refresh
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
@@ -23,18 +24,18 @@ const commonSchema = z.object({
 });
 
 const ensayosFeedSchema = z.object({
-  title: z.string(),
-  subtitle: z.string(),
-  coverImage: z.string(),
+  title: z.string().optional().default('Sin título'),
+  subtitle: z.string().optional().default('Continuará...'),
+  coverImage: z.string().optional().default('/images/default-hero.jpg'),
   author: z.string().default('Xavier Benítez'),
   accentColor: z.string().default('#1a1a1a'),
-  date: z.coerce.string(),
+  date: z.coerce.string().optional().default(new Date().toISOString()),
 });
 
 const capsulaSchema = z.object({
   title: z.string().optional().default(''),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
-  master_archetype: z.enum(['tactile-archive', 'expansive-gallery', 'kinetic-manifesto', 'field-notebook']),
+  master_archetype: z.enum(['tactile-archive', 'expansive-gallery', 'kinetic-manifesto', 'field-notebook']).default('tactile-archive'),
   editorial_spreads: z.array(z.object({
     discriminant: z.string(),
     value: z.object({

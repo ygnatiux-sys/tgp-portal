@@ -1,5 +1,5 @@
 /* @tailwind base; */
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100;300;700&family=Prata&family=GFS+Didot&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Gloock&family=Fraunces:opsz,wght@9..144,100..900&family=DM+Serif+Display&family=Syne:wght@400..800&family=Raleway:wght@100..900&family=IBM+Plex+Mono:wght@100..700&family=Space+Mono:wght@400;700&family=Montserrat:wght@100..900&family=Jost:wght@100..900&family=Epilogue:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100;300;700&family=Prata&family=GFS+Didot&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Gloock&family=Fraunces:opsz,wght@9..144,100..900&family=DM+Serif+Display:ital,wght@0,400;1,400&family=Syne:wght@400..800&family=Raleway:wght@100..900&family=IBM+Plex+Mono:wght@100..700&family=Space+Mono:wght@400;700&family=Montserrat:wght@100..900&family=Jost:wght@100..900&family=Epilogue:wght@100..900&family=Space+Grotesk:wght@300..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Libre+Franklin:wght@700&family=Inter:wght@100;300;500&family=DM+Sans:ital,wght@0,400..700;1,400..700&family=Manrope:wght@800&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -34,276 +34,215 @@ body {
     --tw-prose-quotes: var(--color-copper-ember);
     --tw-prose-quote-borders: var(--color-copper-ember);
     --tw-prose-bullets: var(--color-copper-ember);
+    color: var(--text-current);
+    border-color: color-mix(in srgb, var(--text-current) 15%, transparent);
   }
 
   .prose-tgp h1 {
-    @apply font-serif text-5xl md:text-7xl leading-none tracking-tighter text-white/90 mb-8;
+    @apply text-5xl md:text-7xl leading-none mb-8;
+    color: var(--text-current);
   }
 
   .prose-tgp h2 {
-    @apply font-serif text-3xl md:text-4xl leading-tight text-white/80 mt-12 mb-6 border-b border-white/10 pb-4;
+    @apply text-3xl md:text-4xl leading-tight mt-12 mb-6 border-b pb-4;
+    color: var(--text-current);
+    border-color: inherit;
   }
 
   .prose-tgp h3, .prose-tgp h4 {
-    @apply font-sans text-xs md:text-sm uppercase tracking-[0.2em] text-copper-ember mt-10 mb-4 font-bold;
+    @apply text-xs md:text-sm mt-10 mb-4;
+    color: var(--text-current);
   }
 
   .prose-tgp p {
-    @apply font-sans text-lg md:text-xl leading-relaxed text-slate-300 mb-6;
+    @apply text-lg md:text-xl leading-relaxed mb-6;
+    color: var(--text-current);
+    max-width: 65ch;
   }
 
   .prose-tgp a {
     @apply underline-offset-4 decoration-copper-ember/50 transition-all duration-300;
   }
+
   .prose-tgp a:hover {
     @apply text-copper-ember drop-shadow-[0_0_8px_rgba(184,115,51,0.6)];
   }
+
+  .prose-tgp blockquote {
+    @apply border-l-4 pl-6 italic my-12;
+    border-color: var(--color-copper-ember);
+  }
+
   .prose-tgp blockquote p {
-    @apply text-white font-serif text-2xl italic tracking-wide;
+    @apply text-2xl;
+    color: var(--text-current);
+    max-width: 100%;
   }
 
   /* =========================================
      VOGUE LUXURY ENGINE - HIGH FIDELITY
      ========================================= */
 
-  /* 01. MUSEUM LUXURY */
-  .vibe-museum-luxury {
-    --bg-current: #f4f0ec;
-    --text-current: #2c2b29;
-    --vibe-h1-font: 'Prata', serif;
-
-    --vibe-h1-weight: 400; /* Prata is single weight but heavy */
-    --vibe-h1-tracking: -0.1em;
-    --vibe-h1-leading: 0.8;
-    --vibe-h1-transform: uppercase;
-
-    --vibe-h2-font: 'Plus Jakarta Sans', sans-serif;
-    --vibe-h2-weight: 100;
-    --vibe-h2-tracking: 0.3em;
-    --vibe-h2-transform: uppercase;
-
-    --vibe-h3-font: 'Plus Jakarta Sans', sans-serif;
-    --vibe-h3-weight: 200;
-    --vibe-h3-size: 0.7rem;
-    --vibe-h3-tracking: 0.1em;
-
-    --vibe-h5-font: 'Prata', serif;
-    --vibe-h5-style: italic;
-
-    --vibe-body-font: 'Plus Jakarta Sans', sans-serif;
-    --vibe-body-weight: 300;
-
-    --vibe-quote-font: 'Prata', serif;
-    --vibe-quote-style: italic;
-    --vibe-quote-size: 3rem;
-    --vibe-quote-leading: 1.6;
-    --vibe-quote-margin: 4rem;
-
-    --vibe-folio-font: 'Plus Jakarta Sans', sans-serif;
-    --vibe-folio-weight: 100;
-    --vibe-folio-tracking: 0.4em;
-  }
-
-  /* 02. KINFOLK HIGH DESIGN */
-  .vibe-kinfolk-high-design {
-    --bg-current: #ffffff;
-    --text-current: #000000;
-    --vibe-h1-font: 'Cormorant Garamond', serif;
-
-    --vibe-h1-weight: 400;
-    --vibe-h1-tracking: 0.05em;
-    --vibe-h1-leading: 1.1;
-
-    --vibe-h2-font: 'Raleway', sans-serif;
-    --vibe-h2-weight: 100;
-    --vibe-h2-tracking: 0.25em;
-    --vibe-h2-transform: uppercase;
-    --vibe-h2-size: 0.8em;
-
-    --vibe-h3-font: 'Cormorant Garamond', serif;
-    --vibe-h3-weight: 500;
-    --vibe-h3-style: italic;
-
-    --vibe-h5-font: 'Raleway', sans-serif;
-    --vibe-h5-weight: 300;
-    --vibe-h5-transform: lowercase;
-
-    --vibe-body-font: 'Raleway', sans-serif;
-    --vibe-body-weight: 200;
-
-    --vibe-quote-font: 'Cormorant Garamond', serif;
-    --vibe-quote-style: italic;
-    --vibe-quote-align: center;
-    --vibe-quote-size: 2.2rem;
-
-    --vibe-folio-font: 'Raleway', sans-serif;
-    --vibe-folio-align: center;
-  }
-
-  /* 03. VICTORIAN ARCHEO */
+  /* 01. VICTORIAN ARCHEO */
   .vibe-victorian-archeo {
-    --bg-current: #0A1C15;
-    --text-current: #ffffff;
+    --bg-current: #F4EFE6;
+    --text-current: #2B2624;
     --vibe-h1-font: 'Gloock', serif;
-
+    --vibe-h1-weight: 400;
     --vibe-h1-tracking: -0.02em;
     --vibe-h1-leading: 1.0;
 
-    --vibe-h2-font: 'IBM Plex Mono', monospace;
+    --vibe-h2-font: 'Cormorant Garamond', serif;
     --vibe-h2-weight: 300;
+    --vibe-h2-tracking: 0.05em;
+    --vibe-h2-style: italic;
+
+    --vibe-h3-font: 'Gloock', serif;
+    --vibe-h3-weight: 400;
+    --vibe-h3-tracking: 0.08em;
+    --vibe-h3-variant: small-caps;
+
+    --vibe-h5-font: 'Lora', serif;
+    --vibe-h5-weight: 400;
+    --vibe-h5-style: italic;
+
+    --vibe-h6-font: 'Lora', serif;
+    --vibe-h6-weight: 600;
+    --vibe-h6-tracking: 0.15em;
+    --vibe-h6-transform: uppercase;
+
+    --vibe-body-font: 'Cormorant Garamond', serif;
+    --vibe-body-weight: 400;
+    --vibe-body-tracking: 0.01em;
+  }
+
+  /* 02. TRAVEL & SENSES */
+  .vibe-travel-senses {
+    --bg-current: #FFFCF5;
+    --text-current: #1A1A1A;
+    --vibe-h1-font: 'Bodoni Moda', serif;
+    --vibe-h1-weight: 600;
+    --vibe-h1-style: italic;
+    --vibe-h1-tracking: -0.03em;
+    --vibe-h1-leading: 1.1;
+
+    --vibe-h2-font: 'Plus Jakarta Sans', sans-serif;
+    --vibe-h2-weight: 200;
     --vibe-h2-tracking: 0.2em;
     --vibe-h2-transform: uppercase;
 
-    --vibe-h3-font: 'Gloock', serif;
-    --vibe-h3-style: italic;
+    --vibe-h3-font: 'Plus Jakarta Sans', sans-serif;
+    --vibe-h3-weight: 800;
+    --vibe-h3-tracking: 0.05em;
 
-    --vibe-h5-font: 'IBM Plex Mono', monospace;
-    --vibe-h5-weight: 100;
-
-    --vibe-body-font: 'IBM Plex Mono', monospace;
-    --vibe-body-weight: 300;
-
-    --vibe-quote-font: 'Gloock', serif;
-    --vibe-quote-style: italic;
-    --vibe-dropcap: true;
-
-    --vibe-folio-font: 'IBM Plex Mono', monospace;
-    --vibe-folio-tracking: 0.5em;
-    --vibe-folio-format: 'index';
-  }
-
-  /* 04. TRAVEL & SENSES */
-  .vibe-travel-senses {
-    --bg-current: #fdfcf2;
-    --text-current: #333333;
-    --vibe-h1-font: 'Bodoni Moda', serif;
-
-    --vibe-h1-weight: 500;
-    --vibe-h1-style: italic;
-
-    --vibe-h2-font: 'Montserrat', sans-serif;
-    --vibe-h2-weight: 100;
-    --vibe-h2-tracking: 0.4em;
-    --vibe-h2-transform: uppercase;
-
-    --vibe-h3-font: 'Bodoni Moda', serif;
-    --vibe-h3-size: 0.9rem;
-    --vibe-h3-weight: 400;
-
-    --vibe-h5-font: 'Montserrat', sans-serif;
-    --vibe-h5-weight: 200;
+    --vibe-h5-font: 'Bodoni Moda', serif;
+    --vibe-h5-weight: 500;
     --vibe-h5-style: italic;
 
-    --vibe-body-font: 'Raleway', sans-serif;
+    --vibe-h6-font: 'Libre Franklin', sans-serif;
+    --vibe-h6-weight: 700;
+    --vibe-h6-tracking: 0.1em;
+    --vibe-h6-transform: uppercase;
 
-    --vibe-quote-font: 'Bodoni Moda', serif;
-    --vibe-quote-style: italic;
-    --vibe-quote-float: true;
-
-    --vibe-folio-font: 'Montserrat', sans-serif;
-    --vibe-folio-vertical: true;
+    --vibe-body-font: 'Plus Jakarta Sans', sans-serif;
+    --vibe-body-weight: 300;
   }
 
-  /* 05. 80's ITALIAN INTERIORS */
+  /* 03. 80's ITALIAN INTERIORS */
   .vibe-80s-italian {
-    --bg-current: #050505;
-    --text-current: #ffffff;
+    --bg-current: #F9F8F6;
+    --text-current: #2A2522;
     --vibe-h1-font: 'Fraunces', serif;
-
     --vibe-h1-weight: 900;
-    --vibe-h1-tracking: -0.08em;
-    --vibe-h1-leading: 0.85;
+    --vibe-h1-tracking: -0.06em;
+    --vibe-h1-leading: 0.9;
 
-    --vibe-h2-font: 'Jost', sans-serif;
-    --vibe-h2-weight: 500;
-    --vibe-h2-tracking: -0.02em;
+    --vibe-h2-font: 'Inter', sans-serif;
+    --vibe-h2-weight: 100;
+    --vibe-h2-tracking: 0.25em;
     --vibe-h2-transform: uppercase;
 
-    --vibe-h3-font: 'Fraunces', serif;
+    --vibe-h3-font: 'Epilogue', sans-serif;
     --vibe-h3-weight: 600;
-    --vibe-h3-style: italic;
+    --vibe-h3-tracking: -0.02em;
 
-    --vibe-h5-font: 'Jost', sans-serif;
-    --vibe-h5-weight: 300;
+    --vibe-h5-font: 'Fraunces', serif;
+    --vibe-h5-weight: 700;
+    --vibe-h5-style: italic;
+    --vibe-h5-tracking: -0.02em;
 
-    --vibe-body-font: 'Jost', sans-serif;
-    --vibe-body-weight: 400;
+    --vibe-h6-font: 'Inter', sans-serif;
+    --vibe-h6-weight: 500;
+    --vibe-h6-tracking: 0.1em;
+    --vibe-h6-transform: uppercase;
 
-    --vibe-quote-font: 'Fraunces', serif;
-    --vibe-quote-weight: 700;
-    --vibe-quote-style: italic;
-    --vibe-quote-leading: 1.0;
-
-    --vibe-folio-font: 'Jost', sans-serif;
-    --vibe-folio-weight: 500;
-    --vibe-folio-bordered: true;
+    --vibe-body-font: 'Inter', sans-serif;
+    --vibe-body-weight: 300;
   }
 
-  /* 06. ETHNICS & ARTS */
-  .vibe-ethnics-arts {
-    --bg-current: #2d241e;
-    --text-current: #f4f0ec;
-    --vibe-h1-font: 'DM Serif Display', serif;
+  /* 04. MID-90's ARTSY */
+  .vibe-mid-90s-artsy {
+    --bg-current: #FFFFFF;
+    --text-current: #000000;
+    --vibe-h1-font: 'Syne', sans-serif;
+    --vibe-h1-weight: 800;
+    --vibe-h1-tracking: -0.05em;
+    --vibe-h1-leading: 0.85;
 
+    --vibe-h2-font: 'Space Grotesk', sans-serif;
+    --vibe-h2-weight: 300;
+    --vibe-h2-tracking: 0.05em;
+    --vibe-h2-transform: lowercase;
+
+    --vibe-h3-font: 'Space Grotesk', sans-serif;
+    --vibe-h3-weight: 700;
+    --vibe-h3-tracking: 0.15em;
+    --vibe-h3-transform: uppercase;
+
+    --vibe-h5-font: 'Space Grotesk', sans-serif;
+    --vibe-h5-weight: 300;
+    --vibe-h5-align: right;
+
+    --vibe-h6-font: 'Space Grotesk', sans-serif;
+    --vibe-h6-weight: 700;
+    --vibe-h6-tracking: 0;
+    --vibe-h6-transform: uppercase;
+
+    --vibe-body-font: 'DM Sans', sans-serif;
+    --vibe-body-weight: 400;
+    --vibe-body-tracking: -0.01em;
+  }
+
+  /* 05. ETHNICS & ARTS (Cinematic) */
+  .vibe-ethnics-arts {
+    --bg-current: #0A0A0A;
+    --text-current: #EBEBEB;
+    --vibe-h1-font: 'DM Serif Display', serif;
     --vibe-h1-weight: 400;
     --vibe-h1-tracking: 0;
     --vibe-h1-leading: 1.0;
 
-    --vibe-h2-font: 'Epilogue', sans-serif;
+    --vibe-h2-font: 'Outfit', sans-serif;
     --vibe-h2-weight: 100;
-    --vibe-h2-tracking: 0.35em;
+    --vibe-h2-tracking: 0.3em;
     --vibe-h2-transform: uppercase;
 
-    --vibe-h3-font: 'DM Serif Display', serif;
-    --vibe-h3-style: italic;
+    --vibe-h3-font: 'Outfit', sans-serif;
+    --vibe-h3-weight: 500;
+    --vibe-h3-tracking: 0.05em;
 
-    --vibe-h5-font: 'Epilogue', sans-serif;
-    --vibe-h5-weight: 300;
-
-    --vibe-body-font: 'Montserrat', sans-serif;
-
-    --vibe-quote-font: 'DM Serif Display', serif;
-    --vibe-quote-size: 4rem;
-    --vibe-quote-leading: 1.2;
-    --vibe-quote-indent: true;
-
-    --vibe-folio-font: 'Epilogue', sans-serif;
-    --vibe-folio-weight: 100;
-    --vibe-folio-align: left;
-  }
-
-  /* 07. MID-90's ARTSY */
-  .vibe-mid-90s-artsy {
-    --bg-current: #ffffff;
-    --text-current: #000000;
-    --vibe-h1-font: 'Syne', sans-serif;
-
-    --vibe-h1-weight: 800;
-    --vibe-h1-tracking: -0.07em;
-    --vibe-h1-leading: 0.82;
-
-    --vibe-h2-font: 'Space Grotesk', sans-serif;
-    --vibe-h2-weight: 300;
-    --vibe-h2-tracking: 0.1em;
-    --vibe-h2-transform: uppercase;
-
-    --vibe-h3-font: 'Syne', sans-serif;
-    --vibe-h3-weight: 700;
-    --vibe-h3-transform: lowercase;
-
-    --vibe-h5-font: 'Space Grotesk', sans-serif;
+    --vibe-h5-font: 'DM Serif Display', serif;
     --vibe-h5-weight: 400;
+    --vibe-h5-style: italic;
 
-    --vibe-body-font: 'Space Mono', monospace;
+    --vibe-h6-font: 'Manrope', sans-serif;
+    --vibe-h6-weight: 800;
+    --vibe-h6-tracking: 0.2em;
+    --vibe-h6-transform: uppercase;
 
-    --vibe-quote-font: 'Space Grotesk', sans-serif;
-    --vibe-quote-weight: 300;
-    --vibe-quote-align: right;
-    --vibe-quote-slashes: true;
-
-    --vibe-folio-font: 'Space Grotesk', sans-serif;
-    --vibe-folio-weight: 700;
-    --vibe-folio-brutalist: true;
+    --vibe-body-font: 'Outfit', sans-serif;
+    --vibe-body-weight: 300;
+    --vibe-body-tracking: 0.02em;
   }
 
   /* =========================================
@@ -315,10 +254,11 @@ body {
       font-family: var(--vibe-h1-font) !important;
       font-weight: var(--vibe-h1-weight) !important;
       letter-spacing: var(--vibe-h1-tracking) !important;
-      line-height: var(--vibe-h1-leading) !important;
+      line-height: var(--vibe-h1-leading, 1.1) !important;
       font-style: var(--vibe-h1-style, normal) !important;
       text-transform: var(--vibe-h1-transform, none) !important;
-      font-size: var(--vibe-h1-size, clamp(3rem, 10vw, 9rem)) !important;
+      font-size: var(--vibe-h1-size, clamp(3.5rem, 12vw, 9rem)) !important;
+      font-variant: var(--vibe-h1-variant, normal) !important;
     }
 
     & h2, & .vibe-target-h2 {
@@ -326,6 +266,8 @@ body {
       font-weight: var(--vibe-h2-weight) !important;
       letter-spacing: var(--vibe-h2-tracking) !important;
       text-transform: var(--vibe-h2-transform, none) !important;
+      font-style: var(--vibe-h2-style, normal) !important;
+      line-height: var(--vibe-h2-leading, 1.2) !important;
       font-size: var(--vibe-h2-size, 2.5rem) !important;
     }
 
@@ -336,35 +278,49 @@ body {
       text-transform: var(--vibe-h3-transform, none) !important;
       font-size: var(--vibe-h3-size, 1.25rem) !important;
       letter-spacing: var(--vibe-h3-tracking, normal) !important;
+      font-variant: var(--vibe-h3-variant, normal) !important;
     }
 
-    & h5, & h6, & .vibe-target-credits {
+    & h5, & .vibe-target-credits, & .vibe-target-quote {
       font-family: var(--vibe-h5-font) !important;
       font-weight: var(--vibe-h5-weight) !important;
       font-style: var(--vibe-h5-style, normal) !important;
       text-transform: var(--vibe-h5-transform, none) !important;
+      font-size: var(--vibe-h5-size, 1.1rem) !important;
+      letter-spacing: var(--vibe-h5-tracking, normal) !important;
+      text-align: var(--vibe-h5-align, left) !important;
+    }
+
+    & h6, & .vibe-target-folio {
+      font-family: var(--vibe-h6-font, var(--vibe-h5-font)) !important;
+      font-weight: var(--vibe-h6-weight, var(--vibe-h5-weight)) !important;
+      font-style: var(--vibe-h6-style, normal) !important;
+      text-transform: var(--vibe-h6-transform, none) !important;
+      font-size: var(--vibe-h6-size, 0.75rem) !important;
+      letter-spacing: var(--vibe-h6-tracking, normal) !important;
+      text-align: var(--vibe-h6-align, inherit) !important;
     }
 
     & p, & li, & .vibe-target-body {
       font-family: var(--vibe-body-font) !important;
       font-weight: var(--vibe-body-weight, 400) !important;
+      letter-spacing: var(--vibe-body-tracking, normal) !important;
     }
 
-    & blockquote, & .vibe-target-quote {
-      font-family: var(--vibe-quote-font) !important;
-      font-style: var(--vibe-quote-style, normal) !important;
-      font-weight: var(--vibe-quote-weight, 400) !important;
-      font-size: var(--vibe-quote-size, 2rem) !important;
-      line-height: var(--vibe-quote-leading, 1.4) !important;
-      text-align: var(--vibe-quote-align, left) !important;
-      border: none !important;
-      padding-left: var(--vibe-quote-margin, 2rem) !important;
-      margin: 4rem 0 !important;
+    & blockquote {
+      font-family: var(--vibe-h5-font) !important;
+      font-style: var(--vibe-h5-style, italic) !important;
+      font-weight: var(--vibe-h5-weight, 400) !important;
+      font-size: var(--vibe-h5-size, 2.2rem) !important;
+      line-height: var(--vibe-h5-leading, 1.4) !important;
+      text-align: var(--vibe-h5-align, left) !important;
+      border-color: color-mix(in srgb, var(--text-current) 30%, transparent) !important;
       
       & p {
         font-family: inherit !important;
         font-weight: inherit !important;
         font-style: inherit !important;
+        max-width: 100% !important;
       }
     }
 
@@ -393,13 +349,8 @@ body {
       color: var(--color-copper-ember);
     }
 
-    /* Folio Hook */
+    /* Folio Hook Specialized */
     & .vibe-target-folio {
-      font-family: var(--vibe-folio-font) !important;
-      font-weight: var(--vibe-folio-weight, 100) !important;
-      letter-spacing: var(--vibe-folio-tracking, normal) !important;
-      text-align: var(--vibe-folio-align, right) !important;
-      
       /* Vertical rotation for Travel & Senses */
       &.vibe-vertical {
         writing-mode: vertical-rl;
@@ -408,85 +359,31 @@ body {
     }
   }
 
-  /* =========================================
-     TGP MOTOR EDITORIAL: VOGUE LUXURY STYLES
-     (Tipografía, Kerning y Layout de Spreads)
-     ========================================= */
+  /* --- VIBE SPECIFIC PROSE OPTIMIZATIONS --- */
 
-  /* 01. MUSEUM LUXURY */
-  .vibe-museum-luxury :is(.vibe-target-h1, h1) { font-family: 'Prata', serif !important; font-weight: 800 !important; letter-spacing: -0.05em !important; line-height: 1 !important; }
-  .vibe-museum-luxury :is(.vibe-target-h2, h2) { font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 100 !important; letter-spacing: 0.3em !important; text-transform: uppercase !important; }
-  
-  .vibe-museum-luxury article.prose-tgp {
-    max-width: 60ch !important;
-    margin-inline: auto !important;
-    & :is(h3, h4) { font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 200 !important; text-transform: uppercase !important; letter-spacing: 0.1em !important; font-size: 0.8rem !important; }
-    & blockquote { font-family: 'Prata', serif !important; font-style: italic !important; font-size: 2.25rem !important; line-height: 1.6 !important; border: none !important; padding-left: 3rem !important; margin-block: 4rem !important; opacity: 0.9 !important; }
-    & p { font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 300 !important; font-size: 1.05rem !important; line-height: 1.8 !important; }
-  }
-
-  /* 02. KINFOLK HIGH DESIGN */
-  .vibe-kinfolk-high-design :is(.vibe-target-h1, h1) { font-family: 'Cormorant Garamond', serif !important; font-weight: 400 !important; letter-spacing: 0.025em !important; line-height: 1.1 !important; }
-  .vibe-kinfolk-high-design :is(.vibe-target-h2, h2) { font-family: 'Raleway', sans-serif !important; font-weight: 100 !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; }
-  
-  .vibe-kinfolk-high-design article.prose-tgp {
-    max-width: 75ch !important;
-    & h3 { font-family: 'Cormorant Garamond', serif !important; font-weight: 500 !important; font-style: italic !important; font-size: 1.5rem !important; }
-    & blockquote { font-family: 'Cormorant Garamond', serif !important; font-style: italic !important; text-align: center !important; border: none !important; font-size: 1.8rem !important; padding: 0 !important; margin-block: 5rem !important; }
-    & p { font-family: 'Cormorant Garamond', serif !important; font-size: 1.25rem !important; line-height: 1.7 !important; }
-  }
-
-  /* 03. VICTORIAN ARCHEO */
-  .vibe-victorian-archeo :is(.vibe-target-h1, h1) { font-family: 'Gloock', serif !important; font-weight: 700 !important; letter-spacing: -0.025em !important; }
-  .vibe-victorian-archeo :is(.vibe-target-h2, h2) { font-family: 'IBM Plex Mono', monospace !important; font-weight: 300 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; }
-  
   .vibe-victorian-archeo article.prose-tgp {
-    & h3 { font-family: 'Gloock', serif !important; font-style: italic !important; font-size: 1.75rem !important; }
-    & :is(h5, h6) { font-family: 'IBM Plex Mono', monospace !important; font-weight: 200 !important; font-size: 0.75rem !important; text-transform: uppercase !important; }
-    & blockquote { font-family: 'Gloock', serif !important; border-left: 4px solid var(--color-copper-ember) !important; font-style: italic !important; }
-    & p { font-family: 'IBM Plex Mono', monospace !important; font-weight: 300 !important; font-size: 0.95rem !important; line-height: 1.6 !important; opacity: 0.8 !important; }
+    & h3 { font-size: 1.75rem !important; }
+    & blockquote { border-left-color: var(--color-copper-ember) !important; }
   }
 
-  /* 04. TRAVEL & SENSES */
-  .vibe-travel-senses :is(.vibe-target-h1, h1) { font-family: 'Bodoni Moda', serif !important; font-weight: 500 !important; font-style: italic !important; }
-  .vibe-travel-senses :is(.vibe-target-h2, h2) { font-family: 'Montserrat', sans-serif !important; font-weight: 100 !important; letter-spacing: 0.4em !important; text-transform: uppercase !important; }
-  
   .vibe-travel-senses article.prose-tgp {
-    & h3 { font-family: 'Bodoni Moda', serif !important; font-weight: 400 !important; font-size: 1.25rem !important; }
-    & blockquote { font-family: 'Bodoni Moda', serif !important; font-style: italic !important; border: none !important; font-size: 2rem !important; transform: translateX(2rem) !important; }
-    & p { font-family: 'Montserrat', sans-serif !important; font-weight: 300 !important; font-size: 1rem !important; letter-spacing: 0.05em !important; }
+    & h3 { font-size: 1.5rem !important; }
+    & blockquote { border: none !important; padding-left: 0 !important; text-align: center !important; }
   }
 
-  /* 05. 80s ITALIAN INTERIORS */
-  .vibe-80s-italian :is(.vibe-target-h1, h1) { font-family: 'Fraunces', serif !important; font-weight: 900 !important; letter-spacing: -0.05em !important; }
-  .vibe-80s-italian :is(.vibe-target-h2, h2) { font-family: 'Jost', sans-serif !important; font-weight: 500 !important; letter-spacing: 0.05em !important; text-transform: uppercase !important; }
-  
   .vibe-80s-italian article.prose-tgp {
-    border-top: 1px solid rgba(255,255,255,0.1) !important;
-    padding-top: 4rem !important;
-    & h3 { font-family: 'Fraunces', serif !important; font-weight: 600 !important; font-style: italic !important; }
-    & blockquote { font-family: 'Fraunces', serif !important; font-weight: 700 !important; font-style: italic !important; border: none !important; padding: 2.5rem !important; background: rgba(255,255,255,0.03) !important; line-height: 1.2 !important; }
-    & p { font-family: 'Fraunces', serif !important; font-weight: 400 !important; font-size: 1.15rem !important; line-height: 1.5 !important; }
+    & h3 { font-size: 1.8rem !important; }
+    & blockquote { background: rgba(var(--text-current), 0.03); padding: 3rem !important; border: none !important; }
   }
 
-  /* 06. ETHNICS & ARTS */
-  .vibe-ethnics-arts :is(.vibe-target-h1, h1) { font-family: 'DM Serif Display', serif !important; font-weight: 400 !important; }
-  .vibe-ethnics-arts :is(.vibe-target-h2, h2) { font-family: 'Epilogue', sans-serif !important; font-weight: 100 !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; }
-  
-  .vibe-ethnics-arts article.prose-tgp {
-    & h3 { font-family: 'DM Serif Display', serif !important; font-style: italic !important; font-size: 1.5rem !important; }
-    & blockquote { font-family: 'DM Serif Display', serif !important; font-size: 2.5rem !important; border: none !important; padding-left: 0 !important; padding-right: 3rem !important; text-align: right !important; }
-    & p { font-family: 'Epilogue', sans-serif !important; font-weight: 300 !important; font-size: 1.1rem !important; line-height: 1.6 !important; }
-  }
-
-  /* 07. MID-90s ARTSY */
-  .vibe-mid-90s-artsy :is(.vibe-target-h1, h1) { font-family: 'Syne', sans-serif !important; font-weight: 800 !important; letter-spacing: -0.05em !important; text-transform: uppercase !important; }
-  .vibe-mid-90s-artsy :is(.vibe-target-h2, h2) { font-family: 'Space Grotesk', sans-serif !important; font-weight: 300 !important; letter-spacing: 0.05em !important; text-transform: uppercase !important; }
-  
   .vibe-mid-90s-artsy article.prose-tgp {
-    & h3 { font-family: 'Syne', sans-serif !important; font-weight: 700 !important; text-transform: lowercase !important; }
-    & blockquote { font-family: 'Space Grotesk', sans-serif !important; font-weight: 300 !important; border: none !important; text-align: right !important; }
-    & p { font-family: 'Space Grotesk', sans-serif !important; font-weight: 400 !important; font-size: 1.1rem !important; line-height: 1.4 !important; }
+    & h3 { font-size: 1.4rem !important; }
+    & blockquote { border: none !important; text-align: right !important; padding: 0 !important; }
+  }
+
+  .vibe-ethnics-arts article.prose-tgp {
+    & h3 { font-size: 1.6rem !important; font-style: italic !important; }
+    & blockquote { border: none !important; text-align: right !important; padding-right: 3rem !important; padding-left: 0 !important; }
   }
 
   /* REGLAS GLOBALES HERO */

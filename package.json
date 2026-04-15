@@ -9,9 +9,7 @@
     "dev": "astro dev",
     "admin": "start http://localhost:4321/keystatic",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "push": "git add . && git commit -m \"update: contenido y arquitectura\" && git push"
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/markdoc": "^1.0.3",

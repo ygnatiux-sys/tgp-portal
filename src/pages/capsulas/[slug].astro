@@ -18,7 +18,23 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+import { getEntry } from 'astro:content';
+
+// Re-fetching the entry to ensure we have a fresh reference compatible with the current content layer state
+const freshEntry = await getEntry('capsulas', entry.id);
+
+let renderError: any = null;
+const rendered = freshEntry ? await render(freshEntry).catch((e) => {
+  console.error("Error rendering capsula:", entry.id, e);
+  renderError = e;
+  return null;
+}) : null;
+
+if (!freshEntry) {
+  renderError = new Error(`Capsula not found: ${entry.id}`);
+}
+
+const Content = rendered?.Content;
 
 // DICCIONARIO DE ARQUETIPOS (Arquitectura Cerrada)
 const ARCHETYPE_CONFIG = {
@@ -109,7 +125,16 @@ console.log(
         }
 
         <div class="prose prose-invert prose-tgp max-w-none">
-          <Content />
+          {renderError ? (
+            <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-lg mt-20">
+              <h2 class="text-red-400 font-serif mb-4">Error de Sincronización</h2>
+              <pre class="mt-4 p-4 bg-black/40 rounded text-xs text-red-300 overflow-x-auto">
+                {renderError instanceof Error ? renderError.message : String(renderError)}
+              </pre>
+            </div>
+          ) : (
+            Content && <Content />
+          )}
         </div>
       </div>
     </article>

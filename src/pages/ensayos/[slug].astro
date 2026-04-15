@@ -17,8 +17,24 @@ export async function getStaticPaths() {
   }
 }
 
-const { ensayo } = Astro.props;
-const { Content } = await render(ensayo);
+const { ensayo: initialEnsayo } = Astro.props;
+import { getEntry } from 'astro:content';
+
+// Re-fetching the entry to ensure we have a fresh reference compatible with the current content layer state
+const ensayo = await getEntry('ensayos', initialEnsayo.id);
+
+let renderError: any = null;
+const rendered = ensayo ? await render(ensayo).catch((e) => {
+  console.error("Error rendering ensayo:", initialEnsayo.id, e);
+  renderError = e;
+  return null;
+}) : null;
+
+if (!ensayo) {
+  renderError = new Error(`Ensayo not found: ${initialEnsayo.id}`);
+}
+
+const Content = rendered?.Content;
 
 const title = ensayo.data.title || "Ensayo no titulado";
 const subtitle = ensayo.data.subtitle || "";
@@ -127,7 +143,16 @@ const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
     <div
       class="prose prose-invert prose-lg prose-p:font-sans prose-p:text-gray-300 prose-headings:font-gloock prose-headings:text-white prose-a:text-[#FF6719] max-w-none"
     >
-      <Content />
+      {renderError ? (
+        <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-lg">
+          <h2 class="text-red-400 font-serif mb-4">Error de Sincronización</h2>
+          <pre class="mt-4 p-4 bg-black/40 rounded text-xs text-red-300 overflow-x-auto">
+            {renderError instanceof Error ? renderError.message : String(renderError)}
+          </pre>
+        </div>
+      ) : (
+        Content && <Content />
+      )}
     </div>
 
     {/* Footer Interactions */}
