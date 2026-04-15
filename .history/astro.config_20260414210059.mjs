@@ -4,23 +4,18 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  // El adaptador SSR vital para que Cloudflare Workers no colapse
-  output: 'server',
-  adapter: cloudflare(),
+  output: 'static',
   
-  // Tu enrutamiento lógico original intacto
+  // Enrutamiento lógico corregido para que Cloudflare no se pierda
   trailingSlash: 'ignore', 
   build: {
     format: 'file' 
   },
 
-  // Integraciones de TGP
   integrations: [react(), markdoc(), keystatic()],
   
-  // Configuración de Vite con warnings silenciados y dependencias optimizadas
   vite: {
     plugins: [
       tailwindcss(),

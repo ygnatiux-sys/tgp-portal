@@ -28,6 +28,6 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^13.1.8"
+    "@astrojs/cloudflare": "^13.1.9"
   }
 }

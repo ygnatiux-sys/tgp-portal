@@ -7,20 +7,20 @@ import keystatic from '@keystatic/astro';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  // El adaptador SSR vital para que Cloudflare Workers no colapse
+  // 1. EL ADAPTADOR PARA CLOUDFLARE (Lo que soluciona el error)
   output: 'server',
   adapter: cloudflare(),
   
-  // Tu enrutamiento lógico original intacto
+  // 2. TU ENRUTAMIENTO LÓGICO ORIGINAL (Recuperado: vital para tus URLs)
   trailingSlash: 'ignore', 
   build: {
     format: 'file' 
   },
 
-  // Integraciones de TGP
+  // 3. TUS INTEGRACIONES INTACTAS
   integrations: [react(), markdoc(), keystatic()],
   
-  // Configuración de Vite con warnings silenciados y dependencias optimizadas
+  // 4. TU CONFIGURACIÓN DE VITE COMPLETA (Con los warnings muteados, GSAP y módulos)
   vite: {
     plugins: [
       tailwindcss(),
