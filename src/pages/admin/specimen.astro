@@ -1,0 +1,254 @@
+---
+// Ruta de Auditoria Editorial TGP
+// Acceso: /admin/specimen
+// Propósito: Renderiza el ensayo "test-specimen" 5 veces, una por tema,
+//             para verificar la integridad tipográfica y visual del VOGUE ENGINE.
+export const prerender = true;
+
+import { getEntry, render } from 'astro:content';
+import '../../styles/global.css';
+
+// @fontsource — Local font imports
+import '@fontsource/gloock/400.css';
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/700.css';
+import '@fontsource/bodoni-moda/400.css';
+import '@fontsource/bodoni-moda/600.css';
+import '@fontsource/fraunces/900.css';
+import '@fontsource/fraunces/700.css';
+import '@fontsource/syne/800.css';
+import '@fontsource/syne/700.css';
+import '@fontsource/syne/400.css';
+import '@fontsource/dm-serif-display/400.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/inter/100.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/space-grotesk/300.css';
+import '@fontsource/space-grotesk/700.css';
+import '@fontsource/epilogue/100.css';
+import '@fontsource/epilogue/600.css';
+import '@fontsource/manrope/800.css';
+import '@fontsource/ibm-plex-mono/300.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/plus-jakarta-sans/200.css';
+import '@fontsource/plus-jakarta-sans/300.css';
+import '@fontsource/plus-jakarta-sans/800.css';
+import '@fontsource/outfit/300.css';
+
+// ---- Carga de Datos Relacionales (TGP Engine v2) ----
+const editorialTemplates = await getCollection('editorialTemplates');
+const specimenEntry = await getEntry('essays', 'test-specimen');
+
+let renderError: Error | null = null;
+let Content: any = null;
+
+if (specimenEntry) {
+  const rendered = await render(specimenEntry).catch((e: Error) => {
+    console.error("Error rendering test-specimen:", e);
+    renderError = e;
+    return null;
+  });
+  Content = rendered?.Content ?? null;
+} else {
+  renderError = new Error('No se encontró el ensayo "test-specimen" en la colección essays.');
+}
+
+// Mapeo de metadatos decorativos para la ficha técnica (opcional, para visualización en /admin)
+const THEME_METADATA_MAP: Record<string, any> = {
+  'vibe-victorian-archeo': { palette: 'F4EFE6 / 2B2624', h1: 'Gloock 400', body: 'Cormorant' },
+  'vibe-travel-senses': { palette: 'FFFCF5 / 1A1A1A', h1: 'Bodoni Moda', body: 'Plus Jakarta' },
+  'vibe-80s-italian': { palette: 'F9F8F6 / 2A2522', h1: 'Fraunces 900', body: 'Inter' },
+  'vibe-mid-90s-artsy': { palette: 'FFFFFF / 000000', h1: 'Syne 800', body: 'DM Sans' },
+  'vibe-ethnics-arts': { palette: '0A0A0A / EBEBEB', h1: 'DM Serif', body: 'Outfit' },
+};
+---
+---
+
+<!doctype html>
+<html lang="es" class="antialiased">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Especímen Editorial TGP — Auditoría Tipográfica</title>
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen">
+
+  <!-- Header de Auditoría -->
+  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-copper-ember/30 px-8 py-4">
+    <div class="max-w-screen-2xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <span class="w-2 h-2 rounded-full bg-copper-ember animate-pulse"></span>
+        <h1 class="font-tgp-tech text-[10px] tracking-[0.3em] uppercase text-copper-ember">
+          TGP Editorial Specimen — Auditoría Tipográfica × VOGUE ENGINE v2
+        </h1>
+      </div>
+      <div class="font-tgp-tech text-[9px] tracking-widest text-white/30 uppercase">
+        {new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </div>
+    </div>
+  </header>
+
+  <!-- Error Global -->
+  {renderError && (
+    <div class="max-w-4xl mx-auto mt-20 p-8 bg-red-950/50 border border-red-500/50 rounded-lg m-8">
+      <p class="font-tgp-tech text-xs text-red-400 tracking-widest uppercase mb-4">Error de Carga del Especímen</p>
+      <pre class="text-red-300 text-xs leading-relaxed">{renderError instanceof Error ? renderError.message : String(renderError)}</pre>
+    </div>
+  )}
+
+  <!-- Iteración de los 5 Temas (TGP Engine v2) -->
+  {editorialTemplates.map((template) => {
+    const themeId = template.data.themeKey;
+    const meta = THEME_METADATA_MAP[themeId] || { palette: 'Variable', h1: 'Dynamic', body: 'Dynamic' };
+    
+    return (
+      <section
+        class={`specimen-block ${themeId} min-h-screen`}
+        data-theme={themeId}
+      >
+        <!-- Ficha Técnica del Tema -->
+        <div class="specimen-tech-card">
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="specimen-label">{template.data.title}</span>
+            <span class="opacity-70 font-tgp-mono text-[10px]">ThemeKey: {themeId}</span>
+            <span class="opacity-70 font-tgp-mono text-[10px]">Ref: {template.id}</span>
+          </div>
+          <div class="flex gap-8 text-[9px] opacity-60">
+            <span>Paleta: {meta.palette}</span>
+            <span>H1: {meta.h1}</span>
+            <span>Body: {meta.body}</span>
+          </div>
+          <div class="hidden xl:block text-[9px] opacity-50 max-w-sm text-right">
+            {template.data.description}
+          </div>
+        </div>
+
+        <!-- Contenedor Editorial Completo -->
+        <div
+          class="editorial-container w-full pt-20 pb-32 px-6 md:px-16"
+          style={`background-color: var(--bg-current);`}
+        >
+          <!-- Folio de Cabecera -->
+          <div class="editorial-folio max-w-4xl mx-auto">
+            <span>TGP × {template.data.title}</span>
+            <span>Especímen Editorial Nº 001</span>
+            <span>MMXXVI</span>
+            <span class="ml-auto opacity-50 uppercase tracking-widest text-[9px]">Auditoría Relacional v2</span>
+          </div>
+
+          <!-- Imagen Hero -->
+          <div class="max-w-6xl mx-auto mb-16 overflow-hidden">
+            <img
+              src={`https://picsum.photos/seed/${themeId}/1400/600?grayscale`}
+              alt={`Imagen de especímen para tema ${template.data.title}`}
+              class="w-full h-auto object-cover"
+              loading="lazy"
+            />
+            <p class="editorial-caption">Fig. 1 — Imagen de referencia para el tema {template.data.title}. Picsum Photos, 2026.</p>
+          </div>
+
+          <!-- Artículo Editorial -->
+          <article class={`prose-tgp max-w-4xl mx-auto ${themeId}`}>
+
+            <!-- Copete (Lead) -->
+            <p class="editorial-lead">
+              La arquitectura del pensamiento no es una colección de certezas, sino el arte de habitar
+              las preguntas con dignidad. En este especímen tipográfico se revela la tensión entre
+              el peso de la letra y el silencio del espacio en blanco.
+            </p>
+
+            <!-- Contenido del Ensayo Semilla -->
+            {Content ? (
+              <div class="editorial-dropcap">
+                <Content />
+              </div>
+            ) : (
+              !renderError && (
+                <div class="editorial-blackbox">
+                  <p class="font-tgp-tech text-xs">Contenido no disponible. El archivo test-specimen.mdoc existe pero no pudo renderizarse.</p>
+                </div>
+              )
+            )}
+
+            <!-- Blackbox / Sidebar de Notas Técnicas -->
+            <div class="editorial-blackbox">
+              <p class="font-tgp-mono text-[10px] tracking-widest uppercase mb-4 text-copper-ember">
+                ▸ Configuración de Plantilla — {template.data.title}
+              </p>
+              <code>
+ID:         {template.id}
+THEME_KEY:  {themeId}
+DESC:       {template.data.description}
+PALETTE:    {meta.palette}
+              </code>
+            </div>
+
+            <!-- Segunda imagen con filtro -->
+            <figure class="my-12 max-w-2xl mx-auto">
+              <img
+                src={`https://picsum.photos/seed/${themeId}2/900/500?grayscale`}
+                alt="Segunda imagen editorial"
+                class="w-full h-auto object-cover"
+                loading="lazy"
+              />
+              <figcaption class="editorial-caption">
+                Fig. 2 — Referencia secundaria. {template.data.title} (v2).
+              </figcaption>
+            </figure>
+
+            <!-- Cita erudita -->
+            <blockquote>
+              <p>
+                "El estilo es la fisiognomía del alma, más infalible que la del rostro.
+                Imitar el estilo de otro es ponerse su máscara."
+              </p>
+              <cite class="editorial-caption block mt-4 not-italic">
+                — Arthur Schopenhauer, Parerga y Paralipómena, 1851
+              </cite>
+            </blockquote>
+
+          </article>
+
+          <!-- Folio de Cierre -->
+          <div class="editorial-folio max-w-4xl mx-auto mt-20">
+            <span>{template.id}</span>
+            <span class="mx-auto opacity-30">◆</span>
+            <span>Fin del Especímen {template.data.title}</span>
+          </div>
+        </div>
+
+        <!-- Separador Visual -->
+        <div class="h-px bg-copper-ember/20"></div>
+      </section>
+    );
+  })}
+
+  <!-- Footer de Auditoría -->
+  <footer class="bg-black border-t border-copper-ember/20 px-8 py-12 text-center">
+    <p class="font-tgp-tech text-[9px] tracking-[0.4em] uppercase text-white/20">
+      TGP Portal — Specimen Page — Internal Tool — {new Date().getFullYear()}
+    </p>
+    <p class="font-tgp-tech text-[9px] tracking-[0.2em] uppercase text-copper-ember/40 mt-2">
+      5 Temas × 1 Ensayo × VOGUE ENGINE v2 + @fontsource + data-theme
+    </p>
+  </footer>
+
+</body>
+</html>
+
+<style>
+  /* Override: cada sección hereda el data-theme de su wrapper */
+  .specimen-block {
+    position: relative;
+  }
+
+  /* Asegura que las variables CSS de cada vibe se apliquen dentro
+     del bloque de section, usando el mismo sistema de clase */
+  .specimen-block .editorial-container {
+    transition: background-color 0.3s ease;
+  }
+</style>

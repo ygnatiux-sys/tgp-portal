@@ -1,26 +1,109 @@
-/* @tailwind base; */
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,100..800;1,100..800&family=Outfit:wght@100;300;700&family=Prata&family=GFS+Didot&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Gloock&family=Fraunces:opsz,wght@9..144,100..900&family=DM+Serif+Display:ital,wght@0,400;1,400&family=Syne:wght@400..800&family=Raleway:wght@100..900&family=IBM+Plex+Mono:wght@100..700&family=Space+Mono:wght@400;700&family=Montserrat:wght@100..900&family=Jost:wght@100..900&family=Epilogue:wght@100..900&family=Space+Grotesk:wght@300..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Libre+Franklin:wght@700&family=Inter:wght@100;300;500&family=DM+Sans:ital,wght@0,400..700;1,400..700&family=Manrope:wght@800&display=swap');
+/* TGP VOGUE ENGINE — Typographic Design System
+   Fuentes gestionadas via @fontsource (importadas en Layout.astro)
+   Tailwind consume las var() via @theme para clases de utilidad
+*/
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @theme {
+  /* ===== PALETA DE ACENTO GLOBAL ===== */
   --color-racing-green: #0A1C15;
   --color-copper-ember: #B87333;
-  
-  --font-serif: "Bodoni Moda", serif;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  /* ===== FAMILIAS TIPOGRÁFICAS DEL DICCIONARIO ===== */
+  /* Serifs editoriales */
+  --font-tgp-gloock:     'Gloock', serif;
+  --font-tgp-cormorant:  'Cormorant Garamond', serif;
+  --font-tgp-bodoni:     'Bodoni Moda', serif;
+  --font-tgp-fraunces:   'Fraunces', serif;
+  --font-tgp-dm-serif:   'DM Serif Display', serif;
+  --font-tgp-lora:       'Lora', serif;
+
+  /* Sans editoriales */
+  --font-tgp-jakarta:    'Plus Jakarta Sans', sans-serif;
+  --font-tgp-syne:       'Syne', sans-serif;
+  --font-tgp-inter:      'Inter', sans-serif;
+  --font-tgp-dm-sans:    'DM Sans', sans-serif;
+  --font-tgp-outfit:     'Outfit', sans-serif;
+  --font-tgp-spaceweb:   'Space Grotesk', sans-serif;
+  --font-tgp-epilogue:   'Epilogue', sans-serif;
+  --font-tgp-manrope:    'Manrope', sans-serif;
+
+  /* Técnicas / Monospaced */
+  --font-tgp-mono:       'IBM Plex Mono', monospace;
+
+  /* Aliases semánticos reutilizables en clases Tailwind */
+  --font-tgp-serif:      var(--font-tgp-gloock);    /* clase: font-tgp-serif */
+  --font-tgp-tech:       var(--font-tgp-mono);       /* clase: font-tgp-tech  */
+  --font-tgp-body:       var(--font-tgp-jakarta);    /* clase: font-tgp-body  */
+
+  /* ===== TOKENS DE TEMA (data-theme) ===== */
+  /* Default (Dark) */
+  --color-theme-bg:      #0A1C15;
+  --color-theme-text:    #ffffff;
+  --color-theme-accent:  #B87333;
+  --color-theme-muted:   color-mix(in srgb, #ffffff 15%, transparent);
+  --color-theme-glass:   color-mix(in srgb, #0A1C15, transparent 82%);
 }
 
+/* ===== TEMA BASE (Data-Theme Architecture) =====
+   Las variables --theme-* son consumidas por clases Tailwind.
+   Tailwind @theme ya registró --color-theme-* arriba,
+   permitiendo: bg-theme-bg, text-theme-text, border-theme-muted, etc.
+*/
 :root {
+  /* Default (oscuro: Racing Green) */
   --bg-current: #0A1C15;
   --text-current: #ffffff;
 }
 
+/* data-theme override: el body recibe data-theme desde Layout.astro */
+[data-theme="vibe-victorian-archeo"] {
+  --bg-current: #F4EFE6;
+  --text-current: #2B2624;
+  --color-theme-bg: #F4EFE6;
+  --color-theme-text: #2B2624;
+  --color-theme-muted: color-mix(in srgb, #2B2624 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #F4EFE6, transparent 82%);
+}
+[data-theme="vibe-travel-senses"] {
+  --bg-current: #FFFCF5;
+  --text-current: #1A1A1A;
+  --color-theme-bg: #FFFCF5;
+  --color-theme-text: #1A1A1A;
+  --color-theme-muted: color-mix(in srgb, #1A1A1A 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #FFFCF5, transparent 82%);
+}
+[data-theme="vibe-80s-italian"] {
+  --bg-current: #F9F8F6;
+  --text-current: #2A2522;
+  --color-theme-bg: #F9F8F6;
+  --color-theme-text: #2A2522;
+  --color-theme-muted: color-mix(in srgb, #2A2522 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #F9F8F6, transparent 82%);
+}
+[data-theme="vibe-mid-90s-artsy"] {
+  --bg-current: #FFFFFF;
+  --text-current: #000000;
+  --color-theme-bg: #FFFFFF;
+  --color-theme-text: #000000;
+  --color-theme-muted: color-mix(in srgb, #000000 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #FFFFFF, transparent 82%);
+}
+[data-theme="vibe-ethnics-arts"] {
+  --bg-current: #0A0A0A;
+  --text-current: #EBEBEB;
+  --color-theme-bg: #0A0A0A;
+  --color-theme-text: #EBEBEB;
+  --color-theme-muted: color-mix(in srgb, #EBEBEB 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #0A0A0A, transparent 82%);
+}
+
 body {
   margin: 0;
-  font-family: var(--font-sans);
   background-color: var(--bg-current);
   color: var(--text-current);
+  font-family: var(--font-tgp-body);
 }
 
 
@@ -78,6 +161,91 @@ body {
     color: var(--text-current);
     max-width: 100%;
   }
+
+  /* =========================================
+     CLASES DE UTILIDAD EDITORIAL
+     Consumen var() sin estilos inline
+     ========================================= */
+
+  /* Copete / Lead Paragraph — mayor peso visual */
+  .editorial-lead {
+    @apply text-xl md:text-2xl font-light leading-[1.7] mb-10;
+    font-family: var(--vibe-body-font, var(--font-tgp-body));
+    color: var(--text-current);
+    max-width: 65ch;
+    border-left: 3px solid var(--color-copper-ember);
+    padding-left: 1.5rem;
+    font-weight: 300;
+  }
+
+  /* Letra Capitular (Dropcap) — primera letra flotante */
+  .editorial-dropcap::first-letter {
+    float: left;
+    font-family: var(--vibe-h1-font, var(--font-tgp-gloock));
+    font-size: clamp(4rem, 8vw, 6rem);
+    font-weight: var(--vibe-h1-weight, 400);
+    line-height: 0.8;
+    padding-right: 0.25em;
+    padding-top: 0.05em;
+    color: var(--color-copper-ember);
+    shape-outside: margin-box;
+  }
+
+  /* Blackbox / Sidebar — contenedor de notas técnicas */
+  .editorial-blackbox {
+    @apply my-12 p-8 rounded-sm;
+    background-color: color-mix(in srgb, var(--text-current) 8%, transparent);
+    border-left: 4px solid var(--color-copper-ember);
+    font-family: var(--font-tgp-mono);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--text-current);
+    letter-spacing: 0.03em;
+  }
+  .editorial-blackbox code {
+    @apply block;
+    font-family: inherit;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* Folio — metadatos técnicos (número, fecha, tags) */
+  .editorial-folio {
+    @apply flex items-center gap-6 mb-8 pt-2 border-t;
+    font-family: var(--font-tgp-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--text-current) 45%, transparent);
+    border-color: color-mix(in srgb, var(--text-current) 12%, transparent);
+  }
+
+  /* Figcaption / Epígrafe de imagen */
+  .editorial-caption {
+    @apply mt-3 mb-8 text-center;
+    font-family: var(--font-tgp-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--text-current) 40%, transparent);
+    font-style: italic;
+  }
+
+  /* Ficha Técnica de Auditoría (solo en /admin/specimen) */
+  .specimen-tech-card {
+    @apply sticky top-0 z-10 flex flex-wrap gap-6 items-center justify-between px-6 py-3 text-xs font-tgp-tech uppercase tracking-widest;
+    background-color: color-mix(in srgb, var(--bg-current) 92%, var(--color-copper-ember));
+    border-bottom: 1px solid var(--color-copper-ember);
+    color: var(--color-copper-ember);
+  }
+
+  /* Etiqueta de tema en la ficha técnica */
+  .specimen-label {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-tgp-tech uppercase tracking-[0.2em];
+    background-color: var(--color-copper-ember);
+    color: var(--bg-current);
+  }
+
 
   /* =========================================
      VOGUE LUXURY ENGINE - HIGH FIDELITY

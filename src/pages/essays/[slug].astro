@@ -31,10 +31,13 @@ import { getEntry } from 'astro:content';
 const freshPost = await getEntry('essays', post.id);
 const layoutStyle = freshPost?.data.layout_style || "cinematic-dark";
 
+// 1. Resolvemos la relación con la Plantilla Editorial (TGP Engine v2)
+const templateId = freshPost?.data.template || "victorian-archeo";
+const templateEntry = await getEntry('editorialTemplates', templateId);
+const themeKey = templateEntry?.data.themeKey || 'vibe-victorian-archeo';
+
 console.log(`[VOGUE ENGINE] Rendering ${post.collection}/${post.id}`);
-console.log(
-  `[VOGUE ENGINE] Vibe: ${post.data.editorial_vibe?.discriminant === "vogue-luxury" ? post.data.editorial_vibe.value : "None"}`,
-);
+console.log(`[VOGUE ENGINE] Template resolved: ${templateId} -> ${themeKey}`);
 console.log(`[VOGUE ENGINE] Layout Style detected: ${layoutStyle}`);
 
 let renderError: any = null;
@@ -76,12 +79,8 @@ console.log(
   `[VOGUE ENGINE] Resolved Hero: ${HeroComponent.name || HeroComponent.title || "DynamicComponent"}`,
 );
 
-// Elegimos la "Vibración" Editorial de Keystatic
-const editorialVibeData = post.data.editorial_vibe;
-const vibeClass =
-  editorialVibeData?.discriminant === "vogue-luxury"
-    ? `vibe-${editorialVibeData.value}`
-    : "";
+// Aplicamos el themeKey como vibeClass para el sistema de data-theme
+const vibeClass = themeKey;
 ---
 
 <LayoutComponent title={post.data.title} vibeClass={vibeClass}>

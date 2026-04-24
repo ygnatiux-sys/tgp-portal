@@ -1,42 +1,43 @@
----
+﻿---
 title: the mistery
+template: 'victorian-archeo'
 hero_image: /images/posts/the-mistery/hero_image.webp
 layout_style: cinematic-vintage
 ---
 StartFragment
 
-Lo que está ocurriendo no es una falla de dependencias, sino un problema de **capas (z-index)** y **especificidad de estilos**. La "mancha amarilla" es el gradiente radial que pusimos en el fondo, pero como Astro a veces aplica estilos de forma aislada, ese gradiente quedó por encima del texto o el contenedor del texto colapsó.
+Lo que estÃ¡ ocurriendo no es una falla de dependencias, sino un problema de **capas (z-index)** y **especificidad de estilos**. La "mancha amarilla" es el gradiente radial que pusimos en el fondo, pero como Astro a veces aplica estilos de forma aislada, ese gradiente quedÃ³ por encima del texto o el contenedor del texto colapsÃ³.
 
-Aquí tienes el prompt definitivo para que el agente limpie la estructura y fuerce la visibilidad de la tipografía:
+AquÃ­ tienes el prompt definitivo para que el agente limpie la estructura y fuerce la visibilidad de la tipografÃ­a:
 
 ---
 
 ### Prompt para el Agente (Fix de Capas y Visibilidad)
 
 **Contexto:**\
-Al aplicar el código anterior del Bento Grid, el título "The Great Puzzle" desapareció y solo es visible el gradiente radial de fondo (la mancha de luz). Necesito corregir el orden de las capas y asegurar que la tipografía se renderice correctamente.
+Al aplicar el cÃ³digo anterior del Bento Grid, el tÃ­tulo "The Great Puzzle" desapareciÃ³ y solo es visible el gradiente radial de fondo (la mancha de luz). Necesito corregir el orden de las capas y asegurar que la tipografÃ­a se renderice correctamente.
 
 **Tarea:**
 
-1. **Z-Index & Position:** Asegúrate de que el contenedor del título tenga `relative z-10` y que el gradiente de fondo sea `absolute z-0` para que no lo tape.
-1. **Color de Texto:** Fuerza el color del título usando `text-white` y asegúrate de que no haya un `opacity-0` accidental.
-1. **Fuentes Externas:** Verifica que la importación de Google Fonts en `<style is:global>` esté funcionando. Si no, cámbiala a una importación directa en el `<head>` del `Layout.astro`.
-1. **Código de corrección:** Proporciona una versión simplificada del Hero Section que garantice que el texto sea visible sobre el fondo oscuro.
+1. **Z-Index & Position:** AsegÃºrate de que el contenedor del tÃ­tulo tenga `relative z-10` y que el gradiente de fondo sea `absolute z-0` para que no lo tape.
+1. **Color de Texto:** Fuerza el color del tÃ­tulo usando `text-white` y asegÃºrate de que no haya un `opacity-0` accidental.
+1. **Fuentes Externas:** Verifica que la importaciÃ³n de Google Fonts en `<style is:global>` estÃ© funcionando. Si no, cÃ¡mbiala a una importaciÃ³n directa en el `<head>` del `Layout.astro`.
+1. **CÃ³digo de correcciÃ³n:** Proporciona una versiÃ³n simplificada del Hero Section que garantice que el texto sea visible sobre el fondo oscuro.
 
 ---
 
-### El código de "Emergencia" para tu index.astro (Copia esto)
+### El cÃ³digo de "Emergencia" para tu index.astro (Copia esto)
 
 He modificado el Hero para que el texto **tenga prioridad absoluta** sobre el fondo:
 
-Fragmento de código
+Fragmento de cÃ³digo
 
 ```
 ---
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="TGP | Xavier Benítez">
+<Layout title="TGP | Xavier BenÃ­tez">
   <main class="min-h-screen bg-[#050a09] text-white">
     
     <section class="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
@@ -48,7 +49,7 @@ import Layout from '../layouts/Layout.astro';
           The Great <span class="text-[#c4a484] italic">Puzzle</span>
         </h1>
         <p class="font-sans text-lg md:text-xl tracking-[0.4em] uppercase text-gray-400 border-t border-white/10 pt-4">
-          Arqueosemiótica • Neurognosis
+          ArqueosemiÃ³tica â€¢ Neurognosis
         </p>
       </div>
 
@@ -56,13 +57,13 @@ import Layout from '../layouts/Layout.astro';
 
     <section class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 pb-20">
       <div class="h-64 rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-end">
-        <h3 class="font-serif text-2xl">Colección I</h3>
+        <h3 class="font-serif text-2xl">ColecciÃ³n I</h3>
       </div>
       <div class="h-64 rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-end">
-        <h3 class="font-serif text-2xl">Colección II</h3>
+        <h3 class="font-serif text-2xl">ColecciÃ³n II</h3>
       </div>
       <div class="h-64 rounded-3xl bg-[#c4a484] p-8 flex flex-col justify-end text-black">
-        <h3 class="font-serif text-2xl font-bold">Investigación</h3>
+        <h3 class="font-serif text-2xl font-bold">InvestigaciÃ³n</h3>
       </div>
     </section>
 
@@ -85,3 +86,4 @@ import Layout from '../layouts/Layout.astro';
 ```
 
 EndFragment
+

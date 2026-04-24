@@ -1,0 +1,30 @@
+---
+// src/layouts/ArticleLayout.astro
+// Este layout resuelve la identidad visual modular (Template) para un ensayo.
+
+import { getEntry } from 'astro:content';
+
+interface Props {
+  templateId: string;
+  title?: string;
+}
+
+const { templateId, title } = Astro.props;
+
+// 1. Resolvemos la relación con la Plantilla Editorial
+const templateEntry = await getEntry('editorialTemplates', templateId);
+const themeKey = templateEntry?.data.themeKey || 'vibe-victorian-archeo';
+---
+
+<div class={`article-layout-root ${themeKey} min-h-screen`} data-theme={themeKey}>
+  <slot />
+</div>
+
+<style is:global>
+  /* Aseguramos que el background-color del layout responda a la variable del tema */
+  .article-layout-root {
+    background-color: var(--bg-current);
+    color: var(--text-current);
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+</style>

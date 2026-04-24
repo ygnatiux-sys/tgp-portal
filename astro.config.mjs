@@ -1,21 +1,20 @@
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@astrojs/react';
-import markdoc from '@astrojs/markdoc';
-import keystatic from '@keystatic/astro';
 import cloudflare from '@astrojs/cloudflare';
+import { tgpIntegrations } from './tgp.integrations.mjs';
+import { tgpViteConfig } from './tgp.vite.mjs';
 
 export default defineConfig({
-  // MODO SERVIDOR: Necesario para Cloudflare SSR
-  output: 'server', 
-  adapter: cloudflare(),
-  
-  integrations: [react(), markdoc(), keystatic()],
-  
+  // Astro 5.0+ : 'static' permite SSR por página por defecto.
+  output: 'static',
+  adapter: cloudflare({
+    compatibilityDate: '2026-04-16',
+  }),
+
+  integrations: tgpIntegrations,
   vite: {
-    plugins: [tailwindcss()],
-    ssr: {
-      noExternal: ['gsap', 'markdoc'],
+    ...tgpViteConfig,
+    optimizeDeps: {
+      exclude: ['virtual:keystatic-config'],
     },
   },
 });
