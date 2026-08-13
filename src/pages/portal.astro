@@ -1,0 +1,176 @@
+---
+/**
+ * portal.astro — Ruta: /portal
+ *
+ * Página de ensamblaje del nuevo layout editorial Fase 1.
+ * Esta página NO reemplaza el index.astro existente.
+ * Cuando esté aprobada, se puede hacer swap a /index.
+ *
+ * Arquitectura:
+ * 1. CinematicHeroV2     — Hero 100dvh con GSAP scrub-scroll
+ * 2. BentoPortal         — Grid Bento 3 bloques (A: Full-bleed | B: 2+1+2 | C: 4+Engine+4)
+ *    └─ SidebarPortal    — Columna lateral de 320px (desktop) / scroll horizontal (mobile)
+ * 3. ImmersiveSlider     — Slider 100dvh auto-advance con GSAP clipPath
+ */
+import LayoutPortal from '../layouts/LayoutPortal.astro';
+import CinematicHeroV2 from '../components/CinematicHeroV2.astro';
+import BentoPortal from '../components/BentoPortal.astro';
+import ImmersiveSlider from '../components/ImmersiveSlider.astro';
+import SidebarPortal from '../components/SidebarPortal.astro';
+
+import { getCollection } from 'astro:content';
+
+// ─── DATA PHASE ──────────────────────────────────────────────────────────────
+// Recopilamos todas las colecciones. Cualquier colección inexistente falla
+// silenciosamente para no romper el build.
+
+let essaysRaw:        any[] = [];
+let architecturesRaw: any[] = [];
+let visualSignalsRaw: any[] = [];
+let ensayosRaw:       any[] = [];
+let capsulasRaw:      any[] = [];
+
+try { essaysRaw        = await getCollection('essays'); }        catch {}
+try { architecturesRaw = await getCollection('architectures'); } catch {}
+try { visualSignalsRaw = await getCollection('visual_signals'); } catch {}
+try { ensayosRaw       = await getCollection('ensayos'); }       catch {}
+try { capsulasRaw      = await getCollection('capsulas'); }      catch {}
+
+// ─── NORMALIZADOR: Transforma cualquier post en el formato común de Post ─────
+const normalize = (post: any, col: string) => ({
+  id:         post.id,
+  title:      post.data.title       ?? 'Sin título',
+  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
+  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       `/${col.replace('_', '-')}/${post.id}`,
+  collection: col,
+  date:       post.data.date        ? String(post.data.date) : undefined,
+  author:     post.data.author      ?? 'TGP',
+});
+
+// ─── SORT HELPER ─────────────────────────────────────────────────────────────
+const sortByLatest = (a: any, b: any) => {
+  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : 0;
+  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : 0;
+  return dateB - dateA || b.id.localeCompare(a.id);
+};
+
+// ─── POOLS NORMALIZADOS ───────────────────────────────────────────────────────
+const essays        = [...essaysRaw]       .sort(sortByLatest).map(p => normalize(p, 'essays'));
+const architectures = [...architecturesRaw].sort(sortByLatest).map(p => normalize(p, 'architectures'));
+const visualSignals = [...visualSignalsRaw].sort(sortByLatest).map(p => normalize(p, 'visual_signals'));
+const ensayos       = [...ensayosRaw]      .sort(sortByLatest).map(p => normalize(p, 'ensayos'));
+const capsulas      = [...capsulasRaw]     .sort(sortByLatest).map(p => normalize(p, 'capsulas'));
+
+// ─── POOL GLOBAL MEZCLADO ─────────────────────────────────────────────────────
+// Intercalamos colecciones para el efecto de diversidad editorial en el grid
+const interleave = (...arrays: any[][]) => {
+  const maxLen = Math.max(...arrays.map(a => a.length));
+  const result: any[] = [];
+  for (let i = 0; i < maxLen; i++) {
+    arrays.forEach(arr => { if (arr[i]) result.push(arr[i]); });
+  }
+  return result;
+};
+
+const allPosts = interleave(ensayos, essays, architectures, visualSignals, capsulas);
+
+// ─── DISTRIBUCIÓN DE POSTS ────────────────────────────────────────────────────
+
+// HERO: el post más reciente de todas las colecciones
+const heroPost = allPosts[0] ?? {
+  id: 'fallback',
+  title: 'The Great Puzzle',
+  subtitle: 'Portal Editorial 2026',
+  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
+  link: '#',
+  collection: 'portal',
+};
+
+// BENTO: los siguientes 14 posts (Bloque A ya usó el pos [0])
+// El BentoPortal distribuye internamente: [1]=hero-bloque-A, [2-6]=cluster, [7-14]=array
+const bentoPosts = allPosts.slice(1, 15);
+
+// SIDEBAR: una selección curada de posts de distintas colecciones
+const sidebarPosts = [
+  ...ensayos.slice(0, 3),
+  ...essays.slice(0, 2),
+  ...architectures.slice(0, 2),
+  ...visualSignals.slice(0, 1),
+].slice(0, 8);
+
+// IMMERSIVE SLIDER: los posts más fotogénicos (imagen grande requerida)
+const sliderPosts = [
+  ...ensayos.slice(0, 3),
+  ...essays.slice(0, 2),
+  ...visualSignals.slice(0, 2),
+  ...architectures.slice(0, 1),
+].slice(0, 8);
+---
+
+<LayoutPortal 
+  title="TGP — Portal Editorial | The Great Puzzle"
+  description="Portal editorial digital de The Great Puzzle. Ensayos, arquitecturas, señales visuales y cápsulas de pensamiento contemporáneo."
+>
+
+  {/* ================================================================
+      1. CINEMATIC HERO V2
+      Ocupa el 100dvh inicial. GSAP scrub lo disuelve al scrollear,
+      revelando el grid de contenido por debajo.
+  ================================================================= */}
+  <CinematicHeroV2 post={heroPost} />
+
+  {/* ── Divisor de sección entre hero y bento ── */}
+  <div class="portal-section-label">
+    <span>El Archivo</span>
+  </div>
+
+  {/* ================================================================
+      2. GRID BENTO + SIDEBAR
+      .portal-layout-wrapper: 2 cols en desktop (1fr + 320px)
+      1 col en tablet/mobile (sidebar va abajo)
+  ================================================================= */}
+  <div id="content-grid" class="portal-layout-wrapper">
+
+    {/* Bento Principal (col-1) */}
+    <div class="bento-main-col min-w-0">
+      <BentoPortal posts={bentoPosts} />
+    </div>
+
+    {/* Sidebar (col-2) — sticky en desktop */}
+    <div class="sidebar-main-col">
+      <div class="sidebar-portal-sticky">
+        <SidebarPortal 
+          posts={sidebarPosts} 
+          title="También en TGP" 
+        />
+      </div>
+    </div>
+
+  </div>
+
+  {/* ── Divisor antes del slider inmersivo ── */}
+  <div class="portal-section-label">
+    <span>Inmersivo</span>
+  </div>
+
+  {/* ================================================================
+      3. IMMERSIVE SLIDER
+      Sección 100dvh con auto-slider de tarjetas gigantes.
+      Transición: GSAP clipPath horizontal (wipe cinematográfico).
+  ================================================================= */}
+  <ImmersiveSlider posts={sliderPosts} interval={6000} />
+
+  {/* ── Footer divisor de marca ── */}
+  <div class="portal-footer-divider">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="w-8 h-8 rounded-full bg-copper-ember flex items-center justify-center text-[8px] font-bold text-black font-tgp-tech group-hover:scale-110 transition-transform">
+        TGP
+      </span>
+      <span class="font-tgp-tech text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember transition-colors duration-300">
+        The Great Puzzle
+      </span>
+    </a>
+  </div>
+
+</LayoutPortal>

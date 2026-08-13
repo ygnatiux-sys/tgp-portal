@@ -8,12 +8,10 @@ import { exec } from 'child_process';
 const isBuild = process.argv.includes('build');
 
 export default defineConfig({
-  output: 'static', 
-  ...(isBuild ? {
-    adapter: cloudflare({
-      compatibilityDate: '2026-04-28'
-    })
-  } : {}),
+  output: 'hybrid', // Crucial: Mantiene la web rápida, pero permite que el CMS funcione.
+  adapter: cloudflare({
+    compatibilityDate: '2026-04-28'
+  }),
   
   server: {
     open: true, // Abre el sitio principal en el navegador automáticamente

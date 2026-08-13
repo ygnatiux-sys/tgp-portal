@@ -1,0 +1,180 @@
+---
+/**
+ * SidebarPortal.astro
+ * Columna lateral de cards verticales para el portal editorial.
+ * - Desktop: columna fija de 320px a la derecha del Bento
+ * - Mobile: sección horizontal con scroll snap
+ *
+ * Cards mínimas: imagen + badge de colección + título + folio (autor/fecha)
+ */
+
+interface Post {
+  title: string;
+  subtitle?: string;
+  image: string;
+  link: string;
+  collection: string;
+  date?: string;
+  author?: string;
+  id: string;
+}
+
+interface Props {
+  posts: Post[];
+  title?: string;
+}
+
+const { posts, title = "También en TGP" } = Astro.props;
+
+const sidebarPosts = posts.slice(0, 8); // máximo 8 en sidebar
+
+const formatCollection = (col: string) =>
+  col.replace('_', ' ').replace('-', ' ')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+---
+
+<aside class="sidebar-portal" aria-label="Lecturas recomendadas">
+
+  {/* Header de sección */}
+  <div class="sidebar-header px-0 mb-6 pb-4 border-b border-white/8">
+    <span class="font-tgp-tech text-[8px] tracking-[0.6em] uppercase text-copper-ember">
+      ——— {title}
+    </span>
+  </div>
+
+  {/* Lista de cards verticales */}
+  <nav class="sidebar-cards-container" aria-label="Artículos relacionados">
+    {sidebarPosts.map((post, i) => (
+      <a
+        href={post.link}
+        class="sidebar-card group flex gap-4 py-5 border-b border-white/5 hover:border-white/15 transition-all duration-500"
+        aria-label={`Leer: ${post.title}`}
+      >
+        {/* Thumbnail cuadrado */}
+        <div class="sidebar-thumbnail shrink-0 w-16 h-16 overflow-hidden rounded-sm bg-black relative">
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-full object-cover grayscale brightness-60 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700"
+            loading="lazy"
+          />
+          {/* Número de índice (hover reveal) */}
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/60">
+            <span class="font-tgp-tech text-[9px] text-copper-ember">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+
+        {/* Metadata + Título */}
+        <div class="flex flex-col justify-between min-w-0">
+          {/* Badge de colección */}
+          <span class="font-tgp-tech text-[7px] tracking-[0.5em] uppercase text-copper-ember/70 mb-1.5">
+            {formatCollection(post.collection)}
+          </span>
+
+          {/* Título */}
+          <h3 class="font-tgp-gloock text-sm text-white leading-snug group-hover:text-copper-ember transition-colors duration-500 line-clamp-2">
+            {post.title}
+          </h3>
+
+          {/* Folio: autor o fecha */}
+          <div class="mt-2 flex items-center gap-3">
+            {post.author && (
+              <span class="font-tgp-tech text-[7px] tracking-[0.3em] uppercase text-white/25">
+                {post.author}
+              </span>
+            )}
+            {post.date && (
+              <span class="font-tgp-tech text-[7px] tracking-[0.3em] uppercase text-white/15">
+                {new Date(post.date).toLocaleDateString('es-AR', { month: 'short', year: 'numeric' })}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Arrow: aparece en hover */}
+        <div class="shrink-0 self-center ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg class="w-3 h-3 text-copper-ember group-hover:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </a>
+    ))}
+  </nav>
+
+  {/* Footer: link al archivo completo */}
+  <div class="sidebar-footer mt-6 pt-4">
+    <a 
+      href="/ensayos"
+      class="group flex items-center gap-3 text-[8px] tracking-[0.5em] uppercase font-tgp-tech text-white/20 hover:text-copper-ember transition-colors duration-300"
+    >
+      Ver el archivo completo
+      <span class="w-4 h-px bg-current group-hover:w-8 transition-all duration-500"></span>
+    </a>
+  </div>
+
+</aside>
+
+<style>
+  /* Desktop: columna estática */
+  .sidebar-portal {
+    padding: 0;
+  }
+
+  /* Las cards tienen transiciones suaves al hover */
+  .sidebar-card {
+    position: relative;
+    text-decoration: none;
+  }
+  .sidebar-card::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #B87333;
+    transform: scaleY(0);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
+  }
+  .sidebar-card:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* Mobile: scroll horizontal con snap */
+  @media (max-width: 1024px) {
+    .sidebar-cards-container {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+      scrollbar-width: none; /* Firefox */
+    }
+    .sidebar-cards-container::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+    .sidebar-card {
+      flex-direction: column;
+      flex-shrink: 0;
+      width: 220px;
+      scroll-snap-align: start;
+      border-bottom: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      padding-right: 1rem;
+    }
+    .sidebar-card::before {
+      display: none;
+    }
+    .sidebar-thumbnail {
+      width: 100%;
+      height: 140px;
+      margin-bottom: 0.75rem;
+    }
+  }
+</style>

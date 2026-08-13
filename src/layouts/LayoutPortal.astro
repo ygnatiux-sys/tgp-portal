@@ -1,0 +1,156 @@
+---
+/**
+ * LayoutPortal.astro
+ * Layout optimizado para la homepage de gran densidad editorial.
+ * Derivado de Layout.astro — mantiene navbar glassmorphism + GSAP lifecycle.
+ * Sin la sección de intro de marca (esa lógica vive en portal.astro).
+ */
+import '../styles/global.css';
+
+// @fontsource — mismas fuentes que Layout.astro base
+import '@fontsource/gloock/400.css';
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/700.css';
+import '@fontsource/bodoni-moda/400.css';
+import '@fontsource/bodoni-moda/600.css';
+import '@fontsource/fraunces/900.css';
+import '@fontsource/fraunces/700.css';
+import '@fontsource/syne/800.css';
+import '@fontsource/syne/700.css';
+import '@fontsource/syne/400.css';
+import '@fontsource/dm-serif-display/400.css';
+import '@fontsource/dm-serif-display/400-italic.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/lora/600.css';
+import '@fontsource/inter/100.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/700.css';
+import '@fontsource/outfit/100.css';
+import '@fontsource/outfit/300.css';
+import '@fontsource/outfit/500.css';
+import '@fontsource/space-grotesk/300.css';
+import '@fontsource/space-grotesk/700.css';
+import '@fontsource/epilogue/100.css';
+import '@fontsource/epilogue/600.css';
+import '@fontsource/epilogue/900.css';
+import '@fontsource/manrope/800.css';
+import '@fontsource/ibm-plex-mono/300.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/plus-jakarta-sans/200.css';
+import '@fontsource/plus-jakarta-sans/300.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/plus-jakarta-sans/800.css';
+
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { 
+  title, 
+  description = "The Great Puzzle — Editorial Platform",
+  ogImage = "/og-default.jpg"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="bg-racing-green text-white antialiased selection:bg-copper-ember selection:text-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+
+  <body class="min-h-screen relative overflow-x-hidden bg-racing-green">
+
+    {/* ================================================================
+        NAVBAR: Glassmorphism Bridge — aparece al 50vh via GSAP
+        transition:persist para que no parpadee en navegaciones
+    ================================================================= */}
+    <header 
+      id="portal-glass-bridge" 
+      class="fixed top-0 left-0 w-full z-100 px-6 py-6 opacity-0 -translate-y-full pointer-events-none" 
+      transition:persist
+    >
+      <nav class="max-w-[1600px] mx-auto flex items-center justify-between px-10 py-4 rounded-full backdrop-blur-[32px] saturate-180 border border-white/10 bg-black/30 transition-all duration-700 pointer-events-auto shadow-[0_30px_60px_-12px_rgba(0,0,0,0.35)]">
+        
+        {/* Logo + Brand */}
+        <div class="flex items-center gap-5">
+          <a href="/" class="w-9 h-9 rounded-full bg-copper-ember shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] flex items-center justify-center text-[9px] font-bold text-black font-tgp-tech hover:scale-110 transition-transform">
+            TGP
+          </a>
+          <span class="font-tgp-serif tracking-[0.4em] text-[9px] uppercase hidden md:block opacity-60 text-white">
+            The Great Puzzle • 2026
+          </span>
+        </div>
+
+        {/* Navigation Links */}
+        <div class="flex items-center gap-8 font-tgp-tech text-[9px] tracking-[0.3em] uppercase font-medium text-white/70">
+          <a href="/ensayos"      class="hover:text-copper-ember transition-all duration-300">Ensayos</a>
+          <a href="/essays"       class="hover:text-copper-ember transition-all duration-300">Essays</a>
+          <a href="/architectures" class="hover:text-copper-ember transition-all duration-300">Architectures</a>
+          <a href="/visual-signals" class="hover:text-copper-ember transition-all duration-300">Signals</a>
+          <a href="/capsulas"     class="px-5 py-2 bg-copper-ember text-black rounded-full font-bold hover:bg-white hover:scale-105 transition-all duration-500 shadow-lg shadow-copper-ember/20">
+            Cápsulas
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    {/* Global ambient radial gradient */}
+    <div class="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(10,28,21,0.95),rgba(5,10,8,1))]"></div>
+
+    {/* Page Content */}
+    <slot />
+
+    {/* ================================================================
+        GSAP: Navbar entrance + ScrollTrigger lifecycle management
+        (Idéntico al patrón del Layout.astro base para consistencia)
+    ================================================================= */}
+    <script>
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const initPortalNavbar = () => {
+        const nav = document.getElementById('portal-glass-bridge');
+        if (!nav) return;
+
+        gsap.set(nav, { opacity: 0, y: -100 });
+
+        ScrollTrigger.create({
+          start: () => window.innerHeight * 0.5,
+          onEnter:     () => gsap.to(nav, { opacity: 1, y: 0,    duration: 1.2, pointerEvents: 'auto', ease: 'expo.out' }),
+          onLeaveBack: () => gsap.to(nav, { opacity: 0, y: -100, duration: 0.8, pointerEvents: 'none', ease: 'expo.in'  }),
+        });
+      };
+
+      // Lifecycle Protocol: Init on every page load (compatible con ClientRouter)
+      document.addEventListener('astro:page-load', () => {
+        initPortalNavbar();
+      });
+
+      // Lifecycle Protocol: Garbage Collection before page swap
+      document.addEventListener('astro:before-swap', () => {
+        ScrollTrigger.getAll().forEach(t => t.kill());
+      });
+    </script>
+
+  </body>
+</html>

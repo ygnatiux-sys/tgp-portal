@@ -1,0 +1,471 @@
+---
+/**
+ * BentoPortal.astro
+ * Sistema de Grid Bento en 3 bloques para el portal editorial TGP.
+ *
+ * BLOQUE A — Full-bleed Protagonista (1 card, 21:9)
+ * BLOQUE B — Cluster 2+1+2 (5 cards en grid asimétrico)
+ * BLOQUE C — Array 4+Engine+4 (8 cards estándar + 1 EngineCard auto-slider)
+ *
+ * Recibe un array de `posts` (mínimo 14 recomendado) y los distribuye.
+ */
+
+interface Post {
+  title: string;
+  subtitle?: string;
+  image: string;
+  link: string;
+  collection: string;
+  date?: string;
+  author?: string;
+  id: string;
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+// Garantizar que siempre hay posts placeholder si no hay contenido
+const safePosts: Post[] = posts.length > 0 ? posts : Array.from({ length: 14 }, (_, i) => ({
+  title: `Post ${i + 1}`,
+  image: `https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=800&h=600`,
+  link:  '#',
+  collection: 'essays',
+  id: `placeholder-${i}`,
+}));
+
+// Distribución de posts por bloque
+const heroPost      = safePosts[0];                  // Bloque A: 1 post
+const clusterPosts  = safePosts.slice(1, 6);         // Bloque B: 5 posts (2+1+2)
+const enginePosts   = safePosts.slice(1, 7);         // Engine Card: rotación de posts
+const array4Before  = safePosts.slice(6, 10);        // Bloque C primero: 4 cards
+const array4After   = safePosts.slice(10, 14);       // Bloque C segundo: 4 cards
+
+// Helper: etiqueta de colección formateada
+const formatCollection = (col: string) =>
+  col.replace('_', ' ').replace('-', ' ')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+---
+
+<div id="bento-portal" class="bento-portal-root w-full">
+
+  {/* ============================================================
+      BLOQUE A — FULL-BLEED PROTAGONISTA
+      1 card que ocupa todo el ancho. Ratio 21:9 en desktop.
+  ============================================================= */}
+  <section class="bento-block-a px-0 mb-3">
+    <a 
+      href={heroPost.link}
+      class="group relative block w-full bento-hero-card overflow-hidden bg-black"
+      aria-label={`Leer: ${heroPost.title}`}
+    >
+      {/* Imagen full-bleed */}
+      <img
+        src={heroPost.image}
+        alt={heroPost.title}
+        class="w-full h-full object-cover brightness-[0.6] group-hover:brightness-[0.75] group-hover:scale-[1.03] transition-all duration-1200 ease-out"
+      />
+
+      {/* Scrim de legibilidad */}
+      <div class="absolute inset-0 bg-linear-to-r from-black/80 via-black/30 to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
+
+      {/* Content */}
+      <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-16 max-w-4xl">
+        <span class="inline-block mb-5 text-[8px] tracking-[0.6em] uppercase text-copper-ember font-tgp-tech border border-copper-ember/30 px-3 py-1.5 rounded-full w-fit bg-black/40 backdrop-blur-sm">
+          {formatCollection(heroPost.collection)} · Destacado
+        </span>
+        <h2 class="font-tgp-gloock text-3xl md:text-5xl lg:text-6xl text-white leading-[0.92] tracking-tight mb-5 group-hover:text-copper-ember transition-colors duration-700">
+          {heroPost.title}
+        </h2>
+        {heroPost.subtitle && (
+          <p class="text-white/50 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[50ch] hidden md:block">
+            {heroPost.subtitle}
+          </p>
+        )}
+        {/* CTA line */}
+        <div class="mt-8 flex items-center gap-4">
+          <span class="w-0 group-hover:w-16 h-px bg-copper-ember transition-all duration-700"></span>
+          <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember font-tgp-tech transition-colors duration-500">
+            Leer Pieza
+          </span>
+        </div>
+      </div>
+
+      {/* Corner accent */}
+      <div class="absolute top-8 right-8 w-16 h-16 border-t border-r border-white/10 group-hover:border-copper-ember/40 transition-colors duration-700 pointer-events-none"></div>
+    </a>
+  </section>
+
+  {/* ============================================================
+      BLOQUE B — CLUSTER 2 + 1 (full-bleed) + 2
+      Grid CSS con 3 filas: par arriba, 1 full-bleed, par abajo
+  ============================================================= */}
+  <section class="bento-block-b mb-3 px-3 md:px-0">
+    <div class="bento-cluster-grid">
+      
+      {/* Fila superior: 2 cards */}
+      <div class="bento-cluster-pair-top">
+        {clusterPosts.slice(0, 2).map((post, i) => (
+          <a 
+            href={post.link} 
+            class="group relative block overflow-hidden bg-black bento-cluster-card"
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6 md:p-8">
+              <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
+                {formatCollection(post.collection)} · 0{i + 1}
+              </span>
+              <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+                {post.title}
+              </h3>
+              <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {/* Fila central: 1 card full-bleed */}
+      <div class="bento-cluster-full-mid">
+        {clusterPosts[2] && (
+          <a 
+            href={clusterPosts[2].link} 
+            class="group relative block w-full h-full overflow-hidden bg-black"
+          >
+            <img
+              src={clusterPosts[2].image}
+              alt={clusterPosts[2].title}
+              class="w-full h-full object-cover brightness-[0.5] group-hover:brightness-[0.75] group-hover:scale-[1.02] transition-all duration-1000"
+            />
+            <div class="absolute inset-0 bg-linear-to-r from-black/70 via-black/30 to-transparent"></div>
+            <div class="absolute inset-0 flex items-center px-10 md:px-20">
+              <div>
+                <span class="block text-[7px] tracking-[0.6em] uppercase text-copper-ember mb-4 font-tgp-tech">
+                  {formatCollection(clusterPosts[2].collection)} · Pieza Central
+                </span>
+                <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.9] group-hover:text-copper-ember transition-colors duration-700 max-w-[20ch]">
+                  {clusterPosts[2].title}
+                </h3>
+              </div>
+            </div>
+          </a>
+        )}
+      </div>
+
+      {/* Fila inferior: 2 cards */}
+      <div class="bento-cluster-pair-bottom">
+        {clusterPosts.slice(3, 5).map((post, i) => (
+          <a 
+            href={post.link} 
+            class="group relative block overflow-hidden bg-black bento-cluster-card"
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6 md:p-8">
+              <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
+                {formatCollection(post.collection)} · 0{i + 4}
+              </span>
+              <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+                {post.title}
+              </h3>
+              <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ============================================================
+      BLOQUE C — ARRAY 4 + ENGINE CARD + 4
+      Grid de 4 columnas. El EngineCard irrumpe en full-bleed.
+  ============================================================= */}
+  <section class="bento-block-c px-3 md:px-0">
+    <div class="bento-array-grid">
+
+      {/* Primeras 4 cards estándar */}
+      {array4Before.map((post, i) => (
+        <a 
+          href={post.link} 
+          class="group relative block overflow-hidden bg-black bento-standard-card"
+        >
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
+          />
+          <div class="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-5 md:p-6">
+            <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
+              {formatCollection(post.collection)}
+            </span>
+            <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+              {post.title}
+            </h3>
+          </div>
+          {/* Index badge */}
+          <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
+            {String(i + 7).padStart(2, '0')}
+          </div>
+        </a>
+      ))}
+
+      {/* ENGINE CARD — Full-bleed auto-slider de noticias */}
+      <div 
+        id="bento-engine-card"
+        class="bento-engine-card relative overflow-hidden bg-racing-green group/engine"
+        aria-label="Engine: últimas piezas"
+      >
+        {/* Slides del Engine */}
+        {enginePosts.map((post, i) => (
+          <div 
+            class={`engine-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'}`}
+            data-engine-slide={i}
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              class="w-full h-full object-cover brightness-[0.45] transition-transform duration-[10000ms] ease-linear scale-100"
+            />
+            <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
+            <a href={post.link} class="absolute inset-0 flex flex-col justify-center px-10 md:px-16 group/card">
+              <span class="text-[7px] tracking-[0.7em] uppercase text-copper-ember mb-5 font-tgp-tech flex items-center gap-2">
+                <span class="w-1 h-1 rounded-full bg-copper-ember animate-pulse"></span>
+                {formatCollection(post.collection)} · En rotación
+              </span>
+              <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.92] tracking-tight max-w-[22ch] group-hover/card:text-copper-ember transition-colors duration-700">
+                {post.title}
+              </h3>
+              {post.subtitle && (
+                <p class="mt-5 text-white/50 text-sm font-tgp-body font-light leading-relaxed max-w-[55ch] hidden md:block">
+                  {post.subtitle}
+                </p>
+              )}
+              <div class="mt-8 flex items-center gap-4">
+                <span class="w-0 group-hover/card:w-8 h-px bg-copper-ember transition-all duration-700"></span>
+                <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover/card:text-copper-ember font-tgp-tech transition-colors duration-500">
+                  Leer Pieza
+                </span>
+              </div>
+            </a>
+          </div>
+        ))}
+
+        {/* Progress dots */}
+        <div class="absolute bottom-8 right-10 z-20 flex gap-3">
+          {enginePosts.map((_, i) => (
+            <button 
+              class="engine-dot h-1 rounded-full bg-white/20 transition-all duration-500 hover:bg-copper-ember"
+              style={`width: ${i === 0 ? '2rem' : '0.5rem'};`}
+              data-engine-dot={i}
+              aria-label={`Slide ${i + 1}`}
+            ></button>
+          ))}
+        </div>
+
+        {/* Progress bar (top) */}
+        <div class="absolute top-0 left-0 right-0 z-20 h-[1px] bg-white/10">
+          <div id="engine-progress-bar" class="h-full bg-copper-ember origin-left" style="width: 0%;"></div>
+        </div>
+
+        {/* Engine label */}
+        <div class="absolute top-6 right-8 z-20 flex items-center gap-3 opacity-30 group-hover/engine:opacity-100 transition-opacity duration-500">
+          <span class="text-[7px] tracking-[0.6em] uppercase text-white font-tgp-tech">Engine</span>
+        </div>
+      </div>
+
+      {/* Últimas 4 cards estándar */}
+      {array4After.map((post, i) => (
+        <a 
+          href={post.link} 
+          class="group relative block overflow-hidden bg-black bento-standard-card"
+        >
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
+          />
+          <div class="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-5 md:p-6">
+            <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
+              {formatCollection(post.collection)}
+            </span>
+            <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+              {post.title}
+            </h3>
+          </div>
+          <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
+            {String(i + 11).padStart(2, '0')}
+          </div>
+        </a>
+      ))}
+
+    </div>
+  </section>
+
+</div>
+
+{/* ================================================================
+    ENGINE CARD: Auto-slider con intervalo de 4 segundos
+================================================================= */}
+<script>
+  const initEngineCard = () => {
+    const slides    = document.querySelectorAll<HTMLElement>('[data-engine-slide]');
+    const dots      = document.querySelectorAll<HTMLButtonElement>('[data-engine-dot]');
+    const bar       = document.getElementById('engine-progress-bar');
+    const INTERVAL  = 4500; // ms entre slides
+    let current     = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    let barAnim: ReturnType<typeof setTimeout> | null = null;
+
+    if (slides.length === 0) return;
+
+    const goToSlide = (index: number) => {
+      slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0',   i !== index);
+        s.classList.toggle('is-active',   i === index);
+        s.style.zIndex = i === index ? '10' : '0';
+      });
+      dots.forEach((d, i) => {
+        d.style.backgroundColor = i === index ? '#B87333' : '';
+        d.style.width           = i === index ? '2rem' : '0.5rem';
+      });
+    };
+
+    const startProgress = () => {
+      if (bar) {
+        bar.style.transition = 'none';
+        bar.style.width      = '0%';
+        // Forzar reflow
+        void bar.offsetWidth;
+        bar.style.transition = `width ${INTERVAL}ms linear`;
+        bar.style.width      = '100%';
+      }
+    };
+
+    const next = () => {
+      current = (current + 1) % slides.length;
+      goToSlide(current);
+      startProgress();
+    };
+
+    // Dots: navegación manual
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        if (timer) clearInterval(timer);
+        current = i;
+        goToSlide(current);
+        startProgress();
+        timer = setInterval(next, INTERVAL);
+      });
+    });
+
+    // Pausar en hover
+    const engineCard = document.getElementById('bento-engine-card');
+    engineCard?.addEventListener('mouseenter', () => {
+      if (timer) clearInterval(timer);
+      if (bar) bar.style.transition = 'none'; // pause progress
+    });
+    engineCard?.addEventListener('mouseleave', () => {
+      timer = setInterval(next, INTERVAL);
+      startProgress();
+    });
+
+    // Iniciar
+    goToSlide(0);
+    startProgress();
+    timer = setInterval(next, INTERVAL);
+  };
+
+  document.addEventListener('astro:page-load', initEngineCard);
+</script>
+
+<style>
+  /* ===== BLOQUE A ===== */
+  .bento-hero-card {
+    aspect-ratio: 21 / 8;
+    min-height: 320px;
+  }
+  @media (max-width: 768px) {
+    .bento-hero-card {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* ===== BLOQUE B: Cluster Grid ===== */
+  .bento-cluster-grid {
+    display: grid;
+    grid-template-rows: 380px 220px 380px;
+    gap: 3px;
+    background-color: #050c08; /* gap color */
+  }
+  .bento-cluster-pair-top,
+  .bento-cluster-pair-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+  .bento-cluster-card {
+    height: 100%;
+  }
+  .bento-cluster-full-mid {
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 768px) {
+    .bento-cluster-grid {
+      grid-template-rows: 280px 180px 280px;
+    }
+  }
+
+  /* ===== BLOQUE C: Array + Engine ===== */
+  .bento-array-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    background-color: #050c08;
+  }
+  .bento-standard-card {
+    aspect-ratio: 3 / 4;
+    min-height: 240px;
+  }
+  .bento-engine-card {
+    grid-column: 1 / -1; /* Full-bleed: ocupa las 4 columnas */
+    height: 55vh;
+    min-height: 380px;
+  }
+  @media (max-width: 768px) {
+    .bento-array-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .bento-engine-card {
+      height: 60vw;
+      min-height: 280px;
+    }
+  }
+
+  /* Engine slide transition */
+  .engine-slide {
+    transition: opacity 1s ease-in-out;
+  }
+  .engine-slide.is-active img {
+    transform: scale(1.05);
+  }
+  .engine-dot {
+    transition: all 0.4s ease;
+  }
+</style>

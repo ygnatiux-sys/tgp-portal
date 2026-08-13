@@ -745,3 +745,132 @@ body {
     letter-spacing: 0.2em;
   }
 }
+
+/* =============================================================================
+   PORTAL EDITORIAL — LAYOUT SYSTEM (Fase 1)
+   Tokens del sistema Bento + prose-portal + sidebar wrapper
+   Todo bajo clases con prefijo "portal-" o "bento-" para evitar colisiones.
+   NO modifica nada del sistema de diseño existente.
+============================================================================= */
+
+@layer components {
+
+  /* ── WRAPPER PRINCIPAL: Grid de 2 columnas (Bento + Sidebar) ─────────── */
+  .portal-layout-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 3rem;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    padding-block: 2rem;
+  }
+
+  @media (max-width: 1280px) {
+    .portal-layout-wrapper {
+      grid-template-columns: 1fr 280px;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .portal-layout-wrapper {
+      /* En tablet/mobile: el bento ocupa todo, sidebar va abajo */
+      grid-template-columns: 1fr;
+      padding-inline: 0;
+    }
+  }
+
+  /* ── SIDEBAR: sticky dentro del grid ─────────────────────────────────── */
+  .sidebar-portal-sticky {
+    position: sticky;
+    top: 6rem; /* altura del navbar glassmorphism */
+    max-height: calc(100dvh - 7rem);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .sidebar-portal-sticky::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── TIPOGRAFÍA DE LECTURA LARGA (75ch) ──────────────────────────────── */
+  /* Medida de 75ch para pantallas corporativas/editoriales amplias.
+     Más generosa que los clásicos 65ch de prose, pero sin perder legibilidad. */
+  .prose-portal {
+    max-width: 75ch;
+    font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+    line-height: 1.88;
+    font-family: var(--font-tgp-body);
+    color: var(--text-current);
+    letter-spacing: 0.012em;
+  }
+
+  .prose-portal p {
+    margin-bottom: 1.6em;
+  }
+
+  .prose-portal > p:first-of-type {
+    /* Lead paragraph: un poco más grande */
+    font-size: 1.15em;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--text-current) 75%, transparent);
+  }
+
+  /* ── SECTION DIVIDER: línea tipográfica TGP ─────────────────────────── */
+  .portal-section-label {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 3rem;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .portal-section-label span {
+    font-family: var(--font-tgp-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-copper-ember) 60%, transparent);
+  }
+  .portal-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--text-current) 8%, transparent);
+  }
+
+  /* ── BENTO ROOT: max-width y gap de respiración ─────────────────────── */
+  .bento-portal-root {
+    /* El bento va de punta a punta — sin padding lateral —
+       para el efecto "periódico de alta densidad" */
+    overflow: hidden;
+  }
+
+  /* ── HERO CARD: corrección de altura mínima en móvil ──────────────────  */
+  @media (max-width: 640px) {
+    .bento-hero-card {
+      aspect-ratio: unset;
+      height: 70vw;
+      min-height: 280px;
+    }
+  }
+
+  /* ── PORTAL FOOTER: divisor con logo ────────────────────────────────── */
+  .portal-footer-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding-block: 5rem;
+    border-top: 1px solid color-mix(in srgb, var(--text-current) 8%, transparent);
+  }
+  .portal-footer-divider::before,
+  .portal-footer-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-copper-ember) 25%, transparent);
+  }
+}
