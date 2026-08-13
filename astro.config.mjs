@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
-import keystatic from '@keystatic/astro'; // <--- Importación directa
+import nodeAdapter from '@astrojs/node';
+import cloudflareAdapter from '@astrojs/cloudflare';
+import keystatic from '@keystatic/astro';
 import { tgpIntegrations } from './tgp.integrations.mjs';
 import { tgpViteConfig } from './tgp.vite.mjs';
 import { exec } from 'child_process';
@@ -9,18 +10,19 @@ const isBuild = process.argv.includes('build');
 
 export default defineConfig({
   output: 'static',
-  adapter: cloudflare({
-    compatibilityDate: '2026-04-28'
-  }),
+  
+  // Adaptador dinámico: Cloudflare para producción (build), Node para desarrollo local (dev)
+  adapter: isBuild 
+    ? cloudflareAdapter({ compatibilityDate: '2026-04-28' }) 
+    : nodeAdapter({ mode: 'standalone' }),
   
   server: {
     open: true, // Abre el sitio principal en el navegador automáticamente
   },
   
-  // Filtramos para que no se duplique si quedó en el otro archivo
   integrations: [
     keystatic(), 
-    ...tgpIntegrations.filter(i => i.name !== 'keystatic'),
+    ...tgpIntegrations.filter(i => i.name !== 'keystatic'), // Evitamos duplicar Keystatic
     {
       name: 'open-keystatic-admin',
       hooks: {

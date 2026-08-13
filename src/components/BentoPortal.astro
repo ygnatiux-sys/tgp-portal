@@ -238,7 +238,7 @@ const formatCollection = (col: string) =>
             <img
               src={post.image}
               alt={post.title}
-              class="w-full h-full object-cover brightness-[0.45] transition-transform duration-[10000ms] ease-linear scale-100"
+              class="w-full h-full object-cover brightness-[0.45] transition-transform duration-10000 ease-linear scale-100"
             />
             <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
             <a href={post.link} class="absolute inset-0 flex flex-col justify-center px-10 md:px-16 group/card">
@@ -277,7 +277,7 @@ const formatCollection = (col: string) =>
         </div>
 
         {/* Progress bar (top) */}
-        <div class="absolute top-0 left-0 right-0 z-20 h-[1px] bg-white/10">
+        <div class="absolute top-0 left-0 right-0 z-20 h-px bg-white/10">
           <div id="engine-progress-bar" class="h-full bg-copper-ember origin-left" style="width: 0%;"></div>
         </div>
 
