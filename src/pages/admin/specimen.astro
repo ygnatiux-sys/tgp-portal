@@ -3,8 +3,9 @@
 // Acceso: /admin/specimen
 // Propósito: Renderiza el ensayo "test-specimen" 5 veces, una por tema,
 //             para verificar la integridad tipográfica y visual del VOGUE ENGINE.
-export const prerender = true;
 
+export const prerender = true;
+import { getCollection } from 'astro:content';
 import { getEntry, render } from 'astro:content';
 import '../../styles/global.css';
 
