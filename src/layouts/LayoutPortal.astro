@@ -46,6 +46,7 @@ import '@fontsource/plus-jakarta-sans/700.css';
 import '@fontsource/plus-jakarta-sans/800.css';
 
 import { ClientRouter } from 'astro:transitions';
+import EditorialFooter from '../components/EditorialFooter.astro';
 
 interface Props {
   title: string;
@@ -70,7 +71,7 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/jpeg" href="/faviconTGP.jpeg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ClientRouter />
@@ -79,36 +80,52 @@ const {
   <body class="min-h-screen relative overflow-x-hidden bg-racing-green">
 
     {/* ================================================================
-        NAVBAR: Glassmorphism Bridge — aparece al 50vh via GSAP
-        transition:persist para que no parpadee en navegaciones
+        NAVBAR: Fixed, Floating, Collapsible Glassmorphic Pill
     ================================================================= */}
     <header 
       id="portal-glass-bridge" 
-      class="fixed top-0 left-0 w-full z-100 px-6 py-6 opacity-0 -translate-y-full pointer-events-none" 
+      class="fixed top-4 left-1/2 -translate-x-1/2 z-100 max-w-[1600px] w-[calc(100%-2rem)] px-2 transition-all duration-500" 
       transition:persist
     >
-      <nav class="max-w-[1600px] mx-auto flex items-center justify-between px-10 py-4 rounded-full backdrop-blur-[32px] saturate-180 border border-white/10 bg-black/30 transition-all duration-700 pointer-events-auto shadow-[0_30px_60px_-12px_rgba(0,0,0,0.35)]">
-        
+      <nav 
+        id="main-nav-bar"
+        class="group/nav relative flex items-center justify-between px-6 py-3 transition-all duration-500 ease-out"
+      >
         {/* Logo + Brand */}
-        <div class="flex items-center gap-5">
-          <a href="/" class="w-9 h-9 rounded-full bg-copper-ember shadow-[inset_0_0_10px_rgba(0,0,0,0.5)] flex items-center justify-center text-[9px] font-bold text-black font-tgp-tech hover:scale-110 transition-transform">
-            TGP
+        <div class="brand-container flex items-center gap-3 shrink-0 transition-opacity duration-500">
+          <a href="/" class="brand-logo w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity overflow-hidden rounded-full border border-white/20 p-0.5">
+            <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
           </a>
-          <span class="font-tgp-serif tracking-[0.4em] text-[9px] uppercase hidden md:block opacity-60 text-white">
-            The Great Puzzle • 2026
-          </span>
+          <div class="brand-text hidden sm:flex items-baseline gap-2 transition-all duration-500 whitespace-nowrap">
+            <span class="font-tgp-gloock font-black text-xs tracking-[0.02em] uppercase text-white/90">
+              The Great Puzzle
+            </span>
+            <span class="font-tgp-tech text-[6px] tracking-widest text-old-silver uppercase">
+              -project-
+            </span>
+          </div>
         </div>
 
         {/* Navigation Links */}
-        <div class="flex items-center gap-8 font-tgp-tech text-[9px] tracking-[0.3em] uppercase font-medium text-white/70">
-          <a href="/ensayos"      class="hover:text-copper-ember transition-all duration-300">Ensayos</a>
-          <a href="/essays"       class="hover:text-copper-ember transition-all duration-300">Essays</a>
+        <div class="nav-links flex items-center gap-6 md:gap-8 font-tgp-tech text-[9px] tracking-[0.3em] uppercase font-medium text-white/80 transition-all duration-500">
+          <a href="/ensayos" class="hover:text-copper-ember transition-all duration-300">Ensayos</a>
+          <a href="/essays" class="hover:text-copper-ember transition-all duration-300">Essays</a>
           <a href="/architectures" class="hover:text-copper-ember transition-all duration-300">Architectures</a>
           <a href="/visual-signals" class="hover:text-copper-ember transition-all duration-300">Signals</a>
-          <a href="/capsulas"     class="px-5 py-2 bg-copper-ember text-black rounded-full font-bold hover:bg-white hover:scale-105 transition-all duration-500 shadow-lg shadow-copper-ember/20">
-            Cápsulas
-          </a>
+          <a href="/capsulas" class="hover:text-copper-ember transition-all duration-300">Cápsulas</a>
         </div>
+
+        {/* Hamburger Icon Trigger */}
+        <button 
+          id="nav-toggle-btn"
+          class="hamburger-btn flex items-center gap-2 text-[9px] font-tgp-tech uppercase tracking-widest text-white/80 hover:text-copper-ember transition-all cursor-pointer overflow-hidden whitespace-nowrap"
+          aria-label="Toggle Menu"
+        >
+          <span class="hamburger-label hidden sm:inline">Menu</span>
+          <svg class="w-4 h-4 fill-none stroke-current shrink-0" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
       </nav>
     </header>
 
@@ -118,33 +135,46 @@ const {
     {/* Page Content */}
     <slot />
 
-    {/* ================================================================
-        GSAP: Navbar entrance + ScrollTrigger lifecycle management
-        (Idéntico al patrón del Layout.astro base para consistencia)
-    ================================================================= */}
+    <EditorialFooter />
+
+
+
     <script>
       import { gsap } from 'gsap';
       import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
       gsap.registerPlugin(ScrollTrigger);
 
-      const initPortalNavbar = () => {
-        const nav = document.getElementById('portal-glass-bridge');
-        if (!nav) return;
+      const setupNavScroll = () => {
+        const header = document.getElementById('portal-glass-bridge') || document.getElementById('glass-bridge');
+        const toggleBtn = document.getElementById('nav-toggle-btn');
+        if (!header) return;
 
-        gsap.set(nav, { opacity: 0, y: -100 });
+        const handleScroll = () => {
+          if (window.scrollY > 60) {
+            header.classList.add('nav-collapsed');
+          } else {
+            header.classList.remove('nav-collapsed', 'is-open');
+          }
+        };
 
-        ScrollTrigger.create({
-          start: () => window.innerHeight * 0.5,
-          onEnter:     () => gsap.to(nav, { opacity: 1, y: 0,    duration: 1.2, pointerEvents: 'auto', ease: 'expo.out' }),
-          onLeaveBack: () => gsap.to(nav, { opacity: 0, y: -100, duration: 0.8, pointerEvents: 'none', ease: 'expo.in'  }),
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        toggleBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          header.classList.toggle('is-open');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!header.contains(e.target as Node)) {
+            header.classList.remove('is-open');
+          }
         });
       };
 
-      // Lifecycle Protocol: Init on every page load (compatible con ClientRouter)
-      document.addEventListener('astro:page-load', () => {
-        initPortalNavbar();
-      });
+      document.addEventListener('astro:page-load', setupNavScroll);
+      setupNavScroll();
 
       // Lifecycle Protocol: Garbage Collection before page swap
       document.addEventListener('astro:before-swap', () => {

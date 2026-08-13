@@ -8,7 +8,11 @@
 @theme {
   /* ===== PALETA DE ACENTO GLOBAL ===== */
   --color-racing-green: #0A1C15;
-  --color-copper-ember: #B87333;
+  --color-copper-ember: #E3DDD3;
+  --color-old-silver: #8A9597;
+  --color-alpaca-silver: #8E9E99;
+  --color-charcoal-wood: #211A16;
+  --color-charcoal-slate: #36454F;
 
   /* ===== FAMILIAS TIPOGRÁFICAS DEL DICCIONARIO ===== */
   /* Serifs editoriales */
@@ -41,7 +45,7 @@
   /* Default (Dark) */
   --color-theme-bg:      #0A1C15;
   --color-theme-text:    #ffffff;
-  --color-theme-accent:  #B87333;
+  --color-theme-accent:  #E3DDD3;
   --color-theme-muted:   color-mix(in srgb, #ffffff 15%, transparent);
   --color-theme-glass:   color-mix(in srgb, #0A1C15, transparent 82%);
 }
@@ -106,6 +110,152 @@ body {
   font-family: var(--font-tgp-body);
 }
 
+::selection {
+  background-color: var(--color-charcoal-slate);
+  color: #E3DDD3;
+}
+
+/* ==========================================================================
+   FLOATING NAVBAR COLLAPSIBLE PHYSICS
+   ========================================================================== */
+#portal-glass-bridge, #glass-bridge {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Header retains its full width structural presence */
+}
+
+#main-nav-bar, .tgp-nav {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Links Container Transition */
+header .nav-links {
+  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 1000px; 
+  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* When scrolled (collapsed) and not hovered/open -> Hide links & brand */
+header.nav-collapsed:not(:hover):not(.is-open) .nav-links {
+  max-width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+header.nav-collapsed:not(:hover):not(.is-open) .brand-container {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hamburger Button Transition */
+header .hamburger-btn {
+  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease;
+  max-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  padding-left: 0;
+  padding-right: 0;
+  border: 1px solid transparent;
+}
+
+/* When scrolled (collapsed) and not hovered/open -> Show hamburger */
+header.nav-collapsed:not(:hover):not(.is-open) .hamburger-btn {
+  max-width: 150px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* On hover or open -> Restore links & brand, hide hamburger */
+header.nav-collapsed:hover .nav-links,
+header.nav-collapsed.is-open .nav-links {
+  max-width: 1000px !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+header.nav-collapsed:hover .brand-container,
+header.nav-collapsed.is-open .brand-container {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* ==========================================================================
+   GLOBAL SIDE ARROWS PHYSICS
+   ========================================================================== */
+
+
+.side-nav-btn {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1; /* Default visible when not scrolled */
+}
+
+/* Hide when scrolled, unless the zone is hovered */
+body.is-scrolled .side-nav-zone:not(:hover) .side-nav-btn {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+}
+
+body.is-scrolled .side-nav-zone:hover .side-nav-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* ==========================================================================
+   GLOBAL STYLE FOR PORTAL HOME & MENUS (EXCEPT DYNAMIC VIBE POSTS)
+   ========================================================================== */
+body:not([data-theme]) {
+  color: var(--color-alpaca-silver);
+}
+
+/* Base Headings, Links and Buttons on Home / Menus */
+body:not([data-theme]) h1,
+body:not([data-theme]) h2,
+body:not([data-theme]) h3,
+body:not([data-theme]) h4,
+body:not([data-theme]) a,
+body:not([data-theme]) button,
+body:not([data-theme]) span:not(.font-tgp-tech),
+#main-nav-bar, #main-nav-bar *,
+header, header * {
+  color: var(--color-alpaca-silver);
+  transition: color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
+}
+
+/* Hover/Selected States on Home / Menus */
+body:not([data-theme]) h1:hover,
+body:not([data-theme]) h2:hover,
+body:not([data-theme]) h3:hover,
+body:not([data-theme]) a:hover,
+body:not([data-theme]) button:hover,
+body:not([data-theme]) .group:hover h3,
+body:not([data-theme]) .group\/card:hover h3,
+body:not([data-theme]) .group\/engine:hover h3,
+body:not([data-theme]) .group\/byblos:hover h3,
+body:not([data-theme]) .bento-standard-card:hover h3,
+body:not([data-theme]) .bento-cluster-card:hover h3,
+#main-nav-bar a:hover, #main-nav-bar button:hover,
+header a:hover, header button:hover {
+  color: var(--color-old-silver) !important;
+}
+
+/* Lower brightness for secondary text classes, using alpaca base */
+body:not([data-theme]) p,
+body:not([data-theme]) .text-white\/40,
+body:not([data-theme]) .text-white\/30,
+body:not([data-theme]) .text-white\/20,
+body:not([data-theme]) .text-white\/25,
+body:not([data-theme]) .text-white\/15,
+body:not([data-theme]) .text-copper-ember\/60,
+body:not([data-theme]) .text-copper-ember\/40,
+body:not([data-theme]) .text-copper-ember\/30 {
+  color: color-mix(in srgb, var(--color-alpaca-silver) 50%, transparent) !important;
+}
+
 
 @layer components {
   /* =========================================
@@ -123,7 +273,11 @@ body {
 
   .prose-tgp h1 {
     @apply text-5xl md:text-7xl leading-none mb-8;
-    color: var(--text-current);
+    color: var(--color-old-silver);
+    transition: color 0.5s ease;
+  }
+  .prose-tgp h1:hover {
+    color: var(--color-copper-ember);
   }
 
   .prose-tgp h2 {
@@ -427,6 +581,11 @@ body {
       text-transform: var(--vibe-h1-transform, none) !important;
       font-size: var(--vibe-h1-size, clamp(3.5rem, 12vw, 9rem)) !important;
       font-variant: var(--vibe-h1-variant, normal) !important;
+      color: var(--color-old-silver);
+      transition: color 0.5s ease;
+    }
+    & h1:hover, & .vibe-target-h1:hover {
+      color: var(--color-copper-ember);
     }
 
     & h2, & .vibe-target-h2 {
@@ -683,6 +842,30 @@ body {
   }
 
   /* 03. Atmospheric Dust (Floating Particles) */
+  .card-grain {
+    position: absolute;
+    inset: -200%;
+    width: 400%;
+    height: 400%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 20;
+    animation: grain-shift 8s steps(10) infinite;
+  }
+  .card-scratches {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/scratches.png');
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 21;
+    mix-blend-mode: overlay;
+    animation: scratch-flicker 0.2s steps(1) infinite;
+  }
+
   .atmospheric-dust {
     position: absolute;
     inset: 0;
@@ -728,7 +911,7 @@ body {
     position: absolute;
     width: 10px;
     height: 10px;
-    border-color: #B87333;
+    border-color: #E3DDD3;
     border-style: solid;
   }
   .focal-square::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
@@ -740,7 +923,7 @@ body {
     right: 0;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 8px;
-    color: #B87333;
+    color: #E3DDD3;
     text-transform: uppercase;
     letter-spacing: 0.2em;
   }
@@ -755,11 +938,10 @@ body {
 
 @layer components {
 
-  /* ── WRAPPER PRINCIPAL: Grid de 2 columnas (Bento + Sidebar) ─────────── */
   .portal-layout-wrapper {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 3rem;
+    grid-template-columns: 1fr 210px;
+    gap: 2.5rem;
     max-width: 1600px;
     margin-inline: auto;
     padding-inline: 1.5rem;
@@ -768,7 +950,7 @@ body {
 
   @media (max-width: 1280px) {
     .portal-layout-wrapper {
-      grid-template-columns: 1fr 280px;
+      grid-template-columns: 1fr 195px;
       gap: 2rem;
     }
   }

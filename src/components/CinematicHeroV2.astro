@@ -22,126 +22,119 @@ interface Post {
 }
 
 interface Props {
-  post: Post;
+  posts: Post[];
 }
 
-const { post } = Astro.props;
-
-const {
-  title    = "TGP ARCHIVE",
-  subtitle,
-  image    = "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670",
-  link     = "#",
-  collection = "featured",
-  date,
-  author,
-} = post;
+const { posts } = Astro.props;
 
 // Formatear colección para el badge
-const collectionLabel = collection
-  .replace('_', ' ')
-  .replace('visual signals', 'Visual Signals')
-  .toUpperCase();
+const formatCollection = (col: string) =>
+  col.replace('_', ' ').replace('visual signals', 'Visual Signals').toUpperCase();
 ---
 
 {/* ===== HERO CINEMATICO V2 ===== */}
-{/* El id="hero-v2" es el target del GSAP scrub */}
 <section 
   id="hero-v2" 
-  class="relative h-dvh w-full overflow-hidden flex items-end"
+  class="relative h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] mx-auto mt-4 overflow-hidden flex items-end rounded-3xl bg-black"
   style="transform-origin: top center;"
 >
-
   {/* ---- BACKGROUND ENGINE ---- */}
-  <div class="absolute inset-0 z-0">
-    {/* Cine Wrapper: Ken Burns drift animado */}
-    <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
-      <img
-        id="hero-v2-img"
-        src={image}
-        alt={title}
-        class="w-full h-full object-cover brightness-[0.55] contrast-[1.08]"
-      />
-    </div>
+  <div id="hero-v2-slides-container" class="absolute inset-0 z-0 w-full h-full">
+    {posts.map((post, i) => (
+      <div 
+        class={`hero-v2-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'}`}
+        data-hero-slide={i}
+      >
+        <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
+          <img
+            src={post.image}
+            alt={post.title}
+            class="w-full h-full object-cover brightness-[0.55] contrast-[1.08]"
+          />
+        </div>
 
-    {/* Scrim: gradiente bottom-to-top (para legibilidad del texto) */}
-    <div class="absolute inset-0 bg-linear-to-t from-[#050c08] via-black/50 to-transparent z-10"></div>
+        {/* Scrims */}
+        <div class="absolute inset-0 bg-linear-to-t from-[#050c08] via-black/50 to-transparent z-10"></div>
+        <div class="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent z-10"></div>
+        
+        {/* Granular Ken Burns local elements */}
+        <div class="card-grain opacity-30 pointer-events-none"></div>
+        <div class="card-scratches opacity-30 pointer-events-none"></div>
+        <div class="atmospheric-dust z-20"></div>
 
-    {/* Scrim lateral derecho: crea profundidad asimétrica */}
-    <div class="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent z-10"></div>
+        {/* Content Layer */}
+        <div class="absolute inset-0 z-30 flex flex-col justify-end max-w-[1600px] mx-auto px-8 md:px-16 pb-20 md:pb-28 w-full h-full">
+          <div class="hero-v2-badge flex items-center gap-4 mb-8">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 border border-copper-ember/40 text-copper-ember text-[8px] tracking-[0.6em] uppercase rounded-full bg-black/50 backdrop-blur-md font-tgp-tech">
+              <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
+              {formatCollection(post.collection)}
+            </span>
+            <span class="text-white/20 text-[8px] tracking-[0.5em] uppercase font-tgp-tech hidden md:block">
+              ——— Vol. 2026 ———
+            </span>
+          </div>
 
-    {/* Grain overlay — sutil, editorial */}
-    <div class="texture-grain opacity-30 absolute inset-0 z-20 pointer-events-none"></div>
+          <h1 
+            class="font-tgp-gloock text-3xl md:text-5xl lg:text-6xl font-normal leading-[1.05] tracking-[-0.02em] text-old-silver hover:text-copper-ember transition-colors duration-500 cursor-pointer"
+            style="max-width: 25ch;"
+          >
+            {post.title}
+          </h1>
+
+          {post.subtitle && (
+            <p class="mt-6 text-copper-ember/60 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide">
+              {post.subtitle}
+            </p>
+          )}
+
+          <div class="hero-v2-folio mt-10 flex items-center gap-8">
+            {post.author && (
+              <span class="text-[9px] tracking-[0.35em] uppercase text-copper-ember/40 font-tgp-tech">
+                {post.author}
+              </span>
+            )}
+            {post.date && (
+              <span class="text-[9px] tracking-[0.35em] uppercase text-copper-ember/30 font-tgp-tech">
+                {new Date(post.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}
+              </span>
+            )}
+            <a 
+              href={post.link}
+              class="ml-auto inline-flex items-center gap-5 px-10 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-alpaca-silver text-[9px] tracking-[0.45em] uppercase font-bold font-tgp-tech rounded-sm hover:bg-charcoal-wood/5 hover:text-old-silver hover:border-charcoal-wood/10 transition-all duration-700 hover:scale-105 shadow-2xl shadow-black/60"
+            >
+              Leer Pieza
+              <span class="w-6 h-px bg-current inline-block transition-all duration-700"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
   </div>
 
-  {/* ---- CONTENT LAYER ---- */}
-  <div id="hero-v2-content" class="relative z-30 w-full max-w-[1600px] mx-auto px-8 md:px-16 pb-20 md:pb-28">
-
-    {/* Badge de colección + número de edición */}
-    <div class="hero-v2-badge flex items-center gap-4 mb-8 opacity-0">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 border border-copper-ember/40 text-copper-ember text-[8px] tracking-[0.6em] uppercase rounded-full bg-black/50 backdrop-blur-md font-tgp-tech">
-        <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
-        {collectionLabel}
-      </span>
-      <span class="text-white/20 text-[8px] tracking-[0.5em] uppercase font-tgp-tech hidden md:block">
-        ——— Vol. 2026 ———
-      </span>
-    </div>
-
-    {/* Título principal: display XL */}
-    <h1 
-      id="hero-v2-title"
-      class="hero-v2-title font-tgp-gloock text-[13vw] md:text-[9.5vw] lg:text-[8vw] font-normal leading-[0.88] tracking-[-0.03em] text-white opacity-0"
-      style="max-width: 16ch;"
-    >
-      {title}
-    </h1>
-
-    {/* Subtítulo / Deck */}
-    {subtitle && (
-      <p class="hero-v2-subtitle mt-6 text-white/50 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide opacity-0">
-        {subtitle}
-      </p>
-    )}
-
-    {/* Folio: metadata (autor, fecha, colección) */}
-    <div class="hero-v2-folio mt-10 flex items-center gap-8 opacity-0">
-      {author && (
-        <span class="text-[9px] tracking-[0.35em] uppercase text-white/35 font-tgp-tech">
-          {author}
-        </span>
-      )}
-      {date && (
-        <span class="text-[9px] tracking-[0.35em] uppercase text-white/25 font-tgp-tech">
-          {new Date(date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}
-        </span>
-      )}
-      {/* CTA: leer el post */}
-      <a 
-        href={link}
-        class="ml-auto inline-flex items-center gap-5 px-10 py-4 bg-white text-black text-[9px] tracking-[0.45em] uppercase font-bold font-tgp-tech rounded-sm hover:bg-copper-ember hover:text-white transition-all duration-700 hover:scale-105 shadow-2xl shadow-black/60"
-      >
-        Leer Pieza
-        <span class="w-6 h-px bg-current inline-block transition-all duration-700 group-hover:w-12"></span>
-      </a>
-    </div>
+  {/* Dots de progreso */}
+  <div class="absolute bottom-10 left-8 md:left-16 z-40 flex gap-3">
+    {posts.map((_, i) => (
+      <button 
+        class="hero-dot h-1 rounded-full bg-white/20 transition-all duration-500 hover:bg-copper-ember"
+        style={`width: ${i === 0 ? '2rem' : '0.5rem'};`}
+        data-hero-dot={i}
+        aria-label={`Slide ${i + 1}`}
+      ></button>
+    ))}
   </div>
 
   {/* ---- SCROLL INDICATOR ---- */}
   <div 
     id="hero-v2-scroll-cue" 
-    class="absolute bottom-10 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3 opacity-0"
+    class="absolute bottom-10 right-8 md:right-16 z-40 flex flex-col items-center gap-3"
   >
     <span class="text-[7px] tracking-[0.6em] uppercase text-white/30 font-tgp-tech">Scroll</span>
     <div class="w-px h-12 bg-linear-to-b from-white/30 to-transparent hero-v2-scroll-line"></div>
   </div>
-
 </section>
 
 {/* ================================================================
     GSAP: Scroll-scrub del hero completo
-    El hero se encoge (scale) y desvanece (opacity) al scrollear,
-    revelando el content-grid por debajo.
 ================================================================= */}
 <script>
   import { gsap } from 'gsap';
@@ -151,49 +144,67 @@ const collectionLabel = collection
 
   const initHeroV2 = () => {
     const hero        = document.getElementById('hero-v2');
-    const title       = document.getElementById('hero-v2-title');
-    const content     = document.getElementById('hero-v2-content');
+    const slides      = document.querySelectorAll<HTMLElement>('[data-hero-slide]');
+    const dots        = document.querySelectorAll<HTMLButtonElement>('[data-hero-dot]');
     const scrollCue   = document.getElementById('hero-v2-scroll-cue');
-    const badge       = document.querySelector('.hero-v2-badge') as HTMLElement | null;
-    const subtitle    = document.querySelector('.hero-v2-subtitle') as HTMLElement | null;
-    const folio       = document.querySelector('.hero-v2-folio') as HTMLElement | null;
-    const img         = document.getElementById('hero-v2-img');
+    const INTERVAL    = 5000;
+    let current       = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
 
-    if (!hero) return;
+    if (!hero || slides.length === 0) return;
 
-    // ── 1. ENTRANCE ANIMATIONS (solo al cargar la página) ─────────
-    const tl = gsap.timeline({ delay: 0.3 });
+    // ── 1. SLIDER MACHINE ─────────
+    const goToSlide = (index: number) => {
+      slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0',   i !== index);
+        s.classList.toggle('is-active',   i === index);
+        s.style.zIndex = i === index ? '10' : '0';
 
-    tl.to(badge,    { opacity: 1, y: 0, duration: 1,    ease: 'expo.out' }, 0.0)
-      .to(title,    { opacity: 1, y: 0, duration: 1.4,  ease: 'expo.out' }, 0.2)
-      .to(subtitle, { opacity: 1, y: 0, duration: 1.2,  ease: 'expo.out' }, 0.5)
-      .to(folio,    { opacity: 1, y: 0, duration: 1,    ease: 'expo.out' }, 0.7)
-      .to(scrollCue,{ opacity: 1, duration: 1,           ease: 'power2.inOut' }, 1.0);
-
-    // Configurar estado inicial para las animaciones de entrada
-    gsap.set([badge, title, subtitle, folio], { opacity: 0, y: 40 });
-    gsap.set(scrollCue, { opacity: 0 });
-
-    // ── 2. KEN BURNS en imagen (independiente del scroll scrub) ────
-    if (img) {
-      gsap.to(img, {
-        scale: 1.06,
-        duration: 30,
-        ease: 'none',
-        repeat: -1,
-        yoyo: true,
+        // Animar entrada del contenido
+        if (i === index) {
+          const b = s.querySelector('.hero-v2-badge');
+          const t = s.querySelector('h1');
+          const sub = s.querySelector('p');
+          const f = s.querySelector('.hero-v2-folio');
+          gsap.fromTo([b, t, sub, f], 
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.08 }
+          );
+        }
       });
-    }
 
-    // ── 3. SCROLL SCRUB: El hero completo desaparece al scrollear ──
-    // El contenedor entero escala ligeramente hacia adentro y se desvanece.
-    // El contenido de abajo (#content-grid) queda "revelado" por debajo.
+      dots.forEach((d, i) => {
+        d.style.backgroundColor = i === index ? '#E3DDD3' : '';
+        d.style.width           = i === index ? '2rem' : '0.5rem';
+      });
+    };
+
+    const next = () => {
+      current = (current + 1) % slides.length;
+      goToSlide(current);
+    };
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        if (timer) clearInterval(timer);
+        current = i;
+        goToSlide(current);
+        timer = setInterval(next, INTERVAL);
+      });
+    });
+
+    // Auto-advance
+    goToSlide(0);
+    timer = setInterval(next, INTERVAL);
+
+    // ── 2. SCROLL SCRUB ─────────
     gsap.to(hero, {
       scrollTrigger: {
         trigger: hero,
         start:  'top top',
         end:    'bottom top',
-        scrub:  1.5,              // 1.5 = suavizado ligero (no 100% rígido)
+        scrub:  1.5,
         pin:    false,
       },
       opacity: 0,
@@ -202,22 +213,6 @@ const collectionLabel = collection
       ease:    'none',
     });
 
-    // El texto del hero sale a un ritmo diferente al contenedor (profundidad)
-    if (content) {
-      gsap.to(content, {
-        scrollTrigger: {
-          trigger: hero,
-          start:  'top top',
-          end:    'center top',
-          scrub:  0.8,
-        },
-        y:       -80,
-        opacity: 0,
-        ease:    'none',
-      });
-    }
-
-    // Scroll cue se oculta rápido
     if (scrollCue) {
       ScrollTrigger.create({
         trigger: hero,
@@ -227,7 +222,6 @@ const collectionLabel = collection
     }
   };
 
-  // Lifecycle: Compatible con Astro ClientRouter
   document.addEventListener('astro:page-load', initHeroV2);
 </script>
 

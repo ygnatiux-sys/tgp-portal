@@ -1,73 +1,78 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import LayoutPortal from '../../layouts/LayoutPortal.astro';
+import CinematicHeroV2 from '../../components/CinematicHeroV2.astro';
+import BentoPortal from '../../components/BentoPortal.astro';
+import SidebarPortal from '../../components/SidebarPortal.astro';
 import { getCollection } from 'astro:content';
-import FloatingBackButton from '../../components/FloatingBackButton.astro';
 
-const posts = (await getCollection('architectures')).sort((a, b) => b.id.localeCompare(a.id));
+let rawPosts: any[] = [];
+try { rawPosts = await getCollection('architectures'); } catch {}
+
+const normalize = (post: any, col: string) => ({
+  id:         post.id,
+  title:      post.data.title       ?? 'Sin título',
+  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
+  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       `/${col.replace('_', '-')}/${post.id}`,
+  collection: col,
+  date:       post.data.date        ? String(post.data.date) : undefined,
+  author:     post.data.author      ?? 'TGP',
+});
+
+const sortByLatest = (a: any, b: any) => {
+  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : 0;
+  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : 0;
+  return dateB - dateA || b.id.localeCompare(a.id);
+};
+
+const allPosts = [...rawPosts].sort(sortByLatest).map(p => normalize(p, 'architectures'));
+
+const heroPost = allPosts[0] ?? {
+  id: 'fallback',
+  title: 'Architectures',
+  subtitle: 'Spatial ontologies, structures and formal fragments.',
+  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
+  link: '#',
+  collection: 'architectures',
+};
+
+const bentoPosts = allPosts.slice(1, 15);
+const sidebarPosts = allPosts.slice(0, 8);
+const sliderPosts = allPosts.slice(0, 8);
 ---
 
-<Layout title="Archive: Architectures | The Great Puzzle">
-  <main class="bg-racing-green min-h-screen text-white overflow-hidden relative">
-    <FloatingBackButton />
+<LayoutPortal 
+  title="Architectures | The Great Puzzle"
+  description="Built realities and tectonic logic in the digital archive."
+>
+  <CinematicHeroV2 posts={allPosts} />
 
-    <header class="relative pt-48 pb-32 px-6 max-w-7xl mx-auto z-10">
-      <div class="mb-8 opacity-0 translate-y-8 animate-reveal">
-        <span class="text-copper-ember text-[10px] tracking-[0.5em] uppercase font-bold border-l-2 border-copper-ember pl-4">
-          Spatial Ontologies
-        </span>
+  <div class="portal-section-label">
+    <span>El Archivo</span>
+  </div>
+
+  <div id="content-grid" class="portal-layout-wrapper">
+    <div class="bento-main-col min-w-0">
+      <BentoPortal posts={bentoPosts} />
+    </div>
+
+    <div class="sidebar-main-col">
+      <div class="sidebar-portal-sticky">
+        <SidebarPortal posts={sidebarPosts} title="También en Architectures" />
       </div>
-      <h1 class="font-gloock text-[13vw] md:text-[10rem] font-bold leading-[0.8] tracking-[-0.04em] text-white opacity-0 translate-y-12 animate-reveal animation-delay-300">
-        Structures
-      </h1>
-      <p class="mt-12 font-sans text-xs md:text-sm tracking-[0.6em] uppercase text-gray-400 opacity-0 animate-reveal animation-delay-700 max-w-2xl px-2">
-        Built Realities • Tectonic Logic • Formal Fragments
-      </p>
-    </header>
+    </div>
+  </div>
 
-    <section class="relative z-10 px-6 max-w-7xl mx-auto pb-48">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
-        {posts.map((post, index) => (
-          <a 
-            href={`/architectures/${post.id}`} 
-            class="group relative block aspect-3/4 overflow-hidden rounded-sm bg-black border border-white/10 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-4 animate-reveal"
-            style={`animation-delay: ${800 + (index * 100)}ms`}
-          >
-            <div class="absolute inset-0 overflow-hidden">
-              <img 
-                src={post.data.hero_image || '/images/default-hero.jpg'} 
-                alt={post.data.title} 
-                class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-90 group-hover:scale-110 transition-all duration-1000"
-              />
-              <div class="absolute inset-0 bg-linear-to-tr from-black/80 via-transparent to-transparent z-10"></div>
-            </div>
-            
-            <div class="absolute inset-0 z-20 p-10 flex flex-col justify-end">
-              <h2 class="font-gloock text-3xl md:text-4xl text-white tracking-tight leading-none mb-6 group-hover:text-copper-ember transition-colors">
-                {post.data.title}
-              </h2>
-              <span class="text-[8px] tracking-[0.8em] uppercase text-copper-ember/50 font-bold">Blueprint: {post.id}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
 
-    <div class="fixed inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 80px 80px;"></div>
-  </main>
-</Layout>
 
-<style>
-  .font-gloock { font-family: 'Gloock', serif; }
-  
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(3rem); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .animate-reveal {
-    animation: reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  }
-
-  .animation-delay-300 { animation-delay: 300ms; }
-  .animation-delay-700 { animation-delay: 700ms; }
-</style>
+  <div class="portal-footer-divider">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="w-8 h-8 rounded-full bg-copper-ember flex items-center justify-center text-[8px] font-bold text-black font-tgp-tech group-hover:scale-110 transition-transform">
+        TGP
+      </span>
+      <span class="font-tgp-tech text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember transition-colors duration-300">
+        The Great Puzzle
+      </span>
+    </a>
+  </div>
+</LayoutPortal>

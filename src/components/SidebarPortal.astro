@@ -49,11 +49,11 @@ const formatCollection = (col: string) =>
     {sidebarPosts.map((post, i) => (
       <a
         href={post.link}
-        class="sidebar-card group flex gap-4 py-5 border-b border-white/5 hover:border-white/15 transition-all duration-500"
+        class="sidebar-card group flex flex-col py-6 border-b border-white/5 hover:border-white/15 transition-all duration-500"
         aria-label={`Leer: ${post.title}`}
       >
-        {/* Thumbnail cuadrado */}
-        <div class="sidebar-thumbnail shrink-0 w-16 h-16 overflow-hidden rounded-sm bg-black relative">
+        {/* Thumbnail: slightly rectangular 16/10 */}
+        <div class="sidebar-thumbnail w-full aspect-16/10 overflow-hidden rounded-2xl bg-charcoal-wood relative mb-4">
           <img
             src={post.image}
             alt={post.title}
@@ -61,27 +61,27 @@ const formatCollection = (col: string) =>
             loading="lazy"
           />
           {/* Número de índice (hover reveal) */}
-          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/60">
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-charcoal-wood/60">
             <span class="font-tgp-tech text-[9px] text-copper-ember">
               {String(i + 1).padStart(2, '0')}
             </span>
           </div>
         </div>
 
-        {/* Metadata + Título */}
-        <div class="flex flex-col justify-between min-w-0">
+        {/* Metadata + Título (20%) */}
+        <div class="flex flex-col min-w-0">
           {/* Badge de colección */}
-          <span class="font-tgp-tech text-[7px] tracking-[0.5em] uppercase text-copper-ember/70 mb-1.5">
+          <span class="font-tgp-tech text-[7px] tracking-[0.5em] uppercase text-copper-ember/70 mb-2">
             {formatCollection(post.collection)}
           </span>
 
           {/* Título */}
-          <h3 class="font-tgp-gloock text-sm text-white leading-snug group-hover:text-copper-ember transition-colors duration-500 line-clamp-2">
+          <h3 class="font-tgp-gloock text-xl text-white leading-snug group-hover:text-copper-ember transition-colors duration-500 line-clamp-2">
             {post.title}
           </h3>
 
           {/* Folio: autor o fecha */}
-          <div class="mt-2 flex items-center gap-3">
+          <div class="mt-3 flex items-center gap-3">
             {post.author && (
               <span class="font-tgp-tech text-[7px] tracking-[0.3em] uppercase text-white/25">
                 {post.author}
@@ -93,13 +93,6 @@ const formatCollection = (col: string) =>
               </span>
             )}
           </div>
-        </div>
-
-        {/* Arrow: aparece en hover */}
-        <div class="shrink-0 self-center ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg class="w-3 h-3 text-copper-ember group-hover:translate-x-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
         </div>
       </a>
     ))}
@@ -129,27 +122,12 @@ const formatCollection = (col: string) =>
     position: relative;
     text-decoration: none;
   }
-  .sidebar-card::before {
-    content: '';
-    position: absolute;
-    left: -1rem;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: #B87333;
-    transform: scaleY(0);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: bottom;
-  }
-  .sidebar-card:hover::before {
-    transform: scaleY(1);
-  }
 
   /* Mobile: scroll horizontal con snap */
   @media (max-width: 1024px) {
     .sidebar-cards-container {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
@@ -160,21 +138,12 @@ const formatCollection = (col: string) =>
       display: none; /* Chrome/Safari */
     }
     .sidebar-card {
-      flex-direction: column;
       flex-shrink: 0;
-      width: 220px;
+      width: 240px;
       scroll-snap-align: start;
       border-bottom: none;
       border-right: 1px solid rgba(255, 255, 255, 0.05);
-      padding-right: 1rem;
-    }
-    .sidebar-card::before {
-      display: none;
-    }
-    .sidebar-thumbnail {
-      width: 100%;
-      height: 140px;
-      margin-bottom: 0.75rem;
+      padding-right: 1.5rem;
     }
   }
 </style>

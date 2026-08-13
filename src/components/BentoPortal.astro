@@ -57,10 +57,10 @@ const formatCollection = (col: string) =>
       BLOQUE A — FULL-BLEED PROTAGONISTA
       1 card que ocupa todo el ancho. Ratio 21:9 en desktop.
   ============================================================= */}
-  <section class="bento-block-a px-0 mb-3">
+  <section class="bento-block-a px-0 mb-6">
     <a 
       href={heroPost.link}
-      class="group relative block w-full bento-hero-card overflow-hidden bg-black"
+      class="group relative block w-full bento-hero-card overflow-hidden bg-black rounded-3xl"
       aria-label={`Leer: ${heroPost.title}`}
     >
       {/* Imagen full-bleed */}
@@ -71,8 +71,8 @@ const formatCollection = (col: string) =>
       />
 
       {/* Scrim de legibilidad */}
-      <div class="absolute inset-0 bg-linear-to-r from-black/80 via-black/30 to-transparent"></div>
-      <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/95 via-charcoal-wood/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/70 via-transparent to-transparent"></div>
 
       {/* Content */}
       <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-16 max-w-4xl">
@@ -105,7 +105,7 @@ const formatCollection = (col: string) =>
       BLOQUE B — CLUSTER 2 + 1 (full-bleed) + 2
       Grid CSS con 3 filas: par arriba, 1 full-bleed, par abajo
   ============================================================= */}
-  <section class="bento-block-b mb-3 px-3 md:px-0">
+  <section class="bento-block-b mb-6 px-3 md:px-0">
     <div class="bento-cluster-grid">
       
       {/* Fila superior: 2 cards */}
@@ -113,14 +113,14 @@ const formatCollection = (col: string) =>
         {clusterPosts.slice(0, 2).map((post, i) => (
           <a 
             href={post.link} 
-            class="group relative block overflow-hidden bg-black bento-cluster-card"
+            class="group relative block overflow-hidden bg-black bento-cluster-card rounded-3xl"
           >
             <img
               src={post.image}
               alt={post.title}
               class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
             />
-            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6 md:p-8">
               <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
                 {formatCollection(post.collection)} · 0{i + 1}
@@ -128,37 +128,67 @@ const formatCollection = (col: string) =>
               <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
                 {post.title}
               </h3>
+              {post.subtitle && (
+                <p class="text-white/40 text-xs font-tgp-body font-light mt-3 leading-relaxed line-clamp-2">
+                  {post.subtitle}
+                </p>
+              )}
               <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
             </div>
           </a>
         ))}
       </div>
 
-      {/* Fila central: 1 card full-bleed */}
-      <div class="bento-cluster-full-mid">
-        {clusterPosts[2] && (
-          <a 
-            href={clusterPosts[2].link} 
-            class="group relative block w-full h-full overflow-hidden bg-black"
+      {/* Fila central: 1 card full-bleed - Byblos Engine */}
+      <div 
+        id="bento-byblos-card"
+        class="bento-cluster-full-mid relative overflow-hidden bg-black rounded-3xl group/byblos w-full h-full"
+        aria-label="Byblos Engine: piezas centrales"
+      >
+        {safePosts.map((post, i) => (
+          <div 
+            class={`byblos-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'} overflow-hidden`}
+            data-byblos-slide={i}
           >
-            <img
-              src={clusterPosts[2].image}
-              alt={clusterPosts[2].title}
-              class="w-full h-full object-cover brightness-[0.5] group-hover:brightness-[0.75] group-hover:scale-[1.02] transition-all duration-1000"
-            />
-            <div class="absolute inset-0 bg-linear-to-r from-black/70 via-black/30 to-transparent"></div>
-            <div class="absolute inset-0 flex items-center px-10 md:px-20">
+            <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
+              <img
+                src={post.image}
+                alt={post.title}
+                class="w-full h-full object-cover brightness-[0.5] contrast-[1.08]"
+              />
+            </div>
+            <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/90 via-charcoal-wood/40 to-transparent z-10"></div>
+
+            {/* Granular Ken Burns local elements */}
+            <div class="card-grain opacity-30 pointer-events-none"></div>
+            <div class="card-scratches opacity-30 pointer-events-none"></div>
+            <div class="atmospheric-dust z-20"></div>
+
+            <a href={post.link} class="absolute inset-0 flex items-center px-10 md:px-20 group/card z-30">
               <div>
-                <span class="block text-[7px] tracking-[0.6em] uppercase text-copper-ember mb-4 font-tgp-tech">
-                  {formatCollection(clusterPosts[2].collection)} · Pieza Central
+                <span class="text-[7px] tracking-[0.6em] uppercase text-copper-ember mb-4 font-tgp-tech flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
+                  {formatCollection(post.collection)} · Pieza Central
                 </span>
-                <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.9] group-hover:text-copper-ember transition-colors duration-700 max-w-[20ch]">
-                  {clusterPosts[2].title}
+                <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.9] group-hover/card:text-copper-ember transition-colors duration-700 max-w-[20ch]">
+                  {post.title}
                 </h3>
               </div>
-            </div>
-          </a>
-        )}
+            </a>
+          </div>
+        ))}
+
+        {/* Dots de progreso en Byblos */}
+        <div class="absolute bottom-8 right-10 z-20 flex gap-3">
+          {safePosts.map((_, i) => (
+            <button 
+              class="byblos-dot h-1 rounded-full bg-white/20 transition-all duration-500 hover:bg-copper-ember"
+              style={`width: ${i === 0 ? '2rem' : '0.5rem'};`}
+              data-byblos-dot={i}
+              aria-label={`Slide ${i + 1}`}
+            ></button>
+          ))}
+        </div>
       </div>
 
       {/* Fila inferior: 2 cards */}
@@ -166,14 +196,14 @@ const formatCollection = (col: string) =>
         {clusterPosts.slice(3, 5).map((post, i) => (
           <a 
             href={post.link} 
-            class="group relative block overflow-hidden bg-black bento-cluster-card"
+            class="group relative block overflow-hidden bg-black bento-cluster-card rounded-3xl"
           >
             <img
               src={post.image}
               alt={post.title}
               class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
             />
-            <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6 md:p-8">
               <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
                 {formatCollection(post.collection)} · 0{i + 4}
@@ -181,6 +211,11 @@ const formatCollection = (col: string) =>
               <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
                 {post.title}
               </h3>
+              {post.subtitle && (
+                <p class="text-white/40 text-xs font-tgp-body font-light mt-3 leading-relaxed line-clamp-2">
+                  {post.subtitle}
+                </p>
+              )}
               <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
             </div>
           </a>
@@ -193,21 +228,21 @@ const formatCollection = (col: string) =>
       BLOQUE C — ARRAY 4 + ENGINE CARD + 4
       Grid de 4 columnas. El EngineCard irrumpe en full-bleed.
   ============================================================= */}
-  <section class="bento-block-c px-3 md:px-0">
+  <section class="bento-block-c px-3 md:px-0 mb-6">
     <div class="bento-array-grid">
 
       {/* Primeras 4 cards estándar */}
       {array4Before.map((post, i) => (
         <a 
           href={post.link} 
-          class="group relative block overflow-hidden bg-black bento-standard-card"
+          class="group relative block overflow-hidden bg-black bento-standard-card rounded-3xl"
         >
           <img
             src={post.image}
             alt={post.title}
             class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
           />
-          <div class="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
           <div class="absolute bottom-0 left-0 p-5 md:p-6">
             <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
               {formatCollection(post.collection)}
@@ -215,6 +250,11 @@ const formatCollection = (col: string) =>
             <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
               {post.title}
             </h3>
+            {post.subtitle && (
+              <p class="text-white/40 text-[10px] font-tgp-body font-light mt-2 leading-normal line-clamp-2">
+                {post.subtitle}
+              </p>
+            )}
           </div>
           {/* Index badge */}
           <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
@@ -226,7 +266,7 @@ const formatCollection = (col: string) =>
       {/* ENGINE CARD — Full-bleed auto-slider de noticias */}
       <div 
         id="bento-engine-card"
-        class="bento-engine-card relative overflow-hidden bg-racing-green group/engine"
+        class="bento-engine-card relative overflow-hidden bg-racing-green group/engine rounded-3xl"
         aria-label="Engine: últimas piezas"
       >
         {/* Slides del Engine */}
@@ -243,7 +283,7 @@ const formatCollection = (col: string) =>
             <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
             <a href={post.link} class="absolute inset-0 flex flex-col justify-center px-10 md:px-16 group/card">
               <span class="text-[7px] tracking-[0.7em] uppercase text-copper-ember mb-5 font-tgp-tech flex items-center gap-2">
-                <span class="w-1 h-1 rounded-full bg-copper-ember animate-pulse"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
                 {formatCollection(post.collection)} · En rotación
               </span>
               <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.92] tracking-tight max-w-[22ch] group-hover/card:text-copper-ember transition-colors duration-700">
@@ -276,11 +316,6 @@ const formatCollection = (col: string) =>
           ))}
         </div>
 
-        {/* Progress bar (top) */}
-        <div class="absolute top-0 left-0 right-0 z-20 h-px bg-white/10">
-          <div id="engine-progress-bar" class="h-full bg-copper-ember origin-left" style="width: 0%;"></div>
-        </div>
-
         {/* Engine label */}
         <div class="absolute top-6 right-8 z-20 flex items-center gap-3 opacity-30 group-hover/engine:opacity-100 transition-opacity duration-500">
           <span class="text-[7px] tracking-[0.6em] uppercase text-white font-tgp-tech">Engine</span>
@@ -291,14 +326,14 @@ const formatCollection = (col: string) =>
       {array4After.map((post, i) => (
         <a 
           href={post.link} 
-          class="group relative block overflow-hidden bg-black bento-standard-card"
+          class="group relative block overflow-hidden bg-black bento-standard-card rounded-3xl"
         >
           <img
             src={post.image}
             alt={post.title}
             class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
           />
-          <div class="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-transparent"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
           <div class="absolute bottom-0 left-0 p-5 md:p-6">
             <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
               {formatCollection(post.collection)}
@@ -306,6 +341,11 @@ const formatCollection = (col: string) =>
             <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
               {post.title}
             </h3>
+            {post.subtitle && (
+              <p class="text-white/40 text-[10px] font-tgp-body font-light mt-2 leading-normal line-clamp-2">
+                {post.subtitle}
+              </p>
+            )}
           </div>
           <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
             {String(i + 11).padStart(2, '0')}
@@ -325,11 +365,9 @@ const formatCollection = (col: string) =>
   const initEngineCard = () => {
     const slides    = document.querySelectorAll<HTMLElement>('[data-engine-slide]');
     const dots      = document.querySelectorAll<HTMLButtonElement>('[data-engine-dot]');
-    const bar       = document.getElementById('engine-progress-bar');
     const INTERVAL  = 4500; // ms entre slides
     let current     = 0;
     let timer: ReturnType<typeof setInterval> | null = null;
-    let barAnim: ReturnType<typeof setTimeout> | null = null;
 
     if (slides.length === 0) return;
 
@@ -341,26 +379,14 @@ const formatCollection = (col: string) =>
         s.style.zIndex = i === index ? '10' : '0';
       });
       dots.forEach((d, i) => {
-        d.style.backgroundColor = i === index ? '#B87333' : '';
+        d.style.backgroundColor = i === index ? '#E3DDD3' : '';
         d.style.width           = i === index ? '2rem' : '0.5rem';
       });
-    };
-
-    const startProgress = () => {
-      if (bar) {
-        bar.style.transition = 'none';
-        bar.style.width      = '0%';
-        // Forzar reflow
-        void bar.offsetWidth;
-        bar.style.transition = `width ${INTERVAL}ms linear`;
-        bar.style.width      = '100%';
-      }
     };
 
     const next = () => {
       current = (current + 1) % slides.length;
       goToSlide(current);
-      startProgress();
     };
 
     // Dots: navegación manual
@@ -369,7 +395,6 @@ const formatCollection = (col: string) =>
         if (timer) clearInterval(timer);
         current = i;
         goToSlide(current);
-        startProgress();
         timer = setInterval(next, INTERVAL);
       });
     });
@@ -378,27 +403,78 @@ const formatCollection = (col: string) =>
     const engineCard = document.getElementById('bento-engine-card');
     engineCard?.addEventListener('mouseenter', () => {
       if (timer) clearInterval(timer);
-      if (bar) bar.style.transition = 'none'; // pause progress
     });
     engineCard?.addEventListener('mouseleave', () => {
       timer = setInterval(next, INTERVAL);
-      startProgress();
     });
 
     // Iniciar
     goToSlide(0);
-    startProgress();
     timer = setInterval(next, INTERVAL);
   };
 
-  document.addEventListener('astro:page-load', initEngineCard);
+  const initByblosCard = () => {
+    const slides    = document.querySelectorAll<HTMLElement>('[data-byblos-slide]');
+    const dots      = document.querySelectorAll<HTMLButtonElement>('[data-byblos-dot]');
+    const INTERVAL  = 5000; // ms entre slides
+    let current     = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    if (slides.length === 0) return;
+
+    const goToSlide = (index: number) => {
+      slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0',   i !== index);
+        s.classList.toggle('is-active',   i === index);
+        s.style.zIndex = i === index ? '10' : '0';
+      });
+      dots.forEach((d, i) => {
+        d.style.backgroundColor = i === index ? '#E3DDD3' : '';
+        d.style.width           = i === index ? '2rem' : '0.5rem';
+      });
+    };
+
+    const next = () => {
+      current = (current + 1) % slides.length;
+      goToSlide(current);
+    };
+
+    // Dots: navegación manual
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        if (timer) clearInterval(timer);
+        current = i;
+        goToSlide(current);
+        timer = setInterval(next, INTERVAL);
+      });
+    });
+
+    // Pausar en hover
+    const byblosCard = document.getElementById('bento-byblos-card');
+    byblosCard?.addEventListener('mouseenter', () => {
+      if (timer) clearInterval(timer);
+    });
+    byblosCard?.addEventListener('mouseleave', () => {
+      timer = setInterval(next, INTERVAL);
+    });
+
+    // Iniciar
+    goToSlide(0);
+    timer = setInterval(next, INTERVAL);
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    initEngineCard();
+    initByblosCard();
+  });
 </script>
 
 <style>
   /* ===== BLOQUE A ===== */
   .bento-hero-card {
-    aspect-ratio: 21 / 8;
-    min-height: 320px;
+    aspect-ratio: 16 / 7;
+    min-height: 400px;
   }
   @media (max-width: 768px) {
     .bento-hero-card {
@@ -409,15 +485,14 @@ const formatCollection = (col: string) =>
   /* ===== BLOQUE B: Cluster Grid ===== */
   .bento-cluster-grid {
     display: grid;
-    grid-template-rows: 380px 220px 380px;
-    gap: 3px;
-    background-color: #050c08; /* gap color */
+    grid-template-rows: 450px 450px 450px;
+    gap: 2rem;
   }
   .bento-cluster-pair-top,
   .bento-cluster-pair-bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3px;
+    gap: 2rem;
   }
   .bento-cluster-card {
     height: 100%;
@@ -428,7 +503,12 @@ const formatCollection = (col: string) =>
   }
   @media (max-width: 768px) {
     .bento-cluster-grid {
-      grid-template-rows: 280px 180px 280px;
+      grid-template-rows: 320px 320px 320px;
+      gap: 1rem;
+    }
+    .bento-cluster-pair-top,
+    .bento-cluster-pair-bottom {
+      gap: 1rem;
     }
   }
 
@@ -436,25 +516,25 @@ const formatCollection = (col: string) =>
   .bento-array-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 3px;
-    background-color: #050c08;
+    gap: 2rem;
   }
   .bento-standard-card {
     aspect-ratio: 3 / 4;
-    min-height: 240px;
+    min-height: 320px;
   }
   .bento-engine-card {
     grid-column: 1 / -1; /* Full-bleed: ocupa las 4 columnas */
-    height: 55vh;
-    min-height: 380px;
+    height: 65vh;
+    min-height: 450px;
   }
   @media (max-width: 768px) {
     .bento-array-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
     }
     .bento-engine-card {
       height: 60vw;
-      min-height: 280px;
+      min-height: 320px;
     }
   }
 
@@ -467,5 +547,15 @@ const formatCollection = (col: string) =>
   }
   .engine-dot {
     transition: all 0.4s ease;
+  }
+  .byblos-slide {
+    transition: opacity 1s ease-in-out;
+  }
+  .byblos-slide.is-active img {
+    transform: scale(1.05);
+  }
+  .byblos-dot {
+    transition: all 0.4s ease;
+    cursor: pointer;
   }
 </style>

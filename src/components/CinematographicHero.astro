@@ -18,7 +18,7 @@ const { title, subtitle, image, vibeClass = "", link = "#", category = "Featured
 const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics') || vibeClass.includes('80s');
 ---
 
-<section class={`cinematographic-hero relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-center ${vibeClass}`}>
+<section class={`cinematographic-hero relative h-[calc(90vh-2rem)] md:h-[calc(100vh-2rem)] w-[calc(100%-2rem)] mx-auto mt-4 overflow-hidden flex items-center justify-center rounded-3xl ${vibeClass}`}>
   
   {/* Background Engine with Vignette & Scrim */}
   <div class="absolute inset-0 z-0">
@@ -162,7 +162,7 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   .animation-delay-600 { animation-delay: 600ms; }
   .animation-delay-900 { animation-delay: 900ms; }
 
-  ::selection { background: #B87333; color: black; }
+  ::selection { background: #E3DDD3; color: #211A16; }
 
   /* Cinemagraph wrapper drift — capa independiente del GSAP */
   @keyframes cine-drift {

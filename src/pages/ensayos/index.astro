@@ -1,88 +1,78 @@
 ---
-import LayoutSubstack from '../../layouts/LayoutSubstack.astro';
-import CardEnsayo from '../../components/CardEnsayo.astro';
-import FloatingBackButton from '../../components/FloatingBackButton.astro';
+import LayoutPortal from '../../layouts/LayoutPortal.astro';
+import CinematicHeroV2 from '../../components/CinematicHeroV2.astro';
+import BentoPortal from '../../components/BentoPortal.astro';
+import SidebarPortal from '../../components/SidebarPortal.astro';
 import { getCollection } from 'astro:content';
 
-let ensayos: any[] = [];
-try {
-  const raw = await getCollection('ensayos');
-  ensayos = [...raw].sort((a: any, b: any) => {
-    // Ordenar por fecha descendente, luego por ID como fallback
-    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
-    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-    return dateB - dateA || b.id.localeCompare(a.id);
-  });
-} catch (e) {
-  // Colección vacía — renderiza estado vacío
-}
+let rawPosts: any[] = [];
+try { rawPosts = await getCollection('ensayos'); } catch {}
 
-const featured = ensayos[0] ?? null;
-const rest = ensayos.slice(1);
+const normalize = (post: any, col: string) => ({
+  id:         post.id,
+  title:      post.data.title       ?? 'Sin título',
+  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
+  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       `/${col.replace('_', '-')}/${post.id}`,
+  collection: col,
+  date:       post.data.date        ? String(post.data.date) : undefined,
+  author:     post.data.author      ?? 'TGP',
+});
+
+const sortByLatest = (a: any, b: any) => {
+  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : 0;
+  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : 0;
+  return dateB - dateA || b.id.localeCompare(a.id);
+};
+
+const allPosts = [...rawPosts].sort(sortByLatest).map(p => normalize(p, 'ensayos'));
+
+const heroPost = allPosts[0] ?? {
+  id: 'fallback',
+  title: 'Ensayos',
+  subtitle: 'Pensamientos inmersivos, diarios visuales y notas de diseño.',
+  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
+  link: '#',
+  collection: 'ensayos',
+};
+
+const bentoPosts = allPosts.slice(1, 15);
+const sidebarPosts = allPosts.slice(0, 8);
+const sliderPosts = allPosts.slice(0, 8);
 ---
 
-<LayoutSubstack title="Ensayos | The Great Puzzle Feed">
+<LayoutPortal 
+  title="Ensayos | The Great Puzzle"
+  description="Pensamientos inmersivos, diarios visuales y notas de diseño sobre la arquitectura del vacío."
+>
+  <CinematicHeroV2 posts={allPosts} />
 
-  <FloatingBackButton />
+  <div class="portal-section-label">
+    <span>El Archivo</span>
+  </div>
 
-  {/* ── HEADER ── */}
-  <header class="w-full max-w-2xl mx-auto pt-24 pb-12 px-6 border-b border-white/10 text-center">
-    <h1 class="font-gloock text-5xl md:text-7xl text-white mb-4 italic tracking-tight">Feed</h1>
-    <p class="text-gray-400 font-sans text-sm md:text-base max-w-md mx-auto">
-      Rethinking spatial limits. Pensamientos inmersivos, diarios visuales y notas de diseño sobre la arquitectura del vacío.
-    </p>
-
-    <div class="mt-8 flex items-center justify-center gap-4">
-      <input
-        type="email"
-        placeholder="Escribe tu email..."
-        class="bg-[#111] border border-white/10 rounded-md px-4 py-2 text-white font-sans text-sm outline-none focus:border-[#FF6719] transition-colors w-64"
-      />
-      <button class="bg-[#FF6719] text-white px-6 py-2 rounded-md font-medium text-sm hover:bg-[#e55912] transition-colors">
-        Suscribirse
-      </button>
+  <div id="content-grid" class="portal-layout-wrapper">
+    <div class="bento-main-col min-w-0">
+      <BentoPortal posts={bentoPosts} />
     </div>
-  </header>
 
-  <main class="w-full pt-16 pb-32 px-4 flex flex-col items-center gap-0">
-
-    {ensayos.length === 0 && (
-      <div class="text-center py-32 text-gray-600 max-w-sm">
-        <svg class="w-10 h-10 mx-auto mb-6 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15.232 5.232l3.536 3.536M9 11l6.364-6.364a2 2 0 012.828 2.828L11.828 13.828A4 4 0 019 15H7v-2a4 4 0 012.172-3.586z"/>
-        </svg>
-        <p class="font-sans text-sm tracking-[0.15em] uppercase">Todavía no hay ensayos publicados.</p>
-        <a href="/keystatic/collection/ensayos/create" class="mt-6 inline-block text-[#FF6719] text-xs tracking-widest uppercase hover:underline">
-          Crear el primero →
-        </a>
+    <div class="sidebar-main-col">
+      <div class="sidebar-portal-sticky">
+        <SidebarPortal posts={sidebarPosts} title="También en Ensayos" />
       </div>
-    )}
+    </div>
+  </div>
 
-    {/* ── FEATURED: ÚLTIMO ENSAYO ── */}
-    {featured && (
-      <section class="w-full max-w-2xl mb-8 border-b border-white/10 pb-16">
-        <div class="mb-6 flex items-center gap-2">
-          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF6719]"></span>
-          <span class="text-[10px] tracking-[0.4em] uppercase text-[#FF6719] font-bold">Último publicado</span>
-        </div>
-        <CardEnsayo ensayo={featured} featured={true} />
-      </section>
-    )}
 
-    {/* ── ARCHIVO SECUNDARIO ── */}
-    {rest.length > 0 && (
-      <section class="w-full max-w-2xl">
-        <h2 class="text-[10px] tracking-[0.5em] uppercase text-gray-600 font-bold mb-10 border-b border-white/5 pb-4">
-          Archivo anterior
-        </h2>
-        <div class="flex flex-col gap-12">
-          {rest.map((ensayo: any) => (
-            <CardEnsayo ensayo={ensayo} featured={false} />
-          ))}
-        </div>
-      </section>
-    )}
 
-  </main>
-
-</LayoutSubstack>
+  <div class="portal-footer-divider">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="w-8 h-8 rounded-full bg-copper-ember flex items-center justify-center text-[8px] font-bold text-black font-tgp-tech group-hover:scale-110 transition-transform">
+        TGP
+      </span>
+      <span class="font-tgp-tech text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember transition-colors duration-300">
+        The Great Puzzle
+      </span>
+    </a>
+  </div>
+</LayoutPortal>
