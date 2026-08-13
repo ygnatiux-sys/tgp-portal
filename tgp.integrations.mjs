@@ -1,13 +1,12 @@
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
-import keystatic from '@keystatic/astro';
 
 /**
  * Array de integraciones TGP para Astro
- * Incluye React, Markdoc y Keystatic
+ * Incluye React y Markdoc.
+ * Keystatic se registra por separado en astro.config.mjs para evitar duplicados.
  */
 export const tgpIntegrations = [
   react(),
   markdoc(),
-  keystatic(),
 ];
