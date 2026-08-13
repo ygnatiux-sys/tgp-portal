@@ -13,7 +13,10 @@ export default defineConfig({
   
   // Adaptador dinámico: Cloudflare para producción (build), Node para desarrollo local (dev)
   adapter: isBuild 
-    ? cloudflareAdapter({ compatibilityDate: '2026-04-28' }) 
+    ? cloudflareAdapter({ 
+        compatibilityDate: '2026-04-28',
+        compatibilityFlags: ['nodejs_compat']
+      }) 
     : nodeAdapter({ mode: 'standalone' }),
   
   server: {

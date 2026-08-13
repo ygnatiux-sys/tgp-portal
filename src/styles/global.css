@@ -873,4 +873,28 @@ body {
     height: 1px;
     background: color-mix(in srgb, var(--color-copper-ember) 25%, transparent);
   }
+
+  /* ── GLOBAL RADIAL SOFTLY OVERLAY FOR CARDS ──────────────────────────── */
+  .bento-hero-card::after,
+  .bento-cluster-card::after,
+  .bento-standard-card::after,
+  .bento-engine-card::after,
+  .sidebar-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.06) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    z-index: 5;
+    mix-blend-mode: overlay;
+  }
+  .bento-hero-card:hover::after,
+  .bento-cluster-card:hover::after,
+  .bento-standard-card:hover::after,
+  .bento-engine-card:hover::after,
+  .sidebar-card:hover::after {
+    opacity: 1;
+  }
 }
