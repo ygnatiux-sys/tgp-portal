@@ -11,11 +11,11 @@ export const tgpViteConfig = {
       'react',
       'react-dom',
       'react-dom/client',
-      '@keystatic/core',
-      '@keystatic/astro',
     ],
     exclude: [
       'virtual:keystatic-config',
+      '@keystatic/core',
+      '@keystatic/astro',
     ],
   },
   ssr: {
