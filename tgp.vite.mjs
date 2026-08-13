@@ -6,14 +6,22 @@ import tailwindcss from '@tailwindcss/vite';
  */
 export const tgpViteConfig = {
   plugins: [tailwindcss()],
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-dom/client',
+      '@keystatic/core',
+      '@keystatic/astro',
+    ],
+    exclude: [
+      'virtual:keystatic-config',
+    ],
+  },
   ssr: {
-    external: ['virtual:keystatic-config'],
     noExternal: [
       'gsap',
       'markdoc',
-      '@keystatic/core',
-      '@keystatic/astro',
-      'react-dom',
     ],
   },
 };
