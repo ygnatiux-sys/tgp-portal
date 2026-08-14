@@ -2,7 +2,8 @@
 /**
  * ArticleFooter.astro
  * Footer minimalista para artículos interiores.
- * Hereda colores del grid contenedor via --bg-current / --text-current.
+ * Color por defecto: Old Silver Plata Oficial (#8A9597).
+ * Hover: Plata Viejo +30% brillante (#C4CFD1) + micro-ascenso y escala suave +20%.
  *
  * Estructura:
  * 1. Línea editorial de separación + franja de redes principales
@@ -20,35 +21,35 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
 ---
 
 <!-- ── END-OF-ARTICLE: Línea editorial + Redes principales + Share ── -->
-<div class={`editorial-article-end w-full max-w-4xl mx-auto px-0 mt-8 mb-12 ${vibeClass}`}>
+<div class={`editorial-article-end w-full max-w-4xl mx-auto px-0 mt-8 mb-12 text-old-silver ${vibeClass}`}>
 
   <!-- Línea editorial de separación -->
-  <div class="w-full border-t border-current opacity-30 mb-8"></div>
+  <div class="w-full border-t border-old-silver/25 mb-8"></div>
 
-  <!-- Franja de redes principales (centrada, color nativo con ascenso suave) -->
-  <div class="flex items-center justify-center gap-6 mb-6 opacity-70">
+  <!-- Franja de redes principales (centrada, color plata viejo con ascenso suave) -->
+  <div class="flex items-center justify-center gap-6 mb-6 opacity-85 text-old-silver">
     <!-- YouTube -->
-    <a href="https://www.youtube.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href="https://www.youtube.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
     </a>
     <!-- Instagram -->
-    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.153-1.772 4.902 4.902 0 01-1.772-1.153c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
     </a>
     <!-- X (Twitter) -->
-    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
     </a>
     <!-- Facebook -->
-    <a href="https://facebook.com/thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href="https://facebook.com/thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
     </a>
     <!-- WhatsApp -->
-    <a href={`https://wa.me/?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href={`https://wa.me/?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
     </a>
     <!-- TikTok -->
-    <a href="https://www.tiktok.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="transition-all duration-300 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block">
+    <a href="https://www.tiktok.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="transition-all duration-300 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 no-underline inline-block text-old-silver">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1-.01 1.83.01 3.67-.01 5.5-.06 2.37-.9 4.74-2.45 6.55-1.57 1.83-3.89 3.04-6.32 3.32-2.45.29-4.99-.21-7.14-1.49-2.15-1.28-3.79-3.32-4.47-5.71-.68-2.39-.42-4.98.69-7.19 1.11-2.21 3.03-3.93 5.37-4.71 2.34-.78 4.93-.53 7.07.69.01 1.48-.01 2.96 0 4.44-1.29-.63-2.8-.75-4.17-.32-1.37.43-2.48 1.44-3.04 2.76-.56 1.32-.47 2.87.24 4.1.71 1.23 1.97 2.05 3.38 2.22 1.41.17 2.85-.29 3.86-1.26 1.01-.97 1.57-2.34 1.59-3.74.02-3.81.01-7.62.01-11.43z"/></svg>
     </a>
   </div>
@@ -60,7 +61,7 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
         id="article-share-btn"
         aria-label="Compartir artículo"
         aria-expanded="false"
-        class="flex items-center gap-2 opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.12] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer font-tgp-tech text-[8px] tracking-[0.4em] uppercase no-underline select-none"
+        class="flex items-center gap-2 opacity-85 text-old-silver hover:opacity-100 hover:scale-[1.12] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer font-tgp-tech text-[8px] tracking-[0.4em] uppercase no-underline select-none"
       >
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -71,35 +72,35 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
       <!-- 7 redes secundarias (Despliegue hacia ABAJO del botón, con micro-ascenso y tono plata vieja brillante) -->
       <div
         id="article-share-menu"
-        class="absolute top-full left-1/2 -translate-x-1/2 mt-4 flex items-center gap-5 opacity-0 pointer-events-none transition-all duration-300 scale-90 origin-top z-30"
+        class="absolute top-full left-1/2 -translate-x-1/2 mt-4 flex items-center gap-5 opacity-0 pointer-events-none transition-all duration-300 scale-90 origin-top z-30 text-old-silver"
         aria-hidden="true"
       >
         <!-- LinkedIn -->
-        <a href={`https://linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" /></svg>
         </a>
         <!-- Bluesky -->
-        <a href={`https://bsky.app/intent/compose?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Bluesky" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://bsky.app/intent/compose?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Bluesky" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 568 501"><path d="M123.121 33.584C187.985 82.1 249.2 165.73 284 214.364c34.8-48.634 96.015-132.264 160.879-180.78C491.56 1.483 555.228-11.45 555.228 59.883c0 14.248-8.157 119.574-12.951 136.689-16.638 59.39-77.348 74.52-131.026 65.341 94.025 16.035 117.848 68.968 66.19 122.046-98.375 101.077-175.765-25.378-191.134-75.642-2.308-7.55-3.307-10.8-3.307-10.8s-.999 3.25-3.307 10.8c-15.369 50.264-92.759 176.719-191.134 75.642-51.658-53.078-27.835-106.011 66.19-122.046-53.678 9.179-114.388-5.951-131.026-65.341C12.957 179.457 4.8 74.131 4.8 59.883 4.8-11.45 68.468 1.483 115.15 33.584z"/></svg>
         </a>
         <!-- Mastodon -->
-        <a href={`https://mastodon.social/share?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Mastodon" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://mastodon.social/share?text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Mastodon" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.3-5.004C15.53.003 12 0 12 0s-3.53.003-5.968.309c-2.683.394-4.95 2.426-5.3 5.004C.404 7.712.227 11.2.227 14.617c0 3.417.177 6.905.505 9.304.35 2.578 2.617 4.61 5.3 5.004 2.438.306 5.968.309 5.968.309s3.53-.003 5.968-.309c2.683-.394 4.95-2.426 5.3-5.004.328-2.399.505-5.887.505-9.304 0-3.417-.177-6.905-.505-9.304zM18.84 15.698h-2.388v-6.386c0-1.344-.564-2.026-1.692-2.026-1.246 0-1.87.803-1.87 2.408v3.5h-2.38v-3.5c0-1.605-.624-2.408-1.87-2.408-1.128 0-1.692.682-1.692 2.026v6.386H4.56v-6.52c0-1.344.34-2.42 1.02-3.228.68-.808 1.597-1.212 2.752-1.212 1.34 0 2.378.513 3.113 1.54.735-1.027 1.773-1.54 3.113-1.54 1.155 0 2.072.404 2.752 1.212.68.808 1.02 1.884 1.02 3.228v6.52z"/></svg>
         </a>
         <!-- Reddit -->
-        <a href={`https://reddit.com/submit?url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Reddit" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://reddit.com/submit?url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Reddit" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.363.043-.538A1.758 1.758 0 0 1 4.04 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.687-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.562-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.561-1.249-1.249-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .464c.732.732 1.83 1.116 2.947 1.116 1.117 0 2.215-.384 2.947-1.116a.33.33 0 0 0 0-.464.327.327 0 0 0-.463 0c-.604.604-1.547.93-2.484.93-.937 0-1.88-.326-2.484-.93a.324.324 0 0 0-.232-.094z"/></svg>
         </a>
         <!-- Telegram -->
-        <a href={`https://t.me/share/url?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://t.me/share/url?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         </a>
         <!-- Pinterest -->
-        <a href={`https://pinterest.com/pin/create/button/?url=${shareUrl}&description=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://pinterest.com/pin/create/button/?url=${shareUrl}&description=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
         </a>
         <!-- Pocket -->
-        <a href={`https://getpocket.com/save?url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Pocket" class="opacity-65 hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href={`https://getpocket.com/save?url=${shareUrl}&title=${shareText}`} target="_blank" rel="noopener noreferrer" aria-label="Pocket" class="opacity-85 hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.813 10.259l-5.646 5.419c-.32.305-.73.458-1.141.458-.41 0-.821-.153-1.141-.458l-5.646-5.419A1.503 1.503 0 0 1 7.648 7.82a1.5 1.5 0 0 1 2.081.459l2.297 2.203 2.297-2.203A1.5 1.5 0 0 1 16.323 7.82a1.501 1.501 0 0 1 2.49 2.439zM20.386.202H3.614C1.62.202.002 1.82.002 3.814V12c0 6.627 5.373 12 12 12s12-5.373 12-12V3.814C24.002 1.82 22.38.202 20.386.202z"/></svg>
         </a>
       </div>
@@ -107,10 +108,9 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
   </div>
 </div>
 
-<!-- ── ARTICLE INTERIOR FOOTER (3 niveles, color heredado transparente) ── -->
+<!-- ── ARTICLE INTERIOR FOOTER (3 niveles, color por defecto: old-silver #8A9597) ── -->
 <footer
-  class={`article-interior-footer w-full pt-8 pb-12 md:pb-16 border-t`}
-  style="border-color: color-mix(in srgb, currentColor 28%, transparent); color: var(--text-current);"
+  class={`article-interior-footer w-full pt-8 pb-12 md:pb-16 border-t border-old-silver/25 text-old-silver ${vibeClass}`}
 >
   <div class="max-w-4xl mx-auto px-6">
 
@@ -118,57 +118,57 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
     <div class="relative flex flex-col md:flex-row justify-between items-center gap-6 pb-6">
 
       <!-- Brand (Link to Home con micro-ascenso y tono plata vieja brillante) -->
-      <a href="/" class="flex items-center gap-3 shrink-0 group/article-brand transition-all duration-300 hover:-translate-y-0.5 cursor-pointer no-underline select-none">
-        <div class="w-6 h-6 rounded-full border border-current/30 flex items-center justify-center p-0.5 shrink-0 overflow-hidden group-hover/article-brand:border-[#C4CFD1]/60 group-hover/article-brand:scale-105 transition-all duration-300">
+      <a href="/" class="flex items-center gap-3 shrink-0 group/article-brand transition-all duration-300 hover:-translate-y-0.5 cursor-pointer no-underline select-none text-old-silver">
+        <div class="w-6 h-6 rounded-full border border-old-silver/30 flex items-center justify-center p-0.5 shrink-0 overflow-hidden group-hover/article-brand:border-[#C4CFD1]/60 group-hover/article-brand:scale-105 transition-all duration-300">
           <img src="/faviconTGP.jpeg" alt="TGP" class="w-full h-full object-cover rounded-full" />
         </div>
         <div class="flex flex-col">
-          <span class="font-tgp-gloock text-sm tracking-wide leading-tight opacity-100 group-hover/article-brand:text-[#C4CFD1] group-hover/article-brand:scale-105 origin-left transition-all duration-300">The Great Puzzle</span>
-          <span class="font-tgp-tech text-[7px] tracking-[0.22em] uppercase opacity-85 group-hover/article-brand:opacity-100 group-hover/article-brand:text-[#C4CFD1] transition-all duration-300 leading-tight">Project</span>
+          <span class="font-tgp-gloock text-sm tracking-wide leading-tight text-old-silver opacity-100 group-hover/article-brand:scale-105 origin-left transition-all duration-300">The Great Puzzle</span>
+          <span class="font-tgp-tech text-[7px] tracking-[0.22em] uppercase text-old-silver opacity-85 group-hover/article-brand:opacity-100 transition-all duration-300 leading-tight">Project</span>
         </div>
       </a>
 
       <!-- Menú (centrado absoluto en desktop, micro-ascenso sutil y tono plata vieja brillante, +20% scale on hover) -->
-      <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 font-tgp-tech text-[8.5px] tracking-[0.2em] uppercase opacity-75 select-none">
-        <a href="/ensayos"       class="inline-block hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline">Ensayos</a>
-        <a href="/essays"        class="inline-block hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline">Dossiers</a>
-        <a href="/architectures" class="inline-block hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline">Magazines</a>
-        <a href="/visual-signals" class="inline-block hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline">Collections</a>
-        <a href="/capsulas"      class="inline-block hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline">eBooks</a>
+      <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 font-tgp-tech text-[8.5px] tracking-[0.2em] uppercase text-old-silver opacity-85 select-none">
+        <a href="/ensayos"       class="inline-block hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline text-old-silver">Ensayos</a>
+        <a href="/essays"        class="inline-block hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline text-old-silver">Dossiers</a>
+        <a href="/architectures" class="inline-block hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline text-old-silver">Magazines</a>
+        <a href="/visual-signals" class="inline-block hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline text-old-silver">Collections</a>
+        <a href="/capsulas"      class="inline-block hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline text-old-silver">eBooks</a>
       </nav>
 
       <!-- Redes principales (derecha, micro-ascenso sutil y tono plata vieja brillante) -->
-      <div class="flex items-center gap-4 opacity-70 shrink-0 ml-auto md:ml-0">
-        <a href="https://www.youtube.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+      <div class="flex items-center gap-4 opacity-80 text-old-silver shrink-0 ml-auto md:ml-0">
+        <a href="https://www.youtube.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.153-1.772 4.902 4.902 0 01-1.772-1.153c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
         </a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
         </a>
       </div>
     </div>
 
     <!-- Separador nivel 1 / 2 -->
-    <div class="w-full border-t opacity-30 mb-5"></div>
+    <div class="w-full border-t border-old-silver/25 mb-5"></div>
 
-    <!-- Nivel 2: Créditos | Ubicación | Legal (con micro-ascenso y tono plata vieja brillante) -->
-    <div class="flex flex-col md:flex-row items-center justify-between gap-3 font-tgp-tech text-[7.5px] tracking-[0.25em] uppercase opacity-70 select-none">
+    <!-- Nivel 2: Créditos | Ubicación | Legal (color plata viejo oficial #8A9597 con micro-ascenso) -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-3 font-tgp-tech text-[7.5px] tracking-[0.25em] uppercase text-old-silver opacity-80 select-none">
       <span>© {new Date().getFullYear()} The Great Puzzle — Dir. Xavier Benítez</span>
 
       <div class="flex items-center gap-2.5">
         <span>Buenos Aires</span>
-        <span class="w-0.5 h-0.5 rounded-full bg-current opacity-80 inline-block"></span>
+        <span class="w-0.5 h-0.5 rounded-full bg-old-silver opacity-80 inline-block"></span>
         <span>Argentina</span>
-        <span class="w-0.5 h-0.5 rounded-full bg-current opacity-80 inline-block"></span>
-        <a href="https://share.google/kk8OYubL2oxzRGNab" target="_blank" rel="noopener noreferrer" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">Sur Global</a>
+        <span class="w-0.5 h-0.5 rounded-full bg-old-silver opacity-80 inline-block"></span>
+        <a href="https://share.google/kk8OYubL2oxzRGNab" target="_blank" rel="noopener noreferrer" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">Sur Global</a>
       </div>
 
       <div class="flex gap-5">
-        <a href="#" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">Privacidad</a>
-        <a href="#" class="hover:opacity-100 hover:text-[#C4CFD1] hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block">Términos</a>
+        <a href="#" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">Privacidad</a>
+        <a href="#" class="hover:opacity-100 hover:scale-[1.2] hover:-translate-y-0.5 transition-all duration-300 no-underline inline-block text-old-silver">Términos</a>
       </div>
     </div>
 
@@ -176,9 +176,24 @@ const shareUrl  = encodeURIComponent(Astro.url.href);
 </footer>
 
 <style is:global>
+  .article-interior-footer,
+  .editorial-article-end {
+    color: #8A9597 !important;
+  }
   .article-interior-footer a,
-  .editorial-article-end a {
+  .editorial-article-end a,
+  .article-interior-footer button,
+  .editorial-article-end button,
+  .article-interior-footer span {
+    color: #8A9597 !important;
     text-decoration: none !important;
+  }
+  .article-interior-footer a:hover,
+  .editorial-article-end a:hover,
+  .article-interior-footer button:hover,
+  .editorial-article-end button:hover,
+  .article-interior-footer .group\/article-brand:hover span {
+    color: #C4CFD1 !important;
   }
 </style>
 
