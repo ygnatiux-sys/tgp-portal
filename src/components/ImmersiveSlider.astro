@@ -34,11 +34,17 @@ const { posts, interval = 6000 } = Astro.props;
 // Mínimo 3 slides para que el slider tenga sentido
 const slides = posts.slice(0, 8);
 
-const formatCollection = (col: string) =>
-  col.replace('_', ' ').replace('-', ' ')
+const formatCollection = (col: string) => {
+  const c = col.toLowerCase();
+  if (c === 'essays') return 'Dossiers';
+  if (c === 'architectures') return 'Magazines';
+  if (c === 'visual_signals' || c === 'visual-signals') return 'Collections';
+  if (c === 'capsulas') return 'eBooks';
+  return col.replace('_', ' ').replace('-', ' ')
     .split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
+};
 ---
 
 <section 
@@ -46,6 +52,7 @@ const formatCollection = (col: string) =>
   class="relative w-[calc(100%-2rem)] mx-auto my-4 overflow-hidden bg-black rounded-3xl"
   style="height: calc(100dvh - 2rem);"
   aria-label="Slider inmersivo de piezas"
+  data-interval={interval}
 >
   {/* ---- SLIDES ---- */}
   <div id="immersive-slides-container" class="relative w-full h-full">
@@ -78,56 +85,46 @@ const formatCollection = (col: string) =>
         {/* Content: Alineado abajo a la izquierda, igual que CinematicHeroV2 */}
         <div class="absolute inset-0 z-30 flex flex-col justify-end max-w-[1600px] mx-auto px-8 md:px-16 pb-20 md:pb-28 w-full h-full">
 
-          {/* Badge */}
-          <div class="immersive-content flex items-center gap-4 mb-8">
-            <span class="inline-flex items-center gap-2 px-4 py-1.5 border border-copper-ember/40 text-copper-ember text-[8px] tracking-[0.6em] uppercase rounded-full bg-black/50 backdrop-blur-md font-tgp-tech">
-              <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
+          {/* 1. Categoría/Colección (Sin punto, pulso lento) */}
+          <div class="immersive-content flex items-center gap-4 mb-6">
+            <span class="inline-flex items-center text-copper-ember text-[9px] tracking-[0.6em] uppercase font-tgp-tech animate-pulse-slow">
               {formatCollection(post.collection)}
-            </span>
-            <span class="font-tgp-tech text-[8px] tracking-[0.7em] uppercase text-white/20">
-              {String(i + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
             </span>
           </div>
 
-          {/* Título: display XL */}
-          <h2 class="immersive-content font-tgp-gloock text-3xl md:text-5xl lg:text-6xl font-normal leading-[1.05] tracking-[-0.02em] text-copper-ember mb-8" style="max-width: 25ch;">
-            {post.title}
+          {/* 2. Título */}
+          <h2 class="immersive-content font-tgp-gloock text-3xl md:text-5xl lg:text-6xl font-normal leading-[1.05] tracking-[-0.02em] text-copper-ember mb-4" style="max-width: 25ch;">
+            <a href={post.link} class="hover:text-white transition-colors duration-300 block">
+              {post.title}
+            </a>
           </h2>
 
-          {/* Subtítulo */}
+          {/* 3. Subtítulo */}
           {post.subtitle && (
-            <p class="immersive-content mt-6 text-copper-ember/60 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide mb-10">
+            <p class="immersive-content mt-4 text-copper-ember/60 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide mb-6">
               {post.subtitle}
             </p>
           )}
 
-          {/* Metadatos (Folio) + Button Translucido */}
-          <div class="immersive-content flex items-center gap-8 mt-10">
-            {post.author && (
-              <span class="text-[9px] tracking-[0.35em] uppercase text-copper-ember/40 font-tgp-tech">
-                {post.author}
-              </span>
-            )}
-            {post.date && (
-              <span class="text-[9px] tracking-[0.35em] uppercase text-copper-ember/30 font-tgp-tech">
-                {new Date(post.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}
-              </span>
-            )}
+          {/* 4. Leer Pieza (CTA) */}
+          <div class="immersive-content mb-6">
             <a 
               href={post.link}
-              class="ml-auto inline-flex items-center gap-5 px-10 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-alpaca-silver text-[9px] tracking-[0.45em] uppercase font-bold font-tgp-tech rounded-sm hover:bg-charcoal-wood/5 hover:text-old-silver hover:border-charcoal-wood/10 transition-all duration-700 hover:scale-105 shadow-2xl shadow-black/60"
+              class="inline-flex items-center gap-5 px-10 py-4 bg-white/1.5 border border-white/10 text-alpaca-silver text-[9px] tracking-[0.45em] uppercase font-bold font-tgp-tech rounded-sm hover:bg-white/5 hover:text-white/80 hover:border-white/20 transition-all duration-700 hover:scale-105"
             >
               Leer Pieza
               <span class="w-6 h-px bg-current inline-block transition-all duration-700"></span>
             </a>
           </div>
-        </div>
 
-        {/* Número de slide: decorativo, derecha */}
-        <div class="absolute bottom-12 right-10 z-10 hidden md:block">
-          <span class="font-tgp-gloock text-[12vw] text-white/5 leading-none select-none">
-            {String(i + 1).padStart(2, '0')}
-          </span>
+          {/* 5. Metadata: Mes y Año (Debajo de H1, subs y botón Leer Pieza) */}
+          {post.date && (
+            <div class="immersive-content flex items-center">
+              <span class="font-tgp-tech font-extralight text-[8px] tracking-[0.4em] uppercase text-copper-ember/35">
+                {new Date(post.date).toLocaleDateString('es-AR', { year: 'numeric', month: 'long' })}
+              </span>
+            </div>
+          )}
         </div>
       </article>
     ))}
@@ -135,48 +132,41 @@ const formatCollection = (col: string) =>
 
 
 
-  {/* ---- UI: Controles y dots ---- */}
-  <div class="absolute bottom-10 left-8 md:left-16 z-50 flex items-center gap-5">
+  {/* ---- UI: Controles y dots (Medio punto editorial centrado) ---- */}
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2">
     {slides.map((_, i) => (
       <button
-        class="immersive-dot relative h-0.5 bg-white/20 transition-all duration-500 rounded-full hover:bg-white/50"
-        style={`width: ${i === 0 ? '2.5rem' : '0.75rem'};`}
+        class="immersive-dot relative h-[1.5px] bg-white/8 transition-all duration-500 rounded-full hover:bg-white/20"
+        style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
         data-immersive-dot={i}
         aria-label={`Ir al slide ${i + 1}`}
       ></button>
     ))}
   </div>
 
-  {/* ---- UI: Flechas prev/next laterales (Global Physics) ---- */}
-  <div class="side-nav-zone absolute inset-y-0 left-0 w-24 z-50 flex items-center justify-start group/side-l">
+  {/* ---- UI: Flechas prev/next — imperceptibles, aparecen con hover sobre el slider ---- */}
+  <div class="slider-nav-zone absolute inset-y-0 left-0 w-20 z-50 flex items-center justify-start group/side-l">
     <button 
       id="immersive-prev"
-      class="side-nav-btn pl-6 flex items-center justify-center text-charcoal-wood hover:text-copper-ember group-hover/side-l:-translate-x-1 transition-all duration-500 cursor-pointer"
+      class="slider-nav-btn pl-6 flex items-center justify-center group-hover/side-l:-translate-x-1 transition-all duration-500 cursor-pointer"
       aria-label="Slide anterior"
     >
-      <svg class="w-10 h-10 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7" />
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
   </div>
 
-  <div class="side-nav-zone absolute inset-y-0 right-0 w-24 z-50 flex items-center justify-end group/side-r">
+  <div class="slider-nav-zone absolute inset-y-0 right-0 w-20 z-50 flex items-center justify-end group/side-r">
     <button 
       id="immersive-next"
-      class="side-nav-btn pr-6 flex items-center justify-center text-charcoal-wood hover:text-copper-ember group-hover/side-r:translate-x-1 transition-all duration-500 cursor-pointer"
+      class="slider-nav-btn pr-6 flex items-center justify-center group-hover/side-r:translate-x-1 transition-all duration-500 cursor-pointer"
       aria-label="Slide siguiente"
     >
-      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7" />
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" />
       </svg>
     </button>
-  </div>
-
-  {/* ---- UI: Sección label (top-left) ---- */}
-  <div class="absolute top-8 left-10 md:left-20 z-50">
-    <span class="font-tgp-tech text-[7px] tracking-[0.8em] uppercase text-white/20">
-      — Archivo Inmersivo
-    </span>
   </div>
 
 </section>
@@ -184,12 +174,14 @@ const formatCollection = (col: string) =>
 {/* ================================================================
     GSAP: Transición clipPath + auto-slider
 ================================================================= */}
-<script define:vars={{ interval }}>
+<script>
   import { gsap } from 'gsap';
 
-  const INTERVAL = interval;
-
   const initImmersiveSlider = () => {
+    const sliderEl = document.getElementById('immersive-slider');
+    const intervalVal = sliderEl ? parseInt(sliderEl.dataset.interval || '6000', 10) : 6000;
+    const INTERVAL = intervalVal;
+
     const slides   = document.querySelectorAll('.immersive-slide');
     const dots     = document.querySelectorAll('[data-immersive-dot]');
     const progress = document.getElementById('immersive-progress');
@@ -199,18 +191,22 @@ const formatCollection = (col: string) =>
     if (slides.length === 0) return;
 
     let current  = 0;
-    let autoTimer = null;
+    let autoTimer: ReturnType<typeof setInterval> | null = null;
     let isAnimating = false;
 
-    // Estado inicial: todos los slides ocultos excepto el primero
-    gsap.set(slides, { clipPath: 'inset(0 100% 0 0)', opacity: 0 });
-    gsap.set(slides[0], { clipPath: 'inset(0 0% 0 0)', opacity: 1 });
+    // Estado inicial: todos los slides ocultos excepto el primero (estilo CinematicHero opacity)
+    slides.forEach((s, i) => {
+      const isActive = i === 0;
+      s.classList.toggle('is-active', isActive);
+      s.setAttribute('aria-hidden', String(!isActive));
+      gsap.set(s, { opacity: isActive ? 1 : 0, zIndex: isActive ? 10 : 0 });
+    });
 
-    const updateDots = (index) => {
+    const updateDots = (index: number) => {
       dots.forEach((d, i) => {
         gsap.to(d, {
-          width: i === index ? '2.5rem' : '0.75rem',
-          backgroundColor: i === index ? '#E3DDD3' : 'rgba(255,255,255,0.2)',
+          width: i === index ? '1.25rem' : '0.4rem',
+          backgroundColor: i === index ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.08)',
           duration: 0.4,
           ease: 'power2.out',
         });
@@ -226,38 +222,60 @@ const formatCollection = (col: string) =>
       );
     };
 
-    const goToSlide = (next, direction = 1) => {
+    const goToSlide = (next: number, direction: number = 1) => {
       if (isAnimating || next === current) return;
       isAnimating = true;
 
       const outSlide = slides[current];
       const inSlide  = slides[next];
 
-      // Slide entrante: aparece desde el lado correspondiente
-      gsap.set(inSlide, {
-        clipPath: direction > 0 ? 'inset(0 0% 0 100%)' : 'inset(0 100% 0 0%)',
-        opacity: 1,
-        zIndex: 10,
+      slides.forEach((s, i) => {
+        const isNext = i === next;
+        s.classList.toggle('is-active', isNext);
+        s.setAttribute('aria-hidden', String(!isNext));
       });
-      gsap.set(outSlide, { zIndex: 5 });
 
-      // Animar entrada
-      gsap.to(inSlide, {
-        clipPath: 'inset(0 0% 0 0%)',
-        duration: 1.1,
-        ease: 'expo.inOut',
+      // Transición unificada estilo Cinematic.hero (smooth opacity cross-fade)
+      gsap.to(outSlide, {
+        opacity: 0,
+        duration: 1.0,
+        ease: 'power2.inOut',
         onComplete: () => {
-          gsap.set(outSlide, { clipPath: 'inset(0 100% 0 0)', opacity: 0, zIndex: 0 });
+          gsap.set(outSlide, { zIndex: 0 });
+        }
+      });
+
+      gsap.set(inSlide, { opacity: 0, zIndex: 10 });
+      gsap.to(inSlide, {
+        opacity: 1,
+        duration: 1.0,
+        ease: 'power2.out',
+        onComplete: () => {
           current = next;
           isAnimating = false;
-        },
+        }
       });
 
-      // Animación del contenido del slide entrante
+      // Animación del contenido del slide entrante en ritmo de luces
       const contents = inSlide.querySelectorAll('.immersive-content');
+      if (autoTimer) clearInterval(autoTimer);
+      gsap.killTweensOf(contents);
+
       gsap.fromTo(contents,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.08, delay: 0.3 }
+        { y: 20, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1.1, 
+          ease: 'power2.out', 
+          stagger: 0.16, 
+          delay: 0.2,
+          onComplete: () => {
+            // Reiniciar auto-timer recién AL COMPLETAR el ritmo de luces
+            if (autoTimer) clearInterval(autoTimer);
+            autoTimer = setInterval(nextSlide, INTERVAL);
+          }
+        }
       );
 
       updateDots(next);
@@ -276,14 +294,14 @@ const formatCollection = (col: string) =>
 
     // Controles
     nextBtn?.addEventListener('click', () => {
-      clearInterval(autoTimer);
+      if (autoTimer) clearInterval(autoTimer);
       nextSlide();
       autoTimer = setInterval(nextSlide, INTERVAL);
       startProgress();
     });
 
     prevBtn?.addEventListener('click', () => {
-      clearInterval(autoTimer);
+      if (autoTimer) clearInterval(autoTimer);
       prevSlide();
       autoTimer = setInterval(nextSlide, INTERVAL);
       startProgress();
@@ -291,7 +309,7 @@ const formatCollection = (col: string) =>
 
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
-        clearInterval(autoTimer);
+        if (autoTimer) clearInterval(autoTimer);
         goToSlide(i, i > current ? 1 : -1);
         autoTimer = setInterval(nextSlide, INTERVAL);
         startProgress();
@@ -305,9 +323,45 @@ const formatCollection = (col: string) =>
 
     // Pausar en hover
     const section = document.getElementById('immersive-slider');
-    section?.addEventListener('mouseenter', () => clearInterval(autoTimer));
+    section?.addEventListener('mouseenter', () => { if (autoTimer) clearInterval(autoTimer); });
     section?.addEventListener('mouseleave', () => {
       autoTimer = setInterval(nextSlide, INTERVAL);
+    });
+
+    // Control manual por Scroll / Trackpad horizontal
+    let wheelDebounce = 0;
+    section?.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > 25 || (e.shiftKey && Math.abs(e.deltaY) > 25)) {
+        const now = Date.now();
+        if (now - wheelDebounce > 400) {
+          wheelDebounce = now;
+          if (autoTimer) clearInterval(autoTimer);
+          if (e.deltaX > 0 || e.deltaY > 0) nextSlide();
+          else prevSlide();
+          autoTimer = setInterval(nextSlide, INTERVAL);
+        }
+      }
+    }, { passive: true });
+
+    // Control manual por cursor (Drag / Swipe)
+    let startX = 0;
+    let isDragging = false;
+    section?.addEventListener('mousedown', (e) => {
+      const target = e.target;
+      if (target && target instanceof Element && target.closest('a, button')) return;
+      startX = e.clientX;
+      isDragging = true;
+    });
+    section?.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diffX = e.clientX - startX;
+      if (Math.abs(diffX) > 50) {
+        if (autoTimer) clearInterval(autoTimer);
+        if (diffX < 0) nextSlide();
+        else prevSlide();
+        autoTimer = setInterval(nextSlide, INTERVAL);
+      }
     });
   };
 
@@ -339,17 +393,41 @@ const formatCollection = (col: string) =>
     will-change: transform;
   }
 
-  /* Animación de flechas hover nav */
-  .immersive-nav-arrows {
+  /* ── FLECHAS DE SLIDER: misma física que la navbar ──────────────
+     Imperceptibles en reposo, aparecen al hacer hover sobre el slider.
+     Sin glassmorfismo, sin bordes. Solo trazo y opacidad. */
+  .slider-nav-btn {
     opacity: 0;
     pointer-events: none;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    color: rgba(255, 255, 255, 0.15);
+    transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
   }
-  
-  #immersive-slider:hover .immersive-nav-arrows {
+
+  #immersive-slider:hover .slider-nav-btn {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+  }
+
+  .slider-nav-btn:hover {
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* La zona de trigger es transparente */
+  .slider-nav-zone {
+    pointer-events: none;
+  }
+
+  #immersive-slider:hover .slider-nav-zone {
+    pointer-events: auto;
+  }
+
+  /* Slow gentle pulse for badge text */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 </style>

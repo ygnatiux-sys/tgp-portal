@@ -33,6 +33,11 @@ export const baseSchema = {
       validation: { isRequired: true } // Único campo obligatorio
     }
   }),
+  date: fields.date({ 
+    label: 'Fecha',
+    defaultValue: { kind: 'today' },
+    description: 'Importante para el orden de los posts en la página de inicio.',
+  }),
   template: fields.relationship({
     label: 'Plantilla Editorial (TGP)',
     collection: 'editorialTemplates',

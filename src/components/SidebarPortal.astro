@@ -28,11 +28,17 @@ const { posts, title = "También en TGP" } = Astro.props;
 
 const sidebarPosts = posts.slice(0, 8); // máximo 8 en sidebar
 
-const formatCollection = (col: string) =>
-  col.replace('_', ' ').replace('-', ' ')
+const formatCollection = (col: string) => {
+  const c = col.toLowerCase();
+  if (c === 'essays') return 'Dossiers';
+  if (c === 'architectures') return 'Magazines';
+  if (c === 'visual_signals' || c === 'visual-signals') return 'Collections';
+  if (c === 'capsulas') return 'eBooks';
+  return col.replace('_', ' ').replace('-', ' ')
     .split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
+};
 ---
 
 <aside class="sidebar-portal" aria-label="Lecturas recomendadas">

@@ -45,19 +45,21 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   </div>
 
   {/* Content Layer */}
-  <div class="relative z-30 px-6 max-w-7xl w-full text-center md:text-left">
-    <div class="mb-8 opacity-0 translate-y-8 animate-reveal">
-      <span class="inline-block px-4 py-1.5 border border-copper-ember/30 text-copper-ember text-[9px] tracking-[0.5em] uppercase rounded-full bg-black/40 backdrop-blur-md">
+  <div class="hero-content-box relative z-30 px-6 max-w-7xl w-full text-center md:text-left">
+    <div class="mb-3 opacity-0 translate-y-8 animate-reveal">
+      <span class="inline-flex items-center text-copper-ember text-[9px] tracking-[0.6em] uppercase font-tgp-tech animate-pulse-slow">
         {category}
       </span>
     </div>
     
-    <h1 class={`hero-title font-gloock text-[12vw] md:text-[8rem] lg:text-[10rem] font-bold leading-[0.85] tracking-[-0.04em] text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)] mb-10 opacity-0 translate-y-12 animate-reveal animation-delay-300 ${isTactile ? 'tactile-glow' : ''}`}>
-      {title}
+    <h1 class={`hero-title font-gloock text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-[-0.03em] text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)] mb-3 text-balance max-w-[20ch] opacity-0 translate-y-12 animate-reveal animation-delay-300 ${isTactile ? 'tactile-glow' : ''}`}>
+      <a href={link} class="hover:text-copper-ember transition-colors duration-300">
+        {title}
+      </a>
     </h1>
     
     {subtitle && (
-      <p class="font-sans text-[10px] md:text-xs tracking-[1em] md:tracking-[1.5em] uppercase text-gray-400 font-light max-w-4xl leading-relaxed opacity-0 animate-reveal animation-delay-600 mb-16">
+      <p class="font-sans text-[10px] md:text-xs tracking-[0.2em] text-gray-400 font-light max-w-4xl leading-relaxed opacity-0 animate-reveal animation-delay-600 mb-6">
         {subtitle}
       </p>
     )}
@@ -85,12 +87,12 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   const initHero = () => {
     const hero = document.querySelector('.cinematographic-hero');
     const img = document.querySelector('.hero-img-target');
-    const title = document.querySelector('.hero-title');
+    const contentBox = document.querySelector('.hero-content-box');
     const scratches = document.querySelector('.texture-scratches');
     const dust = document.querySelector('.atmospheric-dust');
 
     if (hero && img) {
-      // 1. ZOOM-OUT PHYSICS
+      // 1. ZOOM-OUT & FADE OUT TO BLACK PHYSICS
       gsap.to(img, {
         scrollTrigger: {
           trigger: hero,
@@ -98,24 +100,24 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
           end: "bottom top",
           scrub: true
         },
-        scale: 0.9,
-        opacity: 0.2,
+        scale: 0.78,
+        opacity: 0,
         ease: "power2.inOut"
       });
 
-      // 2. TEXT PARALLAX (Out of sync for depth)
-      if (title) {
-        gsap.to(title, {
+      // 2. UNIFIED CONTENT BLOCK FADE OUT (IN-PLACE SOFT GRADUAL FADE)
+      if (contentBox) {
+        gsap.to(contentBox, {
           scrollTrigger: {
             trigger: hero,
             start: "top top",
-            end: "bottom top",
+            end: "70% top",
             scrub: 1.2
           },
-          y: -150,
-          opacity: 0.3,
-          scale: 0.95,
-          ease: "power3.out"
+          y: -40,
+          opacity: 0,
+          scale: 0.94,
+          ease: "power2.out"
         });
       }
 
@@ -190,5 +192,15 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   .cinematographic-hero:hover .hero-img-target {
     filter: brightness(0.85) contrast(1.05);
     transition: filter 1.8s ease;
+  }
+
+  /* Slow gentle pulse for badge text */
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 </style>

@@ -47,27 +47,26 @@ const {
   </div>
   <div class="absolute inset-0 z-10 bg-black/40"></div>
 
-  <div class="absolute top-12 left-12 z-30 pointer-events-none">
-    <div
-      class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
-    >
-      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
-    </div>
-  </div>
-
   <div
-    class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-12"
+    class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-6 md:py-8 flex flex-col items-center -translate-y-4"
   >
-    <p
-      class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-[#c4a484]/80 mb-6 drop-shadow-md text-balance max-w-3xl mx-auto"
-    >
-      {subtitle}
-    </p>
     <h1
-      class="vibe-target-h1 font-serif text-5xl md:text-[5.5rem] text-[#c4a484] font-black uppercase tracking-tighter leading-[1.1] pb-4 text-balance drop-shadow-2xl mx-auto max-w-5xl"
+      class="vibe-target-h1 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#c4a484] font-black tracking-tight leading-[0.95] pb-1 drop-shadow-2xl text-balance mx-auto max-w-[22ch] inline-block"
     >
       {title}
     </h1>
+    {subtitle && (
+      <p
+        class="vibe-target-h2 font-sans text-xs md:text-sm tracking-[0.15em] text-[#c4a484]/80 my-2 drop-shadow-md text-balance max-w-2xl mx-auto"
+      >
+        {subtitle}
+      </p>
+    )}
+    <h3
+      class={`vibe-target-folio font-tgp-tech text-[#c4a484]/50 text-[9px] md:text-[10px] tracking-[0.25em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
+    >
+      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
+    </h3>
   </div>
 </section>
 
@@ -142,7 +141,7 @@ const {
     }
 
     if (heroSection && bgPin) {
-      // 1. ZOOM-OUT & DIM
+      // 1. ZOOM-OUT & FADE OUT TO BLACK ON SCROLL
       gsap.to(images, {
         scrollTrigger: {
           trigger: heroSection,
@@ -150,8 +149,8 @@ const {
           end: "bottom top",
           scrub: true,
         },
-        scale: 0.8,
-        opacity: 0.4, // Aumentado para que al scrollear no desaparezca del todo
+        scale: 0.78,
+        opacity: 0,
         ease: "power2.inOut",
       });
 
@@ -167,19 +166,19 @@ const {
         ease: "none",
       });
 
-      // 3. TITLE TRANSITION
+      // 3. TITLE TRANSITION (IN-PLACE SOFT GRADUAL FADE)
       if (titleContainer) {
         gsap.to(titleContainer, {
           scrollTrigger: {
             trigger: heroSection,
             start: "top top",
-            end: "bottom top",
+            end: "70% top",
             scrub: 1.2,
           },
-          y: 250,
+          y: 35,
           opacity: 0,
-          scale: 0.9,
-          ease: "power3.out",
+          scale: 0.94,
+          ease: "power2.out",
         });
       }
     }

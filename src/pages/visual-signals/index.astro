@@ -20,8 +20,8 @@ const normalize = (post: any, col: string) => ({
 });
 
 const sortByLatest = (a: any, b: any) => {
-  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : 0;
-  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : 0;
+  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : Date.now();
+  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : Date.now();
   return dateB - dateA || b.id.localeCompare(a.id);
 };
 
@@ -29,7 +29,7 @@ const allPosts = [...rawPosts].sort(sortByLatest).map(p => normalize(p, 'visual_
 
 const heroPost = allPosts[0] ?? {
   id: 'fallback',
-  title: 'Visual Signals',
+  title: 'Collections',
   subtitle: 'Estética, diseño e inspiración visual.',
   image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
   link: '#',
@@ -42,7 +42,7 @@ const sliderPosts = allPosts.slice(0, 8);
 ---
 
 <LayoutPortal 
-  title="Visual Signals | The Great Puzzle"
+  title="Collections | The Great Puzzle"
   description="Estética, diseño e inspiración visual desde The Great Puzzle."
 >
   <CinematicHeroV2 posts={allPosts} />
@@ -58,21 +58,11 @@ const sliderPosts = allPosts.slice(0, 8);
 
     <div class="sidebar-main-col">
       <div class="sidebar-portal-sticky">
-        <SidebarPortal posts={sidebarPosts} title="También en Signals" />
+        <SidebarPortal posts={sidebarPosts} title="También en Collections" />
       </div>
     </div>
   </div>
 
 
 
-  <div class="portal-footer-divider">
-    <a href="/" class="flex items-center gap-3 group">
-      <span class="w-8 h-8 rounded-full bg-copper-ember flex items-center justify-center text-[8px] font-bold text-black font-tgp-tech group-hover:scale-110 transition-transform">
-        TGP
-      </span>
-      <span class="font-tgp-tech text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember transition-colors duration-300">
-        The Great Puzzle
-      </span>
-    </a>
-  </div>
 </LayoutPortal>

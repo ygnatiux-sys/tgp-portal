@@ -8,6 +8,7 @@ import HeroKenBurns from "../../components/HeroKenBurns.astro";
 import HeroParallax from "../../components/HeroParallax.astro";
 import HeroMagazine from "../../components/HeroMagazine.astro";
 import FloatingBackButton from "../../components/FloatingBackButton.astro";
+import ArticleFooter from "../../components/ArticleFooter.astro";
 
 export async function getStaticPaths() {
   const archetypes = await getCollection("capsulas");
@@ -95,7 +96,7 @@ console.log(
       vibeClass={config.vibe}
     />
 
-    <article class="relative py-24 px-6 md:px-12">
+    <article class="relative pt-16 pb-8 px-6 md:px-12">
       <div class={`${config.scale} mx-auto`}>
         {/* Renderizado de Spreads Editoriales Inyectados */}
         {
@@ -139,6 +140,8 @@ console.log(
       </div>
     </article>
   </main>
+
+  <ArticleFooter vibeClass={config.vibe} pageTitle={entry.data.title} />
 </LayoutDark>
 
 <style is:global>

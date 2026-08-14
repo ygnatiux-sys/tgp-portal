@@ -50,8 +50,8 @@ const normalize = (post: any, col: string) => ({
 
 // ─── SORT HELPER ─────────────────────────────────────────────────────────────
 const sortByLatest = (a: any, b: any) => {
-  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : 0;
-  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : 0;
+  const dateA = a.data?.date ? new Date(String(a.data.date)).getTime() : (a.date ? new Date(String(a.date)).getTime() : Date.now());
+  const dateB = b.data?.date ? new Date(String(b.data.date)).getTime() : (b.date ? new Date(String(b.date)).getTime() : Date.now());
   return dateB - dateA || b.id.localeCompare(a.id);
 };
 
@@ -62,18 +62,16 @@ const visualSignals = [...visualSignalsRaw].sort(sortByLatest).map(p => normaliz
 const ensayos       = [...ensayosRaw]      .sort(sortByLatest).map(p => normalize(p, 'ensayos'));
 const capsulas      = [...capsulasRaw]     .sort(sortByLatest).map(p => normalize(p, 'capsulas'));
 
-// ─── POOL GLOBAL MEZCLADO ─────────────────────────────────────────────────────
-// Intercalamos colecciones para el efecto de diversidad editorial en el grid
-const interleave = (...arrays: any[][]) => {
-  const maxLen = Math.max(...arrays.map(a => a.length));
-  const result: any[] = [];
-  for (let i = 0; i < maxLen; i++) {
-    arrays.forEach(arr => { if (arr[i]) result.push(arr[i]); });
-  }
-  return result;
-};
-
-const allPosts = interleave(ensayos, essays, architectures, visualSignals, capsulas);
+// ─── POOL GLOBAL ─────────────────────────────────────────────────────────────
+// Agrupamos todas las colecciones y ordenamos por fecha absoluta para dar prioridad 
+// global a los posts más recientes en toda la plataforma.
+const allPosts = [
+  ...ensayos, 
+  ...essays, 
+  ...architectures, 
+  ...visualSignals, 
+  ...capsulas
+].sort(sortByLatest);
 
 // ─── DISTRIBUCIÓN DE POSTS ────────────────────────────────────────────────────
 
@@ -91,26 +89,16 @@ const heroPost = allPosts[0] ?? {
 // El BentoPortal distribuye internamente: [1]=hero-bloque-A, [2-6]=cluster, [7-14]=array
 const bentoPosts = allPosts.slice(1, 15);
 
-// SIDEBAR: una selección curada de posts de distintas colecciones
-const sidebarPosts = [
-  ...ensayos.slice(0, 3),
-  ...essays.slice(0, 2),
-  ...architectures.slice(0, 2),
-  ...visualSignals.slice(0, 1),
-].slice(0, 8);
+// SIDEBAR: Posts recientes, saltando el hero
+const sidebarPosts = allPosts.slice(1, 9);
 
-// IMMERSIVE SLIDER: los posts más fotogénicos (imagen grande requerida)
-const sliderPosts = [
-  ...ensayos.slice(0, 3),
-  ...essays.slice(0, 2),
-  ...visualSignals.slice(0, 2),
-  ...architectures.slice(0, 1),
-].slice(0, 8);
+// IMMERSIVE SLIDER: Los posts más recientes en general (incluyendo el hero)
+const sliderPosts = allPosts.slice(0, 8);
 ---
 
 <LayoutPortal 
   title="TGP — Portal Editorial | The Great Puzzle"
-  description="Portal editorial digital de The Great Puzzle. Ensayos, arquitecturas, señales visuales y cápsulas de pensamiento contemporáneo."
+  description="Portal editorial digital de The Great Puzzle. Ensayos, Dossiers, Magazines, Collections y eBooks de pensamiento contemporáneo."
 >
 
   {/* ================================================================
@@ -160,17 +148,5 @@ const sliderPosts = [
       Transición: GSAP clipPath horizontal (wipe cinematográfico).
   ================================================================= */}
   <ImmersiveSlider posts={sliderPosts} interval={6000} />
-
-  {/* ── Footer divisor de marca ── */}
-  <div class="portal-footer-divider">
-    <a href="/" class="flex items-center gap-3 group">
-      <span class="w-8 h-8 rounded-full bg-copper-ember flex items-center justify-center text-[8px] font-bold text-black font-tgp-tech group-hover:scale-110 transition-transform">
-        TGP
-      </span>
-      <span class="font-tgp-tech text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember transition-colors duration-300">
-        The Great Puzzle
-      </span>
-    </a>
-  </div>
 
 </LayoutPortal>

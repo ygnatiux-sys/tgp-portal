@@ -23,6 +23,7 @@ const commonSchema = z.object({
       caption: z.string().optional(),
     }),
   })).optional(),
+  date: z.coerce.string().optional().default(new Date().toISOString()),
 });
 
 const ensayosFeedSchema = z.object({
@@ -48,6 +49,7 @@ const capsulaSchema = z.object({
       caption: z.string().optional(),
     }),
   })).optional(),
+  date: z.coerce.string().optional().default(new Date().toISOString()),
 });
 
 export const collections = {

@@ -44,11 +44,17 @@ const array4Before  = safePosts.slice(6, 10);        // Bloque C primero: 4 card
 const array4After   = safePosts.slice(10, 14);       // Bloque C segundo: 4 cards
 
 // Helper: etiqueta de colección formateada
-const formatCollection = (col: string) =>
-  col.replace('_', ' ').replace('-', ' ')
+const formatCollection = (col: string) => {
+  const c = col.toLowerCase();
+  if (c === 'essays') return 'Dossiers';
+  if (c === 'architectures') return 'Magazines';
+  if (c === 'visual_signals' || c === 'visual-signals') return 'Collections';
+  if (c === 'capsulas') return 'eBooks';
+  return col.replace('_', ' ').replace('-', ' ')
     .split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
+};
 ---
 
 <div id="bento-portal" class="bento-portal-root w-full">
@@ -76,7 +82,7 @@ const formatCollection = (col: string) =>
 
       {/* Content */}
       <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-16 max-w-4xl">
-        <span class="inline-block mb-5 text-[8px] tracking-[0.6em] uppercase text-copper-ember font-tgp-tech border border-copper-ember/30 px-3 py-1.5 rounded-full w-fit bg-black/40 backdrop-blur-sm">
+        <span class="inline-block mb-5 text-[9px] tracking-[0.6em] uppercase text-copper-ember font-tgp-tech animate-pulse-slow">
           {formatCollection(heroPost.collection)} · Destacado
         </span>
         <h2 class="font-tgp-gloock text-3xl md:text-5xl lg:text-6xl text-white leading-[0.92] tracking-tight mb-5 group-hover:text-copper-ember transition-colors duration-700">
@@ -178,12 +184,24 @@ const formatCollection = (col: string) =>
           </div>
         ))}
 
-        {/* Dots de progreso en Byblos */}
-        <div class="absolute bottom-8 right-10 z-20 flex gap-3">
+        {/* Controles laterales en hover */}
+        <div class="byblos-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
+          <button id="byblos-prev" class="byblos-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Anterior">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
+          </button>
+        </div>
+        <div class="byblos-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
+          <button id="byblos-next" class="byblos-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Siguiente">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+
+        {/* Dots de progreso en Byblos (Medio punto editorial centrado) */}
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
           {safePosts.map((_, i) => (
             <button 
-              class="byblos-dot h-1 rounded-full bg-white/20 transition-all duration-500 hover:bg-copper-ember"
-              style={`width: ${i === 0 ? '2rem' : '0.5rem'};`}
+              class="byblos-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
+              style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
               data-byblos-dot={i}
               aria-label={`Slide ${i + 1}`}
             ></button>
@@ -282,8 +300,7 @@ const formatCollection = (col: string) =>
             />
             <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
             <a href={post.link} class="absolute inset-0 flex flex-col justify-center px-10 md:px-16 group/card">
-              <span class="text-[7px] tracking-[0.7em] uppercase text-copper-ember mb-5 font-tgp-tech flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
+              <span class="text-[8px] tracking-[0.7em] uppercase text-copper-ember mb-5 font-tgp-tech inline-block animate-pulse-slow">
                 {formatCollection(post.collection)} · En rotación
               </span>
               <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.92] tracking-tight max-w-[22ch] group-hover/card:text-copper-ember transition-colors duration-700">
@@ -304,12 +321,24 @@ const formatCollection = (col: string) =>
           </div>
         ))}
 
-        {/* Progress dots */}
-        <div class="absolute bottom-8 right-10 z-20 flex gap-3">
+        {/* Controles laterales en hover */}
+        <div class="engine-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
+          <button id="engine-prev" class="engine-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Anterior">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
+          </button>
+        </div>
+        <div class="engine-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
+          <button id="engine-next" class="engine-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Siguiente">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+
+        {/* Progress dots (Medio punto editorial centrado) */}
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
           {enginePosts.map((_, i) => (
             <button 
-              class="engine-dot h-1 rounded-full bg-white/20 transition-all duration-500 hover:bg-copper-ember"
-              style={`width: ${i === 0 ? '2rem' : '0.5rem'};`}
+              class="engine-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
+              style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
               data-engine-dot={i}
               aria-label={`Slide ${i + 1}`}
             ></button>
@@ -363,10 +392,13 @@ const formatCollection = (col: string) =>
 ================================================================= */}
 <script>
   const initEngineCard = () => {
-    const slides    = document.querySelectorAll<HTMLElement>('[data-engine-slide]');
-    const dots      = document.querySelectorAll<HTMLButtonElement>('[data-engine-dot]');
-    const INTERVAL  = 4500; // ms entre slides
-    let current     = 0;
+    const slides     = document.querySelectorAll<HTMLElement>('[data-engine-slide]');
+    const dots       = document.querySelectorAll<HTMLButtonElement>('[data-engine-dot]');
+    const prevBtn    = document.getElementById('engine-prev');
+    const nextBtn    = document.getElementById('engine-next');
+    const engineCard = document.getElementById('bento-engine-card');
+    const INTERVAL   = 4500; // ms entre slides
+    let current      = 0;
     let timer: ReturnType<typeof setInterval> | null = null;
 
     if (slides.length === 0) return;
@@ -379,13 +411,18 @@ const formatCollection = (col: string) =>
         s.style.zIndex = i === index ? '10' : '0';
       });
       dots.forEach((d, i) => {
-        d.style.backgroundColor = i === index ? '#E3DDD3' : '';
-        d.style.width           = i === index ? '2rem' : '0.5rem';
+        d.style.backgroundColor = i === index ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.08)';
+        d.style.width           = i === index ? '1.25rem' : '0.4rem';
       });
     };
 
     const next = () => {
       current = (current + 1) % slides.length;
+      goToSlide(current);
+    };
+
+    const prev = () => {
+      current = (current - 1 + slides.length) % slides.length;
       goToSlide(current);
     };
 
@@ -399,13 +436,57 @@ const formatCollection = (col: string) =>
       });
     });
 
+    nextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (timer) clearInterval(timer);
+      next();
+      timer = setInterval(next, INTERVAL);
+    });
+
+    prevBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (timer) clearInterval(timer);
+      prev();
+      timer = setInterval(next, INTERVAL);
+    });
+
     // Pausar en hover
-    const engineCard = document.getElementById('bento-engine-card');
     engineCard?.addEventListener('mouseenter', () => {
       if (timer) clearInterval(timer);
     });
     engineCard?.addEventListener('mouseleave', () => {
       timer = setInterval(next, INTERVAL);
+    });
+
+    // Scroll / Wheel
+    let wheelDebounce = 0;
+    engineCard?.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > 25 || (e.shiftKey && Math.abs(e.deltaY) > 25)) {
+        const now = Date.now();
+        if (now - wheelDebounce > 400) {
+          wheelDebounce = now;
+          if (e.deltaX > 0 || e.deltaY > 0) next();
+          else prev();
+        }
+      }
+    }, { passive: true });
+
+    // Drag / Swipe
+    let startX = 0;
+    let isDragging = false;
+    engineCard?.addEventListener('mousedown', (e) => {
+      if ((e.target as HTMLElement).closest('a, button')) return;
+      startX = e.clientX;
+      isDragging = true;
+    });
+    engineCard?.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diffX = e.clientX - startX;
+      if (Math.abs(diffX) > 50) {
+        if (diffX < 0) next();
+        else prev();
+      }
     });
 
     // Iniciar
@@ -414,10 +495,13 @@ const formatCollection = (col: string) =>
   };
 
   const initByblosCard = () => {
-    const slides    = document.querySelectorAll<HTMLElement>('[data-byblos-slide]');
-    const dots      = document.querySelectorAll<HTMLButtonElement>('[data-byblos-dot]');
-    const INTERVAL  = 5000; // ms entre slides
-    let current     = 0;
+    const slides     = document.querySelectorAll<HTMLElement>('[data-byblos-slide]');
+    const dots       = document.querySelectorAll<HTMLButtonElement>('[data-byblos-dot]');
+    const prevBtn    = document.getElementById('byblos-prev');
+    const nextBtn    = document.getElementById('byblos-next');
+    const byblosCard = document.getElementById('bento-byblos-card');
+    const INTERVAL   = 5000; // ms entre slides
+    let current      = 0;
     let timer: ReturnType<typeof setInterval> | null = null;
 
     if (slides.length === 0) return;
@@ -430,13 +514,18 @@ const formatCollection = (col: string) =>
         s.style.zIndex = i === index ? '10' : '0';
       });
       dots.forEach((d, i) => {
-        d.style.backgroundColor = i === index ? '#E3DDD3' : '';
-        d.style.width           = i === index ? '2rem' : '0.5rem';
+        d.style.backgroundColor = i === index ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.08)';
+        d.style.width           = i === index ? '1.25rem' : '0.4rem';
       });
     };
 
     const next = () => {
       current = (current + 1) % slides.length;
+      goToSlide(current);
+    };
+
+    const prev = () => {
+      current = (current - 1 + slides.length) % slides.length;
       goToSlide(current);
     };
 
@@ -450,13 +539,57 @@ const formatCollection = (col: string) =>
       });
     });
 
+    nextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (timer) clearInterval(timer);
+      next();
+      timer = setInterval(next, INTERVAL);
+    });
+
+    prevBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (timer) clearInterval(timer);
+      prev();
+      timer = setInterval(next, INTERVAL);
+    });
+
     // Pausar en hover
-    const byblosCard = document.getElementById('bento-byblos-card');
     byblosCard?.addEventListener('mouseenter', () => {
       if (timer) clearInterval(timer);
     });
     byblosCard?.addEventListener('mouseleave', () => {
       timer = setInterval(next, INTERVAL);
+    });
+
+    // Scroll / Wheel
+    let wheelDebounce = 0;
+    byblosCard?.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > 25 || (e.shiftKey && Math.abs(e.deltaY) > 25)) {
+        const now = Date.now();
+        if (now - wheelDebounce > 400) {
+          wheelDebounce = now;
+          if (e.deltaX > 0 || e.deltaY > 0) next();
+          else prev();
+        }
+      }
+    }, { passive: true });
+
+    // Drag / Swipe
+    let startX = 0;
+    let isDragging = false;
+    byblosCard?.addEventListener('mousedown', (e) => {
+      if ((e.target as HTMLElement).closest('a, button')) return;
+      startX = e.clientX;
+      isDragging = true;
+    });
+    byblosCard?.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diffX = e.clientX - startX;
+      if (Math.abs(diffX) > 50) {
+        if (diffX < 0) next();
+        else prev();
+      }
     });
 
     // Iniciar

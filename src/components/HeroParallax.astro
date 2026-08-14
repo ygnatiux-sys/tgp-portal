@@ -18,7 +18,7 @@ const {
   style="background-color: #0A1C15;"
 >
   <div class="apple-bg-pin absolute inset-0 z-0">
-    <div class="absolute inset-0 opacity-90 apple-bg-layer z-0">
+    <div class="absolute inset-0 opacity-100 apple-bg-layer z-0">
       <div class="apple-marquee-container flex h-full w-[200vw]">
         <div class="cine-wrapper z-10">
           <img
@@ -39,39 +39,37 @@ const {
       </div>
     </div>
 
-    <div class="texture-grain z-10"></div>
+    <div class="texture-grain z-10 opacity-30"></div>
     <div class="texture-scratches z-10"></div>
     <div class="atmospheric-dust z-10"></div>
 
     <div
-      class="absolute inset-0 z-10 bg-linear-to-t"
-      style="background-image: linear-gradient(to top, var(--bg-current), transparent);"
+      class="absolute inset-0 z-10 pointer-events-none"
+      style="background-image: linear-gradient(to top, #0A1C15 0%, rgba(10, 28, 21, 0.65) 45%, transparent 100%);"
     >
-    </div>
-    <div class="absolute inset-0 z-10 bg-black/20"></div>
-  </div>
-
-  <div class="absolute top-12 left-12 z-30 pointer-events-none">
-    <div
-      class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
-    >
-      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
     </div>
   </div>
 
   <div
-    class="apple-title-box relative z-20 p-12 rounded-3xl backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl max-w-4xl mx-6 flex flex-col items-center"
+    class="apple-title-box relative z-20 px-6 py-6 md:py-8 max-w-4xl mx-auto flex flex-col items-center text-center -translate-y-4"
   >
-    <p
-      class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-white/90 mb-8 border-b border-white/20 pb-2 text-balance max-w-3xl mx-auto"
-    >
-      {subtitle}
-    </p>
     <h1
-      class="vibe-target-h1 font-serif text-5xl md:text-[5.5rem] text-white tracking-tighter leading-[1.1] pb-4 drop-shadow-2xl text-center text-balance mx-auto max-w-5xl"
+      class="vibe-target-h1 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-tight leading-[0.95] pb-1 drop-shadow-2xl text-center text-balance mx-auto max-w-[22ch] inline-block"
     >
       {title}
     </h1>
+    {subtitle && (
+      <p
+        class="vibe-target-h2 font-sans text-xs md:text-sm tracking-[0.15em] text-white/90 my-2 text-balance max-w-xl mx-auto drop-shadow-md"
+      >
+        {subtitle}
+      </p>
+    )}
+    <h3
+      class={`vibe-target-folio font-tgp-tech text-white/40 text-[9px] md:text-[10px] tracking-[0.25em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
+    >
+      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
+    </h3>
   </div>
 </section>
 
@@ -146,7 +144,7 @@ const {
         ease: "none",
       });
 
-      // 2. ZOOM-OUT & FADE PHYSICS
+      // 2. ZOOM-OUT & FADE OUT TO BLACK ON SCROLL
       gsap.to(images, {
         scrollTrigger: {
           trigger: appleHero,
@@ -154,25 +152,24 @@ const {
           end: "bottom top",
           scrub: true,
         },
-        scale: 0.85,
-        opacity: 0.6,
+        scale: 0.78,
+        opacity: 0,
         rotation: 0.01,
         ease: "power2.inOut",
       });
 
-      // 3. TITLE BOX PARALLAX
+      // 3. TITLE BOX PARALLAX & FADE OUT (IN-PLACE SOFT GRADUAL FADE)
       gsap.to(titleBox, {
         scrollTrigger: {
           trigger: appleHero,
           start: "top top",
-          end: "bottom top",
-          scrub: 1.5,
+          end: "70% top",
+          scrub: 1.2,
         },
-        y: -300,
+        y: -40,
         opacity: 0,
-        scale: 0.9,
-        rotationX: 10,
-        ease: "power3.out",
+        scale: 0.94,
+        ease: "power2.out",
       });
     }
   };

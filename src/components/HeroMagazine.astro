@@ -52,32 +52,29 @@ const {
   </div>
 
   <div
-    class="absolute top-12 left-12 md:top-16 md:left-16 z-30 pointer-events-none"
+    class="magazine-content-box relative z-20 w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex flex-col justify-end pb-16 md:pb-20 -translate-y-4"
   >
-    <div
-      class={`vibe-target-folio text-white/40 text-[9px] md:text-[10px] uppercase ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
-    >
-      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")} // Vol.
-      2026
-    </div>
-  </div>
-
-  <div
-    class="relative z-20 w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex flex-col justify-end pb-24 md:pb-32"
-  >
-    <div class="magazine-meta-box mb-8 md:mb-12 overflow-hidden max-w-3xl">
-      <p
-        class="vibe-target-h2 font-sans text-white/90 leading-relaxed text-balance max-w-full drop-shadow-md"
-      >
-        {subtitle}
-      </p>
-    </div>
-
-    <div class="magazine-title-box max-w-5xl pb-6">
-      <h1 class="vibe-target-h1 text-5xl md:text-[5.5rem] text-white text-balance tracking-tighter leading-[1.1] drop-shadow-2xl">
+    <div class="magazine-title-box max-w-4xl pb-2">
+      <h1 class="vibe-target-h1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white text-balance tracking-tight leading-[0.95] drop-shadow-2xl max-w-[22ch]">
         {title}
       </h1>
     </div>
+
+    {subtitle && (
+      <div class="magazine-meta-box mb-2 overflow-hidden max-w-3xl">
+        <p
+          class="vibe-target-h2 font-sans text-white/90 leading-relaxed text-balance max-w-full drop-shadow-md"
+        >
+          {subtitle}
+        </p>
+      </div>
+    )}
+
+    <h3
+      class={`vibe-target-folio font-tgp-tech text-white/40 text-[9px] md:text-[10px] tracking-[0.25em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
+    >
+      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
+    </h3>
   </div>
 </section>
 
@@ -127,7 +124,8 @@ const {
   }
 
   .magazine-hero:hover .magazine-img-target {
-    filter: brightness(0.9) contrast(1.08);
+    /* Suavizado de luz en hover (antes brightness: 0.7) */
+    filter: brightness(0.85) contrast(1.05);
     transition: filter 1.8s ease;
   }
 </style>
@@ -140,17 +138,12 @@ const {
 
   const initMagazineHero = () => {
     const hero = document.querySelector(".magazine-hero");
-    const marquee = document.querySelector(
-      ".magazine-hero .magazine-marquee-container",
-    );
+    const marquee = document.querySelector(".magazine-hero .marquee-track");
     const bgPin = document.querySelector(".magazine-hero .magazine-bg-pin");
     const images = document.querySelectorAll(
       ".magazine-hero .magazine-img-target",
     );
-    const titleBox = document.querySelector(
-      ".magazine-hero .magazine-title-box",
-    );
-    const metaBox = document.querySelector(".magazine-hero .magazine-meta-box");
+    const contentBox = document.querySelector(".magazine-hero .magazine-content-box");
 
     // 1. Marquee Loop
     if (marquee) {
@@ -167,7 +160,7 @@ const {
     }
 
     if (hero && bgPin) {
-      // 2. ZOOM-OUT & FADE Scroll Physics
+      // 2. ZOOM-OUT & FADE OUT TO BLACK ON SCROLL
       gsap.to(images, {
         scrollTrigger: {
           trigger: hero,
@@ -175,8 +168,8 @@ const {
           end: "bottom top",
           scrub: true,
         },
-        scale: 0.85,
-        opacity: 0.3, // Aumentado de 0.1 a 0.3 para no perder la imagen
+        scale: 0.78,
+        opacity: 0,
         ease: "power2.inOut",
       });
 
@@ -192,20 +185,19 @@ const {
         ease: "none",
       });
 
-      // 4. TEXT TRANSITION
-      if (titleBox && metaBox) {
-        gsap.to([titleBox, metaBox], {
+      // 4. UNIFIED CONTENT BLOCK TRANSITION (IN-PLACE SOFT GRADUAL FADE)
+      if (contentBox) {
+        gsap.to(contentBox, {
           scrollTrigger: {
             trigger: hero,
             start: "top top",
-            end: "40% top",
-            scrub: 1.5,
+            end: "70% top",
+            scrub: 1.2,
           },
-          y: 200,
+          y: 35,
           opacity: 0,
-          scale: 0.95,
-          stagger: 0.1,
-          ease: "power3.out",
+          scale: 0.94,
+          ease: "power2.out",
         });
       }
     }

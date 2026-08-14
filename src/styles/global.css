@@ -56,51 +56,51 @@
    permitiendo: bg-theme-bg, text-theme-text, border-theme-muted, etc.
 */
 :root {
-  /* Default (oscuro: Racing Green) */
+  /* Default (oscuro: Racing Green con texto teñido en Copper Ember) */
   --bg-current: #0A1C15;
-  --text-current: #ffffff;
+  --text-current: #E3DDD3;
 }
 
-/* data-theme override: el body recibe data-theme desde Layout.astro */
+/* data-theme override: El blanco editorial por defecto es teñido cálidamente por la paleta (Copper Ember / Charcoal Wood) */
 [data-theme="vibe-victorian-archeo"] {
   --bg-current: #F4EFE6;
-  --text-current: #2B2624;
+  --text-current: #211A16;
   --color-theme-bg: #F4EFE6;
-  --color-theme-text: #2B2624;
-  --color-theme-muted: color-mix(in srgb, #2B2624 15%, transparent);
+  --color-theme-text: #211A16;
+  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
   --color-theme-glass: color-mix(in srgb, #F4EFE6, transparent 82%);
 }
 [data-theme="vibe-travel-senses"] {
-  --bg-current: #FFFCF5;
-  --text-current: #1A1A1A;
-  --color-theme-bg: #FFFCF5;
-  --color-theme-text: #1A1A1A;
-  --color-theme-muted: color-mix(in srgb, #1A1A1A 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #FFFCF5, transparent 82%);
+  --bg-current: #F8F5EE;
+  --text-current: #211A16;
+  --color-theme-bg: #F8F5EE;
+  --color-theme-text: #211A16;
+  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #F8F5EE, transparent 82%);
 }
 [data-theme="vibe-80s-italian"] {
-  --bg-current: #F9F8F6;
-  --text-current: #2A2522;
-  --color-theme-bg: #F9F8F6;
-  --color-theme-text: #2A2522;
-  --color-theme-muted: color-mix(in srgb, #2A2522 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #F9F8F6, transparent 82%);
+  --bg-current: #F7F4EE;
+  --text-current: #211A16;
+  --color-theme-bg: #F7F4EE;
+  --color-theme-text: #211A16;
+  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #F7F4EE, transparent 82%);
 }
 [data-theme="vibe-mid-90s-artsy"] {
-  --bg-current: #FFFFFF;
-  --text-current: #000000;
-  --color-theme-bg: #FFFFFF;
-  --color-theme-text: #000000;
-  --color-theme-muted: color-mix(in srgb, #000000 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #FFFFFF, transparent 82%);
+  --bg-current: #F9F7F2;
+  --text-current: #211A16;
+  --color-theme-bg: #F9F7F2;
+  --color-theme-text: #211A16;
+  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #F9F7F2, transparent 82%);
 }
 [data-theme="vibe-ethnics-arts"] {
-  --bg-current: #0A0A0A;
-  --text-current: #EBEBEB;
-  --color-theme-bg: #0A0A0A;
-  --color-theme-text: #EBEBEB;
-  --color-theme-muted: color-mix(in srgb, #EBEBEB 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #0A0A0A, transparent 82%);
+  --bg-current: #0A1C15;
+  --text-current: #E3DDD3;
+  --color-theme-bg: #0A1C15;
+  --color-theme-text: #E3DDD3;
+  --color-theme-muted: color-mix(in srgb, #E3DDD3 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #0A1C15, transparent 82%);
 }
 
 body {
@@ -127,17 +127,30 @@ body {
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Links Container Transition */
+/* Links Container Transition (Centered in middle of header grid) */
 header .nav-links {
-  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), margin 0.3s ease, gap 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   max-width: 1000px; 
   opacity: 1;
   overflow: hidden;
   white-space: nowrap;
 }
 
-/* When scrolled (collapsed) and not hovered/open -> Hide links & brand */
-header.nav-collapsed:not(:hover):not(.is-open) .nav-links {
+/* Hamburger Button Transition (Always visible in toolbar) */
+header .hamburger-btn {
+  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease, color 0.3s ease;
+  max-width: 150px;
+  opacity: 1;
+  pointer-events: auto;
+  border: 1px solid transparent;
+}
+
+/* 1. AT TOP (not nav-collapsed) + IS OPEN / TOGGLED: Hide main menu links */
+header:not(.nav-collapsed).is-open .nav-links,
+header:not(.nav-collapsed).is-toggled .nav-links {
   max-width: 0 !important;
   opacity: 0 !important;
   pointer-events: none !important;
@@ -145,65 +158,87 @@ header.nav-collapsed:not(:hover):not(.is-open) .nav-links {
   gap: 0 !important;
 }
 
-header.nav-collapsed:not(:hover):not(.is-open) .brand-container {
+/* 2. SCROLLED DOWN (nav-collapsed) + NOT HOVERED AND NOT OPEN / TOGGLED: Hide links & brand */
+header.nav-collapsed:not(:hover):not(.is-open):not(.is-toggled) .nav-links {
+  max-width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+header.nav-collapsed:not(:hover):not(.is-open):not(.is-toggled) .brand-container {
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-/* Hamburger Button Transition */
-header .hamburger-btn {
-  transition: opacity 0.3s ease, max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease;
-  max-width: 0;
-  opacity: 0;
-  pointer-events: none;
-  padding-left: 0;
-  padding-right: 0;
-  border: 1px solid transparent;
-}
-
-/* When scrolled (collapsed) and not hovered/open -> Show hamburger */
-header.nav-collapsed:not(:hover):not(.is-open) .hamburger-btn {
-  max-width: 150px;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* On hover or open -> Restore links & brand, hide hamburger */
+/* 3. SCROLLED DOWN (nav-collapsed) + HOVER OR OPEN / TOGGLED: Restore links & brand */
 header.nav-collapsed:hover .nav-links,
-header.nav-collapsed.is-open .nav-links {
+header.nav-collapsed.is-open .nav-links,
+header.nav-collapsed.is-toggled .nav-links {
   max-width: 1000px !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
 header.nav-collapsed:hover .brand-container,
-header.nav-collapsed.is-open .brand-container {
+header.nav-collapsed.is-open .brand-container,
+header.nav-collapsed.is-toggled .brand-container {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-/* ==========================================================================
-   GLOBAL SIDE ARROWS PHYSICS
-   ========================================================================== */
-
-
-.side-nav-btn {
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  opacity: 1; /* Default visible when not scrolled */
+/* 4. Active & Soft Lantern Glow effect for Grid Metadata (Menu, Brand, Lupa, Hamburger) */
+header .brand-text span,
+header .nav-links a,
+header .search-btn,
+header .hamburger-btn,
+#search-input-zone {
+  transition: color 0.3s ease, text-shadow 0.3s ease, filter 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
-/* Hide when scrolled, unless the zone is hovered */
-body.is-scrolled .side-nav-zone:not(:hover) .side-nav-btn {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.9);
+header .nav-links a:hover,
+header .brand-container:hover .brand-text span:first-child,
+header .search-btn:hover,
+header .hamburger-btn:hover {
+  color: var(--color-copper-ember, #D97757) !important;
+  text-shadow: 0 0 10px rgba(217, 119, 87, 0.45), 0 0 4px rgba(217, 119, 87, 0.25) !important;
+  filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.35)) !important;
 }
 
-body.is-scrolled .side-nav-zone:hover .side-nav-btn {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1);
+header .brand-container:hover .brand-logo {
+  border-color: rgba(217, 119, 87, 0.5) !important;
+  filter: drop-shadow(0 0 8px rgba(217, 119, 87, 0.4)) !important;
 }
+
+header.is-open .hamburger-btn,
+header.is-toggled .hamburger-btn {
+  color: var(--color-copper-ember, #D97757) !important;
+  text-shadow: 0 0 10px rgba(217, 119, 87, 0.5), 0 0 4px rgba(217, 119, 87, 0.25) !important;
+  filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.4)) !important;
+}
+
+/* Soft Lantern Glow for highlighted match text in search results */
+#search-results-list span.text-copper-ember {
+  text-shadow: 0 0 8px rgba(217, 119, 87, 0.45);
+}
+
+#search-results-list .group\/result:hover span.font-tgp-gloock,
+#search-results-list .group\/result:focus span.font-tgp-gloock {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+}
+
+/* 5. Mobile responsive adjustment */
+@media (max-width: 768px) {
+  header:not(.is-open):not(.is-toggled) .nav-links {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+}
+
 
 /* ==========================================================================
    GLOBAL STYLE FOR PORTAL HOME & MENUS (EXCEPT DYNAMIC VIBE POSTS)
@@ -575,14 +610,22 @@ body:not([data-theme]) .text-copper-ember\/30 {
     & h1, & .vibe-target-h1 {
       font-family: var(--vibe-h1-font) !important;
       font-weight: var(--vibe-h1-weight) !important;
-      letter-spacing: var(--vibe-h1-tracking) !important;
-      line-height: var(--vibe-h1-leading, 1.1) !important;
+      letter-spacing: var(--vibe-h1-tracking, -0.025em) !important;
+      line-height: var(--vibe-h1-leading, 0.95) !important;
       font-style: var(--vibe-h1-style, normal) !important;
       text-transform: var(--vibe-h1-transform, none) !important;
-      font-size: var(--vibe-h1-size, clamp(3.5rem, 12vw, 9rem)) !important;
+      font-size: var(--vibe-h1-size, clamp(2.5rem, 5.5vw + 0.5rem, 5.25rem)) !important;
       font-variant: var(--vibe-h1-variant, normal) !important;
       color: var(--color-old-silver);
       transition: color 0.5s ease;
+      text-wrap: balance !important;
+      text-wrap: pretty;
+      max-width: min(100%, 22ch) !important;
+      text-rendering: optimizeLegibility;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: manual;
+      font-feature-settings: "kern" 1, "liga" 1;
     }
     & h1:hover, & .vibe-target-h1:hover {
       color: var(--color-copper-ember);
@@ -653,16 +696,6 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
     /* Specialized Behaviors */
     
-    /* Drop Cap for Victorian Archeo */
-    &.vibe-victorian-archeo p:first-of-type::first-letter {
-      float: left;
-      font-family: var(--vibe-h1-font);
-      font-size: 5rem;
-      line-height: 1;
-      padding-right: 0.5rem;
-      color: var(--color-copper-ember);
-    }
-
     /* Slashes for Mid-90s Artsy */
     &.vibe-mid-90s-artsy blockquote::before {
       content: '// ';
@@ -1078,5 +1111,21 @@ body:not([data-theme]) .text-copper-ember\/30 {
   .bento-engine-card:hover::after,
   .sidebar-card:hover::after {
     opacity: 1;
+  }
+
+  /* ── SEARCH ANIMATION UTILITY ────────────────────────────────── */
+  .animate-fade-in {
+    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

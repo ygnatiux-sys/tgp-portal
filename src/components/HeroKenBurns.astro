@@ -40,31 +40,27 @@ const {
     <div class="absolute inset-0 z-10 bg-black/20"></div>
   </div>
 
-  <div class="focal-square">
-    <span class="focal-label">AF FOCUS L:12</span>
-  </div>
-
-  <div class="absolute top-12 left-12 z-40 pointer-events-none">
-    <div
-      class={`vibe-target-folio text-white/40 text-[10px] uppercase ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
-    >
-      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
-    </div>
-  </div>
 
   <div
-    class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-12"
+    class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-6 md:py-8 flex flex-col items-center -translate-y-4"
   >
-    <p
-      class="vibe-target-h2 font-sans text-sm uppercase tracking-[0.2em] text-[#f4f0ec]/90 mb-8 border-b border-[#f4f0ec]/30 pb-2 inline-block drop-shadow-md text-balance max-w-3xl mx-auto"
-    >
-      {subtitle}
-    </p>
     <h1
-      class="vibe-target-h1 font-serif text-5xl md:text-[5.5rem] text-[#f4f0ec] tracking-tighter uppercase leading-[1.1] pb-4 drop-shadow-2xl text-balance mx-auto max-w-5xl"
+      class="vibe-target-h1 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#f4f0ec] tracking-tight leading-[0.95] pb-1 drop-shadow-2xl text-balance mx-auto max-w-[22ch] inline-block"
     >
       {title}
     </h1>
+    {subtitle && (
+      <p
+        class="vibe-target-h2 font-sans text-xs md:text-sm tracking-[0.15em] text-[#f4f0ec]/90 my-2 border-b border-[#f4f0ec]/30 pb-1 inline-block drop-shadow-md text-balance max-w-2xl mx-auto"
+      >
+        {subtitle}
+      </p>
+    )}
+    <h3
+      class={`vibe-target-folio font-tgp-tech text-[#f4f0ec]/50 text-[9px] md:text-[10px] tracking-[0.25em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
+    >
+      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
+    </h3>
   </div>
 </section>
 
@@ -140,62 +136,51 @@ const {
     const heroSection = document.querySelector(".vintage-hero");
     const heroBg = document.querySelector(".vintage-hero .hero-bg");
     const titleContainer = document.querySelector(
-      ".vintage-hero .title-container",
+      ".vintage-hero .title-container"
     );
-    const focalSquare = document.querySelector(".vintage-hero .focal-square");
     const img = document.querySelector(".vintage-hero .ken-burns-img");
 
     if (heroSection && heroBg) {
-      // 1. ZOOM-OUT TRANSITION
-      gsap.to(img, {
+      // 1. ELEGANT BG PARALLAX DRIFT
+      gsap.to(heroBg, {
         scrollTrigger: {
           trigger: heroSection,
           start: "top top",
           end: "bottom top",
           scrub: true,
         },
-        scale: 0.9,
-        opacity: 0.4, // Aumentado de 0.2 a 0.4
-        ease: "power2.inOut",
+        y: 100,
+        ease: "none",
       });
 
-      // 2. FOCAL SQUARE PULSE
-      if (focalSquare) {
-        gsap.to(focalSquare, {
-          scale: 1.1,
-          opacity: 0.5,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-
-        gsap.to(focalSquare, {
+      // 2. SMOOTH FADE OUT TO BLACK ON SCROLL
+      if (img) {
+        gsap.to(img, {
           scrollTrigger: {
             trigger: heroSection,
             start: "top top",
-            end: "center top",
+            end: "bottom top",
             scrub: true,
           },
-          scale: 2,
+          scale: 0.80,
           opacity: 0,
-          ease: "expo.in",
+          ease: "power2.inOut",
         });
       }
 
-      // 3. TITLE PARALLAX
+      // 3. FLUID TITLE FADE OUT (IN-PLACE SOFT GRADUAL FADE)
       if (titleContainer) {
         gsap.to(titleContainer, {
           scrollTrigger: {
             trigger: heroSection,
             start: "top top",
-            end: "bottom top",
-            scrub: 1,
+            end: "70% top",
+            scrub: 1.2,
           },
-          y: 200,
-          scale: 0.95,
+          y: 35,
+          scale: 0.94,
           opacity: 0,
-          ease: "power3.out",
+          ease: "power2.out",
         });
       }
     }
