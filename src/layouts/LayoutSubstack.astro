@@ -7,14 +7,14 @@ interface Props {
 const { title } = Astro.props;
 ---
 <!doctype html>
-<html lang="es" class="bg-[#050505]">
+<html lang="es" class="bg-[#26211E]">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
         <link href="https://fonts.googleapis.com/css2?family=Gloock&display=swap" rel="stylesheet">
 	</head>
-	<body class="bg-[#050505] text-gray-200 font-sans selection:bg-[#FF6719] selection:text-white pb-20 md:pb-0 m-0 p-0 overflow-x-hidden min-h-screen relative">
+	<body class="text-[#F3EFE9] font-sans selection:bg-[#FF6719] selection:text-white pb-20 md:pb-0 m-0 p-0 overflow-x-hidden min-h-screen relative" style="background-color: var(--bg-current, #26211E); color: var(--text-current, #F3EFE9); --bg-article-fumee: #13100E; --bg-article-fumee-dark: #090706; --bg-card-fumee: rgba(21, 18, 16, 0.85); --border-fumee: rgba(255, 255, 255, 0.08);">
         {/* ── Top Identity Bar ── */}
         <div class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-5 pointer-events-none">
           {/* Logo → Inicio */}

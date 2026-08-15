@@ -52,17 +52,21 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  bgClass?: string;
+  vibeClass?: string;
 }
 
 const { 
   title, 
   description = "The Great Puzzle — Editorial Platform",
-  ogImage = "/og-default.jpg"
+  ogImage = "/og-default.jpg",
+  bgClass = "bg-racing-green",
+  vibeClass = ""
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="bg-racing-green text-white antialiased selection:bg-copper-ember selection:text-black">
+<html lang="es" class={`${bgClass} text-white antialiased selection:bg-copper-ember selection:text-black`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -77,14 +81,14 @@ const {
     <ClientRouter />
   </head>
 
-  <body class="min-h-screen relative overflow-x-hidden bg-racing-green">
+  <body class={`min-h-screen relative overflow-x-hidden ${bgClass} ${vibeClass}`}>
 
     {/* ================================================================
         NAVBAR: Fixed, Floating, Collapsible Glassmorphic Pill
     ================================================================= */}
     <header 
       id="portal-glass-bridge" 
-      class="fixed top-4 left-1/2 -translate-x-1/2 z-100 max-w-[1600px] w-[calc(100%-2rem)] px-2 transition-all duration-500" 
+      class="fixed top-1.5 left-1/2 -translate-x-1/2 z-100 max-w-[1600px] w-[calc(100%-2rem)] px-2 transition-all duration-500" 
       transition:persist
     >
       <nav 
@@ -92,19 +96,19 @@ const {
         class="group/nav relative flex items-center justify-between px-6 py-3 transition-all duration-500 ease-out"
       >
         {/* Logo + Brand */}
-        <div id="nav-brand-zone" class="brand-container flex items-center gap-3 shrink-0 transition-all duration-500">
-          <a href="/" class="brand-logo w-8 h-8 flex items-center justify-center hover:opacity-80 transition-opacity overflow-hidden rounded-full border border-white/20 p-0.5">
+        <a href="/" id="nav-brand-zone" class="brand-container group/header-brand flex items-center gap-3 shrink-0 transition-all duration-500 cursor-pointer select-none no-underline">
+          <div class="brand-logo w-8 h-8 flex items-center justify-center group-hover/header-brand:opacity-80 transition-all overflow-hidden rounded-full border border-white/20 group-hover/header-brand:border-[#E3DDD3]/50 p-0.5">
             <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
-          </a>
+          </div>
           <div class="brand-text hidden sm:flex items-baseline gap-2 transition-all duration-500 whitespace-nowrap">
-            <span class="font-tgp-gloock font-black text-xs tracking-[0.02em] uppercase text-white/70">
+            <span class="font-tgp-gloock font-black text-xs tracking-[0.02em] uppercase text-old-silver group-hover/header-brand:text-[#E3DDD3] transition-colors duration-300">
               The Great Puzzle
             </span>
-            <span class="font-tgp-tech text-[6px] tracking-widest text-old-silver uppercase">
+            <span class="font-tgp-tech text-[6px] tracking-widest text-old-silver/80 group-hover/header-brand:text-[#E3DDD3]/80 uppercase transition-colors duration-300">
               -project-
             </span>
           </div>
-        </div>
+        </a>
 
         {/* Navigation Links (Centered in Middle Grid, Soft Tracking & Tighter Gap) */}
         <div id="nav-links-zone" class="nav-links flex items-center justify-center gap-3.5 md:gap-5 font-tgp-tech text-[9px] tracking-[0.16em] uppercase font-medium text-white/60 transition-all duration-500">

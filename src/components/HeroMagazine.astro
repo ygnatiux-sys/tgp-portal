@@ -14,7 +14,8 @@ const {
 ---
 
 <section
-  class={`magazine-hero relative w-[calc(100%-2rem)] h-[calc(100vh-2rem)] min-h-212.5 mx-auto mt-4 overflow-hidden bg-racing-green rounded-3xl ${vibeClass}`}
+  class={`magazine-hero relative w-[calc(100%-2rem)] h-[calc(100vh-2rem)] min-h-212.5 mx-auto mt-4 overflow-hidden rounded-3xl ${vibeClass}`}
+  style="background-color: var(--bg-current);"
 >
   <div class="absolute inset-0 z-0 magazine-bg-pin overflow-hidden">
     <div class="absolute inset-0 opacity-90 flex">
@@ -45,7 +46,8 @@ const {
     <div class="atmospheric-dust"></div>
 
     <div
-      class="absolute inset-0 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent z-10"
+      class="absolute inset-0 z-10"
+      style="background-image: linear-gradient(to top, var(--bg-current) 0%, color-mix(in srgb, var(--bg-current) 50%, transparent) 50%, transparent 100%);"
     >
     </div>
     <div class="absolute inset-0 bg-black/20 z-10"></div>
@@ -55,7 +57,7 @@ const {
     class="magazine-content-box relative z-20 w-full h-full max-w-[1800px] mx-auto px-8 md:px-24 flex flex-col justify-end pb-16 md:pb-20 -translate-y-4"
   >
     <div class="magazine-title-box max-w-4xl pb-2">
-      <h1 class="vibe-target-h1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white text-balance tracking-tight leading-[0.95] drop-shadow-2xl max-w-[22ch]">
+      <h1 class="vibe-target-h1 hero-interactive-h1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-balance tracking-tight leading-[0.95] drop-shadow-2xl max-w-[22ch]">
         {title}
       </h1>
     </div>

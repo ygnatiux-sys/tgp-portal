@@ -4,6 +4,20 @@
  * Provee una visualización de jerarquía tipográfica para testing de los estilos Vogue.
  * Este componente no utiliza clases de fuentes; delega el diseño al CSS global.
  */
+import EditorialReadMore from './EditorialReadMore.astro';
+import DynamicEditorialGallery from './DynamicEditorialGallery.astro';
+
+interface Props {
+  collection?: string;
+  currentSlug?: string;
+  vibeClass?: string;
+}
+
+const {
+  collection = 'ensayos',
+  currentSlug = '',
+  vibeClass = ''
+} = Astro.props;
 ---
 
 <div class="editorial-stress-test">
@@ -25,40 +39,15 @@
   <h5>Registro Secundario</h5>
   <h6>FIN DEL MANIFIESTO — TGP ARCHIVES</h6>
 
-  <!-- Visual Rhythm Showcase: Phase 3 Automation -->
-  <div class="visual-rhythm-showcase mt-40 pt-20 border-t border-white/5">
-    <div class="showcase-header mb-16 text-center">
-      <span class="vibe-target-folio text-white/20 text-[10px] uppercase tracking-[0.5em]">Visual Rhythm Showcase</span>
-      <h2 class="mt-4">Testing Spreads Editoriales</h2>
-    </div>
+  {/* Galería Dinámica 1:1 con Lupa de Ampliación integrada en lugar del scroll vertical */}
+  <DynamicEditorialGallery 
+    title="Testing Spreads Editoriales"
+    subtitle="Galería dinámica de placas 1:1 con ampliación e inspección fotográfica"
+    vibeClass={vibeClass}
+  />
 
-    <!-- Mock 1: Asymmetric Diptych -->
-    <div class="spread-wrapper mb-40">
-      <div class="spread-asymmetric-diptych">
-        <img src="https://images.unsplash.com/photo-1449156001437-37c6412789b7?q=80&w=1000&auto=format&fit=crop" alt="Mock Architecture 1" class="w-full" />
-        <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1000&auto=format&fit=crop" alt="Mock Architecture 2" class="w-full" />
-      </div>
-      <p class="spread-caption">Díptico Asimétrico: Desfase vertical y balance de blancos.</p>
-    </div>
-
-    <!-- Mock 2: Tactile Overlap -->
-    <div class="spread-wrapper mb-40">
-      <div class="spread-tactile-overlap">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Mock Interior Overlap" class="w-full" />
-      </div>
-      <p class="spread-caption">Superposición Táctil: Profundidad de papel y sombreado 2XL.</p>
-    </div>
-
-    <!-- Mock 3: Kinfolk Grid -->
-    <div class="spread-wrapper mb-20">
-      <div class="spread-kinfolk-grid">
-        <img src="https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 1" />
-        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 2" />
-        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=800&auto=format&fit=crop" alt="Kinfolk 3" />
-      </div>
-      <p class="spread-caption">Grilla Kinfolk: Composición geométrica y ritmo limpio.</p>
-    </div>
-  </div>
+  {/* Componente Dinámico de "Leer Más" integrado al grid body text */}
+  <EditorialReadMore collection={collection} currentSlug={currentSlug} vibeClass={vibeClass} />
 </div>
 
 <style>

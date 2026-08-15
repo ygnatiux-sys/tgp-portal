@@ -8,6 +8,8 @@
 @theme {
   /* ===== PALETA DE ACENTO GLOBAL ===== */
   --color-racing-green: #0A1C15;
+  --color-racing-fumee: #111C18;
+  --color-racing-fumee-dark: #0D1613;
   --color-copper-ember: #E3DDD3;
   --color-old-silver: #8A9597;
   --color-alpaca-silver: #8E9E99;
@@ -59,48 +61,104 @@
   /* Default (oscuro: Racing Green con texto teñido en Copper Ember) */
   --bg-current: #0A1C15;
   --text-current: #E3DDD3;
-}
-
-/* data-theme override: El blanco editorial por defecto es teñido cálidamente por la paleta (Copper Ember / Charcoal Wood) */
-[data-theme="vibe-victorian-archeo"] {
-  --bg-current: #F4EFE6;
-  --text-current: #211A16;
-  --color-theme-bg: #F4EFE6;
-  --color-theme-text: #211A16;
-  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #F4EFE6, transparent 82%);
-}
-[data-theme="vibe-travel-senses"] {
-  --bg-current: #F8F5EE;
-  --text-current: #211A16;
-  --color-theme-bg: #F8F5EE;
-  --color-theme-text: #211A16;
-  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #F8F5EE, transparent 82%);
-}
-[data-theme="vibe-80s-italian"] {
-  --bg-current: #F7F4EE;
-  --text-current: #211A16;
-  --color-theme-bg: #F7F4EE;
-  --color-theme-text: #211A16;
-  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #F7F4EE, transparent 82%);
-}
-[data-theme="vibe-mid-90s-artsy"] {
-  --bg-current: #F9F7F2;
-  --text-current: #211A16;
-  --color-theme-bg: #F9F7F2;
-  --color-theme-text: #211A16;
-  --color-theme-muted: color-mix(in srgb, #211A16 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #F9F7F2, transparent 82%);
-}
-[data-theme="vibe-ethnics-arts"] {
-  --bg-current: #0A1C15;
-  --text-current: #E3DDD3;
   --color-theme-bg: #0A1C15;
   --color-theme-text: #E3DDD3;
   --color-theme-muted: color-mix(in srgb, #E3DDD3 15%, transparent);
   --color-theme-glass: color-mix(in srgb, #0A1C15, transparent 82%);
+  --bg-article-fumee: #111C18;
+  --bg-article-fumee-dark: #0D1613;
+  --bg-card-fumee: rgba(19, 30, 26, 0.75);
+  --border-fumee: rgba(255, 255, 255, 0.08);
+}
+
+/* data-theme override: Grises minerales adaptados por ambiente (suavizados, tono mineral Google/Gemini con ADN editorial) */
+[data-theme="vibe-victorian-archeo"] {
+  --bg-current: #342E2B;
+  --text-current: #F4EFEB;
+  --color-theme-bg: #342E2B;
+  --color-theme-text: #F4EFEB;
+  --color-theme-muted: color-mix(in srgb, #F4EFEB 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #342E2B, transparent 82%);
+  --bg-article-fumee: #231E1B;
+  --bg-article-fumee-dark: #1A1614;
+  --bg-card-fumee: rgba(35, 30, 27, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-travel-senses"] {
+  --bg-current: #362F2C;
+  --text-current: #F5F0E8;
+  --color-theme-bg: #362F2C;
+  --color-theme-text: #F5F0E8;
+  --color-theme-muted: color-mix(in srgb, #F5F0E8 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #362F2C, transparent 82%);
+  --bg-article-fumee: #241E1C;
+  --bg-article-fumee-dark: #1B1614;
+  --bg-card-fumee: rgba(36, 30, 28, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-80s-italian"] {
+  --bg-current: #303539;
+  --text-current: #F2F1EE;
+  --color-theme-bg: #303539;
+  --color-theme-text: #F2F1EE;
+  --color-theme-muted: color-mix(in srgb, #F2F1EE 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #303539, transparent 82%);
+  --bg-article-fumee: #202326;
+  --bg-article-fumee-dark: #17191B;
+  --bg-card-fumee: rgba(32, 35, 38, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-mid-90s-artsy"] {
+  --bg-current: #2D3035;
+  --text-current: #F4F4F5;
+  --color-theme-bg: #2D3035;
+  --color-theme-text: #F4F4F5;
+  --color-theme-muted: color-mix(in srgb, #F4F4F5 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #2D3035, transparent 82%);
+  --bg-article-fumee: #1E2024;
+  --bg-article-fumee-dark: #151719;
+  --bg-card-fumee: rgba(30, 32, 36, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-ethnics-arts"] {
+  --bg-current: #1A2C24;
+  --text-current: #E3DDD3;
+  --color-theme-bg: #1A2C24;
+  --color-theme-text: #E3DDD3;
+  --color-theme-muted: color-mix(in srgb, #E3DDD3 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #1A2C24, transparent 82%);
+  --bg-article-fumee: #13221C;
+  --bg-article-fumee-dark: #0E1914;
+  --bg-card-fumee: rgba(19, 34, 28, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-museum-luxury"] {
+  --bg-current: #2D3035;
+  --text-current: #F4F4F5;
+  --color-theme-bg: #2D3035;
+  --color-theme-text: #F4F4F5;
+  --color-theme-muted: color-mix(in srgb, #F4F4F5 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #2D3035, transparent 82%);
+  --bg-article-fumee: #1E2024;
+  --bg-article-fumee-dark: #151719;
+  --bg-card-fumee: rgba(30, 32, 36, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+[data-theme="vibe-kinfolk-high-design"] {
+  --bg-current: #303539;
+  --text-current: #F2F1EE;
+  --color-theme-bg: #303539;
+  --color-theme-text: #F2F1EE;
+  --color-theme-muted: color-mix(in srgb, #F2F1EE 15%, transparent);
+  --color-theme-glass: color-mix(in srgb, #303539, transparent 82%);
+  --bg-article-fumee: #202326;
+  --bg-article-fumee-dark: #17191B;
+  --bg-card-fumee: rgba(32, 35, 38, 0.85);
+  --border-fumee: rgba(255, 255, 255, 0.1);
+}
+
+html {
+  background-color: var(--bg-current);
 }
 
 body {
@@ -198,34 +256,102 @@ header .hamburger-btn,
 }
 
 header .nav-links a:hover,
-header .brand-container:hover .brand-text span:first-child,
 header .search-btn:hover,
 header .hamburger-btn:hover {
-  color: var(--color-copper-ember, #D97757) !important;
-  text-shadow: 0 0 10px rgba(217, 119, 87, 0.45), 0 0 4px rgba(217, 119, 87, 0.25) !important;
-  filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.35)) !important;
+  color: #E3DDD3 !important;
+}
+
+header .brand-container:hover .brand-text span:first-child {
+  color: #E3DDD3 !important;
 }
 
 header .brand-container:hover .brand-logo {
-  border-color: rgba(217, 119, 87, 0.5) !important;
-  filter: drop-shadow(0 0 8px rgba(217, 119, 87, 0.4)) !important;
+  border-color: rgba(227, 221, 211, 0.85) !important;
 }
 
 header.is-open .hamburger-btn,
 header.is-toggled .hamburger-btn {
-  color: var(--color-copper-ember, #D97757) !important;
-  text-shadow: 0 0 10px rgba(217, 119, 87, 0.5), 0 0 4px rgba(217, 119, 87, 0.25) !important;
-  filter: drop-shadow(0 0 6px rgba(217, 119, 87, 0.4)) !important;
+  color: #E3DDD3 !important;
 }
 
 /* Soft Lantern Glow for highlighted match text in search results */
 #search-results-list span.text-copper-ember {
-  text-shadow: 0 0 8px rgba(217, 119, 87, 0.45);
+  text-shadow: 0 0 8px rgba(227, 221, 211, 0.45);
 }
 
 #search-results-list .group\/result:hover span.font-tgp-gloock,
 #search-results-list .group\/result:focus span.font-tgp-gloock {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+}
+
+/* Header & Footers Selection: Sin fondo charcoal al seleccionar, color #E3DDD3 granular con brillo parejo */
+header ::selection,
+#portal-glass-bridge ::selection,
+#glass-bridge ::selection,
+#main-nav-bar ::selection,
+footer ::selection,
+.article-interior-footer ::selection,
+.editorial-article-end ::selection,
+.brand-logo ::selection,
+.brand-container ::selection,
+.group\/footer-brand ::selection,
+.group\/article-brand ::selection,
+.bento-portal-root h2::selection,
+.bento-portal-root h3::selection,
+.bento-trilitico h3::selection,
+.editorial-read-more h2::selection,
+.editorial-read-more h3::selection,
+.editorial-read-more h4::selection {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: #E3DDD3 !important;
+  text-shadow: 0 0 10px rgba(227, 221, 211, 0.45), 0 0 4px rgba(227, 221, 211, 0.25) !important;
+}
+
+/* Footer Lantern Glow: idéntico al header navtool (sin hype/scale, con brillo #E3DDD3 parejo) */
+footer a,
+footer button,
+.article-interior-footer a,
+.article-interior-footer button,
+.editorial-article-end a,
+.editorial-article-end button {
+  transition: color 0.3s ease, text-shadow 0.3s ease, filter 0.3s ease, opacity 0.3s ease, border-color 0.3s ease;
+}
+
+footer a:hover,
+footer button:hover,
+.article-interior-footer a:hover,
+.article-interior-footer button:hover,
+.editorial-article-end a:hover,
+.editorial-article-end button:hover,
+footer .group\/footer-brand:hover h2,
+footer .group\/footer-brand:hover span,
+.article-interior-footer .group\/article-brand:hover span {
+  color: #E3DDD3 !important;
+}
+
+footer .group\/footer-brand:hover .border,
+.article-interior-footer .group\/article-brand:hover .border {
+  border-color: rgba(227, 221, 211, 0.85) !important;
+}
+
+/* Racing Green Fumée (Smoked Slate-Green) Adaptive Atmosphere */
+.section-racing-fumee {
+  background: linear-gradient(180deg, var(--bg-article-fumee, #111C18) 0%, var(--bg-article-fumee-dark, #0D1613) 100%);
+  border: 1px solid var(--border-fumee, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.card-racing-fumee {
+  background: var(--bg-card-fumee, rgba(19, 30, 26, 0.75));
+  border: 1px solid var(--border-fumee, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+}
+
+.card-racing-fumee:hover {
+  border-color: rgba(227, 221, 211, 0.45);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(227, 221, 211, 0.15);
 }
 
 /* 5. Mobile responsive adjustment */
@@ -247,11 +373,16 @@ body:not([data-theme]) {
   color: var(--color-alpaca-silver);
 }
 
-/* Base Headings, Links and Buttons on Home / Menus */
+/* Base Headings on Home / Menus */
 body:not([data-theme]) h1,
 body:not([data-theme]) h2,
 body:not([data-theme]) h3,
-body:not([data-theme]) h4,
+body:not([data-theme]) h4 {
+  color: var(--color-old-silver);
+  transition: color 0.5s ease, filter 0.5s ease, text-shadow 0.5s ease;
+}
+
+/* Base Links and Buttons on Home / Menus */
 body:not([data-theme]) a,
 body:not([data-theme]) button,
 body:not([data-theme]) span:not(.font-tgp-tech),
@@ -261,18 +392,44 @@ header, header * {
   transition: color 0.5s ease, border-color 0.5s ease, background-color 0.5s ease;
 }
 
-/* Hover/Selected States on Home / Menus */
-body:not([data-theme]) h1:hover,
-body:not([data-theme]) h2:hover,
-body:not([data-theme]) h3:hover,
+/* ==========================================================================
+   GLOBAL HERO HEADINGS HOVER EFFECTS (Old Silver -> Ash White + Glow)
+   ========================================================================== */
+.cinematographic-hero h1, .cinematographic-hero h2,
+.cinematographic-hero h1 a, .cinematographic-hero h2 a,
+.immersive-slide h1, .immersive-slide h2,
+.immersive-slide h1 a, .immersive-slide h2 a,
+.cinematic-hero-v2 h1, .cinematic-hero-v2 h2,
+.cinematic-hero-v2 h1 a, .cinematic-hero-v2 h2 a,
+.hero-marquee h1, .hero-marquee h2,
+.hero-marquee h1 a, .hero-marquee h2 a,
+.hero-magazine h1, .hero-magazine h2,
+.hero-magazine h1 a, .hero-magazine h2 a,
+.hero-parallax h1, .hero-parallax h2,
+.hero-parallax h1 a, .hero-parallax h2 a {
+  color: var(--color-old-silver) !important;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.cinematographic-hero h1:hover, .cinematographic-hero h2:hover,
+.cinematographic-hero h1 a:hover, .cinematographic-hero h2 a:hover,
+.immersive-slide h1:hover, .immersive-slide h2:hover,
+.immersive-slide h1 a:hover, .immersive-slide h2 a:hover,
+.cinematic-hero-v2 h1:hover, .cinematic-hero-v2 h2:hover,
+.cinematic-hero-v2 h1 a:hover, .cinematic-hero-v2 h2 a:hover,
+.hero-marquee h1:hover, .hero-marquee h2:hover,
+.hero-marquee h1 a:hover, .hero-marquee h2 a:hover,
+.hero-magazine h1:hover, .hero-magazine h2:hover,
+.hero-magazine h1 a:hover, .hero-magazine h2 a:hover,
+.hero-parallax h1:hover, .hero-parallax h2:hover,
+.hero-parallax h1 a:hover, .hero-parallax h2 a:hover {
+  color: var(--color-copper-ember) !important;
+  text-shadow: 0 0 8px rgba(227, 221, 211, 0.35) !important;
+}
+
+/* Hover/Selected States on Home / Menus Links & Buttons */
 body:not([data-theme]) a:hover,
 body:not([data-theme]) button:hover,
-body:not([data-theme]) .group:hover h3,
-body:not([data-theme]) .group\/card:hover h3,
-body:not([data-theme]) .group\/engine:hover h3,
-body:not([data-theme]) .group\/byblos:hover h3,
-body:not([data-theme]) .bento-standard-card:hover h3,
-body:not([data-theme]) .bento-cluster-card:hover h3,
 #main-nav-bar a:hover, #main-nav-bar button:hover,
 header a:hover, header button:hover {
   color: var(--color-old-silver) !important;
@@ -442,8 +599,12 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   /* 01. VICTORIAN ARCHEO */
   .vibe-victorian-archeo {
-    --bg-current: #F4EFE6;
-    --text-current: #2B2624;
+    --bg-current: #2B2623;
+    --text-current: #F4EFEB;
+    --bg-article-fumee: #171412;
+    --bg-article-fumee-dark: #110F0E;
+    --bg-card-fumee: rgba(23, 20, 18, 0.85);
+    --border-fumee: rgba(255, 255, 255, 0.08);
     --vibe-h1-font: 'Gloock', serif;
     --vibe-h1-weight: 400;
     --vibe-h1-tracking: -0.02em;
@@ -475,8 +636,12 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   /* 02. TRAVEL & SENSES */
   .vibe-travel-senses {
-    --bg-current: #FFFCF5;
-    --text-current: #1A1A1A;
+    --bg-current: #2D2725;
+    --text-current: #F5F0E8;
+    --bg-article-fumee: #181413;
+    --bg-article-fumee-dark: #120F0E;
+    --bg-card-fumee: rgba(24, 20, 19, 0.85);
+    --border-fumee: rgba(255, 255, 255, 0.08);
     --vibe-h1-font: 'Bodoni Moda', serif;
     --vibe-h1-weight: 600;
     --vibe-h1-style: italic;
@@ -507,8 +672,12 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   /* 03. 80's ITALIAN INTERIORS */
   .vibe-80s-italian {
-    --bg-current: #F9F8F6;
-    --text-current: #2A2522;
+    --bg-current: #272A2D;
+    --text-current: #F2F1EE;
+    --bg-article-fumee: #161718;
+    --bg-article-fumee-dark: #0F1011;
+    --bg-card-fumee: rgba(22, 23, 24, 0.85);
+    --border-fumee: rgba(255, 255, 255, 0.08);
     --vibe-h1-font: 'Fraunces', serif;
     --vibe-h1-weight: 900;
     --vibe-h1-tracking: -0.06em;
@@ -539,8 +708,12 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   /* 04. MID-90's ARTSY */
   .vibe-mid-90s-artsy {
-    --bg-current: #FFFFFF;
-    --text-current: #000000;
+    --bg-current: #25272B;
+    --text-current: #F4F4F5;
+    --bg-article-fumee: #141517;
+    --bg-article-fumee-dark: #0C0D0E;
+    --bg-card-fumee: rgba(20, 21, 23, 0.85);
+    --border-fumee: rgba(255, 255, 255, 0.08);
     --vibe-h1-font: 'Syne', sans-serif;
     --vibe-h1-weight: 800;
     --vibe-h1-tracking: -0.05em;
@@ -572,8 +745,12 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   /* 05. ETHNICS & ARTS (Cinematic) */
   .vibe-ethnics-arts {
-    --bg-current: #0A0A0A;
-    --text-current: #EBEBEB;
+    --bg-current: #0A1C15;
+    --text-current: #E3DDD3;
+    --bg-article-fumee: #111C18;
+    --bg-article-fumee-dark: #0D1613;
+    --bg-card-fumee: rgba(19, 30, 26, 0.75);
+    --border-fumee: rgba(255, 255, 255, 0.08);
     --vibe-h1-font: 'DM Serif Display', serif;
     --vibe-h1-weight: 400;
     --vibe-h1-tracking: 0;
@@ -1128,4 +1305,19 @@ body:not([data-theme]) .text-copper-ember\/30 {
       transform: translateY(0);
     }
   }
+}
+/* Interactive Hero H1s (Transition from Old Silver to Ash White) */
+.hero-interactive-h1 {
+  color: #B5C0C2; /* Lighter Old Silver for better readability */
+  transition: color 0.5s ease-out;
+}
+
+.hero-interactive-h1:hover,
+.hero-interactive-h1:focus {
+  color: #E3DDD3; /* Ash White */
+}
+
+.hero-interactive-h1::selection {
+  background-color: rgba(227, 221, 211, 0.15);
+  color: #E3DDD3;
 }

@@ -1,0 +1,328 @@
+---
+/**
+ * DynamicEditorialGallery.astro
+ * Galería editorial dinámica con formato 1:1 (cuadrado), adaptable al número de imágenes.
+ * Incluye visor Lightbox interactivo con lupa de ampliación, navegación y metadatos sobrios.
+ */
+
+interface GalleryItem {
+  url: string;
+  caption?: string;
+  title?: string;
+}
+
+interface Props {
+  images?: Array<string | GalleryItem>;
+  spreads?: any[];
+  title?: string;
+  subtitle?: string;
+  vibeClass?: string;
+}
+
+const {
+  images = [],
+  spreads = [],
+  title = "",
+  subtitle = "",
+  vibeClass = ""
+} = Astro.props;
+
+// Normalizar imágenes sin generar metadatos artificiales
+let normalizedImages: GalleryItem[] = [];
+
+if (images && images.length > 0) {
+  normalizedImages = images.map((img) => {
+    if (typeof img === 'string') {
+      return { url: img, caption: '', title: '' };
+    }
+    return {
+      url: img.url,
+      caption: img.caption || '',
+      title: img.title || ''
+    };
+  });
+} else if (spreads && spreads.length > 0) {
+  spreads.forEach((spread: any) => {
+    const spreadVal = spread.value || spread;
+    const spreadImages = spreadVal.images || [];
+    const spreadCaption = spreadVal.caption || "";
+
+    spreadImages.forEach((imgUrl: string) => {
+      normalizedImages.push({
+        url: imgUrl,
+        caption: spreadCaption || ""
+      });
+    });
+  });
+}
+
+// Fallback inicial limpio si no hay imágenes (modo stress test)
+if (normalizedImages.length === 0) {
+  normalizedImages = [
+    { url: "https://images.unsplash.com/photo-1449156001437-37c6412789b7?q=80&w=1200&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=1200&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=1200&auto=format&fit=crop" },
+    { url: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" }
+  ];
+}
+
+// Columnas dinámicas según cantidad de imágenes
+const count = normalizedImages.length;
+let gridColsClass = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+
+if (count === 1) {
+  gridColsClass = "grid-cols-1 max-w-xl mx-auto";
+} else if (count === 2) {
+  gridColsClass = "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto";
+} else if (count === 4) {
+  gridColsClass = "grid-cols-2 md:grid-cols-4";
+} else if (count >= 5) {
+  gridColsClass = "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3";
+}
+
+const galleryId = `tgp-gallery-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<div class={`dynamic-editorial-gallery w-full my-12 md:my-16 not-prose ${vibeClass}`} id={galleryId}>
+  
+  {/* Encabezado Editorial Sobrio (solo cuando aplica título) */}
+  {title && (
+    <div class="border-b border-white/10 pb-4 mb-8">
+      <h3 class="vibe-target-h3 text-white">
+        {title}
+      </h3>
+    </div>
+  )}
+
+  {/* Grid 1:1 Cuadrado Dinámico desnudo sobre el fondo actual */}
+  <div class={`grid ${gridColsClass} gap-4 md:gap-6`}>
+    {normalizedImages.map((item, index) => (
+      <figure 
+        class="group/gallery-card relative flex flex-col m-0 p-0 cursor-pointer select-none"
+        data-gallery-index={index}
+      >
+        {/* Contenedor Cuadrado Estricto 1:1 */}
+        <div 
+          class="relative w-full aspect-square overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover/gallery-card:border-white/30 transition-all duration-500 shadow-md"
+          style="background: var(--bg-card-fumee, rgba(255, 255, 255, 0.03));"
+        >
+          <img 
+            src={item.url} 
+            alt={item.title || item.caption || `Imagen ${index + 1}`}
+            loading="lazy"
+            class="w-full h-full object-cover group-hover/gallery-card:scale-105 transition-transform duration-700 ease-out"
+          />
+
+          {/* Botón Lupa sutil en esquina inferior derecha */}
+          <div 
+            class="absolute bottom-3 right-3 w-7 h-7 rounded-full backdrop-blur-md border border-white/15 bg-black/40 flex items-center justify-center text-white/70 opacity-0 group-hover/gallery-card:opacity-100 group-hover/gallery-card:text-white group-hover/gallery-card:scale-105 transition-all duration-300 shadow-md"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Título o pie de foto (solo cuando existe y aplica) */}
+        {(item.title || item.caption) && (
+          <figcaption class="mt-2.5 px-0.5 font-tgp-tech text-[8px] tracking-[0.12em] text-old-silver group-hover/gallery-card:text-[#E3DDD3] line-clamp-1 leading-normal transition-colors duration-300">
+            {item.title || item.caption}
+          </figcaption>
+        )}
+      </figure>
+    ))}
+  </div>
+
+  {/* Modal Lightbox con Lupa de Ampliación y atmósfera Fumée */}
+  <div 
+    id={`${galleryId}-lightbox`}
+    class="fixed inset-0 z-200 hidden bg-[#0B1512]/96 backdrop-blur-2xl flex-col items-center justify-between p-4 md:p-8 animate-fade-in opacity-0 transition-opacity duration-300"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor ampliado de imagen"
+  >
+
+
+    {/* Contenedor central de la imagen con navegación lateral */}
+    <div class="relative flex-1 w-full max-w-6xl flex items-center justify-center my-4 overflow-hidden">
+      
+      {/* Botón Anterior */}
+      <div class="absolute left-0 inset-y-0 w-16 z-20 flex items-center justify-start pointer-events-none">
+        <button 
+          id={`${galleryId}-prev-btn`}
+          class="pl-4 text-white/20 hover:text-copper-ember opacity-30 hover:opacity-100 hover:drop-shadow-[0_0_5px_rgba(227,221,211,0.5)] transition-all duration-500 cursor-pointer pointer-events-auto"
+          aria-label="Imagen anterior"
+        >
+          <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Imagen Principal Ampliable */}
+      <div 
+        id={`${galleryId}-img-wrapper`}
+        class="relative max-h-[78vh] max-w-[85vw] flex items-center justify-center transition-transform duration-300 overflow-hidden cursor-zoom-in"
+      >
+        <img 
+          id={`${galleryId}-lightbox-img`}
+          src="" 
+          alt="Visualización ampliada"
+          class="max-h-[75vh] max-w-full object-contain rounded-xs border border-white/10 shadow-2xl transition-transform duration-300"
+        />
+      </div>
+
+      {/* Botón Siguiente */}
+      <div class="absolute right-0 inset-y-0 w-16 z-20 flex items-center justify-end pointer-events-none">
+        <button 
+          id={`${galleryId}-next-btn`}
+          class="pr-4 text-white/20 hover:text-copper-ember opacity-30 hover:opacity-100 hover:drop-shadow-[0_0_5px_rgba(227,221,211,0.5)] transition-all duration-500 cursor-pointer pointer-events-auto"
+          aria-label="Imagen siguiente"
+        >
+          <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {/* Pie inferior con Epígrafe */}
+    <div class="w-full max-w-4xl text-center py-2 z-10">
+      <p 
+        id={`${galleryId}-caption`} 
+        class="font-tgp-tech text-[9px] md:text-[10px] tracking-[0.16em] uppercase text-white/70 leading-relaxed max-w-2xl mx-auto"
+      >
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<script define:vars={{ galleryId, normalizedImages }}>
+  const initGallery = () => {
+    const galleryRoot = document.getElementById(galleryId);
+    const lightbox = document.getElementById(`${galleryId}-lightbox`);
+    const lightboxImg = document.getElementById(`${galleryId}-lightbox-img`);
+    const imgWrapper = document.getElementById(`${galleryId}-img-wrapper`);
+    const captionEl = document.getElementById(`${galleryId}-caption`);
+    const prevBtn = document.getElementById(`${galleryId}-prev-btn`);
+    const nextBtn = document.getElementById(`${galleryId}-next-btn`);
+
+    if (!galleryRoot || !lightbox || !lightboxImg) return;
+
+    let currentIndex = 0;
+    let isZoomed = false;
+
+    const updateLightboxContent = (idx) => {
+      currentIndex = (idx + normalizedImages.length) % normalizedImages.length;
+      const currentItem = normalizedImages[currentIndex];
+      
+      lightboxImg.src = currentItem.url;
+      lightboxImg.alt = currentItem.caption || `Placa ${currentIndex + 1}`;
+      
+      if (captionEl) {
+        captionEl.textContent = currentItem.caption || '';
+      }
+
+      // Reset zoom al cambiar de foto
+      isZoomed = false;
+      lightboxImg.style.transform = 'scale(1)';
+      if (imgWrapper) imgWrapper.style.cursor = 'zoom-in';
+    };
+
+    const openLightbox = (idx) => {
+      updateLightboxContent(idx);
+      lightbox.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        lightbox.classList.remove('opacity-0');
+        lightbox.classList.add('opacity-100');
+      }, 10);
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('opacity-100');
+      lightbox.classList.add('opacity-0');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        lightbox.classList.add('hidden');
+      }, 300);
+    };
+
+    const toggleZoom = () => {
+      isZoomed = !isZoomed;
+      if (isZoomed) {
+        lightboxImg.style.transform = 'scale(1.75)';
+        if (imgWrapper) imgWrapper.style.cursor = 'zoom-out';
+      } else {
+        lightboxImg.style.transform = 'scale(1)';
+        if (imgWrapper) imgWrapper.style.cursor = 'zoom-in';
+      }
+    };
+
+    // Listeners en cards del grid
+    const cards = galleryRoot.querySelectorAll('[data-gallery-index]');
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const idx = parseInt(card.getAttribute('data-gallery-index') || '0', 10);
+        openLightbox(idx);
+      });
+    });
+
+    imgWrapper?.addEventListener('click', (e) => {
+      if (e.target === lightboxImg || e.target === imgWrapper) {
+        toggleZoom();
+      }
+    });
+
+    prevBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateLightboxContent(currentIndex - 1);
+    });
+
+    nextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateLightboxContent(currentIndex + 1);
+    });
+
+    // Cerrar al hacer clic en fondo exterior
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Controles por teclado y scroll
+    const handleKeydown = (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape' || e.key === 'Enter' || e.key === 'Tab') {
+        e.preventDefault();
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        updateLightboxContent(currentIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        updateLightboxContent(currentIndex + 1);
+      }
+    };
+
+    let scrollDebounce = 0;
+    const handleScrollClose = (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      const now = Date.now();
+      if (now - scrollDebounce > 300) {
+        scrollDebounce = now;
+        closeLightbox();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('wheel', handleScrollClose, { passive: true });
+    window.addEventListener('touchmove', handleScrollClose, { passive: true });
+  };
+
+  document.addEventListener('astro:page-load', initGallery);
+  initGallery();
+</script>

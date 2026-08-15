@@ -1,8 +1,9 @@
 ---
 export const prerender = true;
 
-import LayoutSubstack from "../../layouts/LayoutSubstack.astro";
+import Layout from "../../layouts/Layout.astro";
 import FloatingBackButton from "../../components/FloatingBackButton.astro";
+import EditorialReadMore from "../../components/EditorialReadMore.astro";
 import ArticleFooter from "../../components/ArticleFooter.astro";
 import { getCollection, render } from "astro:content";
 
@@ -47,12 +48,19 @@ const accentColor = ensayo?.data?.accentColor || initialEnsayo.data?.accentColor
 const currentId = ensayo?.id || initialEnsayo.id || "";
 const avatarId = currentId ? currentId.charCodeAt(0) % 20 : 1;
 const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
+
+// Dynamic template resolution
+const templateId = ensayo?.data?.template || "victorian-archeo";
+const templateEntry = await getEntry('editorialTemplates', templateId);
+const themeKey = templateEntry?.data.themeKey || 'vibe-victorian-archeo';
+const vibeClass = themeKey;
 ---
 
-<LayoutSubstack title={`${title} | The Great Puzzle`}>
-  <FloatingBackButton />
+<Layout title={`${title} | The Great Puzzle`} vibeClass={vibeClass}>
+  <div class={`min-h-screen relative z-10 font-sans pb-20 md:pb-0 ${vibeClass}`} style="background-color: var(--bg-current); color: var(--text-current);">
+    <FloatingBackButton />
 
-  <article class="w-full max-w-2xl mx-auto pt-16 md:pt-24 pb-8 px-4 md:px-0">
+    <article class="w-full max-w-2xl mx-auto pt-24 md:pt-32 pb-8 px-4 md:px-0">
     {/* Post Header */}
     <header class="mb-12">
       <h1
@@ -87,47 +95,17 @@ const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
         <span>12 min read</span>
       </div>
 
-      {/* Author Ribbon */}
-      <div class="flex items-center gap-4 py-4 border-y border-white/10">
-        <img
-          src={authorImg}
-          alt={author}
-          class="w-12 h-12 rounded-full border border-white/20"
-        />
-        <div class="flex-1">
-          <div class="flex items-center gap-2">
-            <span class="text-white font-medium">{author}</span>
-            <button
-              class="text-[#FF6719] text-xs hover:underline font-bold uppercase tracking-wider ml-2"
-              >Suscribirse</button
-            >
-          </div>
-          <span class="text-gray-500 font-sans text-sm">{date}</span>
-        </div>
-        {/* Share / Interactions */}
-        <div class="flex items-center gap-4 text-gray-500">
-          <button class="hover:text-white transition-colors">
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-              ></path></svg
-            >
-          </button>
-        </div>
+      {/* Author & Date info sobrio */}
+      <div class="flex items-center gap-3 py-3 border-y border-white/10 text-white/50 text-xs font-tgp-tech uppercase tracking-widest">
+        <span class="text-white/80">{author}</span>
+        {date && <span>· {date}</span>}
       </div>
     </header>
 
     {/* Hero Image */}
     {
       coverImage && (
-        <figure class="w-full mb-12 aspect-video overflow-hidden rounded-xl bg-[#0a0a0a] relative">
+        <figure class="w-full mb-12 aspect-video overflow-hidden rounded-xl bg-black/20 relative">
           <div
             class="absolute inset-0 z-0 opacity-30 mix-blend-screen"
             style={`background: linear-gradient(to right, transparent, ${accentColor})`}
@@ -157,34 +135,13 @@ const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
       )}
     </div>
 
-    {/* Footer Interactions */}
-    <div
-      class="mt-16 pt-8 border-t border-white/10 flex justify-between items-center text-gray-400"
-    >
-      <button
-        class="like-btn flex items-center gap-2 hover:text-[#FF6719] transition-colors group/like"
-        data-liked="false"
-      >
-        <svg
-          class="w-6 h-6 transition-all group-[.liked]/like:fill-[#FF6719] group-[.liked]/like:text-[#FF6719] group-[.liked]/like:scale-110"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          ></path>
-        </svg>
-        <span class="like-count text-lg">21k</span>
-      </button>
-    </div>
+    {/* Dynamic Read More Section */}
+    <EditorialReadMore collection="ensayos" currentSlug={currentId} vibeClass={vibeClass} />
   </article>
 
-  <ArticleFooter pageTitle={title} />
-</LayoutSubstack>
+  <ArticleFooter vibeClass={vibeClass} pageTitle={title} />
+  </div>
+</Layout>
 
 <script>
   const likeButtons = document.querySelectorAll(".like-btn");

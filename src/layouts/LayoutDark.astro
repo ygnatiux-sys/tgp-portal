@@ -8,10 +8,10 @@ interface Props {
 const { title, hero_image = '', vibeClass = '' } = Astro.props;
 ---
 <Layout title={title} vibeClass={vibeClass}>
-  <div class="bg-racing-green text-[#e2e8f0] min-h-screen">
+  <div class="min-h-screen transition-colors duration-700" style="background-color: var(--bg-current); color: var(--text-current);">
     <slot name="hero" />
 
-    <main class="relative z-20 bg-racing-green">
+    <main class="relative z-20 transition-colors duration-700" style="background-color: var(--bg-current);">
       <slot />
     </main>
   </div>

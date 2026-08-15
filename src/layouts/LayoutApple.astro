@@ -8,14 +8,12 @@ interface Props {
 const { title, hero_image = '', vibeClass = '' } = Astro.props;
 ---
 <Layout title={title} vibeClass={vibeClass}>
-  <div class="min-h-screen font-sans" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background-color: var(--bg-current); color: var(--text-current);">
+  <div class="min-h-screen font-sans transition-colors duration-700" style="font-family: var(--font-tgp-jakarta), system-ui, sans-serif; background-color: var(--bg-current); color: var(--text-current);">
     <slot name="hero" />
 
-    <section class="max-w-4xl mx-auto px-6 pt-12 pb-0 relative z-20" style="background-color: var(--bg-current);">
-      <div class="prose prose-tgp mx-auto max-w-none">
-        <slot />
-      </div>
-    </section>
+    <main class="relative z-20 transition-colors duration-700" style="background-color: var(--bg-current);">
+      <slot />
+    </main>
   </div>
 </Layout>
 

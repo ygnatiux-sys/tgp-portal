@@ -8,6 +8,8 @@ import HeroKenBurns from "../../components/HeroKenBurns.astro";
 import HeroParallax from "../../components/HeroParallax.astro";
 import HeroMagazine from "../../components/HeroMagazine.astro";
 import FloatingBackButton from "../../components/FloatingBackButton.astro";
+import EditorialReadMore from "../../components/EditorialReadMore.astro";
+import DynamicEditorialGallery from "../../components/DynamicEditorialGallery.astro";
 import ArticleFooter from "../../components/ArticleFooter.astro";
 
 export async function getStaticPaths() {
@@ -85,43 +87,27 @@ console.log(
 );
 ---
 
-<LayoutDark title={entry.data.title}>
-  <main class={`bg-[#0a0a0a] text-white min-h-screen ${config.vibe}`}>
-    <FloatingBackButton />
+<LayoutDark title={entry.data.title} vibeClass={config.vibe}>
+  <FloatingBackButton />
 
-    {/* Props corregidas: imageUrl en lugar de image, y añadido vibeClass */}
-    <HeroComponent
-      title={entry.data.title}
-      imageUrl={entry.data.hero_image}
-      vibeClass={config.vibe}
-    />
+  <HeroComponent
+    slot="hero"
+    title={entry.data.title}
+    imageUrl={entry.data.hero_image}
+    vibeClass={config.vibe}
+  />
 
-    <article class="relative pt-16 pb-8 px-6 md:px-12">
+  <div
+    class={`editorial-container w-full pt-16 pb-12 px-6 md:px-12 ${config.vibe}`}
+    style="background-color: var(--bg-current); color: var(--text-current);"
+  >
+    <article class="relative">
       <div class={`${config.scale} mx-auto`}>
-        {/* Renderizado de Spreads Editoriales Inyectados */}
+        {/* Renderizado de Galería Dinámica 1:1 con Lupa de Ampliación */}
         {
           entry.data.editorial_spreads &&
             entry.data.editorial_spreads.length > 0 && (
-              <div class="editorial-gallery mb-24 space-y-32">
-                {entry.data.editorial_spreads.map((spread: any) => {
-                  const { spread_type, images, caption } = spread.value;
-                  return (
-                    <div class={`spread-wrapper ${spread_type}`}>
-                      <div class="grid gap-4">
-                        {images.map((img: string) => (
-                          <img
-                            src={img}
-                            alt={caption || "Editorial Spread"}
-                            class="w-full h-auto object-cover"
-                            loading="lazy"
-                          />
-                        ))}
-                      </div>
-                      {caption && <p class="spread-caption">{caption}</p>}
-                    </div>
-                  );
-                })}
-              </div>
+              <DynamicEditorialGallery spreads={entry.data.editorial_spreads} vibeClass={config.vibe} />
             )
         }
 
@@ -137,9 +123,12 @@ console.log(
             Content && <Content />
           )}
         </div>
+
+        {/* Dynamic Read More Section */}
+        <EditorialReadMore collection="capsulas" currentSlug={entry.id} vibeClass={config.vibe} />
       </div>
     </article>
-  </main>
+  </div>
 
   <ArticleFooter vibeClass={config.vibe} pageTitle={entry.data.title} />
 </LayoutDark>

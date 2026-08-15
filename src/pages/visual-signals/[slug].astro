@@ -13,6 +13,8 @@ import HeroMarquee from "../../components/HeroMarquee.astro";
 import HeroMagazine from "../../components/HeroMagazine.astro";
 import FloatingBackButton from "../../components/FloatingBackButton.astro";
 import EditorialStressTest from "../../components/EditorialStressTest.astro";
+import EditorialReadMore from "../../components/EditorialReadMore.astro";
+import DynamicEditorialGallery from "../../components/DynamicEditorialGallery.astro";
 import ArticleFooter from "../../components/ArticleFooter.astro";
 
 export async function getStaticPaths() {
@@ -95,7 +97,7 @@ const vibeClass = themeKey;
 
   <div
     class={`editorial-container w-full pt-16 pb-12 px-6 md:px-12 ${vibeClass}`}
-    style="background-color: var(--bg-current);"
+    style="background-color: var(--bg-current); color: var(--text-current);"
   >
     <article
       class={`prose prose-tgp mx-auto ${formatScale} transition-all duration-700 ease-in-out`}
@@ -126,35 +128,15 @@ const vibeClass = themeKey;
 
     {
       post.data.editorial_spreads && post.data.editorial_spreads.length > 0 && (
-        <div class="mt-32 space-y-48">
-          {post.data.editorial_spreads.map((spread: any) => {
-            const type = spread.value.spread_type;
-            const spreadClass =
-              type === "full-bleed"
-                ? "w-screen -mx-6 md:-mx-12"
-                : type === "asymmetric-diptych"
-                  ? "spread-asymmetric-diptych"
-                  : type === "tactile-overlap"
-                    ? "spread-tactile-overlap"
-                    : type === "kinfolk-grid"
-                      ? "spread-kinfolk-grid"
-                      : "max-w-7xl mx-auto";
-
-            return (
-              <div class={`spread-wrapper ${spreadClass} ${vibeClass}`}>
-                <div
-                  class={`${type === "full-bleed" || type === "diptych" || type === "portrait-float" ? "grid grid-cols-1 md:grid-cols-2 gap-4" : ""}`}
-                >
-                  {spread.value.images.map((img: string) => (
-                    <img src={img} class="w-full h-auto object-cover" alt="" />
-                  ))}
-                </div>
-                {spread.value.caption && (
-                  <p class="spread-caption">{spread.value.caption}</p>
-                )}
-              </div>
-            );
-          })}
+        <div class="max-w-5xl mx-auto">
+          <DynamicEditorialGallery spreads={post.data.editorial_spreads} vibeClass={vibeClass} />
+        </div>
+      )
+    }
+    {
+      !enableStressTest && (
+        <div class="max-w-4xl mx-auto">
+          <EditorialReadMore collection="visual_signals" currentSlug={post.id} vibeClass={vibeClass} />
         </div>
       )
     }

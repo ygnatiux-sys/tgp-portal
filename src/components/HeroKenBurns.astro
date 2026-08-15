@@ -14,7 +14,8 @@ const {
 ---
 
 <section
-  class={`vintage-hero relative w-[calc(100%-2rem)] h-[calc(85vh-2rem)] min-h-150 mx-auto mt-4 flex flex-col items-center justify-center overflow-hidden bg-racing-green rounded-3xl ${vibeClass}`}
+  class={`vintage-hero relative w-[calc(100%-2rem)] h-[calc(85vh-2rem)] min-h-150 mx-auto mt-4 flex flex-col items-center justify-center overflow-hidden rounded-3xl ${vibeClass}`}
+  style="background-color: var(--bg-current);"
 >
   <div
     class="hero-bg absolute inset-0 z-0 ken-burns-container"
@@ -34,7 +35,8 @@ const {
     <div class="atmospheric-dust"></div>
 
     <div
-      class="absolute inset-0 z-10 bg-linear-to-t from-racing-green via-racing-green/50 to-transparent"
+      class="absolute inset-0 z-10"
+      style="background-image: linear-gradient(to top, var(--bg-current) 0%, color-mix(in srgb, var(--bg-current) 50%, transparent) 50%, transparent 100%);"
     >
     </div>
     <div class="absolute inset-0 z-10 bg-black/20"></div>
@@ -45,7 +47,7 @@ const {
     class="title-container relative z-20 text-center px-6 w-full max-w-5xl mx-auto py-6 md:py-8 flex flex-col items-center -translate-y-4"
   >
     <h1
-      class="vibe-target-h1 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#f4f0ec] tracking-tight leading-[0.95] pb-1 drop-shadow-2xl text-balance mx-auto max-w-[22ch] inline-block"
+      class="vibe-target-h1 hero-interactive-h1 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-[0.95] pb-1 drop-shadow-2xl text-balance mx-auto max-w-[22ch] inline-block"
     >
       {title}
     </h1>
