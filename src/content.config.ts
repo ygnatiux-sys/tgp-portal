@@ -19,22 +19,35 @@ const fancyboxPickerSchema = z.object({
   caption: z.string().optional(),
 }).optional();
 
+const fancyboxPlacaSchema = z.object({
+  url: z.string().optional(),
+  semantic_match: z.string().optional(),
+  author_citation: z.string().optional(),
+  is_selected: z.boolean().optional().default(true),
+});
+
+const googlePhotoPlacaSchema = z.object({
+  photo_url_or_id: z.string().optional(),
+  caption: z.string().optional(),
+  is_selected: z.boolean().optional().default(true),
+});
+
+const generate20PlacasZod = (itemSchema: any) => {
+  const obj: Record<string, any> = {};
+  for (let i = 1; i <= 20; i++) {
+    obj[`placa_${String(i).padStart(2, '0')}`] = itemSchema;
+  }
+  return z.object(obj);
+};
+
 const spreadValueSchema = z.object({
   spread_type: z.string(),
   source_tab: z.enum(['local', 'wikimedia', 'google_photos']).optional(),
   batch_control: z.enum(['select_all', 'custom_selection', 'clear_selection']).optional(),
   images: z.array(z.string()).optional().default([]),
-  remote_wikimedia_items: z.array(z.object({
-    url: z.string().optional(),
-    semantic_match: z.string().optional(),
-    author_citation: z.string().optional(),
-    is_selected: z.boolean().optional().default(true),
-  })).optional(),
-  google_photos_items: z.array(z.object({
-    photo_url_or_id: z.string().optional(),
-    caption: z.string().optional(),
-    is_selected: z.boolean().optional().default(true),
-  })).optional(),
+  local_images: generate20PlacasZod(z.string().optional().nullable()).optional(),
+  remote_wikimedia_images: generate20PlacasZod(fancyboxPlacaSchema).optional(),
+  google_photos_images: generate20PlacasZod(googlePhotoPlacaSchema).optional(),
   caption: z.string().optional(),
 });
 

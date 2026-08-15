@@ -161,12 +161,22 @@ export const vogueEngine = {
   }),
 };
 
-// --- MOTOR DE SPREADS Y GALERÍAS FANCYBOX (Hasta 20 selecciones) ---
+// Helper to generate 20 placeholder fields
+const generate20Fields = (fieldSchemaGenerator: (index: number) => any) => {
+  const fieldsObj: Record<string, any> = {};
+  for (let i = 1; i <= 20; i++) {
+    const key = `placa_${String(i).padStart(2, '0')}`;
+    fieldsObj[key] = fieldSchemaGenerator(i);
+  }
+  return fieldsObj;
+};
+
+// --- MOTOR DE SPREADS Y GALERÍAS FANCYBOX (20 Placeholders) ---
 export const spreadsEngine = {
   editorial_spreads: fields.blocks(
     {
       image_spread: {
-        label: 'Bloque de Galería / Fancybox Spread (Hasta 20 Imágenes)',
+        label: 'Bloque de Galería / Fancybox Spread (20 Placeholders)',
         schema: fields.object({
           spread_type: fields.select({
             label: 'Tipo de Disposición Visual',
@@ -200,39 +210,30 @@ export const spreadsEngine = {
             ],
             defaultValue: 'select_all',
           }),
-          images: fields.array(
-            fields.image({
-              label: 'Imagen (Mi PC / Local)',
+          // 20 Placeholders para carga local
+          local_images: fields.object(
+            generate20Fields((i) => fields.image({
+              label: `Placa ${String(i).padStart(2, '0')} (Mi PC)`,
               directory: 'public/images/spreads',
               publicPath: '/images/spreads',
-            }),
-            { 
-              label: 'Archivos de Imagen Local (Hasta 20)', 
-              itemLabel: (props) => props.value ? `Placa local: ${props.value}` : 'Archivo de imagen (Mi PC)' 
-            }
+            }))
           ),
-          remote_wikimedia_items: fields.array(
-            fields.object({
-              url: fields.text({ label: 'URL Directa HD (Wikimedia)' }),
-              semantic_match: fields.text({ label: 'Término / Similitud Semántica' }),
-              author_citation: fields.text({ label: 'Cita de Autor / Licencia CC0 / CC-BY' }),
+          // 20 Placeholders para Wikimedia Commons
+          remote_wikimedia_images: fields.object(
+            generate20Fields((i) => fields.object({
+              url: fields.text({ label: `Placa ${String(i).padStart(2, '0')} - URL Directa HD` }),
+              semantic_match: fields.text({ label: `Placa ${String(i).padStart(2, '0')} - Término / Similitud` }),
+              author_citation: fields.text({ label: `Placa ${String(i).padStart(2, '0')} - Cita de Autor / Licencia` }),
               is_selected: fields.checkbox({ label: 'Seleccionar en Fancybox', defaultValue: true }),
-            }),
-            {
-              label: 'Placas Wikimedia Commons (Hasta 20 selecciones HD)',
-              itemLabel: (props) => props.fields.semantic_match.value || props.fields.url.value || 'Placa Wikimedia',
-            }
+            }))
           ),
-          google_photos_items: fields.array(
-            fields.object({
-              photo_url_or_id: fields.text({ label: 'URL / ID de Foto de Google Photos' }),
-              caption: fields.text({ label: 'Título / Epígrafe' }),
+          // 20 Placeholders para Google Photos
+          google_photos_images: fields.object(
+            generate20Fields((i) => fields.object({
+              photo_url_or_id: fields.text({ label: `Placa ${String(i).padStart(2, '0')} - URL / ID de Foto` }),
+              caption: fields.text({ label: `Placa ${String(i).padStart(2, '0')} - Título / Epígrafe` }),
               is_selected: fields.checkbox({ label: 'Seleccionar en Fancybox', defaultValue: true }),
-            }),
-            {
-              label: 'Placas Google Photos (Hasta 20 selecciones)',
-              itemLabel: (props) => props.fields.caption.value || props.fields.photo_url_or_id.value || 'Foto Google Photos',
-            }
+            }))
           ),
           caption: fields.text({ label: 'Pie de foto / Epígrafe Global (Opcional)' }),
         }),
@@ -240,7 +241,7 @@ export const spreadsEngine = {
     },
     {
       label: 'Galería Editorial & Fancybox Spreads',
-      description: 'Añade bloques de imágenes y galerías con soporte multi-fuente (Mi PC, Wikimedia, Google Photos) de hasta 20 fotos.',
+      description: 'Añade bloques de imágenes y galerías con soporte de 20 placeholders por pestaña.',
     }
   ),
 };
