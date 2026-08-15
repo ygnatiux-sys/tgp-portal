@@ -54,112 +54,119 @@ const templateId = ensayo?.data?.template || "victorian-archeo";
 const templateEntry = await getEntry('editorialTemplates', templateId);
 const themeKey = templateEntry?.data.themeKey || 'vibe-victorian-archeo';
 const vibeClass = themeKey;
+
+const formattedDate = date ? (() => {
+  try {
+    const d = new Date(date);
+    return !isNaN(d.getTime()) 
+      ? d.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' })
+      : String(date);
+  } catch {
+    return String(date);
+  }
+})() : null;
 ---
 
 <Layout title={`${title} | The Great Puzzle`} vibeClass={vibeClass}>
-  <div class={`min-h-screen relative z-10 font-sans pb-20 md:pb-0 ${vibeClass}`} style="background-color: var(--bg-current); color: var(--text-current);">
+  <div 
+    class={`ensayos-fullpage-root min-h-screen relative z-10 font-sans pb-20 md:pb-0 ${vibeClass}`} 
+    style="background-color: var(--bg-current); color: var(--text-current);"
+  >
     <FloatingBackButton />
 
-    <article class="w-full max-w-2xl mx-auto pt-24 md:pt-32 pb-8 px-4 md:px-0">
-    {/* Post Header */}
-    <header class="mb-12">
-      <h1
-        class="font-gloock text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-3 leading-[0.98] text-balance max-w-[22ch]"
-      >
-        {title}
-      </h1>
+    <main class="w-full max-w-(--ux-container-max,1500px) mx-auto pt-20 md:pt-28 pb-12 px-4 sm:px-6 lg:px-12">
+      
+      {/* ── Post Header (Centrado y Expansivo) ── */}
+      <header class="w-full max-w-(--ux-reading-max,860px) mx-auto mb-12 md:mb-16 text-center flex flex-col items-center">
+        <h1
+          class="font-gloock text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 leading-[0.94] text-balance max-w-[24ch] drop-shadow-sm transition-colors duration-500"
+          style="color: var(--text-current);"
+        >
+          {title}
+        </h1>
+        {
+          subtitle && (
+            <p 
+              class="text-lg sm:text-xl md:text-2xl font-sans text-balance max-w-2xl mx-auto opacity-75 leading-relaxed mb-6 font-light"
+              style="color: var(--text-current);"
+            >
+              {subtitle}
+            </p>
+          )
+        }
+
+        {/* Reading Status & Metadata */}
+        <div class="flex items-center justify-center gap-4 py-3 border-y border-white/10 w-full max-w-lg text-[10px] md:text-xs font-tgp-tech tracking-[0.2em] uppercase opacity-60">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>12 min lectura</span>
+          </div>
+          <span>•</span>
+          <span class="text-white/90">{author}</span>
+          {formattedDate && (
+            <>
+              <span>•</span>
+              <span>{formattedDate}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* ── Hero / Cover Image (Full-Width Cinematic Canvas) ── */}
       {
-        subtitle && (
-          <p class="text-lg md:text-xl text-gray-400 font-sans leading-relaxed mb-4">
-            {subtitle}
-          </p>
+        coverImage && (
+          <figure class="w-full max-w-(--ux-hero-max,1360px) mx-auto mb-16 md:mb-24 aspect-video md:aspect-21/9 overflow-hidden rounded-2xl md:rounded-3xl bg-black/25 relative shadow-2xl border border-white/5">
+            <div
+              class="absolute inset-0 z-0 opacity-25 mix-blend-screen pointer-events-none"
+              style={`background: linear-gradient(to right, transparent, ${accentColor})`}
+            />
+            <img
+              src={coverImage}
+              alt={title}
+              class="w-full h-full object-cover object-center relative z-10 brightness-95 hover:scale-[1.02] transition-transform duration-1000 ease-out"
+              loading="eager"
+            />
+          </figure>
         )
       }
 
-      {/* Reading Status Note - Exquisite Detail */}
-      <div
-        class="flex items-center gap-2 mb-4 text-gray-400 text-xs font-semibold uppercase tracking-[0.2em]"
-      >
-        <svg
-          class="w-3.5 h-3.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      {/* ── Prose / Reading Column (Optimizada para Alta Legibilidad) ── */}
+      <div class="w-full max-w-(--ux-reading-max,860px) mx-auto mb-20 md:mb-28">
+        <article
+          class="prose prose-invert prose-lg sm:prose-xl prose-p:font-sans prose-p:leading-[1.85] prose-headings:font-gloock prose-headings:text-white max-w-none"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span>12 min read</span>
+          {renderError ? (
+            <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-lg">
+              <h2 class="text-red-400 font-serif mb-4">Error de Sincronización</h2>
+              <pre class="mt-4 p-4 bg-black/40 rounded text-xs text-red-300 overflow-x-auto">
+                {renderError instanceof Error ? renderError.message : String(renderError)}
+              </pre>
+            </div>
+          ) : (
+            Content && <Content />
+          )}
+        </article>
       </div>
 
-      {/* Author & Date info sobrio */}
-      <div class="flex items-center gap-3 py-3 border-y border-white/10 text-white/50 text-xs font-tgp-tech uppercase tracking-widest">
-        <span class="text-white/80">{author}</span>
-        {date && <span>· {date}</span>}
-      </div>
-    </header>
+      {/* ── Dynamic Bento Read More Section (Expansivo a Ancho Completo) ── */}
+      <section class="w-full max-w-(--ux-grid-max,1360px) mx-auto pt-8 border-t border-white/10">
+        <EditorialReadMore collection="ensayos" currentSlug={currentId} vibeClass={vibeClass} />
+      </section>
 
-    {/* Hero Image */}
-    {
-      coverImage && (
-        <figure class="w-full mb-12 aspect-video overflow-hidden rounded-xl bg-black/20 relative">
-          <div
-            class="absolute inset-0 z-0 opacity-30 mix-blend-screen"
-            style={`background: linear-gradient(to right, transparent, ${accentColor})`}
-          />
-          <img
-            src={coverImage}
-            alt={title}
-            class="w-full h-full object-cover relative z-10"
-          />
-        </figure>
-      )
-    }
+    </main>
 
-    {/* Prose Content */}
-    <div
-      class="prose prose-invert prose-lg prose-p:font-sans prose-p:text-gray-300 prose-headings:font-gloock prose-headings:text-white prose-a:text-[#FF6719] max-w-none"
-    >
-      {renderError ? (
-        <div class="bg-red-900/20 border border-red-500/50 p-8 rounded-lg">
-          <h2 class="text-red-400 font-serif mb-4">Error de Sincronización</h2>
-          <pre class="mt-4 p-4 bg-black/40 rounded text-xs text-red-300 overflow-x-auto">
-            {renderError instanceof Error ? renderError.message : String(renderError)}
-          </pre>
-        </div>
-      ) : (
-        Content && <Content />
-      )}
-    </div>
-
-    {/* Dynamic Read More Section */}
-    <EditorialReadMore collection="ensayos" currentSlug={currentId} vibeClass={vibeClass} />
-  </article>
-
-  <ArticleFooter vibeClass={vibeClass} pageTitle={title} />
+    <ArticleFooter vibeClass={vibeClass} pageTitle={title} />
   </div>
 </Layout>
 
-<script>
-  const likeButtons = document.querySelectorAll(".like-btn");
-  likeButtons.forEach((btn) => {
-    if (btn.hasAttribute("data-init")) return;
-    btn.setAttribute("data-init", "true");
-    btn.addEventListener("click", () => {
-      const isLiked = btn.getAttribute("data-liked") === "true";
-      const countSpan = btn.querySelector(".like-count");
-      if (!isLiked) {
-        btn.classList.add("liked");
-        btn.setAttribute("data-liked", "true");
-        if (countSpan) countSpan.textContent = "21.1k";
-      } else {
-        btn.classList.remove("liked");
-        btn.setAttribute("data-liked", "false");
-        if (countSpan) countSpan.textContent = "21k";
-      }
-    });
-  });
-</script>
+<style>
+  /* Variables de UX y responsividad editorial fluida */
+  .ensayos-fullpage-root {
+    --ux-container-max: min(100%, 1500px);
+    --ux-hero-max: min(100%, 1360px);
+    --ux-reading-max: min(100%, 860px);
+    --ux-grid-max: min(100%, 1360px);
+  }
+</style>

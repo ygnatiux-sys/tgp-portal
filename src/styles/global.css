@@ -465,22 +465,22 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   .prose-tgp h1 {
     @apply text-5xl md:text-7xl leading-none mb-8;
-    color: var(--color-old-silver);
+    color: var(--text-current) !important;
     transition: color 0.5s ease;
   }
   .prose-tgp h1:hover {
-    color: var(--color-copper-ember);
+    color: var(--color-copper-ember) !important;
   }
 
   .prose-tgp h2 {
     @apply text-3xl md:text-4xl leading-tight mt-12 mb-6 border-b pb-4;
-    color: var(--text-current);
+    color: var(--text-current) !important;
     border-color: inherit;
   }
 
   .prose-tgp h3, .prose-tgp h4 {
     @apply text-xs md:text-sm mt-10 mb-4;
-    color: var(--text-current);
+    color: var(--text-current) !important;
   }
 
   .prose-tgp p {
@@ -793,7 +793,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       text-transform: var(--vibe-h1-transform, none) !important;
       font-size: var(--vibe-h1-size, clamp(2.5rem, 5.5vw + 0.5rem, 5.25rem)) !important;
       font-variant: var(--vibe-h1-variant, normal) !important;
-      color: var(--color-old-silver);
+      color: var(--text-current) !important;
       transition: color 0.5s ease;
       text-wrap: balance !important;
       text-wrap: pretty;
@@ -805,7 +805,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       font-feature-settings: "kern" 1, "liga" 1;
     }
     & h1:hover, & .vibe-target-h1:hover {
-      color: var(--color-copper-ember);
+      color: var(--color-copper-ember) !important;
     }
 
     & h2, & .vibe-target-h2 {
@@ -816,6 +816,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       font-style: var(--vibe-h2-style, normal) !important;
       line-height: var(--vibe-h2-leading, 1.2) !important;
       font-size: var(--vibe-h2-size, 2.5rem) !important;
+      color: var(--text-current) !important;
     }
 
     & h3, & h4, & .vibe-target-h3 {
@@ -826,6 +827,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       font-size: var(--vibe-h3-size, 1.25rem) !important;
       letter-spacing: var(--vibe-h3-tracking, normal) !important;
       font-variant: var(--vibe-h3-variant, normal) !important;
+      color: var(--text-current) !important;
     }
 
     & h5, & .vibe-target-credits, & .vibe-target-quote {
@@ -836,6 +838,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       font-size: var(--vibe-h5-size, 1.1rem) !important;
       letter-spacing: var(--vibe-h5-tracking, normal) !important;
       text-align: var(--vibe-h5-align, left) !important;
+      color: var(--text-current) !important;
     }
 
     & h6, & .vibe-target-folio {
@@ -846,6 +849,7 @@ body:not([data-theme]) .text-copper-ember\/30 {
       font-size: var(--vibe-h6-size, 0.75rem) !important;
       letter-spacing: var(--vibe-h6-tracking, normal) !important;
       text-align: var(--vibe-h6-align, inherit) !important;
+      color: var(--text-current) !important;
     }
 
     & p, & li, & .vibe-target-body {
