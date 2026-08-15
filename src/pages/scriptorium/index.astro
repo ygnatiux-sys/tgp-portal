@@ -1,0 +1,27 @@
+---
+// Scriptorium v2.0 - Motor de Creación
+// Página privada local para generar contenido con IA
+
+import ScriptoriumDashboard from '../../components/scriptorium/ScriptoriumDashboard';
+---
+
+<html lang="es" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Scriptorium v2.0 CMS</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Montamos el Dashboard React (Island) para manejar estado dinámico -->
+  <ScriptoriumDashboard client:load />
+</body>
+</html>

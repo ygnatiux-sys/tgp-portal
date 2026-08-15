@@ -1,0 +1,17 @@
+---
+// src/pages/tgp-app.astro
+// Punto de entrada de la PWA "TGP Field App"
+import LayoutPortal from '../layouts/LayoutPortal.astro';
+import TgpApp from '../components/TgpApp.astro';
+---
+
+<LayoutPortal title="TGP Field App">
+  {/* Inject PWA assets directly into head slot */}
+  <link rel="manifest" href="/manifest.json" slot="head" />
+  <meta name="theme-color" content="#c4a484" slot="head" />
+  <meta name="apple-mobile-web-app-capable" content="yes" slot="head" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" slot="head" />
+  <link rel="apple-touch-icon" href="/favicon.svg" slot="head" />
+
+  <TgpApp />
+</LayoutPortal>

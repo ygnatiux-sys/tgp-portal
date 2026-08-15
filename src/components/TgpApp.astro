@@ -1,0 +1,210 @@
+---
+// src/components/TgpApp.astro
+// TGP App: Cliente PWA para enviar contexto in-situ al Motor Scriptorium Mind
+---
+
+<div class="min-h-screen bg-[#121212] text-[#e0e0e0] font-sans p-4 sm:p-8 flex flex-col items-center">
+  <div class="w-full max-w-4xl">
+    <header class="mb-8 border-b border-[#333] pb-4">
+      <h1 class="text-3xl font-serif text-[#c4a484]">TGP Field App</h1>
+      <p class="text-xs tracking-widest text-[#888] uppercase mt-1">Conexión Directa al Motor Cognitivo</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="bento-grid">
+      
+      {/* 1. Módulo de Captura (Cámara) */}
+      <div class="bg-[#1e1e1e] border border-[#333] rounded-2xl p-6 shadow-lg flex flex-col items-center justify-center min-h-62.5 relative overflow-hidden group transition-all hover:border-[#c4a484]/50">
+        <label for="camera-input" class="cursor-pointer flex flex-col items-center gap-4 w-full h-full justify-center">
+          <div class="w-16 h-16 rounded-full bg-[#c4a484]/10 flex items-center justify-center text-[#c4a484] group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="32" height="32">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <span class="text-sm font-bold uppercase tracking-wider text-[#d4d4d4]" id="file-name">Tomar Fotografía</span>
+          <span class="text-xs text-[#888] text-center">Toma una foto de la fuente documental o arqueológica.</span>
+        </label>
+        <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden" />
+        
+        {/* Preview superpuesto */}
+        <div id="image-preview-container" class="absolute inset-0 bg-black hidden flex-col items-center justify-center">
+          <img id="image-preview" class="w-full h-full object-cover opacity-60" />
+          <button type="button" id="btn-re-capture" class="absolute bottom-4 bg-black/80 text-white border border-[#c4a484] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm z-10">
+            Capturar de Nuevo
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Módulo de Contexto y Envío */}
+      <div class="bg-[#1e1e1e] border border-[#333] rounded-2xl p-6 shadow-lg flex flex-col justify-between">
+        <div class="space-y-5">
+          
+          <div>
+            <label class="block text-xs font-bold text-[#c4a484] uppercase tracking-wider mb-2">Ámbito del Proyecto</label>
+            <select id="ambito-select" class="w-full bg-[#252526] border border-[#444] text-[#d4d4d4] p-3 rounded focus:outline-none focus:border-[#c4a484] transition-colors">
+              <option value="web-principal">TGP Web Principal</option>
+              <option value="tgp-ebooks">TGP Ebooks</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-[#c4a484] uppercase tracking-wider mb-2">Colección de Destino</label>
+            <select id="coleccion-select" class="w-full bg-[#252526] border border-[#444] text-[#d4d4d4] p-3 rounded focus:outline-none focus:border-[#c4a484] transition-colors">
+              <option value="ensayos">Ensayos</option>
+              <option value="blog">Blog</option>
+              <option value="capitulos">Capítulos</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button id="btn-submit" type="button" class="mt-6 w-full bg-[#c4a484] text-black py-4 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-white transition-colors relative flex justify-center items-center">
+          <span id="btn-text">Procesar en TGP Mind</span>
+          
+          {/* Spinner */}
+          <svg id="spinner" class="hidden animate-spin h-6 w-6 text-black absolute right-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="24" height="24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    {/* Consola de Estado (Notificaciones) */}
+    <div id="status-console" class="mt-6 p-4 rounded bg-[#1e1e1e] border border-[#333] hidden">
+      <p id="status-message" class="text-sm font-mono text-[#c4a484]"></p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cameraInput = document.getElementById('camera-input') as HTMLInputElement;
+    const imgPreviewContainer = document.getElementById('image-preview-container');
+    const imgPreview = document.getElementById('image-preview') as HTMLImageElement;
+    const btnReCapture = document.getElementById('btn-re-capture');
+    
+    const ambitoSelect = document.getElementById('ambito-select') as HTMLSelectElement;
+    const coleccionSelect = document.getElementById('coleccion-select') as HTMLSelectElement;
+    const btnSubmit = document.getElementById('btn-submit') as HTMLButtonElement;
+    
+    const btnText = document.getElementById('btn-text');
+    const spinner = document.getElementById('spinner');
+    const statusConsole = document.getElementById('status-console');
+    const statusMessage = document.getElementById('status-message');
+
+    let currentBase64 = '';
+    let currentMimeType = '';
+
+    // Manejo de la selección de imagen
+    cameraInput.addEventListener('change', (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        currentMimeType = file.type;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            // El FileReader devuelve un Data URI como: data:image/jpeg;base64,/9j/4AA...
+            // Necesitamos extraer solo el string de Base64 crudo para la API de Gemini
+            const resultString = event.target.result.toString();
+            currentBase64 = resultString.split(',')[1];
+            
+            // Para el preview visualizamos todo el Data URI
+            imgPreview.src = resultString;
+            imgPreviewContainer?.classList.remove('hidden');
+            imgPreviewContainer?.classList.add('flex');
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Botón para recapturar
+    btnReCapture?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cameraInput.value = '';
+      currentBase64 = '';
+      currentMimeType = '';
+      imgPreviewContainer?.classList.add('hidden');
+      imgPreviewContainer?.classList.remove('flex');
+    });
+
+    // Función auxiliar para notificaciones
+    const showStatus = (message: string, isError = false) => {
+      if (statusConsole && statusMessage) {
+        statusConsole.classList.remove('hidden');
+        statusConsole.style.borderColor = isError ? '#ff4444' : '#c4a484';
+        statusMessage.style.color = isError ? '#ff4444' : '#c4a484';
+        statusMessage.textContent = message;
+      }
+    };
+
+    // Envío del Formulario a TGP Mind (Cloud Run FaaS)
+    btnSubmit?.addEventListener('click', async () => {
+      if (!currentBase64) {
+        showStatus('⚠️ Por favor, toma una fotografía primero.', true);
+        return;
+      }
+
+      // Preparar UI para la carga
+      btnSubmit.disabled = true;
+      if (btnText) btnText.textContent = 'Forjando en TGP Mind...';
+      spinner?.classList.remove('hidden');
+      statusConsole?.classList.add('hidden');
+
+      // Variables de Entorno y Configuración Fija
+      const CLOUD_RUN_URL = 'https://tgp-app-713934653057.us-central1.run.app';
+      const AUTH_TOKEN = '[TU_TOKEN_AQUI]'; 
+      const ambitoSeleccionado = ambitoSelect.value;
+      const coleccionSeleccionada = coleccionSelect.value;
+
+      const payload = {
+        imageBase64: currentBase64,
+        mimeType: currentMimeType,
+        ambito: ambitoSeleccionado,
+        coleccion: coleccionSeleccionada
+      };
+
+      try {
+        const response = await fetch(CLOUD_RUN_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${AUTH_TOKEN}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error del servidor HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.success) {
+          showStatus(`✅ Éxito: ${data.message} (${data.path})`);
+          
+          // Reset UI
+          cameraInput.value = '';
+          currentBase64 = '';
+          currentMimeType = '';
+          imgPreviewContainer?.classList.add('hidden');
+          imgPreviewContainer?.classList.remove('flex');
+        } else {
+          showStatus(`🚨 Falla en el servidor: ${data.error}`, true);
+        }
+
+      } catch (error: any) {
+        console.error('Fetch error:', error);
+        showStatus(`🚨 Falla en el enlace: ${error.message}`, true);
+      } finally {
+        // Restaurar estado de botones
+        btnSubmit.disabled = false;
+        if (btnText) btnText.textContent = 'Procesar en TGP Mind';
+        spinner?.classList.add('hidden');
+      }
+    });
+  });
+</script>

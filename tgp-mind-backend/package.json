@@ -1,0 +1,12 @@
+{
+  "name": "tgp-app-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "deploy-cloud": "gcloud functions deploy tgp-app --gen2 --runtime=nodejs22 --region=us-central1 --source=. --entry-point=tgpApp --trigger-http --allow-unauthenticated --timeout=300"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.0.0",
+    "@google/genai": "latest"
+  }
+}

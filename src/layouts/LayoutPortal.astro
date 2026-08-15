@@ -79,6 +79,7 @@ const {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ClientRouter />
+    <slot name="head" />
   </head>
 
   <body class={`min-h-screen relative overflow-x-hidden ${bgClass} ${vibeClass}`}>
