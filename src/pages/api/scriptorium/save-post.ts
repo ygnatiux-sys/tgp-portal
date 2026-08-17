@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pipeline } from 'node:stream/promises';
 
 export const POST: APIRoute = async ({ request }) => {
   try {

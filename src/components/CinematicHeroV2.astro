@@ -1,4 +1,5 @@
----
+﻿---
+
 /**
  * CinematicHeroV2.astro
  * Hero de nueva generación con scroll-scrub GSAP.
@@ -55,6 +56,8 @@ const formatCollection = (col: string) => {
           <img
             src={post.image}
             alt={post.title}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
             class="w-full h-full object-cover brightness-[0.55] contrast-[1.08]"
           />
         </div>
@@ -72,7 +75,7 @@ const formatCollection = (col: string) => {
         <div class="absolute inset-0 z-30 flex flex-col justify-end max-w-[1600px] mx-auto px-8 md:px-16 pb-20 md:pb-28 w-full h-full">
           {/* 1. Categoría/Colección (Sin punto, pulso lento) */}
           <div class="hero-v2-badge flex items-center gap-4 mb-6">
-            <span class="inline-flex items-center text-copper-ember text-[9px] tracking-[0.6em] uppercase font-tgp-tech animate-pulse-slow">
+            <span class="inline-flex items-center text-copper-ember/70 text-xs tracking-[0.4em] uppercase font-tgp-tech animate-pulse-slow">
               {formatCollection(post.collection)}
             </span>
           </div>
@@ -89,7 +92,7 @@ const formatCollection = (col: string) => {
 
           {/* 3. Subtítulo */}
           {post.subtitle && (
-            <p class="mt-4 text-copper-ember/60 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide">
+            <p class="mt-4 text-white/70 text-base font-tgp-body font-light leading-relaxed max-w-[55ch] tracking-wide">
               {post.subtitle}
             </p>
           )}
@@ -105,7 +108,6 @@ const formatCollection = (col: string) => {
             </a>
           </div>
 
-          {/* 5. Metadata: Mes y Año (Debajo de H1, subs y botón Leer Pieza) */}
           {/* 5. Metadata: Mes y Año & Redes */}
           <div class="hero-v2-folio mt-6 flex flex-wrap items-center gap-6">
             {post.date && (

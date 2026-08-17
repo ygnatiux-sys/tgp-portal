@@ -1,4 +1,5 @@
 ---
+
 /**
  * BentoPortal.astro
  * Sistema de Grid Bento en 3 bloques para el portal editorial TGP.
@@ -57,333 +58,333 @@ const formatCollection = (col: string) => {
 };
 ---
 
-<div id="bento-portal" class="bento-portal-root w-full">
+<div id="bento-portal" class="bento-portal-root w-full grid grid-cols-1 md:grid-cols-12 auto-rows-min gap-6 px-3 md:px-0">
 
   {/* ============================================================
       BLOQUE A — FULL-BLEED PROTAGONISTA
       1 card que ocupa todo el ancho. Ratio 21:9 en desktop.
   ============================================================= */}
-  <section class="bento-block-a px-0 mb-6">
-    <a 
-      href={heroPost.link}
-      class="group relative block w-full bento-hero-card overflow-hidden bg-black rounded-3xl"
-      aria-label={`Leer: ${heroPost.title}`}
-    >
-      {/* Imagen full-bleed */}
-      <img
-        src={heroPost.image}
-        alt={heroPost.title}
-        class="w-full h-full object-cover brightness-[0.6] group-hover:brightness-[0.75] group-hover:scale-[1.03] transition-all duration-1200 ease-out"
-      />
+  <a 
+    href={heroPost.link}
+    class="md:col-span-12 group relative block w-full bento-hero-card overflow-hidden bg-black border border-white/5 rounded-3xl"
+    aria-label={`Leer: ${heroPost.title}`}
+  >
+    {/* Imagen full-bleed */}
+    <img
+      src={heroPost.image}
+      alt={heroPost.title}
+      loading="eager"
+      decoding="async"
+      class="w-full h-full object-cover brightness-[0.6] group-hover:brightness-[0.75] group-hover:scale-[1.03] transition-all duration-1200 ease-out"
+    />
 
-      {/* Scrim de legibilidad */}
-      <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/95 via-charcoal-wood/50 to-transparent"></div>
-      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/70 via-transparent to-transparent"></div>
+    {/* Scrim de legibilidad */}
+    <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/95 via-charcoal-wood/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/70 via-transparent to-transparent"></div>
 
-      {/* Content */}
-      <div class="absolute inset-0 flex flex-col justify-end p-10 md:p-16 max-w-4xl">
-        <span class="inline-block mb-5 text-[9px] tracking-[0.6em] uppercase text-copper-ember font-tgp-tech animate-pulse-slow">
-          {formatCollection(heroPost.collection)} · Destacado
+    {/* Content */}
+    <div class="absolute inset-0 flex flex-col justify-end p-6 max-w-4xl">
+      <span class="inline-block mb-4 text-xs tracking-[0.4em] uppercase text-copper-ember/70 font-tgp-tech animate-pulse-slow">
+        {formatCollection(heroPost.collection)} · Destacado
+      </span>
+      <h2 class="font-tgp-gloock text-3xl md:text-5xl lg:text-6xl text-white leading-[0.92] tracking-tight mb-4 group-hover:text-copper-ember transition-colors duration-700">
+        {heroPost.title}
+      </h2>
+      {heroPost.subtitle && (
+        <p class="text-white/70 text-base font-tgp-body font-light leading-relaxed max-w-[50ch] hidden md:block">
+          {heroPost.subtitle}
+        </p>
+      )}
+      {/* CTA line */}
+      <div class="mt-6 flex items-center gap-4">
+        <span class="w-0 group-hover:w-16 h-px bg-copper-ember transition-all duration-700"></span>
+        <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember font-tgp-tech transition-colors duration-500">
+          Leer Pieza
         </span>
-        <h2 class="font-tgp-gloock text-3xl md:text-5xl lg:text-6xl text-white leading-[0.92] tracking-tight mb-5 group-hover:text-copper-ember transition-colors duration-700">
-          {heroPost.title}
-        </h2>
-        {heroPost.subtitle && (
-          <p class="text-white/50 text-sm md:text-base font-tgp-body font-light leading-relaxed max-w-[50ch] hidden md:block">
-            {heroPost.subtitle}
-          </p>
-        )}
-        {/* CTA line */}
-        <div class="mt-8 flex items-center gap-4">
-          <span class="w-0 group-hover:w-16 h-px bg-copper-ember transition-all duration-700"></span>
-          <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover:text-copper-ember font-tgp-tech transition-colors duration-500">
-            Leer Pieza
-          </span>
-        </div>
       </div>
+    </div>
 
-      {/* Corner accent */}
-      <div class="absolute top-8 right-8 w-16 h-16 border-t border-r border-white/10 group-hover:border-copper-ember/40 transition-colors duration-700 pointer-events-none"></div>
-    </a>
-  </section>
+    {/* Corner accent */}
+    <div class="absolute top-8 right-8 w-16 h-16 border-t border-r border-white/10 group-hover:border-copper-ember/40 transition-colors duration-700 pointer-events-none"></div>
+  </a>
+
 
   {/* ============================================================
       BLOQUE B — CLUSTER 2 + 1 (full-bleed) + 2
-      Grid CSS con 3 filas: par arriba, 1 full-bleed, par abajo
   ============================================================= */}
-  <section class="bento-block-b mb-6 px-3 md:px-0">
-    <div class="bento-cluster-grid">
-      
-      {/* Fila superior: 2 cards */}
-      <div class="bento-cluster-pair-top">
-        {clusterPosts.slice(0, 2).map((post, i) => (
-          <a 
-            href={post.link} 
-            class="group relative block overflow-hidden bg-black bento-cluster-card rounded-3xl"
-          >
-            <img
-              src={post.image}
-              alt={post.title}
-              class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
-            />
-            <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6 md:p-8">
-              <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
-                {formatCollection(post.collection)} · 0{i + 1}
-              </span>
-              <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
-                {post.title}
-              </h3>
-              {post.subtitle && (
-                <p class="text-white/40 text-xs font-tgp-body font-light mt-3 leading-relaxed line-clamp-2">
-                  {post.subtitle}
-                </p>
-              )}
-              <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
-            </div>
-          </a>
-        ))}
+  
+  {/* Fila superior: 2 cards */}
+  {clusterPosts.slice(0, 2).map((post, i) => (
+    <a 
+      href={post.link} 
+      class="md:col-span-6 group relative block overflow-hidden bg-black bento-cluster-card border border-white/5 rounded-3xl h-100 md:h-112.5"
+    >
+      <img
+        src={post.image}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
+      />
+      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+        <span class="block text-xs tracking-[0.3em] uppercase text-copper-ember/70 mb-2 font-tgp-tech">
+          {formatCollection(post.collection)} · 0{i + 1}
+        </span>
+        <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+          {post.title}
+        </h3>
+        {post.subtitle && (
+          <p class="text-white/70 text-base font-tgp-body font-light mt-2 leading-relaxed line-clamp-2">
+            {post.subtitle}
+          </p>
+        )}
+        <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
       </div>
+    </a>
+  ))}
 
-      {/* Fila central: 1 card full-bleed - Byblos Engine */}
+  {/* Fila central: 1 card full-bleed - Byblos Engine */}
+  <div 
+    id="bento-byblos-card"
+    class="md:col-span-12 bento-cluster-full-mid relative overflow-hidden bg-black border border-white/5 rounded-3xl group/byblos w-full h-112.5"
+    aria-label="Byblos Engine: piezas centrales"
+  >
+    {safePosts.map((post, i) => (
       <div 
-        id="bento-byblos-card"
-        class="bento-cluster-full-mid relative overflow-hidden bg-black rounded-3xl group/byblos w-full h-full"
-        aria-label="Byblos Engine: piezas centrales"
+        class={`byblos-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'} overflow-hidden`}
+        data-byblos-slide={i}
       >
-        {safePosts.map((post, i) => (
-          <div 
-            class={`byblos-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'} overflow-hidden`}
-            data-byblos-slide={i}
-          >
-            <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
-              <img
-                src={post.image}
-                alt={post.title}
-                class="w-full h-full object-cover brightness-[0.5] contrast-[1.08]"
-              />
-            </div>
-            <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/90 via-charcoal-wood/40 to-transparent z-10"></div>
+        <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
+          <img
+            src={post.image}
+            alt={post.title}
+            loading={i === 0 ? 'lazy' : 'lazy'}
+            decoding="async"
+            class="w-full h-full object-cover brightness-[0.5] contrast-[1.08]"
+          />
+        </div>
+        <div class="absolute inset-0 bg-linear-to-r from-charcoal-wood/90 via-charcoal-wood/40 to-transparent z-10"></div>
 
-            {/* Granular Ken Burns local elements */}
-            <div class="card-grain opacity-30 pointer-events-none"></div>
-            <div class="card-scratches opacity-30 pointer-events-none"></div>
-            <div class="atmospheric-dust z-20"></div>
+        {/* Granular Ken Burns local elements */}
+        <div class="card-grain opacity-30 pointer-events-none"></div>
+        <div class="card-scratches opacity-30 pointer-events-none"></div>
+        <div class="atmospheric-dust z-20"></div>
 
-            <a href={post.link} class="absolute inset-0 flex items-center px-10 md:px-20 group/card z-30">
-              <div>
-                <span class="text-[7px] tracking-[0.6em] uppercase text-copper-ember mb-4 font-tgp-tech flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
-                  {formatCollection(post.collection)} · Pieza Central
-                </span>
-                <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.9] group-hover/card:text-copper-ember transition-colors duration-700 max-w-[20ch]">
-                  {post.title}
-                </h3>
-              </div>
-            </a>
+        <a href={post.link} class="absolute inset-0 flex items-center p-6 group/card z-30">
+          <div>
+            <span class="text-xs tracking-[0.4em] uppercase text-copper-ember/70 mb-3 font-tgp-tech flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-copper-ember animate-pulse"></span>
+              {formatCollection(post.collection)} · Pieza Central
+            </span>
+            <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.9] group-hover/card:text-copper-ember transition-colors duration-700 max-w-[20ch]">
+              {post.title}
+            </h3>
           </div>
-        ))}
-
-        {/* Controles laterales en hover */}
-        <div class="byblos-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
-          <button id="byblos-prev" class="byblos-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Anterior">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
-          </button>
-        </div>
-        <div class="byblos-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
-          <button id="byblos-next" class="byblos-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Siguiente">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
-
-        {/* Dots de progreso en Byblos (Medio punto editorial centrado) */}
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-          {safePosts.map((_, i) => (
-            <button 
-              class="byblos-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
-              style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
-              data-byblos-dot={i}
-              aria-label={`Slide ${i + 1}`}
-            ></button>
-          ))}
-        </div>
+        </a>
       </div>
+    ))}
 
-      {/* Fila inferior: 2 cards */}
-      <div class="bento-cluster-pair-bottom">
-        {clusterPosts.slice(3, 5).map((post, i) => (
-          <a 
-            href={post.link} 
-            class="group relative block overflow-hidden bg-black bento-cluster-card rounded-3xl"
-          >
-            <img
-              src={post.image}
-              alt={post.title}
-              class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
-            />
-            <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6 md:p-8">
-              <span class="block text-[7px] tracking-[0.5em] uppercase text-copper-ember mb-3 font-tgp-tech">
-                {formatCollection(post.collection)} · 0{i + 4}
-              </span>
-              <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
-                {post.title}
-              </h3>
-              {post.subtitle && (
-                <p class="text-white/40 text-xs font-tgp-body font-light mt-3 leading-relaxed line-clamp-2">
-                  {post.subtitle}
-                </p>
-              )}
-              <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
-            </div>
-          </a>
-        ))}
-      </div>
+    {/* Controles laterales en hover */}
+    <div class="byblos-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
+      <button id="byblos-prev" class="byblos-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Anterior">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
+      </button>
     </div>
-  </section>
+    <div class="byblos-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
+      <button id="byblos-next" class="byblos-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/byblos:opacity-100 pointer-events-auto" aria-label="Siguiente">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </div>
+
+    {/* Dots de progreso en Byblos */}
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      {safePosts.map((_, i) => (
+        <button 
+          class="byblos-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
+          style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
+          data-byblos-dot={i}
+          aria-label={`Slide ${i + 1}`}
+        ></button>
+      ))}
+    </div>
+  </div>
+
+  {/* Fila inferior: 2 cards */}
+  {clusterPosts.slice(3, 5).map((post, i) => (
+    <a 
+      href={post.link} 
+      class="md:col-span-6 group relative block overflow-hidden bg-black bento-cluster-card border border-white/5 rounded-3xl h-100 md:h-112.5"
+    >
+      <img
+        src={post.image}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover grayscale brightness-[0.55] group-hover:grayscale-0 group-hover:brightness-[0.8] group-hover:scale-110 transition-all duration-1000"
+      />
+      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+        <span class="block text-xs tracking-[0.3em] uppercase text-copper-ember/70 mb-2 font-tgp-tech">
+          {formatCollection(post.collection)} · 0{i + 4}
+        </span>
+        <h3 class="font-tgp-gloock text-xl md:text-2xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+          {post.title}
+        </h3>
+        {post.subtitle && (
+          <p class="text-white/70 text-base font-tgp-body font-light mt-2 leading-relaxed line-clamp-2">
+            {post.subtitle}
+          </p>
+        )}
+        <div class="mt-4 w-0 group-hover:w-10 h-px bg-copper-ember/60 transition-all duration-700"></div>
+      </div>
+    </a>
+  ))}
 
   {/* ============================================================
       BLOQUE C — ARRAY 4 + ENGINE CARD + 4
-      Grid de 4 columnas. El EngineCard irrumpe en full-bleed.
   ============================================================= */}
-  <section class="bento-block-c px-3 md:px-0 mb-6">
-    <div class="bento-array-grid">
 
-      {/* Primeras 4 cards estándar */}
-      {array4Before.map((post, i) => (
-        <a 
-          href={post.link} 
-          class="group relative block overflow-hidden bg-black bento-standard-card rounded-3xl"
-        >
-          <img
-            src={post.image}
-            alt={post.title}
-            class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
-          />
-          <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 p-5 md:p-6">
-            <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
-              {formatCollection(post.collection)}
-            </span>
-            <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
-              {post.title}
-            </h3>
-            {post.subtitle && (
-              <p class="text-white/40 text-[10px] font-tgp-body font-light mt-2 leading-normal line-clamp-2">
-                {post.subtitle}
-              </p>
-            )}
-          </div>
-          {/* Index badge */}
-          <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
-            {String(i + 7).padStart(2, '0')}
-          </div>
-        </a>
-      ))}
-
-      {/* ENGINE CARD — Full-bleed auto-slider de noticias */}
-      <div 
-        id="bento-engine-card"
-        class="bento-engine-card relative overflow-hidden bg-racing-green group/engine rounded-3xl"
-        aria-label="Engine: últimas piezas"
-      >
-        {/* Slides del Engine */}
-        {enginePosts.map((post, i) => (
-          <div 
-            class={`engine-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'}`}
-            data-engine-slide={i}
-          >
-            <img
-              src={post.image}
-              alt={post.title}
-              class="w-full h-full object-cover brightness-[0.45] transition-transform duration-10000 ease-linear scale-100"
-            />
-            <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
-            <a href={post.link} class="absolute inset-0 flex flex-col justify-center px-10 md:px-16 group/card">
-              <span class="text-[8px] tracking-[0.7em] uppercase text-copper-ember mb-5 font-tgp-tech inline-block animate-pulse-slow">
-                {formatCollection(post.collection)} · En rotación
-              </span>
-              <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.92] tracking-tight max-w-[22ch] group-hover/card:text-copper-ember transition-colors duration-700">
-                {post.title}
-              </h3>
-              {post.subtitle && (
-                <p class="mt-5 text-white/50 text-sm font-tgp-body font-light leading-relaxed max-w-[55ch] hidden md:block">
-                  {post.subtitle}
-                </p>
-              )}
-              <div class="mt-8 flex items-center gap-4">
-                <span class="w-0 group-hover/card:w-8 h-px bg-copper-ember transition-all duration-700"></span>
-                <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover/card:text-copper-ember font-tgp-tech transition-colors duration-500">
-                  Leer Pieza
-                </span>
-              </div>
-            </a>
-          </div>
-        ))}
-
-        {/* Controles laterales en hover */}
-        <div class="engine-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
-          <button id="engine-prev" class="engine-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Anterior">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
-          </button>
-        </div>
-        <div class="engine-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
-          <button id="engine-next" class="engine-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Siguiente">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
-
-        {/* Progress dots (Medio punto editorial centrado) */}
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-          {enginePosts.map((_, i) => (
-            <button 
-              class="engine-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
-              style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
-              data-engine-dot={i}
-              aria-label={`Slide ${i + 1}`}
-            ></button>
-          ))}
-        </div>
-
-        {/* Engine label */}
-        <div class="absolute top-6 right-8 z-20 flex items-center gap-3 opacity-30 group-hover/engine:opacity-100 transition-opacity duration-500">
-          <span class="text-[7px] tracking-[0.6em] uppercase text-white font-tgp-tech">Engine</span>
-        </div>
+  {/* Primeras 4 cards estándar */}
+  {array4Before.map((post, i) => (
+    <a 
+      href={post.link} 
+      class="md:col-span-6 lg:col-span-3 group relative block overflow-hidden bg-black bento-standard-card border border-white/5 rounded-3xl aspect-3/4 min-h-80"
+    >
+      <img
+        src={post.image}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
+      />
+      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+        <span class="block text-xs tracking-[0.3em] uppercase text-copper-ember/70 mb-2 font-tgp-tech">
+          {formatCollection(post.collection)}
+        </span>
+        <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+          {post.title}
+        </h3>
+        {post.subtitle && (
+          <p class="text-white/70 text-sm font-tgp-body font-light mt-2 leading-normal line-clamp-2">
+            {post.subtitle}
+          </p>
+        )}
       </div>
+      {/* Index badge */}
+      <div class="absolute top-4 right-4 text-xs font-tgp-tech text-white/40 group-hover:text-copper-ember/60 transition-colors duration-500">
+        {String(i + 7).padStart(2, '0')}
+      </div>
+    </a>
+  ))}
 
-      {/* Últimas 4 cards estándar */}
-      {array4After.map((post, i) => (
-        <a 
-          href={post.link} 
-          class="group relative block overflow-hidden bg-black bento-standard-card rounded-3xl"
-        >
-          <img
-            src={post.image}
-            alt={post.title}
-            class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
-          />
-          <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
-          <div class="absolute bottom-0 left-0 p-5 md:p-6">
-            <span class="block text-[6px] tracking-[0.5em] uppercase text-copper-ember mb-2 font-tgp-tech">
-              {formatCollection(post.collection)}
-            </span>
-            <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
-              {post.title}
-            </h3>
-            {post.subtitle && (
-              <p class="text-white/40 text-[10px] font-tgp-body font-light mt-2 leading-normal line-clamp-2">
+  {/* ENGINE CARD — Full-bleed auto-slider de noticias */}
+  <div 
+    id="bento-engine-card"
+    class="md:col-span-12 bento-engine-card relative overflow-hidden bg-racing-green border border-white/5 rounded-3xl group/engine h-[65vh] min-h-112.5"
+    aria-label="Engine: últimas piezas"
+  >
+    {/* Slides del Engine */}
+    {enginePosts.map((post, i) => (
+      <div 
+        class={`engine-slide absolute inset-0 transition-opacity duration-1000 ${i === 0 ? 'opacity-100 z-10 is-active' : 'opacity-0 z-0'}`}
+        data-engine-slide={i}
+      >
+        <img
+          src={post.image}
+          alt={post.title}
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover brightness-[0.45] transition-transform duration-10000 ease-linear scale-100"
+        />
+        <div class="absolute inset-0 bg-linear-to-r from-[#0A1C15]/95 via-[#0A1C15]/60 to-transparent"></div>
+        <a href={post.link} class="absolute inset-0 flex flex-col justify-center p-6 md:px-16 group/card">
+          <span class="text-xs tracking-[0.4em] uppercase text-copper-ember/70 mb-4 font-tgp-tech inline-block animate-pulse-slow">
+            {formatCollection(post.collection)} · En rotación
+          </span>
+          <h3 class="font-tgp-gloock text-3xl md:text-5xl text-white leading-[0.92] tracking-tight max-w-[22ch] group-hover/card:text-copper-ember transition-colors duration-700">
+            {post.title}
+          </h3>
+          {post.subtitle && (
+            <div class="mt-6 border-l border-white/10 pl-4 hidden md:block">
+              <p class="text-white/40 text-sm font-tgp-body font-light leading-relaxed max-w-[55ch]">
                 {post.subtitle}
               </p>
-            )}
-          </div>
-          <div class="absolute top-4 right-4 text-[8px] font-tgp-tech text-white/20 group-hover:text-copper-ember/60 transition-colors duration-500">
-            {String(i + 11).padStart(2, '0')}
+            </div>
+          )}
+          <div class="mt-6 flex items-center gap-4">
+            <span class="w-0 group-hover/card:w-8 h-px bg-copper-ember transition-all duration-700"></span>
+            <span class="text-[8px] tracking-[0.5em] uppercase text-white/30 group-hover/card:text-copper-ember font-tgp-tech transition-colors duration-500">
+              Leer Pieza
+            </span>
           </div>
         </a>
-      ))}
+      </div>
+    ))}
 
+    {/* Controles laterales en hover */}
+    <div class="engine-nav-zone absolute inset-y-0 left-0 w-16 z-30 flex items-center justify-start pointer-events-none">
+      <button id="engine-prev" class="engine-nav-btn pl-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Anterior">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M15 19l-7-7 7-7" /></svg>
+      </button>
     </div>
-  </section>
+    <div class="engine-nav-zone absolute inset-y-0 right-0 w-16 z-30 flex items-center justify-end pointer-events-none">
+      <button id="engine-next" class="engine-nav-btn pr-4 text-white/20 hover:text-white/40 transition-all cursor-pointer opacity-0 group-hover/engine:opacity-100 pointer-events-auto" aria-label="Siguiente">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </div>
+
+    {/* Progress dots (Medio punto editorial centrado) */}
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      {enginePosts.map((_, i) => (
+        <button 
+          class="engine-dot h-[1.5px] rounded-full bg-white/8 transition-all duration-500 hover:bg-white/20 cursor-pointer"
+          style={`width: ${i === 0 ? '1.25rem' : '0.4rem'};`}
+          data-engine-dot={i}
+          aria-label={`Slide ${i + 1}`}
+        ></button>
+      ))}
+    </div>
+
+    {/* Engine label */}
+    <div class="absolute top-6 right-8 z-20 flex items-center gap-3 opacity-30 group-hover/engine:opacity-100 transition-opacity duration-500">
+      <span class="text-[7px] tracking-[0.6em] uppercase text-white font-tgp-tech">Engine</span>
+    </div>
+  </div>
+
+  {/* Últimas 4 cards estándar */}
+  {array4After.map((post, i) => (
+    <a 
+      href={post.link} 
+      class="md:col-span-6 lg:col-span-3 group relative block overflow-hidden bg-black bento-standard-card border border-white/5 rounded-3xl aspect-3/4 min-h-80"
+    >
+      <img
+        src={post.image}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-110 transition-all duration-1000"
+      />
+      <div class="absolute inset-0 bg-linear-to-t from-charcoal-wood/95 via-charcoal-wood/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+        <span class="block text-xs tracking-[0.3em] uppercase text-copper-ember/70 mb-2 font-tgp-tech">
+          {formatCollection(post.collection)}
+        </span>
+        <h3 class="font-tgp-gloock text-lg md:text-xl text-white leading-tight group-hover:text-copper-ember transition-colors duration-500">
+          {post.title}
+        </h3>
+        {post.subtitle && (
+          <p class="text-white/70 text-sm font-tgp-body font-light mt-2 leading-normal line-clamp-2">
+            {post.subtitle}
+          </p>
+        )}
+      </div>
+      <div class="absolute top-4 right-4 text-xs font-tgp-tech text-white/40 group-hover:text-copper-ember/60 transition-colors duration-500">
+        {String(i + 11).padStart(2, '0')}
+      </div>
+    </a>
+  ))}
 
 </div>
 
@@ -604,73 +605,6 @@ const formatCollection = (col: string) => {
 </script>
 
 <style>
-  /* ===== BLOQUE A ===== */
-  .bento-hero-card {
-    aspect-ratio: 16 / 7;
-    min-height: 400px;
-  }
-  @media (max-width: 768px) {
-    .bento-hero-card {
-      aspect-ratio: 4 / 3;
-    }
-  }
-
-  /* ===== BLOQUE B: Cluster Grid ===== */
-  .bento-cluster-grid {
-    display: grid;
-    grid-template-rows: 450px 450px 450px;
-    gap: 2rem;
-  }
-  .bento-cluster-pair-top,
-  .bento-cluster-pair-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-  }
-  .bento-cluster-card {
-    height: 100%;
-  }
-  .bento-cluster-full-mid {
-    width: 100%;
-    height: 100%;
-  }
-  @media (max-width: 768px) {
-    .bento-cluster-grid {
-      grid-template-rows: 320px 320px 320px;
-      gap: 1rem;
-    }
-    .bento-cluster-pair-top,
-    .bento-cluster-pair-bottom {
-      gap: 1rem;
-    }
-  }
-
-  /* ===== BLOQUE C: Array + Engine ===== */
-  .bento-array-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-  .bento-standard-card {
-    aspect-ratio: 3 / 4;
-    min-height: 320px;
-  }
-  .bento-engine-card {
-    grid-column: 1 / -1; /* Full-bleed: ocupa las 4 columnas */
-    height: 65vh;
-    min-height: 450px;
-  }
-  @media (max-width: 768px) {
-    .bento-array-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-    .bento-engine-card {
-      height: 60vw;
-      min-height: 320px;
-    }
-  }
-
   /* Engine slide transition */
   .engine-slide {
     transition: opacity 1s ease-in-out;

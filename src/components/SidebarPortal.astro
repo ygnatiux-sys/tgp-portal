@@ -1,4 +1,5 @@
 ---
+
 /**
  * SidebarPortal.astro
  * Columna lateral de cards verticales para el portal editorial.
@@ -55,7 +56,7 @@ const formatCollection = (col: string) => {
     {sidebarPosts.map((post, i) => (
       <a
         href={post.link}
-        class="sidebar-card group flex flex-col py-6 border-b border-white/5 hover:border-white/15 transition-all duration-500"
+        class="sidebar-card group flex flex-col py-6 border border-white/5 rounded-3xl hover:border-white/15 p-4 mb-4 transition-all duration-500"
         aria-label={`Leer: ${post.title}`}
       >
         {/* Thumbnail: slightly rectangular 16/10 */}
@@ -63,15 +64,16 @@ const formatCollection = (col: string) => {
           <img
             src={post.image}
             alt={post.title}
-            class="w-full h-full object-cover grayscale brightness-60 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700"
             loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover grayscale brightness-60 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700"
           />
         </div>
 
         {/* Metadata + Título (20%) */}
         <div class="flex flex-col min-w-0">
-          {/* Badge de colección */}
-          <span class="font-tgp-tech text-[7px] tracking-[0.5em] uppercase text-copper-ember/70 mb-2">
+          {/* Badge de colección (Único metadata) */}
+          <span class="font-tgp-tech text-xs tracking-[0.3em] uppercase text-copper-ember/70 mb-2">
             {formatCollection(post.collection)}
           </span>
 
@@ -80,19 +82,14 @@ const formatCollection = (col: string) => {
             {post.title}
           </h3>
 
-          {/* Folio: autor o fecha */}
-          <div class="mt-3 flex items-center gap-3">
-            {post.author && (
-              <span class="font-tgp-tech text-[7px] tracking-[0.3em] uppercase text-white/25">
-                {post.author}
-              </span>
-            )}
-            {post.date && (
-              <span class="font-tgp-tech text-[7px] tracking-[0.3em] uppercase text-white/15">
-                {new Date(post.date).toLocaleDateString('es-AR', { month: 'short', year: 'numeric' })}
-              </span>
-            )}
-          </div>
+          {/* Excerpt Sobrio con border-text */}
+          {post.subtitle && (
+            <div class="mt-4 border-l border-white/10 pl-3">
+              <p class="font-tgp-body text-xs text-white/40 font-light leading-relaxed line-clamp-2">
+                {post.subtitle}
+              </p>
+            </div>
+          )}
         </div>
       </a>
     ))}
