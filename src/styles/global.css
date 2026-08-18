@@ -1154,39 +1154,17 @@ body:not([data-theme]) .text-copper-ember\/30 {
 
   .portal-layout-wrapper {
     display: grid;
-    grid-template-columns: 1fr 210px;
-    gap: 2.5rem;
+    grid-template-columns: 1fr;
     max-width: 1600px;
     margin-inline: auto;
     padding-inline: 1.5rem;
     padding-block: 2rem;
   }
 
-  @media (max-width: 1280px) {
-    .portal-layout-wrapper {
-      grid-template-columns: 1fr 195px;
-      gap: 2rem;
-    }
-  }
-
   @media (max-width: 1024px) {
     .portal-layout-wrapper {
-      /* En tablet/mobile: el bento ocupa todo, sidebar va abajo */
-      grid-template-columns: 1fr;
       padding-inline: 0;
     }
-  }
-
-  /* ── SIDEBAR: sticky dentro del grid ─────────────────────────────────── */
-  .sidebar-portal-sticky {
-    position: sticky;
-    top: 6rem; /* altura del navbar glassmorphism */
-    max-height: calc(100dvh - 7rem);
-    overflow-y: auto;
-    scrollbar-width: none;
-  }
-  .sidebar-portal-sticky::-webkit-scrollbar {
-    display: none;
   }
 
   /* ── TIPOGRAFÍA DE LECTURA LARGA (75ch) ──────────────────────────────── */

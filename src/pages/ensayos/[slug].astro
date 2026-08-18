@@ -169,4 +169,51 @@ const formattedDate = date ? (() => {
     --ux-reading-max: min(100%, 860px);
     --ux-grid-max: min(100%, 1360px);
   }
+
+  /* Animaciones milimétricas Ken Burns para las fotos */
+  @keyframes mm-ken-burns-in {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+  }
+
+  @keyframes mm-ken-burns-out {
+    0% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .mm-kb-in {
+    animation: mm-ken-burns-in 30s alternate infinite ease-in-out;
+    will-change: transform;
+  }
+
+  .mm-kb-out {
+    animation: mm-ken-burns-out 30s alternate infinite ease-in-out;
+    will-change: transform;
+  }
 </style>
+
+<script>
+  const initEnsayosKenBurns = () => {
+    // Seleccionamos las imágenes del contenido (prose) y la imagen principal de portada (figure > img)
+    const images = document.querySelectorAll('.ensayos-fullpage-root article img, .ensayos-fullpage-root figure > img');
+    
+    images.forEach((img, index) => {
+      // Aseguramos que el contenedor recorte la imagen para que no desborde al hacer zoom
+      const parent = img.parentElement;
+      if (parent && parent.tagName.toLowerCase() !== 'figure') {
+        parent.style.overflow = 'hidden';
+        parent.style.display = 'block';
+        parent.style.borderRadius = '1rem'; // Bordes redondeados sutiles para fotos interiores
+      }
+
+      // Intercalamos zoom in y zoom out
+      if (index % 2 === 0) {
+        img.classList.add('mm-kb-in');
+      } else {
+        img.classList.add('mm-kb-out');
+      }
+    });
+  };
+
+  document.addEventListener('astro:page-load', initEnsayosKenBurns);
+</script>

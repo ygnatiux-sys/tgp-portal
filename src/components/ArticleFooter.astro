@@ -17,10 +17,12 @@ interface Props {
 const { vibeClass = '', pageTitle = '' } = Astro.props;
 const shareText = pageTitle ? encodeURIComponent(pageTitle) : '';
 const shareUrl  = encodeURIComponent(Astro.url.href);
+import Marquee from './Marquee.astro';
 ---
 
 <!-- ── ARTICLE FOOTER ROOT: Unificado con bg-current continuo ── -->
 <div class={`article-footer-root w-full ${vibeClass}`} style="background-color: var(--bg-current);">
+  <Marquee />
 
   <!-- ── END-OF-ARTICLE: Línea editorial + Redes principales + Share ── -->
   <div class={`editorial-article-end w-full max-w-4xl mx-auto px-6 pt-4 pb-12 text-old-silver ${vibeClass}`} style="color: var(--color-old-silver);">

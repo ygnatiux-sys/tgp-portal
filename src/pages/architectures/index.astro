@@ -2,7 +2,7 @@
 import LayoutPortal from '../../layouts/LayoutPortal.astro';
 import CinematicHeroV2 from '../../components/CinematicHeroV2.astro';
 import BentoPortal from '../../components/BentoPortal.astro';
-import SidebarPortal from '../../components/SidebarPortal.astro';
+
 import { getCollection } from 'astro:content';
 
 let rawPosts: any[] = [];
@@ -37,7 +37,7 @@ const heroPost = allPosts[0] ?? {
 };
 
 const bentoPosts = allPosts.slice(1, 15);
-const sidebarPosts = allPosts.slice(0, 8);
+
 const sliderPosts = allPosts.slice(0, 8);
 ---
 
@@ -56,11 +56,6 @@ const sliderPosts = allPosts.slice(0, 8);
       <BentoPortal posts={bentoPosts} />
     </div>
 
-    <div class="sidebar-main-col">
-      <div class="sidebar-portal-sticky">
-        <SidebarPortal posts={sidebarPosts} title="También en Magazines" />
-      </div>
-    </div>
   </div>
 
 

@@ -16,7 +16,7 @@ import LayoutPortal from '../layouts/LayoutPortal.astro';
 import CinematicHeroV2 from '../components/CinematicHeroV2.astro';
 import BentoPortal from '../components/BentoPortal.astro';
 import ImmersiveSlider from '../components/ImmersiveSlider.astro';
-import SidebarPortal from '../components/SidebarPortal.astro';
+
 
 import { getCollection } from 'astro:content';
 
@@ -89,8 +89,6 @@ const heroPost = allPosts[0] ?? {
 // El BentoPortal distribuye internamente: [1]=hero-bloque-A, [2-6]=cluster, [7-14]=array
 const bentoPosts = allPosts.slice(1, 15);
 
-// SIDEBAR: Posts recientes, saltando el hero
-const sidebarPosts = allPosts.slice(1, 9);
 
 // IMMERSIVE SLIDER: Los posts más recientes en general (incluyendo el hero)
 const sliderPosts = allPosts.slice(0, 8);
@@ -125,15 +123,6 @@ const sliderPosts = allPosts.slice(0, 8);
       <BentoPortal posts={bentoPosts} />
     </div>
 
-    {/* Sidebar (col-2) — sticky en desktop */}
-    <div class="sidebar-main-col">
-      <div class="sidebar-portal-sticky">
-        <SidebarPortal 
-          posts={sidebarPosts} 
-          title="También en TGP" 
-        />
-      </div>
-    </div>
 
   </div>
 
