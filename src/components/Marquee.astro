@@ -73,7 +73,7 @@ const title = "Novedades en TGP";
               alt={post.title}
               loading="lazy"
               decoding="async"
-              class="center-focus-target w-full h-full object-cover grayscale brightness-50 opacity-50 group-hover:grayscale-0 group-hover:brightness-90 group-hover:opacity-100 transition-all duration-1200 ease-in-out"
+              class="center-focus-target w-full h-full object-cover grayscale brightness-50 opacity-30 group-hover:grayscale-0 group-hover:brightness-90 group-hover:opacity-100 transition-all duration-1200 ease-in-out"
             />
           </div>
           <div class="flex flex-col min-w-0">
@@ -108,7 +108,7 @@ const title = "Novedades en TGP";
               alt={post.title}
               loading="lazy"
               decoding="async"
-              class="center-focus-target w-full h-full object-cover grayscale brightness-50 opacity-50 group-hover:grayscale-0 group-hover:brightness-90 group-hover:opacity-100 transition-all duration-1200 ease-in-out"
+              class="center-focus-target w-full h-full object-cover grayscale brightness-50 opacity-30 group-hover:grayscale-0 group-hover:brightness-90 group-hover:opacity-100 transition-all duration-1200 ease-in-out"
             />
           </div>
           <div class="flex flex-col min-w-0">
@@ -180,11 +180,11 @@ const title = "Novedades en TGP";
         
         if (entry.isIntersecting) {
           // Entra al centro: libera gris, toma color y opacidad 100%
-          img.classList.remove('grayscale', 'brightness-50', 'opacity-50');
+          img.classList.remove('grayscale', 'brightness-50', 'opacity-30');
           img.classList.add('grayscale-0', 'brightness-90', 'opacity-100');
         } else {
           // Sale del centro: gris y baja opacidad
-          img.classList.add('grayscale', 'brightness-50', 'opacity-50');
+          img.classList.add('grayscale', 'brightness-50', 'opacity-30');
           img.classList.remove('grayscale-0', 'brightness-90', 'opacity-100');
         }
       });
