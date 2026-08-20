@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 /**
  * DynamicEditorialGallery.astro
  * Galería editorial dinámica con formato 1:1 (cuadrado), adaptable al número de imágenes.
@@ -28,75 +30,83 @@ const {
 } = Astro.props;
 
 // Normalizar imágenes sin generar metadatos artificiales
-let normalizedImages: GalleryItem[] = [];
+const normalizedImages: GalleryItem[] = [];
 
 if (images && images.length > 0) {
-  normalizedImages = images.map((img) => {
+  images.forEach(img => {
     if (typeof img === 'string') {
-      return { url: img, caption: '', title: '' };
+      normalizedImages.push({ url: img });
+    } else if (img && typeof img === 'object' && img.url) {
+      normalizedImages.push(img);
     }
-    return {
-      url: img.url,
-      caption: img.caption || '',
-      title: img.title || ''
-    };
   });
-} else if (spreads && spreads.length > 0) {
-  spreads.forEach((spread: any) => {
-    const spreadVal = spread.value || spread;
-    const spreadImages = spreadVal.images || [];
-    const spreadCaption = spreadVal.caption || "";
+}
 
-    spreadImages.forEach((imgUrl: string) => {
-      normalizedImages.push({
-        url: imgUrl,
-        caption: spreadCaption || ""
+// Extraer imágenes desde spreads si están presentes
+if (spreads && spreads.length > 0) {
+  spreads.forEach(spread => {
+    const val = spread.value;
+    if (!val) return;
+
+    if (val.images && Array.isArray(val.images)) {
+      val.images.forEach((img: any) => {
+        if (typeof img === 'string') normalizedImages.push({ url: img, caption: val.caption });
+        else if (img && img.url) normalizedImages.push({ url: img.url, caption: img.caption || val.caption, title: img.title });
       });
-    });
+    }
+
+    if (val.local_images) {
+      Object.values(val.local_images).forEach((img: any) => {
+        if (typeof img === 'string' && img) normalizedImages.push({ url: img, caption: val.caption });
+      });
+    }
+
+    if (val.remote_wikimedia_images) {
+      Object.values(val.remote_wikimedia_images).forEach((img: any) => {
+        if (img && img.url && (img.is_selected !== false)) {
+          normalizedImages.push({
+            url: img.url,
+            title: img.semantic_match,
+            caption: img.author_citation || val.caption
+          });
+        }
+      });
+    }
+
+    if (val.google_photos_images) {
+      Object.values(val.google_photos_images).forEach((img: any) => {
+        if (img && img.photo_url_or_id && (img.is_selected !== false)) {
+          normalizedImages.push({
+            url: img.photo_url_or_id,
+            title: img.caption,
+            caption: val.caption
+          });
+        }
+      });
+    }
   });
 }
 
-// Fallback inicial limpio si no hay imágenes (modo stress test)
-if (normalizedImages.length === 0) {
-  normalizedImages = [
-    { url: "https://images.unsplash.com/photo-1449156001437-37c6412789b7?q=80&w=1200&auto=format&fit=crop" },
-    { url: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop" },
-    { url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" },
-    { url: "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=1200&auto=format&fit=crop" },
-    { url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=1200&auto=format&fit=crop" },
-    { url: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop" }
-  ];
-}
+if (normalizedImages.length === 0) return null;
 
-// Columnas dinámicas según cantidad de imágenes
 const count = normalizedImages.length;
-let gridColsClass = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3";
+let gridColsClass = "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+if (count === 1) gridColsClass = "grid-cols-1 max-w-xl mx-auto";
+else if (count === 2) gridColsClass = "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto";
+else if (count === 4) gridColsClass = "grid-cols-2 md:grid-cols-2 max-w-4xl mx-auto";
+else if (count >= 5) gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
 
-if (count === 1) {
-  gridColsClass = "grid-cols-1 max-w-xl mx-auto";
-} else if (count === 2) {
-  gridColsClass = "grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto";
-} else if (count === 4) {
-  gridColsClass = "grid-cols-2 md:grid-cols-4";
-} else if (count >= 5) {
-  gridColsClass = "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3";
-}
-
-const galleryId = `tgp-gallery-${Math.random().toString(36).substring(2, 9)}`;
+const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
-<div class={`dynamic-editorial-gallery w-full my-12 md:my-16 not-prose ${vibeClass}`} id={galleryId}>
-  
-  {/* Encabezado Editorial Sobrio (solo cuando aplica título) */}
+<div class={`dynamic-editorial-gallery my-12 ${vibeClass}`} id={galleryId}>
   {title && (
-    <div class="border-b border-white/10 pb-4 mb-8">
-      <h3 class="vibe-target-h3 text-white">
-        {title}
-      </h3>
+    <div class="mb-6 text-center">
+      <h3 class="font-gloock text-2xl md:text-3xl text-old-silver uppercase tracking-wider">{title}</h3>
+      {subtitle && <p class="text-xs font-tgp-tech uppercase tracking-[0.2em] text-old-silver/60 mt-1">{subtitle}</p>}
     </div>
   )}
 
-  {/* Grid 1:1 Cuadrado Dinámico desnudo sobre el fondo actual */}
   <div class={`grid ${gridColsClass} gap-4 md:gap-6`}>
     {normalizedImages.map((item, index) => (
       <figure 
@@ -108,10 +118,14 @@ const galleryId = `tgp-gallery-${Math.random().toString(36).substring(2, 9)}`;
           class="relative w-full aspect-square overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover/gallery-card:border-white/30 transition-all duration-500 shadow-md"
           style="background: var(--bg-card-fumee, rgba(255, 255, 255, 0.03));"
         >
-          <img 
+          <TgpImage 
             src={item.url} 
             alt={item.title || item.caption || `Imagen ${index + 1}`}
+            width={800}
+            height={800}
+            format="webp"
             loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover group-hover/gallery-card:scale-105 transition-transform duration-700 ease-out"
           />
 

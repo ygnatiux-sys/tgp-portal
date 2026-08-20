@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -20,17 +22,28 @@ const {
   <div class="absolute inset-0 z-0 opacity-70 marquee-bg-pin flex">
     <div class="marquee-track flex h-full w-[200vw]">
       <div class="cine-wrapper">
-        <img
+        <TgpImage
           src={imageUrl}
           alt="Background Marquee 1"
+          width={1920}
+          height={1080}
+          format="webp"
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
           class="dark-img-target w-full h-full object-cover"
           style="transform-origin: center center;"
         />
       </div>
       <div class="cine-wrapper">
-        <img
+        <TgpImage
           src={imageUrl}
           alt="Background Marquee 2"
+          width={1920}
+          height={1080}
+          format="webp"
+          loading="lazy"
+          decoding="async"
           class="dark-img-target w-full h-full object-cover"
           style="transform-origin: center center;"
         />

@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 /**
  * BentoTrilitico.astro
  * Una grilla tipo Bento de 3 a 5 celdas con tamaños desiguales, 
@@ -23,20 +25,15 @@ const { posts, vibeClass = "" } = Astro.props;
 const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics') || vibeClass.includes('80s');
 
 // Select first 5 posts if more are provided
-const displayPosts = posts.slice(0, 5);
+const bentoPosts = posts.slice(0, 5);
 ---
 
-<section class={`bento-trilitico py-32 px-6 max-w-7xl mx-auto ${vibeClass}`}>
-  <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[900px]">
+<section class={`bento-trilitico relative w-[calc(100%-2rem)] mx-auto my-12 ${vibeClass}`}>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 auto-rows-70">
     
-    {displayPosts.map((post, index) => {
-      // Logic for Megalithic Asymmetry
-      // Cell 0: The Anchor (Large)
-      // Cell 1: Vertical Pillar
-      // Cell 2: Horizontal Block
-      // Cell 3 & 4: Small Found Artifacts
-      
-      let gridClasses = "";
+    {bentoPosts.map((post, index) => {
+      // Megalithic Layout Rules
+      let gridClasses = "md:col-span-1 md:row-span-1";
       let heightClass = "h-[400px]"; // Mobile height default
       
       if (index === 0) {
@@ -60,9 +57,14 @@ const displayPosts = posts.slice(0, 5);
         >
           {/* Background Image with LUT Fade */}
           <div class="absolute inset-0 z-0 overflow-hidden">
-            <img 
+            <TgpImage 
               src={post.image} 
-              alt={post.title} 
+              alt={post.title}
+              width={1000}
+              height={800}
+              format="webp"
+              loading="lazy"
+              decoding="async"
               class="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-1000"
             />
             {/* Cinematic Overlays */}

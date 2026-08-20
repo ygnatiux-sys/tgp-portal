@@ -1,4 +1,5 @@
-﻿---
+---
+import TgpImage from './TgpImage.astro';
 
 /**
  * CinematicHeroV2.astro
@@ -53,11 +54,15 @@ const formatCollection = (col: string) => {
         data-hero-slide={i}
       >
         <div class="hero-v2-cine-wrapper w-full h-[110%] absolute top-[-5%] left-0">
-          <img
+          <TgpImage
             src={post.image}
             alt={post.title}
+            width={1920}
+            height={1080}
+            format="webp"
             loading={i === 0 ? "eager" : "lazy"}
-            decoding="async"
+            decoding={i === 0 ? "sync" : "async"}
+            fetchpriority={i === 0 ? "high" : "auto"}
             class="w-full h-full object-cover brightness-[0.55] contrast-[1.08]"
           />
         </div>

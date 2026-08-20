@@ -34,11 +34,13 @@ export const POST: APIRoute = async ({ request }) => {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)+/g, '');
 
-    // Crear rutas de sistema (public/images y src/content)
+    // Crear rutas de sistema (src/assets/images y src/content)
     const projectRoot = process.cwd();
+    const assetsImgPath = path.join(projectRoot, 'src', 'assets', 'images', imgDir);
     const publicImgPath = path.join(projectRoot, 'public', 'images', imgDir);
     const contentDir = path.join(projectRoot, 'src', 'content', collectionDir);
 
+    await fs.mkdir(assetsImgPath, { recursive: true });
     await fs.mkdir(publicImgPath, { recursive: true });
     await fs.mkdir(contentDir, { recursive: true });
 
@@ -62,14 +64,16 @@ export const POST: APIRoute = async ({ request }) => {
           const ext = extMatch ? extMatch[1] : 'jpg';
           
           const fileName = `${slug}-${i + 1}.${ext}`;
-          const filePath = path.join(publicImgPath, fileName);
+          const assetsFilePath = path.join(assetsImgPath, fileName);
+          const publicFilePath = path.join(publicImgPath, fileName);
           
-          // Escribir el buffer al disco
+          // Escribir el buffer al disco (en src/assets/images y en public/images)
           const arrayBuffer = await imgResponse.arrayBuffer();
           const buffer = Buffer.from(arrayBuffer);
-          await fs.writeFile(filePath, buffer);
+          await fs.writeFile(assetsFilePath, buffer);
+          await fs.writeFile(publicFilePath, buffer);
 
-          const relativeWebPath = `/images/${imgDir}/${fileName}`;
+          const relativeWebPath = `@/assets/images/${imgDir}/${fileName}`;
           downloadedImages.push({
             url: relativeWebPath,
             title: img.title,

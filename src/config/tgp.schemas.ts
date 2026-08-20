@@ -12,8 +12,8 @@ export const createFancyboxImagePicker = (options: {
 } = {}) => {
   const {
     label = 'Imagen Principal / Portada (Fancybox Selector)',
-    directory = 'public/images/posts',
-    publicPath = '/images/posts',
+    directory = 'src/assets/images/posts',
+    publicPath = '@/assets/images/posts/',
   } = options;
 
   return fields.object({
@@ -110,13 +110,13 @@ export const baseSchema = {
   hero_image: fields.image({
     label: 'Imagen Principal (Hero - Archivo Directo)',
     description: 'Ruta principal de imagen Hero en el sistema de archivos.',
-    directory: 'public/images/posts',
-    publicPath: '/images/posts',
+    directory: 'src/assets/images/posts',
+    publicPath: '@/assets/images/posts/',
   }),
   hero_source_picker: createFancyboxImagePicker({
     label: 'Selector Fancybox Avanzado (Wikimedia HD / Google Photos / Mi PC)',
-    directory: 'public/images/posts',
-    publicPath: '/images/posts',
+    directory: 'src/assets/images/posts',
+    publicPath: '@/assets/images/posts/',
   }),
   content: fields.document({
     label: 'Contenido',
@@ -124,8 +124,8 @@ export const baseSchema = {
     dividers: true,
     links: true,
     images: {
-      directory: 'public/images/posts',
-      publicPath: '/images/posts',
+      directory: 'src/assets/images/posts',
+      publicPath: '@/assets/images/posts/',
     },
   }),
 };
@@ -214,8 +214,8 @@ export const spreadsEngine = {
           local_images: fields.object(
             generate20Fields((i) => fields.image({
               label: `Placa ${String(i).padStart(2, '0')} (Mi PC)`,
-              directory: 'public/images/spreads',
-              publicPath: '/images/spreads',
+              directory: 'src/assets/images/spreads',
+              publicPath: '@/assets/images/spreads/',
             }))
           ),
           // 20 Placeholders para Wikimedia Commons
@@ -284,13 +284,13 @@ export const ensayosSchema = {
   }),
   coverImage: fields.image({
     label: 'Imagen de Portada (Archivo Directo)',
-    directory: 'public/images/ensayos',
-    publicPath: '/images/ensayos',
+    directory: 'src/assets/images/ensayos',
+    publicPath: '@/assets/images/ensayos/',
   }),
   cover_source_picker: createFancyboxImagePicker({
     label: 'Selector Fancybox Avanzado de Portada (Wikimedia HD / Google Photos / Mi PC)',
-    directory: 'public/images/ensayos',
-    publicPath: '/images/ensayos',
+    directory: 'src/assets/images/ensayos',
+    publicPath: '@/assets/images/ensayos/',
   }),
   author: fields.text({ label: 'Autor', defaultValue: 'Xavier Benítez' }),
   accentColor: fields.text({ label: 'Color de Acento', defaultValue: '#1a1a1a' }),

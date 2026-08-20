@@ -20,6 +20,18 @@ const isBuild = process.argv.includes('build');
 export default defineConfig({
   output: 'static',
   
+  image: {
+    domains: [
+      'images.unsplash.com',
+      'upload.wikimedia.org',
+      'commons.wikimedia.org',
+      'lh3.googleusercontent.com',
+      'lh4.googleusercontent.com',
+      'lh5.googleusercontent.com',
+      'lh6.googleusercontent.com',
+    ],
+  },
+  
   server: {
     open: true,
   },

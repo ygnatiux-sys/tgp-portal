@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 /**
  * CinematographicHero.astro
  * Un layout de impacto tipo Netflix para el post destacado.
@@ -23,9 +25,15 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
   {/* Background Engine with Vignette & Scrim */}
   <div class="absolute inset-0 z-0">
     <div class="cine-wrapper w-full h-full">
-      <img 
+      <TgpImage 
         src={image} 
-        alt={title} 
+        alt={title}
+        width={1920}
+        height={1080}
+        format="webp"
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
         class="hero-img-target w-full h-full object-cover grayscale-[0.2] contrast-[1.1] brightness-[0.7]"
         style="transform-origin: center center; transform: scale(1.05);"
       />

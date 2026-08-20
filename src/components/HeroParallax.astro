@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -21,17 +23,28 @@ const {
     <div class="absolute inset-0 opacity-100 apple-bg-layer z-0">
       <div class="apple-marquee-container flex h-full w-[200vw]">
         <div class="cine-wrapper z-10">
-          <img
+          <TgpImage
             src={imageUrl}
             alt="Panoramic 1"
+            width={1920}
+            height={1080}
+            format="webp"
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
             class="w-full h-full object-cover apple-img-target"
             style="transform-origin: center center;"
           />
         </div>
         <div class="cine-wrapper z-10">
-          <img
+          <TgpImage
             src={imageUrl}
             alt="Panoramic 2"
+            width={1920}
+            height={1080}
+            format="webp"
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover apple-img-target"
             style="transform-origin: center center;"
           />

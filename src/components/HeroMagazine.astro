@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -23,17 +25,28 @@ const {
         class="magazine-marquee-container flex h-full w-[200vw] will-change-transform"
       >
         <div class="cine-wrapper">
-          <img
+          <TgpImage
             src={imageUrl}
-            alt=""
+            alt={title}
+            width={1920}
+            height={1080}
+            format="webp"
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
             class="w-full h-full object-cover grayscale-[0.2] contrast-110 magazine-img-target"
             style="transform-origin: center center;"
           />
         </div>
         <div class="cine-wrapper">
-          <img
+          <TgpImage
             src={imageUrl}
             alt=""
+            width={1920}
+            height={1080}
+            format="webp"
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover grayscale-[0.2] contrast-110 magazine-img-target"
             style="transform-origin: center center;"
           />

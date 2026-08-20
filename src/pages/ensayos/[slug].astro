@@ -5,6 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 import FloatingBackButton from "../../components/FloatingBackButton.astro";
 import EditorialReadMore from "../../components/EditorialReadMore.astro";
 import ArticleFooter from "../../components/ArticleFooter.astro";
+import TgpImage from "../../components/TgpImage.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -122,11 +123,16 @@ const formattedDate = date ? (() => {
               class="absolute inset-0 z-0 opacity-25 mix-blend-screen pointer-events-none"
               style={`background: linear-gradient(to right, transparent, ${accentColor})`}
             />
-            <img
+            <TgpImage
               src={coverImage}
               alt={title}
-              class="w-full h-full object-cover object-center relative z-10 brightness-95 hover:scale-[1.02] transition-transform duration-1000 ease-out"
+              width={1600}
+              height={700}
+              format="webp"
               loading="eager"
+              decoding="sync"
+              fetchpriority="high"
+              class="w-full h-full object-cover object-center relative z-10 brightness-95 hover:scale-[1.02] transition-transform duration-1000 ease-out"
             />
           </figure>
         )

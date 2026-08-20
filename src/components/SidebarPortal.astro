@@ -1,4 +1,5 @@
 ---
+import TgpImage from './TgpImage.astro';
 
 /**
  * SidebarPortal.astro
@@ -25,9 +26,10 @@ interface Props {
   title?: string;
 }
 
-const { posts, title = "También en TGP" } = Astro.props;
+const { posts, title = "Recomendados" } = Astro.props;
 
-const sidebarPosts = posts.slice(0, 8); // máximo 8 en sidebar
+// Usamos hasta 6 posts para la sidebar
+const sidebarPosts = posts.slice(0, 6);
 
 const formatCollection = (col: string) => {
   const c = col.toLowerCase();
@@ -42,11 +44,11 @@ const formatCollection = (col: string) => {
 };
 ---
 
-<aside class="sidebar-portal" aria-label="Lecturas recomendadas">
+<aside id="sidebar-portal" class="sidebar-portal-root flex flex-col w-full h-full" aria-label={title}>
 
-  {/* Header de sección */}
-  <div class="sidebar-header px-0 mb-6 pb-4 border-b border-white/8">
-    <span class="font-tgp-tech text-[8px] tracking-[0.6em] uppercase text-copper-ember">
+  {/* Header sobrio de la columna */}
+  <div class="sidebar-header flex items-center justify-between pb-4 mb-2 border-b border-white/10">
+    <span class="font-tgp-tech text-xs tracking-[0.4em] uppercase text-copper-ember/80">
       ——— {title}
     </span>
   </div>
@@ -61,9 +63,12 @@ const formatCollection = (col: string) => {
       >
         {/* Thumbnail: slightly rectangular 16/10 */}
         <div class="sidebar-thumbnail w-full aspect-16/10 overflow-hidden rounded-2xl bg-charcoal-wood relative mb-4">
-          <img
+          <TgpImage
             src={post.image}
             alt={post.title}
+            width={600}
+            height={375}
+            format="webp"
             loading="lazy"
             decoding="async"
             class="w-full h-full object-cover grayscale brightness-60 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700"

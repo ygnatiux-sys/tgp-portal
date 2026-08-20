@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -22,9 +24,15 @@ const {
     style="box-shadow: inset 0 0 100px rgba(0,0,0,0.5);"
   >
     <div class="cine-wrapper">
-      <img
+      <TgpImage
         src={imageUrl}
         alt={title}
+        width={1920}
+        height={1080}
+        format="webp"
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
         class="ken-burns-img w-full h-full object-cover sepia-[0.15]"
         style="transform-origin: center center;"
       />

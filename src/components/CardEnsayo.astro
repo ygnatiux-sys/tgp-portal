@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 interface Props {
   ensayo: any;
   featured?: boolean;
@@ -14,7 +16,16 @@ const { title = "Ensayo no titulado", subtitle = "", coverImage, author = "Xavie
   <a href={`/ensayos/${ensayo.id}`} class="relative w-full aspect-4/3 sm:aspect-video overflow-hidden rounded-xl bg-[#0a0a0a] block mb-8">
     <div class="absolute inset-0 z-0" style={`background: linear-gradient(to bottom, transparent, ${accentColor}40)`} />
     {coverImage && (
-      <img src={coverImage} alt={title} class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 group-hover:opacity-80 transition-all duration-700 ease-out" />
+      <TgpImage
+        src={coverImage}
+        alt={title}
+        width={800}
+        height={600}
+        format="webp"
+        loading="lazy"
+        decoding="async"
+        class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 group-hover:opacity-80 transition-all duration-700 ease-out"
+      />
     )}
     <div class="absolute inset-0 bg-linear-to-t from-[#050505] via-transparent to-transparent z-10" />
     
@@ -43,7 +54,16 @@ const { title = "Ensayo no titulado", subtitle = "", coverImage, author = "Xavie
 
     {/* Author Meta */}
     <div class="flex items-center gap-3">
-      <img src={authorImg} alt={author} class="w-12 h-12 rounded-full border border-white/10" />
+      <TgpImage
+        src={authorImg}
+        alt={author}
+        width={96}
+        height={96}
+        format="webp"
+        loading="lazy"
+        decoding="async"
+        class="w-12 h-12 rounded-full border border-white/10"
+      />
       <div>
         <div class="flex items-center gap-2">
             <span class="text-white font-medium">{author}</span>

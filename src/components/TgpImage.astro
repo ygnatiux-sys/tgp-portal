@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { resolveImage } from '../utils/imageResolver';
+
+interface Props {
+  src: string | ImageMetadata | any;
+  alt?: string;
+  width?: number;
+  height?: number;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'async' | 'sync' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+  className?: string;
+  style?: string | Record<string, any>;
+  id?: string;
+  format?: 'webp' | 'avif' | 'png' | 'jpeg' | 'svg';
+  quality?: number | 'low' | 'mid' | 'high' | 'max';
+  [key: string]: any;
+}
+
+const {
+  src,
+  alt = 'The Great Puzzle Editorial',
+  width,
+  height,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+  class: classProp,
+  className,
+  style,
+  id,
+  format = 'webp',
+  quality = 'high',
+  ...rest
+} = Astro.props;
+
+const classes = classProp || className || '';
+const resolved = await resolveImage(src);
+const isImageMetadata = typeof resolved === 'object' && resolved !== null && 'src' in resolved;
+const isRemoteUrl = typeof resolved === 'string' && (resolved.startsWith('http://') || resolved.startsWith('https://') || resolved.startsWith('//'));
+
+// Detección estricta de SVG (local o remoto) para servir el vector nativo sin rasterizar ni fallar en Sharp
+const srcString = typeof src === 'string' ? src : (src?.src || '');
+const resolvedSrcString = typeof resolved === 'string' ? resolved : (resolved?.src || '');
+const isSvg = format === 'svg' || 
+              srcString.toLowerCase().endsWith('.svg') || 
+              srcString.toLowerCase().includes('.svg?') || 
+              resolvedSrcString.toLowerCase().endsWith('.svg') || 
+              resolvedSrcString.toLowerCase().includes('.svg?') ||
+              (isImageMetadata && (resolved as ImageMetadata).format === 'svg');
+---
+
+{isSvg ? (
+  <img
+    src={typeof resolved === 'string' ? resolved : (resolved?.src || srcString || '/images/default-hero.jpg')}
+    alt={alt}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    width={width}
+    height={height}
+    class={classes}
+    style={style}
+    id={id}
+    {...rest}
+  />
+) : isImageMetadata ? (
+  <Image
+    src={resolved as ImageMetadata}
+    alt={alt}
+    format={format}
+    quality={quality}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    width={width}
+    height={height}
+    class={classes}
+    style={style}
+    id={id}
+    {...rest}
+  />
+) : isRemoteUrl ? (
+  <Image
+    src={resolved as string}
+    alt={alt}
+    format={format}
+    quality={quality}
+    width={width || 1200}
+    height={height || 800}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    class={classes}
+    style={style}
+    id={id}
+    {...rest}
+  />
+) : (
+  <img
+    src={typeof resolved === 'string' ? resolved : (src || '/images/default-hero.jpg')}
+    alt={alt}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    width={width}
+    height={height}
+    class={classes}
+    style={style}
+    id={id}
+    {...rest}
+  />
+)}

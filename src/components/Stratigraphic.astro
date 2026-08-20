@@ -1,4 +1,6 @@
 ---
+import TgpImage from './TgpImage.astro';
+
 /**
  * Stratigraphic.astro
  * Sistema de secciones horizontales con un ligero overlap (superposición)
@@ -31,9 +33,14 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
       {/* Background with cinematic textures */}
       <div class="absolute inset-0 z-0 overflow-hidden stratum-bg">
         <div class="cinemagraph-wrapper w-full h-full">
-          <img 
+          <TgpImage 
             src={item.image} 
-            alt={item.title} 
+            alt={item.title}
+            width={1600}
+            height={900}
+            format="webp"
+            loading="lazy"
+            decoding="async"
             class="stratum-img w-full h-[130%] object-cover grayscale brightness-[0.4] transition-all duration-1000"
             style="transform-origin: center center;"
           />
