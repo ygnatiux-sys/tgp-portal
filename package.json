@@ -1,5 +1,5 @@
 {
-  "name": "tgp-portal",
+  "name": "tgp-Ediciones",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/markdoc": "^2.0.6",
-    "@astrojs/react": "^5.0.3",
+    "@astrojs/markdoc": "^2.0.8",
+    "@astrojs/react": "^6.0.4",
     "@fontsource/bodoni-moda": "^5.2.7",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/dm-sans": "^5.2.8",
@@ -35,7 +35,7 @@
     "@keystatic/core": "^0.5.50",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.1",
+    "astro": "^7.2.4",
     "gsap": "^3.14.2",
     "markdoc": "^0.1.3",
     "react": "^18.3.1",
@@ -44,9 +44,8 @@
     "typescript": "^6.0.3"
   },
   "allowScripts": {
-    "esbuild@0.27.7": true,
     "sharp@0.34.5": true,
-    "esbuild@0.28.1": true
+    "esbuild@0.28.2": true
   },
   "devDependencies": {
     "@types/node": "^26.2.0"
