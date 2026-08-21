@@ -68,11 +68,11 @@ const commonSchema = z.object({
 
 const ensayosFeedSchema = z.object({
   title: z.string().optional().default('Sin título'),
-  subtitle: z.string().optional().default('Continuará...'),
+  subtitle: z.string().optional().default(''),
   template: z.string().optional().nullable(),
   coverImage: z.string().optional().default('/images/default-hero.jpg'),
   cover_source_picker: fancyboxPickerSchema,
-  author: z.string().default('Xavier Benítez'),
+  author: z.string().default('The Great Puzzle'),
   accentColor: z.string().default('#1a1a1a'),
   date: z.coerce.string().optional().default(new Date().toISOString()),
 });

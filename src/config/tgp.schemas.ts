@@ -137,7 +137,7 @@ export const cinematicEngine = {
     options: [
       { label: 'Cinematic Dark (Marquee Infinito)', value: 'cinematic-dark' },
       { label: 'Cinematic Vintage (Efecto Ken Burns)', value: 'cinematic-vintage' },
-      { label: 'Apple OS Theme (Parallax Técnico)', value: 'apple-os' },
+      { label: 'Parallax Técnico (Hero Parallax)', value: 'apple-os' },
       { label: 'Magazine Luxury (Pinned + Fade to Black)', value: 'magazine-luxury' },
     ],
     defaultValue: 'cinematic-dark',

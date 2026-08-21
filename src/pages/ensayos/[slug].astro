@@ -47,8 +47,6 @@ const date = ensayo?.data?.date || initialEnsayo.data?.date;
 const accentColor = ensayo?.data?.accentColor || initialEnsayo.data?.accentColor || "#1a1a1a";
 
 const currentId = ensayo?.id || initialEnsayo.id || "";
-const avatarId = currentId ? currentId.charCodeAt(0) % 20 : 1;
-const authorImg = `https://i.pravatar.cc/150?img=${avatarId}`;
 
 // Dynamic template resolution
 const templateId = ensayo?.data?.template || "victorian-archeo";
@@ -96,22 +94,9 @@ const formattedDate = date ? (() => {
           )
         }
 
-        {/* Reading Status & Metadata */}
-        <div class="flex items-center justify-center gap-4 py-3 border-y border-white/10 w-full max-w-lg text-[10px] md:text-xs font-tgp-tech tracking-[0.2em] uppercase opacity-60">
-          <div class="flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>12 min lectura</span>
-          </div>
-          <span>•</span>
-          <span class="text-white/90">{author}</span>
-          {formattedDate && (
-            <>
-              <span>•</span>
-              <span>{formattedDate}</span>
-            </>
-          )}
+        {/* Editorial Metadata */}
+        <div class="flex items-center justify-center py-2.5 border-y border-white/10 w-full max-w-lg text-[8px] md:text-[9px] font-tgp-tech tracking-[0.3em] uppercase opacity-60">
+          <span>The Great Puzzle Project (Editions)</span>
         </div>
       </header>
 

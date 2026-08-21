@@ -9,7 +9,7 @@ interface Props {
 }
 const {
   title,
-  subtitle = "Editorial Magazine",
+  subtitle = "",
   imageUrl = "",
   vibeClass = "",
 } = Astro.props;
@@ -75,7 +75,7 @@ const {
       </h1>
     </div>
 
-    {subtitle && (
+    {subtitle && subtitle !== "The Great Puzzle" && (
       <div class="magazine-meta-box mb-2 overflow-hidden max-w-3xl">
         <p
           class="vibe-target-h2 font-sans text-white/90 leading-relaxed text-balance max-w-full drop-shadow-md"
@@ -86,9 +86,9 @@ const {
     )}
 
     <h3
-      class={`vibe-target-folio font-tgp-tech text-white/40 text-[9px] md:text-[10px] tracking-[0.25em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
+      class={`vibe-target-folio font-tgp-tech text-white/40 text-[8px] md:text-[9px] tracking-[0.3em] uppercase mt-2 ${vibeClass === "vibe-travel-senses" ? "vibe-vertical" : ""}`}
     >
-      TGP Editorial // {vibeClass.replace("vibe-", "").replace(/-/g, " ")}
+      The Great Puzzle Project (Editions)
     </h3>
   </div>
 
