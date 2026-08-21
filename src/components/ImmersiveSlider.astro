@@ -246,6 +246,7 @@ const formatCollection = (col: string) => {
         opacity: 0,
         duration: 1.0,
         ease: 'power2.inOut',
+        force3D: true,
         onComplete: () => {
           gsap.set(outSlide, { zIndex: 0 });
         }
@@ -256,6 +257,7 @@ const formatCollection = (col: string) => {
         opacity: 1,
         duration: 1.0,
         ease: 'power2.out',
+        force3D: true,
         onComplete: () => {
           current = next;
           isAnimating = false;
@@ -268,10 +270,11 @@ const formatCollection = (col: string) => {
       gsap.killTweensOf(contents);
 
       gsap.fromTo(contents,
-        { y: 20, opacity: 0 },
+        { y: 20, opacity: 0, force3D: true },
         { 
           y: 0, 
           opacity: 1, 
+          force3D: true,
           duration: 1.1, 
           ease: 'power2.out', 
           stagger: 0.16, 
@@ -369,6 +372,23 @@ const formatCollection = (col: string) => {
         autoTimer = setInterval(nextSlide, INTERVAL);
       }
     });
+
+    // Control táctil móvil (Touch Swipe)
+    let touchStartX = 0;
+    section?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    section?.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchEndX - touchStartX;
+      if (Math.abs(diffX) > 45) {
+        if (autoTimer) clearInterval(autoTimer);
+        if (diffX < 0) nextSlide();
+        else prevSlide();
+        autoTimer = setInterval(nextSlide, INTERVAL);
+      }
+    }, { passive: true });
   };
 
   document.addEventListener('astro:page-load', initImmersiveSlider);
@@ -376,7 +396,10 @@ const formatCollection = (col: string) => {
 
 <style>
   .immersive-slide {
-    will-change: clip-path, opacity;
+    will-change: opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
   }
   .immersive-slide.is-active {
     z-index: 10;
@@ -397,6 +420,9 @@ const formatCollection = (col: string) => {
   .hero-v2-cine-wrapper {
     animation: hero-v2-drift 40s ease-in-out infinite;
     will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
   }
 
   /* ── FLECHAS DE SLIDER: misma física que la navbar ──────────────

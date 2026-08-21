@@ -243,13 +243,12 @@ const formatCollection = (col: string) => {
           const targets = [b, t, sub, cta, f].filter(Boolean);
 
           if (timer) clearInterval(timer);
-          gsap.killTweensOf(targets);
-
-          gsap.fromTo(targets, 
-            { y: 20, opacity: 0 },
+                  gsap.fromTo(targets, 
+            { y: 20, opacity: 0, force3D: true }, 
             { 
               y: 0, 
               opacity: 1, 
+              force3D: true,
               duration: 1.1, 
               ease: 'power2.out', 
               stagger: 0.16,
@@ -341,6 +340,21 @@ const formatCollection = (col: string) => {
       }
     });
 
+    // Control táctil móvil (Touch Swipe)
+    let touchStartX = 0;
+    hero.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    hero.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchEndX - touchStartX;
+      if (Math.abs(diffX) > 45) {
+        if (diffX < 0) next();
+        else prev();
+      }
+    }, { passive: true });
+
     // Auto-advance
     goToSlide(0);
     timer = setInterval(next, INTERVAL);
@@ -358,13 +372,14 @@ const formatCollection = (col: string) => {
       scale:   0.96,
       y:       '-3%',
       ease:    'none',
+      force3D: true,
     });
 
     if (scrollCue) {
       ScrollTrigger.create({
         trigger: hero,
         start:   'top+=100 top',
-        onEnter: () => gsap.to(scrollCue, { opacity: 0, y: -20, duration: 0.5 }),
+        onEnter: () => gsap.to(scrollCue, { opacity: 0, y: -20, duration: 0.5, force3D: true }),
       });
     }
   };
@@ -384,6 +399,15 @@ const formatCollection = (col: string) => {
   .hero-v2-cine-wrapper {
     animation: hero-v2-drift 40s ease-in-out infinite;
     will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .hero-v2-slide {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
   }
 
   /* Scroll line animation (breathing) */

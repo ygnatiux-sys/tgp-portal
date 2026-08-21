@@ -1303,3 +1303,51 @@ body:not([data-theme]) .text-copper-ember\/30 {
   background-color: rgba(227, 221, 211, 0.15);
   color: #E3DDD3;
 }
+
+/* ===== HARDWARE COMPOSITOR & LAYER STABILIZATION (Anti Z-Fighting & Anti-Flicker) ===== */
+.layer-stabilize,
+.bento-hero-card,
+.bento-cluster-card,
+.bento-standard-card,
+.bento-engine-card,
+.bento-cluster-full-mid,
+.hero-v2-slide,
+.hero-v2-cine-wrapper,
+.immersive-slide,
+.byblos-slide,
+.engine-slide {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* Optimización móvil exclusiva (Tablets & Smartphones) */
+@media (max-width: 768px), (hover: none) {
+  /* Congelar gradientes animados en punto óptimo estático para evitar repaints en GPU */
+  .gradient-acero-ios,
+  .gradient-metal-steel-card,
+  .gradient-general-h2,
+  [class*="gradient-"] {
+    animation: none !important;
+    background-position: 60% 50% !important;
+  }
+
+  /* Suavizar drift de Ken Burns para máxima fluidez a 60/120fps en móvil */
+  .hero-v2-cine-wrapper {
+    animation-duration: 60s !important;
+    will-change: transform;
+  }
+
+  /* Reducir compositing overhead en cards móviles */
+  .card-grain,
+  .card-scratches {
+    opacity: 0.15 !important;
+  }
+
+  .atmospheric-dust {
+    display: none !important;
+  }
+}
