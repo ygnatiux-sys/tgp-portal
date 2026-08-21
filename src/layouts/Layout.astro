@@ -75,23 +75,39 @@ const dataTheme = vibeClass || 'default';
 				id="main-nav-bar"
 				class="tgp-nav group/nav relative flex items-center justify-between px-6 py-3 transition-all duration-500 ease-out"
 			>
-				{/* Logo + Brand */}
-				<a href="/" id="nav-brand-zone" class="brand-container group/header-brand flex items-center gap-3 shrink-0 transition-all duration-500 cursor-pointer select-none no-underline">
-					<div class="brand-logo w-8 h-8 flex items-center justify-center group-hover/header-brand:opacity-80 transition-all overflow-hidden rounded-full border border-white/20 group-hover/header-brand:border-[#E3DDD3]/50 p-0.5">
-						<img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
-					</div>
-					<div class="brand-text hidden sm:flex items-baseline gap-2 transition-all duration-500 whitespace-nowrap">
-						<span class="font-tgp-gloock font-black text-xs tracking-[0.02em] uppercase text-old-silver group-hover/header-brand:text-[#E3DDD3] transition-colors duration-300">
-							The Great Puzzle
+				{/* Logo + Brand (Sample Adapted: Left stacked block + Divider + EDITIONS in metallic gradient) */}
+				<a href="/" id="nav-brand-zone" class="brand-container group/header-brand flex items-center gap-2.5 sm:gap-3.5 shrink-0 transition-all duration-500 cursor-pointer select-none no-underline">
+					{/* Left stacked brand block */}
+					<div class="flex flex-col items-start leading-[1.05] tracking-tight">
+						<span class="font-tgp-tech text-[6.5px] sm:text-[7.5px] tracking-[0.22em] text-old-silver/80 group-hover/header-brand:text-[#E3DDD3] uppercase transition-colors">
+							The Great
 						</span>
-						<span class="font-tgp-tech text-[6px] tracking-widest text-old-silver/80 group-hover/header-brand:text-[#E3DDD3]/80 uppercase transition-colors duration-300">
-							-project-
+						<div class="flex items-center gap-1.5 my-0.5">
+							<div class="brand-logo w-3.5 h-3.5 sm:w-4 sm:h-4 flex items-center justify-center overflow-hidden rounded-full border border-white/30 group-hover/header-brand:border-[#E3DDD3]/70 p-0.5 shrink-0 transition-all">
+								<img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
+							</div>
+							<span class="font-tgp-gloock font-black text-[11px] sm:text-xs tracking-wider uppercase text-old-silver group-hover/header-brand:text-white transition-colors">
+								Puzzle
+							</span>
+						</div>
+						<span class="font-tgp-tech text-[6px] sm:text-[6.5px] tracking-[0.3em] text-old-silver/65 group-hover/header-brand:text-[#E3DDD3]/90 uppercase transition-colors">
+							Project
+						</span>
+					</div>
+
+					{/* Vertical Divider Line */}
+					<div class="h-8 w-px bg-white/20 group-hover/header-brand:bg-white/40 transition-colors mx-0.5 sm:mx-1"></div>
+
+					{/* Descriptor EDITIONS in Metallic Gradient */}
+					<div class="flex items-center">
+						<span class="font-tgp-gloock font-black text-xs sm:text-sm md:text-[15px] tracking-[0.22em] uppercase gradient-brand-editions drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+							Editions
 						</span>
 					</div>
 				</a>
 				
 				{/* Navigation Links (Centered in Middle Grid, Soft Tracking & Tighter Gap) */}
-				<div id="nav-links-zone" class="nav-links flex items-center justify-center gap-2.5 sm:gap-3.5 lg:gap-5 font-tgp-tech text-[9px] tracking-[0.13em] lg:tracking-[0.16em] uppercase font-medium text-white/60 transition-all duration-500">
+				<div id="nav-links-zone" class="nav-links flex items-center justify-center gap-2.5 sm:gap-3.5 lg:gap-5 font-tgp-tech text-[11px] tracking-[0.13em] lg:tracking-[0.16em] uppercase font-medium text-white/60 transition-all duration-500">
 					<a href="/ensayos" class="hover:text-copper-ember transition-all duration-300">Ensayos</a>
 					<a href="/essays" class="hover:text-copper-ember transition-all duration-300">Dossiers</a>
 					<a href="/architectures" class="hover:text-copper-ember transition-all duration-300">Magazines</a>
@@ -116,7 +132,7 @@ const dataTheme = vibeClass || 'default';
 							placeholder="BUSCAR PIEZAS" 
 							autocomplete="off"
 							spellcheck="false"
-							class="w-full bg-transparent outline-none border-none text-white/40 focus:text-white text-[9px] tracking-[0.2em] font-tgp-tech uppercase placeholder-white/20 transition-colors"
+							class="w-full bg-transparent outline-none border-none text-white/40 focus:text-white text-[11px] tracking-[0.2em] font-tgp-tech uppercase placeholder-white/20 transition-colors"
 						/>
 						<button id="search-clear-btn" class="text-white/30 hover:text-copper-ember transition-colors cursor-pointer hidden" aria-label="Clear search">
 							<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -137,7 +153,7 @@ const dataTheme = vibeClass || 'default';
 
 					<button 
 						id="nav-toggle-btn-base"
-						class="hamburger-btn flex items-center gap-2 text-[9px] font-tgp-tech uppercase tracking-widest text-white/60 hover:text-copper-ember transition-all cursor-pointer overflow-hidden whitespace-nowrap"
+						class="hamburger-btn flex items-center gap-2 text-[11px] font-tgp-tech uppercase tracking-widest text-white/60 hover:text-copper-ember transition-all cursor-pointer overflow-hidden whitespace-nowrap"
 						aria-label="Toggle Menu"
 					>
 						<span class="hamburger-label hidden sm:inline">Menu</span>

@@ -10,27 +10,42 @@ import Marquee from './Marquee.astro';
     {/* Row 1: Primary Header-Mirror Grid Row (Brand Left | Menu Center | Social Icons Suite Right) */}
     <div class="relative flex flex-col md:flex-row justify-between items-center pb-6 gap-6">
       
-      {/* Brand & Project Tag (Fixed Left, Link to Home with soft lantern glow) */}
-      <a href="/" class="flex items-center gap-3.5 group/footer-brand shrink-0 cursor-pointer select-none">
-        {/* Favicon Icon */}
-        <div class="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center p-0.5 shrink-0 bg-transparent overflow-hidden transition-all duration-300">
-          <img src="/faviconTGP.jpeg" alt="TGP Icon" class="w-full h-full object-cover rounded-full" />
-        </div>
-        <div class="flex flex-col">
-          <h2 class="font-tgp-gloock font-black text-base md:text-lg tracking-[0.02em] uppercase text-white/90 transition-all leading-tight">
-            The Great Puzzle
-          </h2>
-          <span class="font-tgp-tech text-[7px] tracking-[0.22em] text-old-silver/80 uppercase leading-tight mb-1 transition-colors duration-300">
+      {/* Brand Logo & Descriptor (Sample Style) */}
+      <a href="/" class="flex items-center gap-3 shrink-0 group/footer-brand transition-all duration-300 cursor-pointer no-underline select-none">
+        {/* Left stacked brand block */}
+        <div class="flex flex-col items-start leading-[1.05] tracking-tight">
+          <span class="font-tgp-tech text-[7px] tracking-[0.22em] text-old-silver/80 group-hover/footer-brand:text-[#E3DDD3] uppercase transition-colors">
+            The Great
+          </span>
+          <div class="flex items-center gap-1.5 my-0.5">
+            <div class="brand-logo w-4 h-4 flex items-center justify-center overflow-hidden rounded-full border border-white/30 group-hover/footer-brand:border-[#E3DDD3]/70 p-0.5 shrink-0 transition-all">
+              <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
+            </div>
+            <span class="font-tgp-gloock font-black text-xs tracking-wider uppercase text-old-silver group-hover/footer-brand:text-white transition-colors">
+              Puzzle
+            </span>
+          </div>
+          <span class="font-tgp-tech text-[6.5px] tracking-[0.3em] text-old-silver/65 group-hover/footer-brand:text-[#E3DDD3]/90 uppercase transition-colors">
             Project
           </span>
-          <span class="font-tgp-tech text-[7px] tracking-[0.15em] text-old-silver/70 hover:text-[#E3DDD3] transition-all self-start inline-block">
+        </div>
+
+        {/* Vertical Divider Line */}
+        <div class="h-8 w-px bg-white/20 group-hover/footer-brand:bg-white/40 transition-colors mx-1"></div>
+
+        {/* Descriptor EDITIONS in Metallic Gradient */}
+        <div class="flex flex-col">
+          <span class="font-tgp-gloock font-black text-sm md:text-base tracking-[0.22em] uppercase gradient-brand-editions drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)] leading-tight">
+            Editions
+          </span>
+          <span class="font-tgp-tech text-[7.5px] tracking-[0.15em] text-old-silver/70 group-hover/footer-brand:text-[#E3DDD3] transition-all self-start inline-block mt-0.5">
             Dir. Xavier Benítez
           </span>
         </div>
       </a>
       
       {/* Footer Navigation Menu (Centered in Middle Grid, Soft Tracking & Tighter Gap, Lantern Glow on hover) */}
-      <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 md:gap-6 font-tgp-tech text-[9px] tracking-[0.16em] uppercase font-medium text-white/60 select-none">
+      <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 md:gap-6 font-tgp-tech text-[11px] tracking-[0.16em] uppercase font-medium text-white/60 select-none">
         <a href="/ensayos" class="inline-block hover:text-[#E3DDD3] transition-all duration-300">Ensayos</a>
         <a href="/essays" class="inline-block hover:text-[#E3DDD3] transition-all duration-300">Dossiers</a>
         <a href="/architectures" class="inline-block hover:text-[#E3DDD3] transition-all duration-300">Magazines</a>
@@ -89,7 +104,7 @@ import Marquee from './Marquee.astro';
     </div>
 
     {/* Row 2: Secondary Copyright, United Location Badge (Buenos Aires • Argentina • Sur Global) & Legal */}
-    <div class="relative flex flex-col md:flex-row justify-between items-center pt-6 text-white/35 font-tgp-tech text-[8px] uppercase tracking-[0.2em] gap-4">
+    <div class="relative flex flex-col md:flex-row justify-between items-center pt-6 text-white/35 font-tgp-tech text-[10px] uppercase tracking-[0.2em] gap-4">
       <p class="shrink-0">&copy; {new Date().getFullYear()} The Great Puzzle. Todos los derechos reservados.</p>
       
       {/* United Location Badge with Editorial Mid-Dots: BUENOS AIRES • ARGENTINA • SUR GLOBAL (Centered directly below footer menu) */}

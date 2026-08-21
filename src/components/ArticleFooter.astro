@@ -65,7 +65,7 @@ import Marquee from './Marquee.astro';
           id="article-share-btn"
           aria-label="Compartir artículo"
           aria-expanded="false"
-          class="flex items-center gap-2 text-old-silver opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 cursor-pointer font-tgp-tech text-[8px] tracking-[0.4em] uppercase no-underline select-none footer-interactive-link"
+          class="flex items-center gap-2 text-old-silver opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 cursor-pointer font-tgp-tech text-[10px] tracking-[0.4em] uppercase no-underline select-none footer-interactive-link"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.368 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -123,16 +123,36 @@ import Marquee from './Marquee.astro';
       <div class="relative flex flex-col md:flex-row justify-between items-center gap-6 pb-6">
 
         <a href="/" class="flex items-center gap-3 shrink-0 group/article-brand transition-all duration-300 cursor-pointer no-underline select-none text-old-silver">
-          <div class="w-6 h-6 rounded-full border flex items-center justify-center p-0.5 shrink-0 overflow-hidden transition-all duration-300" style="border-color: color-mix(in srgb, currentColor 30%, transparent);">
-            <img src="/faviconTGP.jpeg" alt="TGP" class="w-full h-full object-cover rounded-full" />
+          {/* Left stacked brand block */}
+          <div class="flex flex-col items-start leading-[1.05] tracking-tight">
+            <span class="font-tgp-tech text-[6.5px] tracking-[0.22em] text-old-silver/80 group-hover/article-brand:text-[#E3DDD3] uppercase transition-colors">
+              The Great
+            </span>
+            <div class="flex items-center gap-1.5 my-0.5">
+              <div class="brand-logo w-3.5 h-3.5 flex items-center justify-center overflow-hidden rounded-full border border-white/30 group-hover/article-brand:border-[#E3DDD3]/70 p-0.5 shrink-0 transition-all">
+                <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
+              </div>
+              <span class="font-tgp-gloock font-black text-xs tracking-wider uppercase text-old-silver group-hover/article-brand:text-white transition-colors">
+                Puzzle
+              </span>
+            </div>
+            <span class="font-tgp-tech text-[6px] tracking-[0.3em] text-old-silver/65 group-hover/article-brand:text-[#E3DDD3]/90 uppercase transition-colors">
+              Project
+            </span>
           </div>
-          <div class="flex flex-col">
-            <span class="font-tgp-gloock text-sm tracking-wide leading-tight opacity-100 group-hover/article-brand:opacity-100 origin-left transition-all duration-300">The Great Puzzle</span>
-            <span class="font-tgp-tech text-[7px] tracking-[0.22em] uppercase opacity-90 group-hover/article-brand:opacity-100 transition-all duration-300 leading-tight">Project</span>
+
+          {/* Vertical Divider Line */}
+          <div class="h-7 w-px bg-white/20 group-hover/article-brand:bg-white/40 transition-colors mx-0.5"></div>
+
+          {/* Descriptor EDITIONS in Metallic Gradient */}
+          <div class="flex items-center">
+            <span class="font-tgp-gloock font-black text-xs md:text-sm tracking-[0.22em] uppercase gradient-brand-editions drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+              Editions
+            </span>
           </div>
         </a>
 
-        <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 font-tgp-tech text-[8.5px] tracking-[0.2em] uppercase select-none text-old-silver">
+        <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 font-tgp-tech text-[10.5px] tracking-[0.2em] uppercase select-none text-old-silver">
           <a href="/ensayos"       class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Ensayos</a>
           <a href="/essays"        class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Dossiers</a>
           <a href="/architectures" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Magazines</a>
@@ -158,7 +178,7 @@ import Marquee from './Marquee.astro';
       <div class="w-full border-t opacity-25 mb-5" style="border-color: currentColor;"></div>
 
       <!-- Nivel 2: Créditos | Ubicación | Legal (opacidad 80%, lantern glow suave) -->
-      <div class="flex flex-col md:flex-row items-center justify-between gap-3 font-tgp-tech text-[7.5px] tracking-[0.25em] uppercase select-none text-old-silver">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 font-tgp-tech text-[9.5px] tracking-[0.25em] uppercase select-none text-old-silver">
         <span class="opacity-90">© {new Date().getFullYear()} The Great Puzzle — Dir. Xavier Benítez</span>
 
         <div class="flex items-center gap-2.5 opacity-90">
