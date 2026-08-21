@@ -95,8 +95,12 @@ export const baseSchema = {
   title: fields.slug({ 
     name: { 
       label: 'Título',
-      validation: { isRequired: true } // Único campo obligatorio
+      validation: { isRequired: true }
     }
+  }),
+  editorial_vibe: fields.text({
+    label: 'Editorial Vibe (Metadato Heredado)',
+    description: 'Restaurado por compatibilidad estructural con archivos antiguos. No renderizar en Astro.',
   }),
   draft: fields.checkbox({
     label: 'Borrador / Ocultar de la web (Draft)',
@@ -282,6 +286,9 @@ export const ensayosSchema = {
       validation: { isRequired: true }
     }
   }),
+  editorial_vibe: fields.text({
+    label: 'Editorial Vibe (Metadato Heredado)',
+  }),
   draft: fields.checkbox({
     label: 'Borrador / Ocultar de la web (Draft)',
     description: 'Si está marcado, no aparecerá en el portal público.',
@@ -306,4 +313,4 @@ export const ensayosSchema = {
   accentColor: fields.text({ label: 'Color de Acento', defaultValue: '#1a1a1a' }),
   date: fields.date({ label: 'Fecha' }),
   content: fields.document({ label: 'Contenido principal', formatting: true, dividers: true, links: true }),
-};
+};
