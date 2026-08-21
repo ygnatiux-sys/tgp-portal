@@ -54,5 +54,12 @@ export default config({
       format: { contentField: 'content' },
       schema: ensayosSchema,
     }),
+    test: collection({
+      label: '🧪 Test / Borradores (Papelera)',
+      slugField: 'title',
+      path: 'src/content/test/*',
+      format: { contentField: 'content' },
+      schema: fullEditorialSchema,
+    }),
   },
 });

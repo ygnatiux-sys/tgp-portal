@@ -53,6 +53,7 @@ const spreadValueSchema = z.object({
 
 const commonSchema = z.object({
   title: z.string().optional().default(''),
+  draft: z.boolean().optional().default(false),
   template: z.string().optional().nullable(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
   hero_source_picker: fancyboxPickerSchema,
@@ -68,6 +69,7 @@ const commonSchema = z.object({
 
 const ensayosFeedSchema = z.object({
   title: z.string().optional().default('Sin título'),
+  draft: z.boolean().optional().default(false),
   subtitle: z.string().optional().default(''),
   template: z.string().optional().nullable(),
   coverImage: z.string().optional().default('/images/default-hero.jpg'),
@@ -79,6 +81,7 @@ const ensayosFeedSchema = z.object({
 
 const capsulaSchema = z.object({
   title: z.string().optional().default(''),
+  draft: z.boolean().optional().default(false),
   template: z.string().optional().nullable(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
   hero_source_picker: fancyboxPickerSchema,
@@ -87,6 +90,28 @@ const capsulaSchema = z.object({
     discriminant: z.string(),
     value: spreadValueSchema,
   })).optional(),
+  date: z.coerce.string().optional().default(new Date().toISOString()),
+});
+
+export const testSchema = z.object({
+  title: z.string().optional().default('Sin título'),
+  draft: z.boolean().optional().default(false),
+  subtitle: z.string().optional().default(''),
+  template: z.string().optional().nullable(),
+  hero_image: z.string().optional().default('/images/default-hero.jpg'),
+  hero_source_picker: fancyboxPickerSchema,
+  coverImage: z.string().optional().default('/images/default-hero.jpg'),
+  cover_source_picker: fancyboxPickerSchema,
+  author: z.string().optional().default('The Great Puzzle'),
+  accentColor: z.string().optional().default('#1a1a1a'),
+  layout_style: z.enum(['cinematic-dark', 'cinematic-vintage', 'apple-os', 'magazine-luxury']).optional().default('cinematic-dark'),
+  format_scale: z.enum(['max-w-2xl', 'max-w-4xl', 'w-full']).optional().default('max-w-4xl'),
+  enable_stress_test: z.boolean().optional().default(false),
+  editorial_spreads: z.array(z.object({
+    discriminant: z.string(),
+    value: spreadValueSchema,
+  })).optional(),
+  master_archetype: z.enum(['tactile-archive', 'expansive-gallery', 'kinetic-manifesto', 'field-notebook']).optional().default('tactile-archive'),
   date: z.coerce.string().optional().default(new Date().toISOString()),
 });
 
@@ -114,5 +139,10 @@ export const collections = {
   'ensayos': defineCollection({
     loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/ensayos" }),
     schema: ensayosFeedSchema
+  }),
+  // New TEST collection – holds all moved articles
+  'test': defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/test" }),
+    schema: testSchema
   }),
 };

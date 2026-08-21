@@ -1,0 +1,496 @@
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\borges-y-su-prosa.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\burzaco-night-city.mdoc ===
+Una exploraci√≥n fotogr√°fica de la arquitectura nocturna en Burzaco.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\dime-tu.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\el-arquetipo-y-borges.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\el-buda.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\el-calendario-lunar.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\el-famoso-edzna.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\el-laberinto.mdoc ===
+Geometr√≠a y espacio en la estructura de "El Laberinto".
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\las-4-piramides-de-giza.mdoc ===
+Un estudio sobre la alineaci√≥n y el significado de las pir√°mides de Giza.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\old-victorian-dream.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\olmecas-arcaicos.mdoc ===
+***StartFragment***
+
+***El Scroll: Usa GSAP ScrollTrigger para el efecto Parallax/Fade. Al hacer scroll hacia abajo, la imagen de fondo NO debe irse a negro total; debe hacer un fade-out suave hasta detenerse en*** ***`opacity: 0.15`******.***
+
+***Usa curvas de aceleraci√≥n org√°nicas (******`ease: "power3.out"`******) para que la transici√≥n al cuerpo del art√≠culo sea fluida, premium y sin distracciones.***
+
+***EndFragment***
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\test-5-schema.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\the-mistery.mdoc ===
+StartFragment
+
+Lo que est√° ocurriendo no es una falla de dependencias, sino un problema de **capas (z-index)** y **especificidad de estilos**. La "mancha amarilla" es el gradiente radial que pusimos en el fondo, pero como Astro a veces aplica estilos de forma aislada, ese gradiente qued√≥ por encima del texto o el contenedor del texto colaps√≥.
+
+Aqu√≠ tienes el prompt definitivo para que el agente limpie la estructura y fuerce la visibilidad de la tipograf√≠a:
+
+---
+
+### Prompt para el Agente (Fix de Capas y Visibilidad)
+
+**Contexto:**\
+Al aplicar el c√≥digo anterior del Bento Grid, el t√≠tulo "The Great Puzzle" desapareci√≥ y solo es visible el gradiente radial de fondo (la mancha de luz). Necesito corregir el orden de las capas y asegurar que la tipograf√≠a se renderice correctamente.
+
+**Tarea:**
+
+1. **Z-Index & Position:** Aseg√∫rate de que el contenedor del t√≠tulo tenga `relative z-10` y que el gradiente de fondo sea `absolute z-0` para que no lo tape.
+1. **Color de Texto:** Fuerza el color del t√≠tulo usando `text-white` y aseg√∫rate de que no haya un `opacity-0` accidental.
+1. **Fuentes Externas:** Verifica que la importaci√≥n de Google Fonts en `<style is:global>` est√© funcionando. Si no, c√°mbiala a una importaci√≥n directa en el `<head>` del `Layout.astro`.
+1. **C√≥digo de correcci√≥n:** Proporciona una versi√≥n simplificada del Hero Section que garantice que el texto sea visible sobre el fondo oscuro.
+
+---
+
+### El c√≥digo de "Emergencia" para tu index.astro (Copia esto)
+
+He modificado el Hero para que el texto **tenga prioridad absoluta** sobre el fondo:
+
+Fragmento de c√≥digo
+
+```
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="TGP | Xavier Ben√≠tez">
+  <main class="min-h-screen bg-[#050a09] text-white">
+    
+    <section class="relative h-[80vh] flex flex-col items-center justify-center overflow-hidden">
+      
+      <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#c4a48420_0%,transparent_70%)] pointer-events-none"></div>
+      
+      <div class="relative z-10 text-center px-6">
+        <h1 class="font-serif text-7xl md:text-9xl font-black tracking-tighter leading-none mb-4">
+          The Great <span class="text-[#c4a484] italic">Puzzle</span>
+        </h1>
+        <p class="font-sans text-lg md:text-xl tracking-[0.4em] uppercase text-gray-400 border-t border-white/10 pt-4">
+          Arqueosemi√≥tica ‚Ä¢ Neurognosis
+        </p>
+      </div>
+
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 pb-20">
+      <div class="h-64 rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-end">
+        <h3 class="font-serif text-2xl">Colecci√≥n I</h3>
+      </div>
+      <div class="h-64 rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-end">
+        <h3 class="font-serif text-2xl">Colecci√≥n II</h3>
+      </div>
+      <div class="h-64 rounded-3xl bg-[#c4a484] p-8 flex flex-col justify-end text-black">
+        <h3 class="font-serif text-2xl font-bold">Investigaci√≥n</h3>
+      </div>
+    </section>
+
+  </main>
+</Layout>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,900;1,900&family=Outfit:wght@300;700&display=swap');
+  
+  body {
+    background-color: #050a09;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  h1, h2, h3, .font-serif {
+    font-family: 'Bodoni Moda', serif !important;
+  }
+</style>
+```
+
+EndFragment
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\architectures\tuthankamon-royal-mask.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\charles-bucowsky.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\donelly-atlantis.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\el-tallado-neanderthal.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\la-cautiva-2.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\la-fisica-del-silencio.mdoc ===
+Este es el primer manifiesto bajo el sistema de **C√°psulas**. Aqu√≠, la arquitectura no se elige, se hereda.
+
+Al ser un **Archivo T√°ctil**, el sistema inyecta autom√°ticamente:
+1. El H√©roe Cinematic Vintage (Ken Burns).
+2. La Escala A5 (Intimate).
+3. La Vibra Victorian Archeo (Tipograf√≠a Gloock y Sombras Profundas).
+
+La superposici√≥n t√°ctil que ves arriba debe presentar sombras densas, reafirmando la presencia f√≠sica del objeto digital.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\palmira-endpoint.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\puzzle-pieces.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\test-2.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\capsulas\the-byblos.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\cartago.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\la-momia-de-paracas.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\los-nestorianos.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\rodin-de-burzaco.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\chill-out-and-bossa\index.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\mafalda-style\index.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\pedro-abrio-su-ventana\index.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\ensayos\tablilla-sumeria-urnammu\index.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\america-invertida-el-sur-global.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\arkhaim.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\buenos-aires-rural.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\el-mecanismo-de-antycitera.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\example-one.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\fomenko-y-las-matematicas.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\friends-firecamp.mdoc ===
+Una nota reflexiva sobre la fogata con amigos y el sentido de comunidad.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\hermes-arcaic-symbols.mdoc ===
+***Edited global.css***
+
+***He inyectado el Diccionario de Estilos Vogue Luxury en*** ***`src/styles/global.css`******.***
+
+### ***Resumen de la inyecciÛn (Fase 2):***
+
+- ***ArmonizaciÛn de Selectores: He utilizado*** ***`:is(h1, .vibe-target-h1)`*** ***para que los estilos se apliquen autom·ticamente tanto a los Heroes como al Contenido (Stress Test).***
+- ***Control del Layout: Se han implementado las restricciones de ancho de columna (ej.*** ***`60ch`*** ***para Museum,*** ***`75ch`*** ***para Kinfolk) para forzar ese "aire" editorial de lujo.***
+- ***Tratamiento de Blockquotes: Ahora cada vibe tiene su propio estilo de cita (it·licas masivas para Museum, centradas para Kinfolk, decoradas para 80's).***
+- ***Felicidad Tipogr·fica: Se ajustaron los*** ***`letter-spacing`*** ***y*** ***`line-height`*** ***especÌficos para maximizar el impacto visual de las 7 variantes.***
+
+### ***PrÛximos Pasos:***
+
+***Ya puedes entrar al /admin de Keystatic, elegir un ensayo (o crear uno nuevo), activar el Toggle de Stress Test, y cambiar entre las 7 variantes para ver cÛmo el diseÒo se transforma instant·neamente.***
+
+***øQuieres que ajustemos alg˙n peso tipogr·fico especÌfico o pasamos a la configuraciÛn de los spreads de im·genes?***
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\la-luna-lumiere.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\moais-en-la-isla-de-pascua.mdoc ===
+***StartFragment***
+
+***"°Dispara! EncendÈ el editor y aplic· ese Motor Sem·ntico Editorial ahora mismo.***
+
+1. ***Inyect· el cÛdigo en*** ***`global.css`*** ***tal cual lo diseÒaste, asegurando que la jerarquÌa (H1 masivo, H2 cl·sico, H3/H4 tÈcnico y P inmersivo) quede blindada.***
+1. ***Layouts: Asegurate de que en mis layouts (******`LayoutDark.astro`*** ***y otros) el*** ***`<slot />`*** ***estÈ envuelto en un contenedor con la clase*** ***`prose-tgp`*** ***para que la magia se active autom·ticamente.***
+1. ***Fuentes: Verific· que*** ***`Bodoni Moda`*** ***y*** ***`Plus Jakarta Sans`*** ***se estÈn cargando correctamente desde Google Fonts para que el preset luzca como debe.***
+1. ***Git: Una vez que termines y verifiques que se ve bien en el navegador, ejecut· el comando*** ***`npm run push`*** ***(o el que configuramos) para que este hito quede salvado en GitHub."***
+
+***EndFragment***
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\mu-the-lost-continent.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\old-buenos-ayres.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\terraplanistas.mdoc ===
+# El Horizonte Plano
+
+La curiosidad sobre la forma del mundo ha persistido a pesar de milenios de evidencia cientÌfica. En este ensayo, exploramos la estÈtica del terraplanismo como un fenÛmeno de diseÒo y percepciÛn.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\test-7-echoes-in-clay.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\test-essay.mdoc ===
+This is a test essay to verify rendering.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\test-specimen.mdoc ===
+## El Gran Observatorio del Tiempo
+
+### SecciÛn I ó PÛrtico de las Ideas Recibidas
+
+#### Sub-argumento TÈcnico: La IlusiÛn del Presente
+
+##### CrÈditos & Referencias Editorialexs
+
+###### ◊ TGP PORTAL ◊ VOL. II ◊ MMXXVI ◊
+
+---
+
+**Copete Editorial (Lead Paragraph).** La arquitectura del pensamiento no es una colecciÛn de certezas, sino el arte de habitar las preguntas con dignidad. En este especÌmen tipogr·fico se revela la tensiÛn entre el peso de la letra y el silencio del espacio en blanco óla verdadera gram·tica visual del editorial moderno.
+
+---
+
+Desde la cueva de Altamira hasta el pÌxel del monitor, el impulso humano de marcar la superficie ha sido el mismo: dejar constancia de que algo fue pensado, sentido, o simplemente visto. La tipografÌa no es ornamento; es arquitectura del tiempo.
+
+El ensayo moderno naciÛ en los m·rgenes de otros textos. Michel de Montaigne lo inventÛ como conversaciÛn consigo mismo, como el gÈnero de la incertidumbre cultivada. "øQuÈ sÈ yo?" preguntaba, y esa pregunta tenÌa la forma de una puerta abierta, no de un tribunal.
+
+> *"El estilo es la fisiognomÌa del alma, m·s infalible que la del rostro. Imitar el estilo de otro es ponerse su m·scara."*
+>
+> ó Arthur Schopenhauer, *Parerga y ParalipÛmena*, 1851
+
+Los griegos tenÌan dos palabras para el tiempo: **chronos**, el tiempo medible que avanza como un flujo irreversible, y **kairos**, el momento oportuno, el instante preÒado de posibilidad. La gran tragedia de la modernidad es que vivimos obsesionados con chronos y hemos olvidado cultivar el kairos.
+
+> *"No camines detr·s de mÌ; puede que yo no sea capaz de guiarte. No camines delante de mÌ; puede que yo no quiera seguirte. Camina junto a mÌ y sÈ mi amigo."*
+>
+> ó Albert Camus
+
+La imagen del mundo como texto óel *liber mundi* medievaló nunca fue una met·fora inocente. Implicaba que todo signo era legible, que todo fenÛmeno apuntaba a una significaciÛn estable. La crisis de esa visiÛn no vino de Darwin o Nietzsche: vino del propio exceso del texto, de la proliferaciÛn descontrolada de escrituras que hacÌa imposible un punto de vista privilegiado.
+
+![Observatorio antiguo en el desierto](https://picsum.photos/seed/specimen2/900/500)
+
+*Fig. 1 ó Vista del observatorio paleoastronÛmico de Tiahuanaco, Bolivia, c. 1200 d.C. FotografÌa de archivo, dominio p˙blico.*
+
+En el principio era la palabra, sÌ, pero antes de la palabra estaba el gesto. La mano que seÒalaba el horizonte donde el sol habÌa caÌdo. El sonido que intentaba imitar el trueno. El barro que se amoldaba a la presiÛn de los dedos. La escritura es siempre traducciÛn de algo anterior: de la voz, del cuerpo, del grito.
+
+El historiador de las mentalidades nos enseÒa que los cambios en los sistemas de escritura nunca son puramente tÈcnicos. Cuando Mesopotamia pasÛ del pictograma al cuneiforme, algo en la estructura del pensamiento colectivo cambiÛ irreversiblemente. La abstracciÛn gana terreno: ya no la imagen del buey sino el signo del buey, la marca que conviene en representar al buey sin parecÈrsele.
+
+![Fragmento de tablilla cuneiforme](https://picsum.photos/seed/specimen3/900/400?grayscale)
+
+*Fig. 2 ó Tablilla cuneiforme del perÌodo Uruk, c. 3200 a.C. ColecciÛn del Nationaal Museum van Oudheden, Leiden.*
+
+Hay una paradoja en el corazÛn de toda escritura: cuanto m·s precisa intenta ser, m·s traiciona la experiencia que busca capturar. El lenguaje es una red de malla demasiado gruesa para atrapar la fluidez de la experiencia vivida. Lo que queda entre los nudos de la red es, precisamente, toda la riqueza de lo que el lenguaje no puede nombrar.
+
+> *"Las palabras son faros en la oscuridad. No iluminan el presente ólo preservan."*
+>
+> ó Jorge LuÌs Borges, atribuido
+
+La revoluciÛn de Gutenberg no fue principalmente una aceleraciÛn de la transmisiÛn del texto. Fue una transformaciÛn de la relaciÛn entre el lector y la autoridad del texto. Cuando el manuscrito era raro y venerable, el lector se acercaba a Èl con reverencia. La imprenta democratizÛ el error, el comentario, la herejÌa: hizo al lector potencialmente tan autor como el autor.
+
+---
+
+**Nota TÈcnica Lateral.**
+
+```
+VARIABLES DE TRACKING
+
+Victorian: letter-spacing: -0.02em (H1)
+           leading: 1.6 (body)
+
+Artsy:     letter-spacing: -0.05em (H1)
+           leading: 1.3 (body)
+
+Travel:    letter-spacing: -0.03em (H1)
+           leading: 1.7 (body)
+
+Interiors: letter-spacing: -0.06em (H1)
+           leading: 1.4 (body)
+
+Ethnics:   letter-spacing: 0em (H1)
+           leading: 1.5 (body)
+```
+
+---
+
+El siglo veinte inventÛ un nuevo tipo de escritor: el que escribe conscientemente para el archivo. Kafka deseaba que sus libros fueran quemados, pero los enviÛ al cajÛn y encontraron a Max Brod. Pessoa guardaba sus heterÛnimos en un ba˙l de madera. Dickinson nunca publicÛ casi nada en vida. Hay una Ètica de la escritura privada que el mundo digital ha destruido de raÌz: hoy todo borrador aspira a convertirse en tweet.
+
+El ensayo, ese gÈnero inclasificable, es el ˙nico que puede acoger con comodidad tanto el anecdotario personal como la especulaciÛn filosÛfica, el dato estadÌstico y la imagen poÈtica. Es el gÈnero de la inteligencia en movimiento, de la mente que piensa en voz alta y no teme contradecirse.
+
+> *"Escribir es siempre un acto de resistencia. Nombrar las cosas es el primer gesto de quien se niega a ser devorado por ellas."*
+
+El futuro de la escritura no est· en la inteligencia artificial ni en el fin de los libros. Est· en la pregunta m·s antigua: øpara quiÈn escribimos? øQuÈ deuda tenemos con los muertos que nos legaron el lenguaje? øQuÈ obligaciÛn tenemos con los a˙n no nacidos, que heredar·n óo noó el mundo que describimos?
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\the-great-puzzle-project.mdoc ===
+IntroducciÛn a los objetivos y la visiÛn de "The Great Puzzle Project".
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\the-mask-2-the-original.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\the-mask.mdoc ===
+***StartFragment***
+
+***"Act˙a como un desarrollador experto (Creative Technologist) especializado en Astro, Tailwind CSS y arquitecturas front-end de alta gama. Vamos a iniciar la Fase 1 de un nuevo proyecto local.***
+
+***Paso 1: InicializaciÛn y Dependencias***\
+***Dame los comandos exactos de terminal para:***
+
+1. ***Crear un nuevo proyecto en Astro llamado*** ***`tgp-portal`*** ***(con la plantilla vacÌa/mÌnima).***
+1. ***Instalar e integrar Tailwind CSS junto con el plugin oficial*** ***`@tailwindcss/typography`******.***
+1. ***Instalar la librerÌa*** ***`gsap`*** ***(para animaciones futuras).***
+1. ***Instalar las dependencias de Keystatic (o Decap CMS) para gestionar el contenido localmente.***
+
+***Paso 2: Layout Base y Landing Page (******`index.astro`******)***\
+***Una vez levantado el entorno, dame el cÛdigo para la p·gina principal (******`index.astro`******). Requisitos de diseÒo:***
+
+- ***AtmÛsfera: Tema base muy oscuro (estÈtica Dark Academia). Puedes usar un fondo*** ***`bg-[#0A1C15]`*** ***(un verde profundÌsimo) o un*** ***`bg-gray-950`******.***
+- ***Hero Section: >     \* TÌtulo: The Great Puzzle Project. Debe usar una fuente tipogr·fica Serif en peso ExtraBold, con un tamaÒo masivo (text-6xl o superior) y alto contraste.***
+  - ***Tagline: Un subtÌtulo debajo usando la tipografÌa Sans-Serif 'Outfit' como H2.***
+- ***Estructura Bento Grid / GalerÌa Modular:***
+  - ***Debajo del Hero, no quiero un feed tradicional de blog. Implementa un layout de CSS Grid estilo 'Bento Grid'.***
+  - ***Crea 3 contenedores/tarjetas base dentro de este grid que representen 3 colecciones futuras.***
+  - ***Aplica un sutil efecto de Glassmorphism (fondo semitransparente con*** ***`backdrop-blur`******) a estas tarjetas para que se sientan premium.***
+
+***Por ahora, solo genera la estructura est·tica y el CSS con Tailwind. La conexiÛn de las 3 colecciones con el CMS la haremos en la siguiente fase."***
+
+***EndFragment***
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\essays\ufo-test.mdoc ===
+ExploraciÛn de fenÛmenos inexplicables en la frontera del 2026.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\a-deusa-do-mar-iemanja.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\angkor-wat.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\atacama-mummy.mdoc ===
+Investigaci√≥n bot√°nica y arqueol√≥gica en el desierto de Atacama.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\buenos-aires-antano-2.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\buens-aires-antano.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\cesare.mdoc ===
+jadj√±sdj√±√ëSJF√ë
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\de-la-cueva-al-cosmos.mdoc ===
+Contenido en desarrollo para la se√±al visual "De la cueva al cosmos".
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\el-arbol-dragon-de-madagascar.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\el-dinamo-de-tesla.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\la-momia-civica-polinesia.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\la-prensa-argentina-en-la-era-inmigratoria.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\muro-incas-en-los-70-s.mdoc ===
+[Visual Signal Placeholder]
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\old-bs-as-borges-writter.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\puntos-test-4.mdoc ===
+
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\talking-heads.mdoc ===
+An√°lisis visual y est√©tico de las formas craneales en la historia.
+
+
+=== C:\Users\ygnat\TGP-PORTAL\src\content\visual_signals\test-1.mdoc ===
+
+
+

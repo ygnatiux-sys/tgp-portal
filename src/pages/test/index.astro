@@ -1,0 +1,49 @@
+---
+import LayoutPortal from '../../layouts/LayoutPortal.astro';
+import CinematicHeroV2 from '../../components/CinematicHeroV2.astro';
+import BentoPortal from '../../components/BentoPortal.astro';
+
+import { getCollection } from 'astro:content';
+
+let rawPosts: any[] = [];
+try { rawPosts = await getCollection('test'); } catch {}
+
+const normalize = (post: any, col: string) => ({
+  id:         post.id,
+  title:      post.data.title       ?? 'Sin título',
+  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
+  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       `/test/${post.id}`,
+  collection: 'test',
+  date:       post.data.date        ? String(post.data.date) : undefined,
+  author:     post.data.author      ?? 'TGP',
+});
+
+const sortByLatest = (a: any, b: any) => {
+  const dateA = a.data?.date ? new Date(String(a.data.date)).getTime() : Date.now();
+  const dateB = b.data?.date ? new Date(String(b.data.date)).getTime() : Date.now();
+  return dateB - dateA || b.id.localeCompare(a.id);
+};
+
+const allPosts = [...rawPosts].sort(sortByLatest).map(p => normalize(p, 'test'));
+
+const bentoPosts = allPosts.slice(1, 15);
+---
+
+<LayoutPortal 
+  title="Colección TEST | The Great Puzzle"
+  description="Colección consolidada TEST de The Great Puzzle."
+>
+  <CinematicHeroV2 posts={allPosts} />
+
+  <div class="portal-section-label">
+    <span>Colección TEST</span>
+  </div>
+
+  <div id="content-grid" class="portal-layout-wrapper">
+    <div class="bento-main-col min-w-0">
+      <BentoPortal posts={bentoPosts} />
+    </div>
+  </div>
+
+</LayoutPortal>

@@ -21,11 +21,11 @@ export const GET = async () => {
   });
 
   const all = [
-    ...essaysRaw.map(p => normalize(p, 'essays')),
-    ...architecturesRaw.map(p => normalize(p, 'architectures')),
-    ...visualSignalsRaw.map(p => normalize(p, 'visual_signals')),
-    ...ensayosRaw.map(p => normalize(p, 'ensayos')),
-    ...capsulasRaw.map(p => normalize(p, 'capsulas')),
+    ...essaysRaw.filter(p => !p.data.draft).map(p => normalize(p, 'essays')),
+    ...architecturesRaw.filter(p => !p.data.draft).map(p => normalize(p, 'architectures')),
+    ...visualSignalsRaw.filter(p => !p.data.draft).map(p => normalize(p, 'visual_signals')),
+    ...ensayosRaw.filter(p => !p.data.draft).map(p => normalize(p, 'ensayos')),
+    ...capsulasRaw.filter(p => !p.data.draft).map(p => normalize(p, 'capsulas')),
   ];
 
   return new Response(JSON.stringify(all), {

@@ -37,10 +37,11 @@ const COLLECTION_LABELS: Record<string, string> = {
   'visual_signals': 'Collections',
   'visual-signals': 'Collections',
   'capsulas': 'eBooks',
+  'test': 'TEST',
 };
 
 const collectionKey = collection.replace('-', '_');
-const activeLabel = COLLECTION_LABELS[collection] || COLLECTION_LABELS[collectionKey] || 'Ensayos';
+const activeLabel = COLLECTION_LABELS[collection] || COLLECTION_LABELS[collectionKey] || 'TEST';
 
 let displayPosts: any[] = [];
 
@@ -62,8 +63,8 @@ if (customItems && customItems.length >= 3) {
   // Si la colección actual tiene pocos posts, completar con fallback global
   if (!rawPosts || rawPosts.length < 3) {
     try {
-      const fallbackEssays = await getCollection('essays');
-      rawPosts = [...rawPosts, ...fallbackEssays];
+      const fallbackTest = await getCollection('test');
+      rawPosts = [...rawPosts, ...fallbackTest];
     } catch {}
   }
 

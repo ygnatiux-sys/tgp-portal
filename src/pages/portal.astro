@@ -21,31 +21,31 @@ import ImmersiveSlider from '../components/ImmersiveSlider.astro';
 import { getCollection } from 'astro:content';
 
 // ─── DATA PHASE ──────────────────────────────────────────────────────────────
-// Recopilamos todas las colecciones. Cualquier colección inexistente falla
-// silenciosamente para no romper el build.
-
+// Recopilamos todas las colecciones.
 let essaysRaw:        any[] = [];
 let architecturesRaw: any[] = [];
 let visualSignalsRaw: any[] = [];
 let ensayosRaw:       any[] = [];
 let capsulasRaw:      any[] = [];
+let testRaw:          any[] = [];
 
 try { essaysRaw        = await getCollection('essays'); }        catch {}
 try { architecturesRaw = await getCollection('architectures'); } catch {}
 try { visualSignalsRaw = await getCollection('visual_signals'); } catch {}
 try { ensayosRaw       = await getCollection('ensayos'); }       catch {}
 try { capsulasRaw      = await getCollection('capsulas'); }      catch {}
+try { testRaw          = await getCollection('test'); }          catch {}
 
 // ─── NORMALIZADOR: Transforma cualquier post en el formato común de Post ─────
 const normalize = (post: any, col: string) => ({
   id:         post.id,
-  title:      post.data.title       ?? 'Sin título',
-  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
-  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
-  link:       `/${col.replace('_', '-')}/${post.id}`,
+  title:      post.data?.title       ?? 'Sin título',
+  subtitle:   post.data?.subtitle    ?? post.data?.description ?? undefined,
+  image:      post.data?.hero_image  ?? post.data?.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       col === 'test' ? `/test/${post.id}` : `/${col.replace('_', '-')}/${post.id}`,
   collection: col,
-  date:       post.data.date        ? String(post.data.date) : undefined,
-  author:     post.data.author      ?? 'TGP',
+  date:       post.data?.date        ? String(post.data.date) : undefined,
+  author:     post.data?.author      ?? 'TGP',
 });
 
 // ─── SORT HELPER ─────────────────────────────────────────────────────────────
@@ -55,16 +55,15 @@ const sortByLatest = (a: any, b: any) => {
   return dateB - dateA || b.id.localeCompare(a.id);
 };
 
-// ─── POOLS NORMALIZADOS ───────────────────────────────────────────────────────
-const essays        = [...essaysRaw]       .sort(sortByLatest).map(p => normalize(p, 'essays'));
-const architectures = [...architecturesRaw].sort(sortByLatest).map(p => normalize(p, 'architectures'));
-const visualSignals = [...visualSignalsRaw].sort(sortByLatest).map(p => normalize(p, 'visual_signals'));
-const ensayos       = [...ensayosRaw]      .sort(sortByLatest).map(p => normalize(p, 'ensayos'));
-const capsulas      = [...capsulasRaw]     .sort(sortByLatest).map(p => normalize(p, 'capsulas'));
+// ─── POOLS NORMALIZADOS (Excluye borradores draft: true) ─────────────────────
+const essays        = essaysRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'essays'));
+const architectures = architecturesRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'architectures'));
+const visualSignals = visualSignalsRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'visual_signals'));
+const ensayos       = ensayosRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'ensayos'));
+const capsulas      = capsulasRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'capsulas'));
+const testPosts     = testRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'test'));
 
-// ─── POOL GLOBAL ─────────────────────────────────────────────────────────────
-// Agrupamos todas las colecciones y ordenamos por fecha absoluta para dar prioridad 
-// global a los posts más recientes en toda la plataforma.
+// ─── POOL GLOBAL (Para Hero, Bento y Slider: excluye TEST según requerimiento) ──
 const allPosts = [
   ...ensayos, 
   ...essays, 
@@ -73,9 +72,7 @@ const allPosts = [
   ...capsulas
 ].sort(sortByLatest);
 
-// ─── DISTRIBUCIÓN DE POSTS ────────────────────────────────────────────────────
-
-// HERO: el post más reciente de todas las colecciones
+// HERO: el post más reciente de las colecciones activas
 const heroPost = allPosts[0] ?? {
   id: 'fallback',
   title: 'The Great Puzzle',
@@ -85,12 +82,10 @@ const heroPost = allPosts[0] ?? {
   collection: 'portal',
 };
 
-// BENTO: los siguientes 14 posts (Bloque A ya usó el pos [0])
-// El BentoPortal distribuye internamente: [1]=hero-bloque-A, [2-6]=cluster, [7-14]=array
+// BENTO: los siguientes 14 posts
 const bentoPosts = allPosts.slice(1, 15);
 
-
-// IMMERSIVE SLIDER: Los posts más recientes en general (incluyendo el hero)
+// IMMERSIVE SLIDER: Los posts más recientes
 const sliderPosts = allPosts.slice(0, 8);
 ---
 
@@ -123,7 +118,6 @@ const sliderPosts = allPosts.slice(0, 8);
       <BentoPortal posts={bentoPosts} />
     </div>
 
-
   </div>
 
   {/* ── Divisor antes del slider inmersivo ── */}
@@ -137,5 +131,63 @@ const sliderPosts = allPosts.slice(0, 8);
       Transición: GSAP clipPath horizontal (wipe cinematográfico).
   ================================================================= */}
   <ImmersiveSlider posts={sliderPosts} interval={6000} />
+
+  {/* ── Divisor Sección Colección ── */}
+  <div class="portal-section-label">
+    <span>Colección</span>
+  </div>
+
+  {/* ================================================================
+      4. SECCIÓN COLECCIÓN: TEST
+      Solo aquí se muestran todos los artículos de la colección TEST
+  ================================================================= */}
+  <section class="max-w-[1720px] mx-auto px-4 md:px-8 py-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-white/10 gap-4">
+      <div>
+        <span class="text-xs uppercase tracking-[0.3em] text-old-silver/60 font-mono">Colección</span>
+        <h2 class="text-3xl md:text-5xl font-serif text-[#E3DDD3] mt-1">TEST</h2>
+      </div>
+      <p class="text-sm text-gray-400 max-w-md font-sans">
+        Archivo consolidado de documentos, investigaciones y artículos clasificados en la colección TEST ({testPosts.length} publicaciones).
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {testPosts.map((post) => (
+        <a 
+          href={post.link} 
+          class="group block relative bg-[#0a0a0a] border border-white/10 hover:border-white/30 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/80"
+        >
+          <div class="aspect-16/10 overflow-hidden bg-black/60 relative">
+            <img 
+              src={post.image} 
+              alt={post.title}
+              class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+              loading="lazy"
+            />
+            <div class="absolute top-3 left-3 px-2.5 py-1 bg-black/70 backdrop-blur-md rounded-full text-[10px] uppercase font-mono tracking-widest text-old-silver border border-white/10">
+              TEST
+            </div>
+          </div>
+          <div class="p-5 flex flex-col justify-between">
+            <div>
+              <h3 class="font-serif text-lg text-[#E3DDD3] group-hover:text-white line-clamp-2 transition-colors">
+                {post.title}
+              </h3>
+              {post.subtitle && (
+                <p class="text-xs text-gray-400 mt-2 line-clamp-2 leading-relaxed">
+                  {post.subtitle}
+                </p>
+              )}
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-gray-500 font-mono">
+              <span>{post.author || 'TGP'}</span>
+              <span>{post.date || '2026'}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
 </LayoutPortal>

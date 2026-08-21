@@ -98,6 +98,11 @@ export const baseSchema = {
       validation: { isRequired: true } // Único campo obligatorio
     }
   }),
+  draft: fields.checkbox({
+    label: 'Borrador / Ocultar de la web (Draft)',
+    description: 'Si está marcado, no aparecerá en el portal público.',
+    defaultValue: false,
+  }),
   date: fields.date({ 
     label: 'Fecha',
     defaultValue: { kind: 'today' },
@@ -276,6 +281,11 @@ export const ensayosSchema = {
       label: 'Título',
       validation: { isRequired: true }
     }
+  }),
+  draft: fields.checkbox({
+    label: 'Borrador / Ocultar de la web (Draft)',
+    description: 'Si está marcado, no aparecerá en el portal público.',
+    defaultValue: false,
   }),
   subtitle: fields.text({ label: 'Subtítulo' }),
   template: fields.relationship({
