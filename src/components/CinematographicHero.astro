@@ -34,22 +34,21 @@ const isTactile = vibeClass.includes('victorian') || vibeClass.includes('ethnics
         loading="eager"
         decoding="sync"
         fetchpriority="high"
-        class="hero-img-target w-full h-full object-cover grayscale-[0.2] contrast-[1.1] brightness-[0.7]"
+        class="hero-img-target w-full h-full object-cover grayscale-[0.05] contrast-[1.05] brightness-[0.88]"
         style="transform-origin: center center; transform: scale(1.05);"
       />
     </div>
     
-    {/* Cinematic Overlays (from global.css) */}
-    <div class="texture-grain opacity-40"></div>
+    {/* Cinematic Textures */}
+    <div class="texture-grain opacity-30"></div>
     <div class="texture-scratches"></div>
-    <div class="atmospheric-dust opacity-30"></div>
+    <div class="atmospheric-dust opacity-25"></div>
 
-    {/* The Scrim (Bottom-to-Top Gradient) */}
-    <div class="absolute inset-0 bg-linear-to-t from-racing-green via-racing-green/40 to-black/20 z-10"></div>
-    
-    {/* The Deep Vignette */}
-    <div class="absolute inset-0 z-15 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.95)] opacity-80 backdrop-blur-[1px]"></div>
-    <div class="absolute inset-0 z-15 pointer-events-none ring-100 ring-inset ring-black/30 blur-3xl opacity-50"></div>
+    {/* Franja Superior Cinematográfica (Vignette Top) */}
+    <div class="absolute top-0 inset-x-0 h-28 md:h-36 bg-linear-to-b from-black/80 via-black/30 to-transparent z-10 pointer-events-none"></div>
+
+    {/* Franja Inferior Cinematográfica (Vignette Bottom) */}
+    <div class="absolute bottom-0 inset-x-0 h-48 md:h-64 bg-linear-to-t from-black/90 via-black/45 to-transparent z-10 pointer-events-none"></div>
   </div>
 
   {/* Content Layer */}
