@@ -3,8 +3,9 @@ import TgpImage from './TgpImage.astro';
 
 /**
  * DynamicEditorialGallery.astro
- * Galería editorial dinámica con formato 1:1 (cuadrado), adaptable al número de imágenes.
- * Incluye visor Lightbox interactivo con lupa de ampliación, navegación y metadatos sobrios.
+ * Visor editorial cinematográfico tipo slider/marquee en formato grande (60vh).
+ * Al hacer clic, se expande a pantalla completa duplicando la misma experiencia de slider
+ * de manera pura y limpia, heredando el background local (--bg-current) y cerrando al cliquear afuera.
  */
 
 interface GalleryItem {
@@ -90,16 +91,10 @@ if (spreads && spreads.length > 0) {
 if (normalizedImages.length === 0) return null;
 
 const count = normalizedImages.length;
-let gridColsClass = "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
-if (count === 1) gridColsClass = "grid-cols-1 max-w-xl mx-auto";
-else if (count === 2) gridColsClass = "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto";
-else if (count === 4) gridColsClass = "grid-cols-2 md:grid-cols-2 max-w-4xl mx-auto";
-else if (count >= 5) gridColsClass = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
-
 const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
-<div class={`dynamic-editorial-gallery my-12 ${vibeClass}`} id={galleryId}>
+<div class={`dynamic-editorial-gallery my-14 ${vibeClass}`} id={galleryId}>
   {title && (
     <div class="mb-6 text-center">
       <h3 class="font-gloock text-2xl md:text-3xl text-old-silver uppercase tracking-wider">{title}</h3>
@@ -107,110 +102,191 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
     </div>
   )}
 
-  <div class={`grid ${gridColsClass} gap-4 md:gap-6`}>
-    {normalizedImages.map((item, index) => (
-      <figure 
-        class="group/gallery-card relative flex flex-col m-0 p-0 cursor-pointer select-none"
-        data-gallery-index={index}
-      >
-        {/* Contenedor Cuadrado Estricto 1:1 */}
+  {/* ================================================================
+      1. VISOR EDITORIAL INLINE (60vh)
+  ================================================================= */}
+  <div class="relative w-full max-w-5xl mx-auto group/gallery-slider">
+    
+    {/* Marco principal de la imagen */}
+    <div 
+      id={`${galleryId}-inline-container`}
+      class="relative w-full h-[50vh] sm:h-[60vh] md:h-[65vh] overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 shadow-2xl select-none cursor-pointer"
+      style="background: var(--bg-card-fumee, rgba(255, 255, 255, 0.03));"
+      title="Haga clic para ampliar la galería"
+    >
+      {normalizedImages.map((item, index) => (
         <div 
-          class="relative w-full aspect-square overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover/gallery-card:border-white/30 transition-all duration-500 shadow-md"
-          style="background: var(--bg-card-fumee, rgba(255, 255, 255, 0.03));"
+          class={`gallery-inline-slide absolute inset-0 w-full h-full transition-all duration-700 ease-out ${index === 0 ? 'opacity-100 z-10 is-active scale-100' : 'opacity-0 z-0 scale-98 pointer-events-none'}`}
+          data-slide-index={index}
+          aria-hidden={index !== 0}
         >
           <TgpImage 
             src={item.url} 
             alt={item.title || item.caption || `Imagen ${index + 1}`}
-            width={800}
-            height={800}
+            width={1920}
+            height={1080}
             format="webp"
-            loading="lazy"
+            loading={index === 0 ? "eager" : "lazy"}
             decoding="async"
-            class="w-full h-full object-cover group-hover/gallery-card:scale-105 transition-transform duration-700 ease-out"
+            class="w-full h-full object-cover brightness-[0.88] contrast-[1.04] group-hover/gallery-slider:scale-[1.02] transition-transform duration-1000 ease-out"
           />
 
-          {/* Botón Lupa sutil en esquina inferior derecha */}
-          <div 
-            class="absolute bottom-3 right-3 w-7 h-7 rounded-full backdrop-blur-md border border-white/15 bg-black/40 flex items-center justify-center text-white/70 opacity-0 group-hover/gallery-card:opacity-100 group-hover/gallery-card:text-white group-hover/gallery-card:scale-105 transition-all duration-300 shadow-md"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
-            </svg>
-          </div>
+          {/* Scrim sutil inferior para contraste */}
+          <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
         </div>
+      ))}
 
-        {/* Título o pie de foto (solo cuando existe y aplica) */}
-        {(item.title || item.caption) && (
-          <figcaption class="mt-2.5 px-0.5 font-tgp-tech text-[8px] tracking-[0.12em] text-old-silver group-hover/gallery-card:text-[#E3DDD3] line-clamp-1 leading-normal transition-colors duration-300">
-            {item.title || item.caption}
-          </figcaption>
-        )}
-      </figure>
-    ))}
+      {/* Flechas de navegación lateral */}
+      {count > 1 && (
+        <>
+          <div class="absolute inset-y-0 left-0 w-20 z-30 flex items-center justify-start pointer-events-none">
+            <button 
+              id={`${galleryId}-inline-prev`}
+              class="pl-4 text-white/30 hover:text-copper-ember opacity-0 group-hover/gallery-slider:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer pointer-events-auto"
+              aria-label="Foto anterior"
+            >
+              <svg class="w-7 h-7 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+          </div>
+          <div class="absolute inset-y-0 right-0 w-20 z-30 flex items-center justify-end pointer-events-none">
+            <button 
+              id={`${galleryId}-inline-next`}
+              class="pr-4 text-white/30 hover:text-copper-ember opacity-0 group-hover/gallery-slider:opacity-100 hover:scale-110 transition-all duration-300 cursor-pointer pointer-events-auto"
+              aria-label="Foto siguiente"
+            >
+              <svg class="w-7 h-7 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+
+    {/* Barra de control inferior: Caption y Puntos (. . . .) */}
+    <div class="mt-4 flex flex-col items-center gap-2.5">
+      {/* Epígrafe dinámico de la foto activa */}
+      <div 
+        id={`${galleryId}-inline-caption`} 
+        class="min-h-5 text-center font-tgp-tech text-[9px] md:text-[10px] tracking-[0.16em] uppercase text-old-silver transition-opacity duration-300 max-w-2xl px-4"
+      >
+        {normalizedImages[0]?.title || normalizedImages[0]?.caption || ''}
+      </div>
+
+      {/* Puntos de paginación (. . . .) */}
+      {count > 1 && (
+        <div class="flex items-center justify-center gap-2 py-1">
+          {normalizedImages.map((_, idx) => (
+            <button 
+              class={`gallery-inline-dot transition-all duration-300 cursor-pointer rounded-full ${idx === 0 ? 'bg-copper-ember w-6 h-1.5' : 'bg-white/20 hover:bg-white/50 w-1.5 h-1.5'}`}
+              data-dot-index={idx}
+              aria-label={`Ver foto ${idx + 1}`}
+            ></button>
+          ))}
+        </div>
+      )}
+    </div>
   </div>
 
-  {/* Modal Lightbox con Lupa de Ampliación y atmósfera Fumée */}
+  {/* ================================================================
+      2. VISOR EXPANDIDO A PANTALLA COMPLETA (REPLICA LA GALERÍA AL DOBLE)
+      Hereda el fondo del vibe (--bg-current). Cierra al cliquear afuera.
+  ================================================================= */}
   <div 
-    id={`${galleryId}-lightbox`}
-    class="fixed inset-0 z-200 hidden bg-[#0B1512]/96 backdrop-blur-2xl flex-col items-center justify-between p-4 md:p-8 animate-fade-in opacity-0 transition-opacity duration-300"
+    id={`${galleryId}-expanded-modal`}
+    class="fixed inset-0 z-200 hidden backdrop-blur-3xl items-center justify-center p-4 sm:p-8 md:p-12 animate-fade-in opacity-0 transition-opacity duration-300"
+    style="background-color: color-mix(in srgb, var(--bg-current, #0A1C15) 96%, black);"
     role="dialog"
     aria-modal="true"
-    aria-label="Visor ampliado de imagen"
+    aria-label="Galería en pantalla completa"
   >
-
-
-    {/* Contenedor central de la imagen con navegación lateral */}
-    <div class="relative flex-1 w-full max-w-6xl flex items-center justify-center my-4 overflow-hidden">
-      
-      {/* Botón Anterior */}
-      <div class="absolute left-0 inset-y-0 w-16 z-20 flex items-center justify-start pointer-events-none">
-        <button 
-          id={`${galleryId}-prev-btn`}
-          class="pl-4 text-white/20 hover:text-copper-ember opacity-30 hover:opacity-100 hover:drop-shadow-[0_0_5px_rgba(227,221,211,0.5)] transition-all duration-500 cursor-pointer pointer-events-auto"
-          aria-label="Imagen anterior"
-        >
-          <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Imagen Principal Ampliable */}
+    {/* Contenedor central duplicado en gran escala */}
+    <div 
+      id={`${galleryId}-expanded-card`}
+      class="relative w-full max-w-7xl flex flex-col items-center group/expanded-slider select-none"
+    >
+      {/* Marco de imagen expandido (~80vh) */}
       <div 
-        id={`${galleryId}-img-wrapper`}
-        class="relative max-h-[78vh] max-w-[85vw] flex items-center justify-center transition-transform duration-300 overflow-hidden cursor-zoom-in"
+        id={`${galleryId}-expanded-frame`}
+        class="relative w-full h-[65vh] sm:h-[75vh] md:h-[82vh] overflow-hidden rounded-3xl border border-white/15 bg-black/60 shadow-2xl"
       >
-        <img 
-          id={`${galleryId}-lightbox-img`}
-          src="" 
-          alt="Visualización ampliada"
-          class="max-h-[75vh] max-w-full object-contain rounded-xs border border-white/10 shadow-2xl transition-transform duration-300"
-        />
+        {normalizedImages.map((item, index) => (
+          <div 
+            class={`gallery-expanded-slide absolute inset-0 w-full h-full transition-all duration-700 ease-out ${index === 0 ? 'opacity-100 z-10 is-active scale-100' : 'opacity-0 z-0 scale-98 pointer-events-none'}`}
+            data-slide-index={index}
+            aria-hidden={index !== 0}
+          >
+            <TgpImage 
+              src={item.url} 
+              alt={item.title || item.caption || `Foto ${index + 1}`}
+              width={2560}
+              height={1440}
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-contain"
+            />
+            {/* Scrim sutil inferior */}
+            <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+          </div>
+        ))}
+
+        {/* Flechas de navegación en modo expandido */}
+        {count > 1 && (
+          <>
+            <div class="absolute inset-y-0 left-0 w-24 z-30 flex items-center justify-start pointer-events-none">
+              <button 
+                id={`${galleryId}-expanded-prev`}
+                class="pl-6 text-white/40 hover:text-copper-ember hover:scale-110 transition-all duration-300 cursor-pointer pointer-events-auto"
+                aria-label="Foto anterior"
+              >
+                <svg class="w-8 h-8 md:w-10 md:h-10 drop-shadow-xl" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+            </div>
+            <div class="absolute inset-y-0 right-0 w-24 z-30 flex items-center justify-end pointer-events-none">
+              <button 
+                id={`${galleryId}-expanded-next`}
+                class="pr-6 text-white/40 hover:text-copper-ember hover:scale-110 transition-all duration-300 cursor-pointer pointer-events-auto"
+                aria-label="Foto siguiente"
+              >
+                <svg class="w-8 h-8 md:w-10 md:h-10 drop-shadow-xl" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
-      {/* Botón Siguiente */}
-      <div class="absolute right-0 inset-y-0 w-16 z-20 flex items-center justify-end pointer-events-none">
-        <button 
-          id={`${galleryId}-next-btn`}
-          class="pr-4 text-white/20 hover:text-copper-ember opacity-30 hover:opacity-100 hover:drop-shadow-[0_0_5px_rgba(227,221,211,0.5)] transition-all duration-500 cursor-pointer pointer-events-auto"
-          aria-label="Imagen siguiente"
+      {/* Barra de control expandida: Caption + Puntos (. . . .) */}
+      <div class="mt-4 flex flex-col items-center gap-3">
+        {/* Caption en modo expandido */}
+        <div 
+          id={`${galleryId}-expanded-caption`} 
+          class="min-h-5 text-center font-tgp-tech text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-white/80 transition-opacity duration-300 max-w-3xl px-6"
         >
-          <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-          </svg>
-        </button>
+          {normalizedImages[0]?.title || normalizedImages[0]?.caption || ''}
+        </div>
+
+        {/* Puntos expandidos (. . . .) */}
+        {count > 1 && (
+          <div class="flex items-center justify-center gap-2.5 py-1">
+            {normalizedImages.map((_, idx) => (
+              <button 
+                class={`gallery-expanded-dot transition-all duration-300 cursor-pointer rounded-full ${idx === 0 ? 'bg-copper-ember w-8 h-1.5' : 'bg-white/25 hover:bg-white/60 w-2 h-2'}`}
+                data-dot-index={idx}
+                aria-label={`Ver foto ${idx + 1}`}
+              ></button>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
 
-    {/* Pie inferior con Epígrafe */}
-    <div class="w-full max-w-4xl text-center py-2 z-10">
-      <p 
-        id={`${galleryId}-caption`} 
-        class="font-tgp-tech text-[9px] md:text-[10px] tracking-[0.16em] uppercase text-white/70 leading-relaxed max-w-2xl mx-auto"
-      >
-      </p>
     </div>
-
   </div>
 
 </div>
@@ -218,123 +294,237 @@ const galleryId = `gallery-${Math.random().toString(36).substring(2, 9)}`;
 <script define:vars={{ galleryId, normalizedImages }}>
   const initGallery = () => {
     const galleryRoot = document.getElementById(galleryId);
-    const lightbox = document.getElementById(`${galleryId}-lightbox`);
-    const lightboxImg = document.getElementById(`${galleryId}-lightbox-img`);
-    const imgWrapper = document.getElementById(`${galleryId}-img-wrapper`);
-    const captionEl = document.getElementById(`${galleryId}-caption`);
-    const prevBtn = document.getElementById(`${galleryId}-prev-btn`);
-    const nextBtn = document.getElementById(`${galleryId}-next-btn`);
+    if (!galleryRoot) return;
 
-    if (!galleryRoot || !lightbox || !lightboxImg) return;
+    // ── Elementos del Visor Inline ──
+    const inlineContainer = document.getElementById(`${galleryId}-inline-container`);
+    const inlineSlides    = galleryRoot.querySelectorAll('.gallery-inline-slide');
+    const inlineDots      = galleryRoot.querySelectorAll('.gallery-inline-dot');
+    const inlineCaption   = document.getElementById(`${galleryId}-inline-caption`);
+    const inlinePrev      = document.getElementById(`${galleryId}-inline-prev`);
+    const inlineNext      = document.getElementById(`${galleryId}-inline-next`);
 
-    let currentIndex = 0;
-    let isZoomed = false;
+    // ── Elementos del Visor Expandido ──
+    const expandedModal   = document.getElementById(`${galleryId}-expanded-modal`);
+    const expandedCard    = document.getElementById(`${galleryId}-expanded-card`);
+    const expandedFrame   = document.getElementById(`${galleryId}-expanded-frame`);
+    const expandedSlides  = galleryRoot.querySelectorAll('.gallery-expanded-slide');
+    const expandedDots    = galleryRoot.querySelectorAll('.gallery-expanded-dot');
+    const expandedCaption = document.getElementById(`${galleryId}-expanded-caption`);
+    const expandedPrev    = document.getElementById(`${galleryId}-expanded-prev`);
+    const expandedNext    = document.getElementById(`${galleryId}-expanded-next`);
 
-    const updateLightboxContent = (idx) => {
-      currentIndex = (idx + normalizedImages.length) % normalizedImages.length;
-      const currentItem = normalizedImages[currentIndex];
-      
-      lightboxImg.src = currentItem.url;
-      lightboxImg.alt = currentItem.caption || `Placa ${currentIndex + 1}`;
-      
-      if (captionEl) {
-        captionEl.textContent = currentItem.caption || '';
+    if (inlineSlides.length === 0) return;
+
+    let currentSlide = 0;
+
+    // ── Sincronizador de Diapositivas y Puntos ──
+    const updateSlideDisplay = (slideList, dotList, activeIdx, isExpanded = false) => {
+      slideList.forEach((s, i) => {
+        const isActive = i === activeIdx;
+        s.classList.toggle('opacity-100', isActive);
+        s.classList.toggle('opacity-0', !isActive);
+        s.classList.toggle('z-10', isActive);
+        s.classList.toggle('z-0', !isActive);
+        s.classList.toggle('scale-100', isActive);
+        s.classList.toggle('scale-98', !isActive);
+        s.classList.toggle('pointer-events-none', !isActive);
+        s.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      dotList.forEach((d, i) => {
+        const isActive = i === activeIdx;
+        if (isActive) {
+          d.className = isExpanded
+            ? 'gallery-expanded-dot transition-all duration-300 cursor-pointer rounded-full bg-copper-ember w-8 h-1.5'
+            : 'gallery-inline-dot transition-all duration-300 cursor-pointer rounded-full bg-copper-ember w-6 h-1.5';
+        } else {
+          d.className = isExpanded
+            ? 'gallery-expanded-dot transition-all duration-300 cursor-pointer rounded-full bg-white/25 hover:bg-white/60 w-2 h-2'
+            : 'gallery-inline-dot transition-all duration-300 cursor-pointer rounded-full bg-white/20 hover:bg-white/50 w-1.5 h-1.5';
+        }
+      });
+    };
+
+    const goToSlide = (idx) => {
+      currentSlide = (idx + normalizedImages.length) % normalizedImages.length;
+      const item = normalizedImages[currentSlide];
+
+      // Actualizar vista inline
+      updateSlideDisplay(inlineSlides, inlineDots, currentSlide, false);
+      if (inlineCaption) {
+        inlineCaption.style.opacity = '0';
+        setTimeout(() => {
+          inlineCaption.textContent = item?.title || item?.caption || '';
+          inlineCaption.style.opacity = '1';
+        }, 150);
       }
 
-      // Reset zoom al cambiar de foto
-      isZoomed = false;
-      lightboxImg.style.transform = 'scale(1)';
-      if (imgWrapper) imgWrapper.style.cursor = 'zoom-in';
-    };
-
-    const openLightbox = (idx) => {
-      updateLightboxContent(idx);
-      lightbox.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => {
-        lightbox.classList.remove('opacity-0');
-        lightbox.classList.add('opacity-100');
-      }, 10);
-    };
-
-    const closeLightbox = () => {
-      lightbox.classList.remove('opacity-100');
-      lightbox.classList.add('opacity-0');
-      document.body.style.overflow = '';
-      setTimeout(() => {
-        lightbox.classList.add('hidden');
-      }, 300);
-    };
-
-    const toggleZoom = () => {
-      isZoomed = !isZoomed;
-      if (isZoomed) {
-        lightboxImg.style.transform = 'scale(1.75)';
-        if (imgWrapper) imgWrapper.style.cursor = 'zoom-out';
-      } else {
-        lightboxImg.style.transform = 'scale(1)';
-        if (imgWrapper) imgWrapper.style.cursor = 'zoom-in';
+      // Actualizar vista expandida
+      updateSlideDisplay(expandedSlides, expandedDots, currentSlide, true);
+      if (expandedCaption) {
+        expandedCaption.style.opacity = '0';
+        setTimeout(() => {
+          expandedCaption.textContent = item?.title || item?.caption || '';
+          expandedCaption.style.opacity = '1';
+        }, 150);
       }
     };
 
-    // Listeners en cards del grid
-    const cards = galleryRoot.querySelectorAll('[data-gallery-index]');
-    cards.forEach((card) => {
-      card.addEventListener('click', () => {
-        const idx = parseInt(card.getAttribute('data-gallery-index') || '0', 10);
-        openLightbox(idx);
+    const next = () => goToSlide(currentSlide + 1);
+    const prev = () => goToSlide(currentSlide - 1);
+
+    // ── Controles Inline ──
+    inlineNext?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      next();
+    });
+    inlinePrev?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prev();
+    });
+    inlineDots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(idx);
       });
     });
 
-    imgWrapper?.addEventListener('click', (e) => {
-      if (e.target === lightboxImg || e.target === imgWrapper) {
-        toggleZoom();
-      }
-    });
-
-    prevBtn?.addEventListener('click', (e) => {
+    // ── Controles Expandidos ──
+    expandedNext?.addEventListener('click', (e) => {
       e.stopPropagation();
-      updateLightboxContent(currentIndex - 1);
+      next();
     });
-
-    nextBtn?.addEventListener('click', (e) => {
+    expandedPrev?.addEventListener('click', (e) => {
       e.stopPropagation();
-      updateLightboxContent(currentIndex + 1);
+      prev();
+    });
+    expandedDots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(idx);
+      });
     });
 
-    // Cerrar al hacer clic en fondo exterior
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        closeLightbox();
-      }
-    });
-
-    // Controles por teclado y scroll
-    const handleKeydown = (e) => {
-      if (lightbox.classList.contains('hidden')) return;
-      if (e.key === 'Escape' || e.key === 'Enter' || e.key === 'Tab') {
-        e.preventDefault();
-        closeLightbox();
-      } else if (e.key === 'ArrowLeft') {
-        updateLightboxContent(currentIndex - 1);
-      } else if (e.key === 'ArrowRight') {
-        updateLightboxContent(currentIndex + 1);
-      }
+    // ── Abrir y Cerrar Modo Expandido ──
+    const openExpanded = (idx) => {
+      if (!expandedModal) return;
+      goToSlide(idx);
+      expandedModal.classList.remove('hidden');
+      expandedModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        expandedModal.classList.remove('opacity-0');
+        expandedModal.classList.add('opacity-100');
+      }, 10);
     };
 
-    let scrollDebounce = 0;
-    const handleScrollClose = (e) => {
-      if (lightbox.classList.contains('hidden')) return;
-      const now = Date.now();
-      if (now - scrollDebounce > 300) {
-        scrollDebounce = now;
-        closeLightbox();
+    const closeExpanded = () => {
+      if (!expandedModal) return;
+      expandedModal.classList.remove('opacity-100');
+      expandedModal.classList.add('opacity-0');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        expandedModal.classList.add('hidden');
+        expandedModal.classList.remove('flex');
+      }, 300);
+    };
+
+    // Al cliquear afuera (en el backdrop del modal), cerrar
+    expandedModal?.addEventListener('click', (e) => {
+      if (e.target === expandedModal) {
+        closeExpanded();
+      }
+    });
+
+    // ── Drag & Swipe en Visor Inline ──
+    let inlineStartX = 0;
+    let isInlineDragging = false;
+
+    inlineContainer?.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button')) return;
+      inlineStartX = e.clientX;
+      isInlineDragging = true;
+    });
+
+    inlineContainer?.addEventListener('mouseup', (e) => {
+      if (!isInlineDragging) return;
+      isInlineDragging = false;
+      const diffX = e.clientX - inlineStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) next();
+        else prev();
+      } else {
+        // Clic sin arrastre abre el modo expandido
+        openExpanded(currentSlide);
+      }
+    });
+
+    // Touch Swipe Inline
+    let touchStartX = 0;
+    inlineContainer?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    inlineContainer?.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchEndX - touchStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) next();
+        else prev();
+      }
+    }, { passive: true });
+
+    // ── Drag & Swipe en Visor Expandido ──
+    let expStartX = 0;
+    let isExpDragging = false;
+
+    expandedFrame?.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button')) return;
+      expStartX = e.clientX;
+      isExpDragging = true;
+    });
+
+    expandedFrame?.addEventListener('mouseup', (e) => {
+      if (!isExpDragging) return;
+      isExpDragging = false;
+      const diffX = e.clientX - expStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) next();
+        else prev();
+      }
+    });
+
+    // Touch Swipe Expandido
+    let expTouchStartX = 0;
+    expandedFrame?.addEventListener('touchstart', (e) => {
+      expTouchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    expandedFrame?.addEventListener('touchend', (e) => {
+      const expTouchEndX = e.changedTouches[0].clientX;
+      const diffX = expTouchEndX - expTouchStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) next();
+        else prev();
+      }
+    }, { passive: true });
+
+    // ── Navegación con Teclado (ESC cierra, flechas cambian foto) ──
+    const handleKeydown = (e) => {
+      if (expandedModal?.classList.contains('hidden')) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeExpanded();
+      } else if (e.key === 'ArrowLeft') {
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        next();
       }
     };
 
     window.addEventListener('keydown', handleKeydown);
-    window.addEventListener('wheel', handleScrollClose, { passive: true });
-    window.addEventListener('touchmove', handleScrollClose, { passive: true });
   };
 
   document.addEventListener('astro:page-load', initGallery);
