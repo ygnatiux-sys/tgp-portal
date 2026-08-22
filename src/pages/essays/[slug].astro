@@ -16,6 +16,7 @@ import EditorialStressTest from "../../components/EditorialStressTest.astro";
 import EditorialReadMore from "../../components/EditorialReadMore.astro";
 import DynamicEditorialGallery from "../../components/DynamicEditorialGallery.astro";
 import ArticleFooter from "../../components/ArticleFooter.astro";
+import AIPendingNotice from "../../components/AIPendingNotice.astro";
 
 export async function getStaticPaths() {
   const essays = await getCollection("essays");
@@ -121,7 +122,17 @@ const vibeClass = themeKey;
             {enableStressTest ? (
               <EditorialStressTest />
             ) : (
-              Content && <Content />
+              <>
+                {(!post.body || post.body.trim().length === 0 || post.data.ai_copilot?.trigger_both || post.data.ai_copilot?.trigger_text_only) && (
+                  <AIPendingNotice 
+                    title={post.data.title} 
+                    copilotConfig={post.data.ai_copilot} 
+                    collection="essays" 
+                    slug={post.id} 
+                  />
+                )}
+                {Content && <Content />}
+              </>
             )}
           </>
         )

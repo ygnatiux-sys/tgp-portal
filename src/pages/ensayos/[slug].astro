@@ -9,6 +9,7 @@ import TgpImage from "../../components/TgpImage.astro";
 import PostCinematicStyle from "../../components/PostCinematicStyle.astro";
 import TypeMagic from "../../components/TypeMagic.astro";
 import PolvoDorado from "../../components/PolvoDorado.astro";
+import AIPendingNotice from "../../components/AIPendingNotice.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -175,7 +176,17 @@ const formattedDate = date ? (() => {
                 </pre>
               </div>
             ) : (
-              Content && <Content />
+              <>
+                {(!ensayo.body || ensayo.body.trim().length === 0 || ensayo.data?.ai_copilot?.trigger_both || ensayo.data?.ai_copilot?.trigger_text_only) && (
+                  <AIPendingNotice 
+                    title={title} 
+                    copilotConfig={ensayo.data?.ai_copilot} 
+                    collection="ensayos" 
+                    slug={currentId} 
+                  />
+                )}
+                {Content && <Content />}
+              </>
             )}
           </article>
         </div>

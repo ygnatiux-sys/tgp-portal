@@ -90,6 +90,52 @@ export const templateSchema = {
   }),
 };
 
+// --- COPILOTO IA / ESTUDIO DE GENERACIÓN GEMINI & VEO 3 ---
+export const createAICopilotFields = () => {
+  return fields.object({
+    generation_mode: fields.select({
+      label: '🎛️ PERILLA MAESTRA DE GENERACIÓN IA',
+      description: 'Elige qué deseas generar automáticamente al guardar este post.',
+      options: [
+        { label: '⏹️ Inactivo (Edición Manual)', value: 'disabled' },
+        { label: '⚡🚀 [AMBAS JUNTAS] Redacción Erudita + Imagen Veo 3 Realista', value: 'both' },
+        { label: '✍️🧠 Solo Redacción (Agente Divulgador Gemini)', value: 'text_only' },
+        { label: '🎨📸 Solo Imagen Realista y Moderna (Veo 3 / Imagen 3)', value: 'image_only' },
+      ],
+      defaultValue: 'disabled',
+    }),
+    trigger_both: fields.checkbox({
+      label: '⚡ PERILLA OK: Generar TODO (Posteo Redacción + Imagen Veo 3)',
+      description: '🟢 Si marcas esta opción, el sistema redactará el ensayo completo y generará la imagen realista de portada.',
+      defaultValue: false,
+    }),
+    trigger_text_only: fields.checkbox({
+      label: '✍️ Botón: Redactar con Agente Gemini',
+      description: 'Genera el contenido filosófico y divulgativo respetando la identidad del portal.',
+      defaultValue: false,
+    }),
+    trigger_image_only: fields.checkbox({
+      label: '🎨 Botón: Generar Imagen Realista Veo 3',
+      description: 'Genera una imagen moderna, cinemática y de alta resolución adaptada al tema del título.',
+      defaultValue: false,
+    }),
+    image_style_hint: fields.select({
+      label: '📸 Estilo Visual de la Imagen (Veo 3 / Imagen 3)',
+      description: 'Dirección de arte aplicada al render fotográfico.',
+      options: [
+        { label: '🏛️ Fotografía Editorial Hiperrealista (35mm / Leica / Iluminación Natural)', value: 'editorial-35mm' },
+        { label: '🎞️ Cinemático & Claroscuro (Sombras Rembrandt / Grano Fino)', value: 'cinematic-dark' },
+        { label: '🗿 Textura Táctil & Arqueología (Macro / Vestigios / Papiro)', value: 'tactile-archeo' },
+        { label: '📐 Minimalismo Moderno & Geometría Sagrada', value: 'modern-geometry' },
+      ],
+      defaultValue: 'editorial-35mm',
+    }),
+  }, {
+    label: '✨🧠 SCRIPTORIUM AI STUDIO (Gemini + Veo 3)',
+    description: 'Suite de co-creación: genera redacción erudita, imágenes hiperrealistas o ambas en simultáneo.',
+  });
+};
+
 // --- ESQUEMAS BASE ---
 export const baseSchema = {
   title: fields.slug({ 
@@ -107,6 +153,7 @@ export const baseSchema = {
     description: 'Si está marcado, no aparecerá en el portal público.',
     defaultValue: false,
   }),
+  ai_copilot: createAICopilotFields(),
   date: fields.date({ 
     label: 'Fecha',
     defaultValue: { kind: 'today' },
@@ -294,6 +341,7 @@ export const ensayosSchema = {
     description: 'Si está marcado, no aparecerá en el portal público.',
     defaultValue: false,
   }),
+  ai_copilot: createAICopilotFields(),
   subtitle: fields.text({ label: 'Subtítulo' }),
   template: fields.relationship({
     label: 'Plantilla Editorial (TGP)',
