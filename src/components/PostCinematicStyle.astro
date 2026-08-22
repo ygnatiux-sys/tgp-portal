@@ -1,0 +1,434 @@
+---
+/**
+ * PostCinematicStyle.astro — Contenedor Maestro Cinemático Total
+ * 
+ * Aplica a TODO el post (H1, H2, H3, P, Blockquote) exactamente el mismo efecto de:
+ * 1. Lienzo de Polvo Dorado en tiempo real de fondo (Canvas continuo interactivo).
+ * 2. Tokenización en palabras (Libre Bodoni / Cormorant / Gloock) con emergencia por desenfoque.
+ * 3. Variantes de palabra: Glow blanco brillante en negritas y Dorado TGP en términos clave/itálicas.
+ * 4. Cursor dorado parpadeante tipo TypeMagic durante la escritura que se desvanece al terminar.
+ * 5. Disparo dinámico por IntersectionObserver al hacer scroll.
+ */
+interface Props {
+  class?: string;
+  enableGlobalDust?: boolean;
+  enableParagraphTypeMagic?: boolean;
+}
+
+const { 
+  class: className = "",
+  enableGlobalDust = true,
+  enableParagraphTypeMagic = true
+} = Astro.props;
+
+const rootId = "cinematic-root-" + Math.random().toString(36).substring(2, 9);
+---
+
+<div 
+  id={rootId} 
+  class={`post-cinematic-root relative w-full overflow-hidden ${className}`}
+  data-enable-dust={enableGlobalDust ? "true" : "false"}
+  data-enable-typemagic={enableParagraphTypeMagic ? "true" : "false"}
+>
+  {/* Canvas de Polvo Dorado de Fondo Completo */}
+  {enableGlobalDust && (
+    <canvas
+      id={`${rootId}-dust-canvas`}
+      class="cinematic-global-dust absolute inset-0 w-full h-full pointer-events-none z-0"
+      aria-hidden="true"
+    ></canvas>
+  )}
+
+  {/* Contenido del Post */}
+  <div class="relative z-10 w-full">
+    <slot />
+  </div>
+</div>
+
+<style is:global>
+  .post-cinematic-root {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ── 1. Tipografía y Encabezados con Gradiente Oro/Acero ── */
+  .post-cinematic-root article.prose h1,
+  .post-cinematic-root .cinematic-block h1 {
+    font-family: "Gloock", 'Libre Bodoni', 'Cormorant Garamond', Georgia, serif !important;
+    font-size: clamp(2.3rem, 5.5vw, 4rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.025em !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    max-width: 56rem !important;
+    margin: 3.5rem auto 1.75rem auto !important;
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 40%, #DFCA9D 70%, #94A3B8 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: drop-shadow(0 4px 25px rgba(0, 0, 0, 0.9)) !important;
+  }
+
+  .post-cinematic-root article.prose h2,
+  .post-cinematic-root .cinematic-block h2 {
+    font-family: "Gloock", 'Libre Bodoni', Georgia, serif !important;
+    font-size: clamp(1.8rem, 3.8vw, 2.75rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.015em !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    max-width: 50rem !important;
+    margin: 3rem auto 1.5rem auto !important;
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 45%, #DFCA9D 75%, #94A3B8 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: drop-shadow(0 3px 18px rgba(0, 0, 0, 0.85)) !important;
+  }
+
+  .post-cinematic-root article.prose h3,
+  .post-cinematic-root .cinematic-block h3 {
+    font-family: "Cinzel", 'Libre Bodoni', Georgia, serif !important;
+    font-size: clamp(1.4rem, 2.8vw, 2.1rem) !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.02em !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    max-width: 46rem !important;
+    margin: 2.5rem auto 1.25rem auto !important;
+    background: linear-gradient(180deg, #F5F4F0 0%, #DFCA9D 45%, #C9A86C 75%, #94A3B8 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.8)) !important;
+  }
+
+  /* ── 2. Párrafos Editoriales ── */
+  .post-cinematic-root article.prose p,
+  .post-cinematic-root .cinematic-block p {
+    font-family: 'Libre Bodoni', 'Newsreader', 'Cormorant Garamond', Georgia, serif !important;
+    font-size: clamp(1.15rem, 1.85vw, 1.45rem) !important;
+    font-weight: 400 !important;
+    line-height: 1.95 !important;
+    letter-spacing: 0.015em !important;
+    color: rgba(212, 201, 188, 0.85) !important;
+    max-width: 78ch !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    text-wrap: pretty !important;
+    margin-bottom: 2rem !important;
+  }
+
+  /* ── 3. Citas con Estilo Cinemático TGP ── */
+  .post-cinematic-root article.prose blockquote,
+  .post-cinematic-root .cinematic-block blockquote {
+    font-family: 'Libre Bodoni', 'Newsreader', serif !important;
+    font-size: clamp(1.22rem, 2.1vw, 1.55rem) !important;
+    line-height: 1.85 !important;
+    font-style: italic !important;
+    color: rgba(245, 244, 240, 0.95) !important;
+    max-width: 72ch !important;
+    margin: 3rem auto !important;
+    padding: 1.5rem 2rem !important;
+    text-align: center !important;
+    border: none !important;
+    background: radial-gradient(ellipse at center, rgba(201, 168, 108, 0.08) 0%, transparent 75%) !important;
+    position: relative !important;
+  }
+
+  /* ── 4. Cada PALABRA: Condensación Líquida con Desenfoque (PolvoDorado / TypeMagic) ── */
+  .post-cinematic-root .polvo-word {
+    display: inline;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, filter;
+  }
+
+  .post-cinematic-root .polvo-word.pd-emerge {
+    opacity: 1 !important;
+    filter: blur(0) !important;
+  }
+
+  /* Variante Glow / Negrita */
+  .post-cinematic-root .polvo-word--glow {
+    color: rgba(255, 255, 255, 0.98) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.25) !important;
+  }
+
+  /* Variante Acento Dorado TGP */
+  .post-cinematic-root .polvo-word--accent {
+    color: #C9A86C !important;
+    font-weight: 600 !important;
+    text-shadow: 0 0 14px rgba(201, 168, 108, 0.45) !important;
+  }
+
+  /* ── 5. Cursor Dorado Parpadeante ── */
+  .post-cinematic-root .polvo-cursor {
+    display: inline-block;
+    color: #C9A86C;
+    font-weight: 100;
+    margin-left: 2px;
+    animation: cin-blink 0.75s step-end infinite;
+    transition: opacity 0.6s ease;
+  }
+
+  @keyframes cin-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── 6. Líneas Divisorias Expansivas en <hr> ── */
+  .post-cinematic-root article.prose hr {
+    border: none !important;
+    height: 1px !important;
+    margin: 3.5rem auto !important;
+    width: 0;
+    max-width: 320px;
+    background: linear-gradient(90deg, transparent, #C9A86C 30%, rgba(201, 168, 108, 0.5) 70%, transparent) !important;
+    transition: width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .post-cinematic-root article.prose hr.pd-expand {
+    width: 100% !important;
+  }
+
+  /* ── 7. Selección Global Ámbar ── */
+  .post-cinematic-root ::selection {
+    background: rgba(217, 119, 54, 0.45) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  /* ── Fallback accesible ── */
+  @media (prefers-reduced-motion: reduce) {
+    .post-cinematic-root .polvo-word {
+      opacity: 1 !important;
+      filter: none !important;
+    }
+    .post-cinematic-root .polvo-cursor {
+      display: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    /* ──────────────────────────────────────────────────────
+       1. MOTOR DE POLVO DORADO GLOBAL
+       Partículas en tiempo real con oscilación armónica continua
+    ────────────────────────────────────────────────────── */
+    class GlobalPolvoCanvas {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.motes = [];
+        this.raf = null;
+        this.running = false;
+        this._resize();
+        window.addEventListener('resize', () => this._resize());
+      }
+
+      _resize() {
+        const root = this.canvas.parentElement;
+        this.canvas.width = root ? root.offsetWidth : window.innerWidth;
+        this.canvas.height = root ? root.scrollHeight : window.innerHeight;
+      }
+
+      _spawn(fromLeft = false) {
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        return {
+          x: fromLeft ? -10 : Math.random() * w,
+          y: Math.random() * h,
+          r: 0.8 + Math.random() * 2.4,
+          op: 0.12 + Math.random() * 0.48,
+          vx: 0.20 + Math.random() * 0.52,
+          vy: (Math.random() - 0.5) * 0.13,
+          angle: Math.random() * Math.PI * 2,
+          av: 0.004 + Math.random() * 0.014,
+          osc: 0.06 + Math.random() * 0.11,
+          flickPhase: Math.random() * Math.PI * 2,
+          flickSpeed: 0.010 + Math.random() * 0.028,
+        };
+      }
+
+      start() {
+        if (this.running) return;
+        this.running = true;
+        const count = Math.min(85, Math.max(45, Math.floor(window.innerHeight / 20)));
+        this.motes = Array.from({ length: count }, () => this._spawn());
+        this._loop();
+      }
+
+      stop() {
+        this.running = false;
+        if (this.raf) cancelAnimationFrame(this.raf);
+      }
+
+      _loop() {
+        if (!this.running) return;
+        const { ctx, canvas, motes } = this;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        motes.forEach(m => {
+          m.x += m.vx;
+          m.y += m.vy + Math.sin(m.angle) * m.osc;
+          m.angle += m.av;
+          m.flickPhase += m.flickSpeed;
+
+          if (m.x > canvas.width + 15) Object.assign(m, this._spawn(true));
+
+          const flick = 1 + 0.16 * Math.sin(m.flickPhase);
+          const finalOp = Math.min(1, m.op * flick);
+          const grad = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r * 2.6);
+          grad.addColorStop(0, `rgba(201, 168, 108, ${finalOp})`);
+          grad.addColorStop(0.4, `rgba(223, 202, 157, ${(finalOp * 0.6).toFixed(3)})`);
+          grad.addColorStop(1, `rgba(201, 168, 108, 0)`);
+
+          ctx.beginPath();
+          ctx.fillStyle = grad;
+          ctx.arc(m.x, m.y, m.r * 2.6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        this.raf = requestAnimationFrame(() => this._loop());
+      }
+    }
+
+    /* ──────────────────────────────────────────────────────
+       2. TOKENIZADOR PALABRA POR PALABRA (PolvoDorado / TypeMagic)
+    ────────────────────────────────────────────────────── */
+    const tokenizeBlock = (el) => {
+      if (el.dataset.cinProcessed === 'true') return;
+      el.dataset.cinProcessed = 'true';
+
+      const childNodes = Array.from(el.childNodes);
+      el.innerHTML = '';
+
+      childNodes.forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          const rawWords = child.textContent.split(/(\s+)/);
+          rawWords.forEach(chunk => {
+            if (/^\s+$/.test(chunk)) {
+              el.appendChild(document.createTextNode(chunk));
+            } else if (chunk.length > 0) {
+              const span = document.createElement('span');
+              span.className = 'polvo-word';
+              span.textContent = chunk;
+              el.appendChild(span);
+            }
+          });
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          const isBold = ['STRONG', 'B'].includes(child.tagName);
+          const isAccent = ['EM', 'I', 'A'].includes(child.tagName);
+          const rawWords = child.textContent.split(/(\s+)/);
+
+          const wrapper = document.createElement(child.tagName.toLowerCase());
+          Array.from(child.attributes).forEach(attr => wrapper.setAttribute(attr.name, attr.value));
+
+          rawWords.forEach(chunk => {
+            if (/^\s+$/.test(chunk)) {
+              wrapper.appendChild(document.createTextNode(chunk));
+            } else if (chunk.length > 0) {
+              const span = document.createElement('span');
+              span.className = 'polvo-word';
+              if (isBold) span.classList.add('polvo-word--glow');
+              if (isAccent) span.classList.add('polvo-word--accent');
+              span.textContent = chunk;
+              wrapper.appendChild(span);
+            }
+          });
+          el.appendChild(wrapper);
+        }
+      });
+
+      // Añadir cursor dorado parpadeante
+      const cursor = document.createElement('span');
+      cursor.className = 'polvo-cursor';
+      cursor.textContent = '|';
+      cursor.setAttribute('aria-hidden', 'true');
+      el.appendChild(cursor);
+    };
+
+    /* ──────────────────────────────────────────────────────
+       3. ORQUESTADOR DE SCROLL (IntersectionObserver)
+    ────────────────────────────────────────────────────── */
+    const initCinematicExperience = () => {
+      document.querySelectorAll('.post-cinematic-root').forEach(root => {
+        if (root.dataset.cinematicInit === 'true') return;
+        root.dataset.cinematicInit = 'true';
+
+        // Iniciar Polvo Canvas
+        if (root.dataset.enableDust === 'true') {
+          const canvas = root.querySelector('.cinematic-global-dust');
+          if (canvas) {
+            const dust = new GlobalPolvoCanvas(canvas);
+            dust.start();
+          }
+        }
+
+        // Tokenizar y orquestar elementos
+        if (root.dataset.enableTypemagic === 'true') {
+          const blocks = root.querySelectorAll(
+            'article.prose p, article.prose blockquote, article.prose h1, article.prose h2, article.prose h3, .cinematic-block p, .cinematic-block h1, .cinematic-block h2, .cinematic-block h3'
+          );
+
+          const hrs = root.querySelectorAll('article.prose hr');
+
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                io.unobserve(el);
+
+                if (el.tagName === 'HR') {
+                  el.classList.add('pd-expand');
+                  return;
+                }
+
+                const words = el.querySelectorAll('.polvo-word');
+                const cursor = el.querySelector('.polvo-cursor');
+
+                words.forEach((word, idx) => {
+                  // Cada palabra emerge con ritmo fluido de 40ms
+                  setTimeout(() => {
+                    word.classList.add('pd-emerge');
+                  }, idx * 40);
+                });
+
+                // Al completar todas las palabras, el cursor se apaga
+                const totalDuration = words.length * 40 + 750;
+                setTimeout(() => {
+                  if (cursor) cursor.style.opacity = '0';
+                }, totalDuration);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+          blocks.forEach(b => {
+            tokenizeBlock(b);
+            io.observe(b);
+          });
+
+          hrs.forEach(hr => io.observe(hr));
+        }
+      });
+    };
+
+    document.addEventListener('astro:page-load', initCinematicExperience);
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initCinematicExperience();
+    } else {
+      document.addEventListener('DOMContentLoaded', initCinematicExperience);
+    }
+
+    document.addEventListener('astro:before-swap', () => {
+      document.querySelectorAll('.post-cinematic-root').forEach(r => {
+        r.dataset.cinematicInit = '';
+      });
+    });
+  })();
+</script>
