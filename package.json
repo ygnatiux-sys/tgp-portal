@@ -16,6 +16,7 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/markdoc": "^2.0.8",
     "@astrojs/react": "^6.0.4",
+    "@astrojs/sitemap": "^3.2.1",
     "@fontsource/bodoni-moda": "^5.2.7",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/dm-sans": "^5.2.8",

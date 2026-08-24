@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { tgpIntegrations } from './tgp.integrations.mjs';
@@ -18,6 +19,7 @@ logger.warn = (msg, options) => {
 const isBuild = process.argv.includes('build');
 
 export default defineConfig({
+  site: 'https://thegreatpuzzleproject.com',
   output: 'static',
   
   image: {
@@ -37,6 +39,7 @@ export default defineConfig({
   },
   
   integrations: [
+    sitemap(),
     // Escudo de compilación: Keystatic y su admin solo se inyectan en desarrollo local
     ...(isBuild ? [] : [
       keystatic(), 
