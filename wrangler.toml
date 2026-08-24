@@ -1,0 +1,6 @@
+name = "tgp-ediciones"
+compatibility_date = "2026-08-24"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Workers Static Assets moderno
+assets = { directory = "./dist" }
