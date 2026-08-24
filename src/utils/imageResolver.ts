@@ -1,8 +1,8 @@
 import type { ImageMetadata } from 'astro';
 
-// Carga perezosa (lazy) de imágenes rasterizadas en src/assets/images
+// Carga perezosa (lazy) de imágenes rasterizadas en todo src/assets
 const assetImages = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/**/*.{jpeg,jpg,png,webp,avif,gif,JPEG,JPG,PNG,WEBP}'
+  '/src/assets/**/*.{jpeg,jpg,png,webp,avif,gif,JPEG,JPG,PNG,WEBP}'
 );
 
 /**
