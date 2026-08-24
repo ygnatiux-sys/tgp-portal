@@ -2,12 +2,15 @@
 import Layout from './Layout.astro';
 interface Props {
   title: string;
+  description?: string;
   hero_image?: string;
+  image?: string;
   vibeClass?: string;
+  article?: any;
 }
-const { title, hero_image = '', vibeClass = '' } = Astro.props;
+const { title, description, hero_image = '', image, vibeClass = '', article } = Astro.props;
 ---
-<Layout title={title} vibeClass={vibeClass}>
+<Layout title={title} description={description} image={image || hero_image} vibeClass={vibeClass} article={article}>
   <div class="min-h-screen font-sans transition-colors duration-700" style="font-family: var(--font-tgp-jakarta), system-ui, sans-serif; background-color: var(--bg-current); color: var(--text-current);">
     <slot name="hero" />
 

@@ -58,33 +58,104 @@ interface Props {
 
 const { 
   title, 
-  description = "The Great Puzzle — Editorial Platform",
-  ogImage = "/og-default.jpg",
+  description = "The Great Puzzle — Plataforma editorial, arqueosemiótica, filosofía y cartografía del pensamiento contemporáneo.",
+  ogImage = "/favicon.png",
+  image,
   bgClass = "bg-racing-green",
   vibeClass = ""
 } = Astro.props;
 
 // Canonical URL sin parámetros de búsqueda para SEO y Google Search Console
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImageURL = new URL(image || ogImage, Astro.site ?? Astro.url.origin);
 ---
 
 <!doctype html>
 <html lang="es" class={`${bgClass} text-white antialiased selection:bg-copper-ember selection:text-black`}>
   <head>
+    <!-- Metadatos Primarios y SEO Técnico -->
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Xavier Benítez" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="The Great Puzzle Project" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@thegreatpuzzleproject" />
+    <meta name="twitter:creator" content="@thegreatpuzzleproject" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+
+    <!-- Favicons -->
     <link rel="icon" type="image/png" href="/favicontgp.png" />
     <link rel="shortcut icon" type="image/png" href="/favicontgp.png" />
     <link rel="apple-touch-icon" href="/favicontgp.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+
+    <!-- Datos Estructurados JSON-LD (Schema.org / Linktree Social Graph) -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://thegreatpuzzleproject.com/#organization",
+          "name": "The Great Puzzle Project",
+          "url": "https://thegreatpuzzleproject.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://thegreatpuzzleproject.com/favicon.png"
+          },
+          "sameAs": [
+            "https://linktr.ee/thegreatpuzzleproject",
+            "https://open.spotify.com/show/3zFq9ab980MamMHW48Sqxy",
+            "https://www.youtube.com/@thegreatpuzzleproject",
+            "https://www.instagram.com/thegreatpuzzleproject",
+            "https://www.threads.net/@thegreatpuzzleproject",
+            "https://www.tiktok.com/@thegreatpuzzleproject",
+            "https://bsky.app/profile/thegreatpuzzleproject.bsky.social",
+            "https://www.facebook.com/thegreatpuzzleproject",
+            "https://linkedin.com/in/xavierbenitez",
+            "https://www.pinterest.com/thegreatpuzzleproject",
+            "https://ygnatiux.tumblr.com"
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://thegreatpuzzleproject.com/#author",
+          "name": "Xavier Benítez",
+          "url": "https://linktr.ee/thegreatpuzzleproject",
+          "sameAs": [
+            "https://linktr.ee/thegreatpuzzleproject",
+            "https://ygnatiux.tumblr.com"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://thegreatpuzzleproject.com/#website",
+          "url": "https://thegreatpuzzleproject.com",
+          "name": "The Great Puzzle",
+          "publisher": {
+            "@id": "https://thegreatpuzzleproject.com/#organization"
+          }
+        }
+      ]
+    })} />
+
     <ClientRouter />
     <slot name="head" />
   </head>

@@ -86,7 +86,17 @@ console.log(
 const vibeClass = themeKey;
 ---
 
-<LayoutComponent title={post.data.title} vibeClass={vibeClass}>
+<LayoutComponent 
+  title={`${post.data.title} | Collections | The Great Puzzle`}
+  description={post.data.subtitle || `${post.data.title} — Colección visual publicada en The Great Puzzle.`}
+  image={post.data.hero_image}
+  vibeClass={vibeClass}
+  article={{
+    publishedTime: post.data.date ? String(post.data.date) : undefined,
+    author: post.data.author || 'The Great Puzzle',
+    section: 'Collections'
+  }}
+>
   <FloatingBackButton />
   <HeroComponent
     slot="hero"

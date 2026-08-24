@@ -70,7 +70,17 @@ const formattedDate = date ? (() => {
 })() : null;
 ---
 
-<Layout title={`${title} | The Great Puzzle`} vibeClass={vibeClass}>
+<Layout 
+  title={`${title} | The Great Puzzle`} 
+  description={subtitle || `${title} — Ensayo publicado en The Great Puzzle.`}
+  image={coverImage}
+  vibeClass={vibeClass}
+  article={{
+    publishedTime: date ? String(date) : undefined,
+    author: author,
+    section: 'Ensayos'
+  }}
+>
   <PostCinematicStyle class="bg-black min-h-screen">
     <div 
       class={`ensayos-fullpage-root min-h-screen relative z-10 font-sans pb-20 md:pb-0 ${vibeClass}`} 

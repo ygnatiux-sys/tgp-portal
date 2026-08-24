@@ -87,7 +87,17 @@ console.log(
 );
 ---
 
-<LayoutDark title={entry.data.title} vibeClass={config.vibe}>
+<LayoutDark 
+  title={`${entry.data.title} | eBooks | The Great Puzzle`}
+  description={`${entry.data.title} — Cápsula y eBook publicado en The Great Puzzle.`}
+  hero_image={entry.data.hero_image}
+  vibeClass={config.vibe}
+  article={{
+    publishedTime: entry.data.date ? String(entry.data.date) : undefined,
+    author: 'The Great Puzzle',
+    section: 'eBooks'
+  }}
+>
   <FloatingBackButton />
 
   <HeroComponent
