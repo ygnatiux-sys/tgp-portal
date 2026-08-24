@@ -10,7 +10,7 @@
     "admin": "start http://localhost:4321/keystatic",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler pages deploy dist"
+    "deploy": "astro build && npx wrangler pages deploy dist"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -45,10 +45,12 @@
     "typescript": "^6.0.3"
   },
   "allowScripts": {
-    "sharp@0.34.5": true,
-    "esbuild@0.28.2": true
+    "workerd@1.20250718.0": true,
+    "esbuild@0.17.19": true,
+    "sharp@0.33.5": true
   },
   "devDependencies": {
-    "@types/node": "^26.2.0"
+    "@types/node": "^26.2.0",
+    "wrangler": "^3.114.17"
   }
 }
