@@ -18,19 +18,25 @@ interface SliderItem {
 interface Props {
   title?: string;
   eyebrow?: string;
+  viewAllLink?: string;
+  viewAllText?: string;
   collection?: 'visual_signals' | 'capsulas' | 'ensayos' | 'essays' | 'architectures' | string;
   currentSlug?: string;
   items?: SliderItem[];
   max?: number;
+  variant?: 'vertical' | 'horizontal';
 }
 
 const { 
   title = "También podrían gustarte",
   eyebrow = "Colecciones",
+  viewAllLink = "",
+  viewAllText = "Ver Todas las Categorías",
   collection = "visual_signals",
   currentSlug = "",
   items: customItems,
-  max = 15
+  max = 15,
+  variant = 'vertical'
 } = Astro.props;
 
 const COLLECTION_LABELS: Record<string, string> = {
@@ -93,7 +99,7 @@ if (customItems && customItems.length > 0) {
     });
 }
 
-// Sanitización segura de acentos y caracteres especiales
+// Sanitización segura de caracteres especiales
 displayItems = displayItems.map(item => ({
   ...item,
   title: (item.title || '')
@@ -114,7 +120,8 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
 
 <section 
   id={uid} 
-  class="netflix-row-root w-full py-6 md:py-10 overflow-hidden relative select-none group/section"
+  class={`netflix-row-root w-full py-6 md:py-10 overflow-hidden relative select-none group/section variant-${variant}`}
+  data-variant={variant}
   aria-label={title}
 >
   <!-- Encabezado de la fila -->
@@ -125,18 +132,27 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
           {eyebrow}
         </span>
       )}
-      <h2 class="text-white text-xl md:text-2xl font-serif tracking-tight leading-tight">
+      <h2 class="text-white text-xl md:text-2xl font-serif tracking-tight leading-tight uppercase">
         {title}
       </h2>
     </div>
     
-    <span class="text-[8px] font-mono tracking-[0.25em] text-white/30 uppercase hidden sm:inline-block">
-      {displayItems.length} Artículos
-    </span>
+    {viewAllLink ? (
+      <a 
+        href={viewAllLink}
+        class="text-[8px] font-mono tracking-[0.25em] text-white/50 hover:text-amber-400 transition-colors uppercase cursor-pointer"
+      >
+        {viewAllText} &rarr;
+      </a>
+    ) : (
+      <span class="text-[8px] font-mono tracking-[0.25em] text-white/30 uppercase hidden sm:inline-block">
+        {displayItems.length} Elementos
+      </span>
+    )}
   </div>
 
   <!-- Contenedor Maestro: Define el alto fijo para evitar el 'Layout Shift' -->
-  <div class="relative w-full px-2 md:px-4" style="min-height: 300px;">
+  <div class="relative w-full px-2 md:px-4" style={variant === 'horizontal' ? "min-height: 240px;" : "min-height: 300px;"}>
     
     <!-- Botón Anterior Flotante en Cápsula (Aparece en hover) -->
     <button 
@@ -181,9 +197,9 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
               <!-- Información Editorial -->
               <div class="card-info absolute inset-x-0 bottom-0 p-3.5 md:p-4 flex flex-col justify-end">
                 <span class="text-[7.5px] tracking-[0.3em] uppercase text-amber-500/90 font-mono mb-1 block">
-                  {item.collectionLabel}
+                  {item.subtitle || item.collectionLabel}
                 </span>
-                <h3 class="netflix-card-title text-white font-serif font-medium line-clamp-2 leading-snug">
+                <h3 class="netflix-card-title text-white font-serif font-medium line-clamp-2 leading-snug uppercase">
                   {item.title}
                 </h3>
               </div>
@@ -207,7 +223,7 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
     transform: translate3d(0, 0, 0);
   }
 
-  /* Tarjeta en Reposo: 2 cols mobile, 3 cols tablet, 4 cols desktop */
+  /* Tarjeta en Reposo Vertical (Default 2:3) */
   .netflix-card {
     width: calc(48% - 6px);
     aspect-ratio: 2 / 3;
@@ -225,6 +241,11 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
       border-color 340ms ease,
       background-color 340ms ease;
     will-change: transform, opacity;
+  }
+
+  /* Variante Horizontal 16:9 (Colecciones Destacadas) */
+  .variant-horizontal .netflix-card {
+    aspect-ratio: 16 / 9;
   }
 
   .netflix-card-img {
