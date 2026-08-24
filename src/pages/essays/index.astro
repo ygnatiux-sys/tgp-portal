@@ -1,7 +1,8 @@
----
+﻿---
 import LayoutPortal from '../../layouts/LayoutPortal.astro';
 import CinematicHeroV2 from '../../components/CinematicHeroV2.astro';
 import BentoPortal from '../../components/BentoPortal.astro';
+import RowNetflixClasico from '../../components/RowNetflixClasico.astro';
 
 import { getCollection } from 'astro:content';
 
@@ -10,35 +11,24 @@ try { rawPosts = await getCollection('essays'); } catch {}
 
 const normalize = (post: any, col: string) => ({
   id:         post.id,
-  title:      post.data.title       ?? 'Sin título',
-  subtitle:   post.data.subtitle    ?? post.data.description ?? undefined,
-  image:      post.data.hero_image  ?? post.data.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
-  link:       `/${col.replace('_', '-')}/${post.id}`,
+  title:      post.data?.title       ?? 'Sin título',
+  subtitle:   post.data?.subtitle    ?? post.data?.description ?? undefined,
+  image:      post.data?.hero_image  ?? post.data?.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link:       //,
   collection: col,
-  date:       post.data.date        ? String(post.data.date) : undefined,
-  author:     post.data.author      ?? 'TGP',
+  date:       post.data?.date        ? String(post.data.date) : undefined,
+  author:     post.data?.author      ?? 'TGP',
+  collectionLabel: 'Dossiers',
 });
 
 const sortByLatest = (a: any, b: any) => {
-  const dateA = a.data.date ? new Date(String(a.data.date)).getTime() : Date.now();
-  const dateB = b.data.date ? new Date(String(b.data.date)).getTime() : Date.now();
+  const dateA = a.data?.date ? new Date(String(a.data.date)).getTime() : Date.now();
+  const dateB = b.data?.date ? new Date(String(b.data.date)).getTime() : Date.now();
   return dateB - dateA || b.id.localeCompare(a.id);
 };
 
-const allPosts = [...rawPosts].sort(sortByLatest).map(p => normalize(p, 'essays'));
-
-const heroPost = allPosts[0] ?? {
-  id: 'fallback',
-  title: 'Dossiers',
-  subtitle: 'Immersive thoughts, visual diaries and design notes.',
-  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
-  link: '#',
-  collection: 'essays',
-};
-
+const allPosts = [...rawPosts].filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'essays'));
 const bentoPosts = allPosts.slice(1, 15);
-
-const sliderPosts = allPosts.slice(0, 8);
 ---
 
 <LayoutPortal 
@@ -55,9 +45,17 @@ const sliderPosts = allPosts.slice(0, 8);
     <div class="bento-main-col min-w-0">
       <BentoPortal posts={bentoPosts} />
     </div>
-
   </div>
 
-
+  {allPosts.length > 4 && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-8 border-t border-white/10 mt-8">
+      <RowNetflixClasico
+        items={allPosts}
+        title="Dossiers Recientes"
+        eyebrow="Colección Dossiers"
+        max={15}
+      />
+    </div>
+  )}
 
 </LayoutPortal>

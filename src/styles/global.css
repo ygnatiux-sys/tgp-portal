@@ -7,9 +7,10 @@
 
 @theme {
   /* ===== PALETA DE ACENTO GLOBAL ===== */
-  --color-racing-green: #0A1C15;
-  --color-racing-fumee: #111C18;
-  --color-racing-fumee-dark: #0D1613;
+  --color-racing-green: #0b0f0e;
+  --color-racing-fumee: #111716;
+  --color-racing-fumee-dark: #161d1c;
+  --color-card-border: #263231;
   --color-copper-ember: #E3DDD3;
   --color-old-silver: #D8D9D7;
   --color-ash-white: #E3DDD3;
@@ -45,12 +46,12 @@
   --font-tgp-body:       var(--font-tgp-jakarta);    /* clase: font-tgp-body  */
 
   /* ===== TOKENS DE TEMA (data-theme) ===== */
-  /* Default (Dark) */
-  --color-theme-bg:      #0A1C15;
+  /* Default (Dark: Abismo Oscuro #0b0f0e con acentos Copper #E3DDD3) */
+  --color-theme-bg:      #0b0f0e;
   --color-theme-text:    #ffffff;
   --color-theme-accent:  #E3DDD3;
   --color-theme-muted:   color-mix(in srgb, #ffffff 15%, transparent);
-  --color-theme-glass:   color-mix(in srgb, #0A1C15, transparent 82%);
+  --color-theme-glass:   color-mix(in srgb, #0b0f0e, transparent 82%);
 }
 
 /* ===== TEMA BASE (Data-Theme Architecture) =====
@@ -59,17 +60,20 @@
    permitiendo: bg-theme-bg, text-theme-text, border-theme-muted, etc.
 */
 :root {
-  /* Default (oscuro: Racing Green con texto teñido en Copper Ember) */
-  --bg-current: #0A1C15;
+  /* Default (Abismo Oscuro #0b0f0e, Contenedor Central #111716, Sub-cards #161d1c, Bordes #263231) */
+  --bg-current: #0b0f0e;
   --text-current: #E3DDD3;
-  --color-theme-bg: #0A1C15;
+  --color-theme-bg: #0b0f0e;
   --color-theme-text: #E3DDD3;
   --color-theme-muted: color-mix(in srgb, #E3DDD3 15%, transparent);
-  --color-theme-glass: color-mix(in srgb, #0A1C15, transparent 82%);
-  --bg-article-fumee: #111C18;
-  --bg-article-fumee-dark: #0D1613;
-  --bg-card-fumee: rgba(19, 30, 26, 0.75);
-  --border-fumee: rgba(255, 255, 255, 0.08);
+  --color-theme-glass: color-mix(in srgb, #0b0f0e, transparent 82%);
+  --bg-article-fumee: #111716;
+  --bg-article-fumee-dark: #161d1c;
+  --bg-card-main: #111716;
+  --bg-card-sub: #161d1c;
+  --bg-card-fumee: rgba(17, 23, 22, 0.85);
+  --border-fumee: #263231;
+  --border-card: #263231;
 }
 
 /* data-theme override: Grises minerales adaptados por ambiente (suavizados, tono mineral Google/Gemini con ADN editorial) */

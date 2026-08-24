@@ -1,4 +1,4 @@
----
+﻿---
 /**
  * portal.astro — Ruta: /portal
  *
@@ -18,6 +18,7 @@ import BentoPortal from '../components/BentoPortal.astro';
 import ImmersiveSlider from '../components/ImmersiveSlider.astro';
 import ColeccionEnsayosRecientes from '../components/ColeccionEnsayosRecientes.astro';
 import HeroNetflixStyleCarousel from '../components/HeroNetflixStyleCarousel.astro';
+import RowNetflixClasico from '../components/RowNetflixClasico.astro';
 
 
 import { getCollection } from 'astro:content';
@@ -144,9 +145,54 @@ const sliderPosts = allPosts.slice(0, 8);
     <span>Colección</span>
   </div>
 
-  <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
     <ColeccionEnsayosRecientes posts={ensayos} />
   </div>
+
+  {/* ── Secciones de Colecciones (> 4 artículos) con RowNetflixClasico ── */}
+  {essays.length > 4 && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
+      <RowNetflixClasico 
+        items={essays} 
+        title="Dossiers & Ensayos Cinemáticos" 
+        eyebrow="Colección Dossiers" 
+        max={15} 
+      />
+    </div>
+  )}
+
+  {capsulas.length > 4 && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
+      <RowNetflixClasico 
+        items={capsulas} 
+        title="Arquetipos Globales & eBooks" 
+        eyebrow="Colección eBooks" 
+        max={15} 
+      />
+    </div>
+  )}
+
+  {architectures.length > 4 && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
+      <RowNetflixClasico 
+        items={architectures} 
+        title="Magazines & Arquitecturas" 
+        eyebrow="Colección Magazines" 
+        max={15} 
+      />
+    </div>
+  )}
+
+  {visualSignals.length > 4 && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
+      <RowNetflixClasico 
+        items={visualSignals} 
+        title="Visual Signals & Curaduría" 
+        eyebrow="Colección Collections" 
+        max={15} 
+      />
+    </div>
+  )}
 
   {/* ================================================================
       4. SECCIÓN COLECCIÓN: TEST

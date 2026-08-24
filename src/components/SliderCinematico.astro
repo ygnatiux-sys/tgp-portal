@@ -126,18 +126,19 @@ if (customItems && customItems.length >= 3) {
   }
 }
 
-// Sanitización de acentos y caracteres especiales
+// Sanitización segura de acentos y caracteres especiales
 displayItems = displayItems.map(item => ({
   ...item,
-  title: item.title
-    .replace(/Ã±/g, 'ñ')
-    .replace(/Ã¡/g, 'á')
-    .replace(/Ã©/g, 'é')
-    .replace(/Ã­/g, 'í')
-    .replace(/Ã³/g, 'ó')
-    .replace(/Ãº/g, 'ú')
-    .replace(/Ã‘/g, 'Ñ')
-    .replace(/Â/g, ''),
+  title: (item.title || '')
+    .replaceAll('Ã±', 'ñ')
+    .replaceAll('Ã¡', 'á')
+    .replaceAll('Ã©', 'é')
+    .replaceAll('Ã\u00AD', 'í')
+    .replaceAll('Ã\xAD', 'í')
+    .replaceAll('Ã³', 'ó')
+    .replaceAll('Ãº', 'ú')
+    .replaceAll('Ã‘', 'Ñ')
+    .replaceAll('Â', ''),
 }));
 
 // Triplicamos para la cinta infinita
@@ -170,11 +171,11 @@ const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
     <!-- Máscaras de difuminación sutiles en los extremos exteriores -->
     <div 
       class="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-16 z-30"
-      style="background: linear-gradient(to right, var(--bg-current, #2a2e33) 0%, transparent 100%);"
+      style="background: linear-gradient(to right, var(--bg-current, #0b0f0e) 0%, transparent 100%);"
     ></div>
     <div 
       class="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-16 z-30"
-      style="background: linear-gradient(to left, var(--bg-current, #2a2e33) 0%, transparent 100%);"
+      style="background: linear-gradient(to left, var(--bg-current, #0b0f0e) 0%, transparent 100%);"
     ></div>
 
     <!-- Controles Laterales Minimalistas -->
@@ -203,13 +204,16 @@ const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
           class="slider-card relative shrink-0 overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer" 
           data-index={idx}
           data-link={item.link}
+          aria-hidden={idx < displayItems.length || idx >= displayItems.length * 2 ? "true" : "false"}
+          tabindex={idx >= displayItems.length && idx < displayItems.length * 2 ? "0" : "-1"}
         >
-          <!-- Imagen con Soft Zoom limpio -->
-          <div class="absolute inset-0 overflow-hidden bg-black">
+          <!-- Identificamos la tarjeta central inicial exacta -->
+          <div class="absolute inset-0 overflow-hidden bg-racing-fumee">
             <img 
               src={item.image} 
               alt={item.title} 
-              loading="lazy"
+              loading={idx === (displayItems.length + Math.floor(displayItems.length / 2)) ? "eager" : "lazy"}
+              fetchpriority={idx === (displayItems.length + Math.floor(displayItems.length / 2)) ? "high" : "auto"}
               decoding="async"
               class="slider-card-img w-full h-full object-cover" 
             />
@@ -282,7 +286,8 @@ const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
     width: var(--ear-width);
     height: clamp(350px, 44vh, 500px); 
     opacity: 0.45;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: var(--bg-card-main, #111716);
+    border: 1px solid var(--border-card, #263231);
     
     will-change: width, transform, opacity;
     transform: translate3d(0, 0, 0); 
@@ -302,6 +307,7 @@ const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
     width: var(--face-width);
     height: clamp(400px, 50vh, 580px);
     opacity: 1;
+    background-color: var(--bg-card-main, #111716);
     border-color: rgba(184, 115, 51, 0.6);
     box-shadow: 
       0 20px 45px -12px rgba(0, 0, 0, 0.5),
@@ -485,12 +491,45 @@ const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
       });
     });
 
-    section.addEventListener("mouseenter", () => {
+    // 5. Soporte Táctil (Swipe)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const SWIPE_THRESHOLD = 40;
+
+    sectionEl.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].screenX;
+      isUserActive = true;
+      stopSlowRhythm();
+    }, { passive: true });
+
+    sectionEl.addEventListener('touchend', (e: TouchEvent) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+      
+      if (idleResumeTimer) clearTimeout(idleResumeTimer);
+      idleResumeTimer = setTimeout(() => {
+        isUserActive = false;
+        startSlowRhythm();
+      }, 6000);
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (Math.abs(swipeDistance) > SWIPE_THRESHOLD) {
+        if (swipeDistance < 0) {
+          goToIndex(currentIndex + 1, true); // Swipe Izquierda (Siguiente)
+        } else {
+          goToIndex(currentIndex - 1, true); // Swipe Derecha (Anterior)
+        }
+      }
+    }
+
+    sectionEl.addEventListener("mouseenter", () => {
       isUserActive = true;
       stopSlowRhythm();
     });
 
-    section.addEventListener("mouseleave", () => {
+    sectionEl.addEventListener("mouseleave", () => {
       isUserActive = false;
       startSlowRhythm();
     });

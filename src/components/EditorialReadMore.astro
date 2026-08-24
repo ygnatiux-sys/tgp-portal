@@ -1,12 +1,12 @@
----
+﻿---
 /**
  * EditorialReadMore.astro
- * Componente dinámico de "Leer Más" insertable al pie de artículos.
- * Renderiza el grid visual de inicio (1 card destacada superior + 2 cards inferiores) adaptándose a la colección y respetando el bg-current local.
+ * Modelo Tríptico Editorial de "Continuar Lectura":
+ * 1. Card Hero Protagonista Arriba (Full-width panorámico con tipografía editorial)
+ * 2. Carrusel RowNetflixClasico Debajo (4 columnas visibles en desktop con artículos recientes)
  */
 import { getCollection } from 'astro:content';
-import TgpImage from './TgpImage.astro';
-import SliderCinematico from './SliderCinematico.astro';
+import RowNetflixClasico from './RowNetflixClasico.astro';
 
 interface Props {
   collection?: 'ensayos' | 'essays' | 'architectures' | 'visual_signals' | 'capsulas' | string;
@@ -30,111 +30,179 @@ const {
   vibeClass = ''
 } = Astro.props;
 
-// Diccionario de nombres editoriales dinámicos
 const COLLECTION_LABELS: Record<string, string> = {
-  'ensayos': 'Ensayos',
-  'essays': 'Dossiers',
-  'architectures': 'Magazines',
-  'visual_signals': 'Collections',
+  ensayos: 'Ensayos',
+  essays: 'Dossiers',
+  architectures: 'Magazines',
+  visual_signals: 'Collections',
   'visual-signals': 'Collections',
-  'capsulas': 'eBooks',
-  'test': 'TEST',
+  capsulas: 'eBooks',
+  test: 'TEST',
 };
 
 const collectionKey = collection.replace('-', '_');
-const activeLabel = COLLECTION_LABELS[collection] || COLLECTION_LABELS[collectionKey] || 'TEST';
+const activeLabel = COLLECTION_LABELS[collection] || COLLECTION_LABELS[collectionKey] || 'TGP';
 
-let displayPosts: any[] = [];
+let allNormalizedPosts: any[] = [];
 
-if (customItems && customItems.length >= 3) {
-  displayPosts = customItems.slice(0, 3);
+if (customItems && customItems.length >= 2) {
+  allNormalizedPosts = customItems;
 } else {
-  // Fetch dinámico de la colección correspondiente
-  let rawPosts: any[] = [];
-  try {
-    rawPosts = await getCollection(collectionKey as any);
-  } catch {
-    try {
-      rawPosts = await getCollection(collection as any);
-    } catch {
-      rawPosts = [];
-    }
-  }
+  // ── Obtenemos artículos recientes de todas las colecciones principales ──
+  const collectionsToQuery = ['ensayos', 'essays', 'capsulas', 'architectures', 'visual_signals'];
+  let pool: any[] = [];
 
-  // Si la colección actual tiene pocos posts, completar con fallback global
-  if (!rawPosts || rawPosts.length < 3) {
+  for (const col of collectionsToQuery) {
     try {
-      const fallbackTest = await getCollection('test');
-      rawPosts = [...rawPosts, ...fallbackTest];
+      const posts = await getCollection(col as any);
+      if (Array.isArray(posts)) {
+        posts.forEach((p: any) => {
+          if (!p.data?.draft) {
+            pool.push({
+              ...p,
+              _col: col,
+            });
+          }
+        });
+      }
     } catch {}
   }
 
-  // Fisher-Yates shuffle para aleatorizar los posts
-  const shuffleArray = (array: any[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
+  // Ordenar por fecha más reciente
+  pool.sort((a: any, b: any) => {
+    const dateA = a.data?.date ? new Date(String(a.data.date)).getTime() : 0;
+    const dateB = b.data?.date ? new Date(String(b.data.date)).getTime() : 0;
+    if (dateA && dateB && dateA !== dateB) return dateB - dateA;
+    return (b.id || '').localeCompare(a.id || '');
+  });
 
-  // Filtrar el post actual, aleatorizar y normalizar
-  displayPosts = shuffleArray(rawPosts.filter((p: any) => p.id !== currentSlug))
-    .slice(0, 3)
+  // Filtrar el artículo actual
+  allNormalizedPosts = pool
+    .filter((p: any) => p.id !== currentSlug)
     .map((p: any) => {
-      const col = p.collection || collectionKey;
-      const colLabel = COLLECTION_LABELS[col] || activeLabel;
+      const col = p._col || p.collection || collectionKey;
       return {
         title: p.data?.title ?? 'Sin título',
         subtitle: p.data?.subtitle ?? p.data?.description ?? '',
-        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1449156001437-37c6412789b7?q=80&w=1200&auto=format&fit=crop',
+        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop',
         link: `/${col.replace('_', '-')}/${p.id}`,
-        collectionLabel: colLabel
+        collectionLabel: COLLECTION_LABELS[col] || activeLabel,
+        date: p.data?.date ? String(p.data.date) : '',
       };
     });
-
-  // Fallbacks de alta estética si no hay posts en la base
-  if (displayPosts.length < 3) {
-    const fallbacks = [
-      {
-        title: 'La Memoria Mineral',
-        subtitle: 'Una aproximación arqueológica a los monolitos de basalto y su resonancia acústica en la pampa desértica.',
-        image: '/images/posts/arkhaim/hero_image.jpg',
-        link: '/ensayos',
-        collectionLabel: activeLabel
-      },
-      {
-        title: 'Geometría del Vacío',
-        subtitle: 'Espacios negativos en el brutalismo del siglo XX y la tensión volumétrica entre masa y silencio.',
-        image: '/images/posts/old-buenos-ayres/hero_image.jpg',
-        link: '/essays',
-        collectionLabel: activeLabel
-      },
-      {
-        title: 'Ecos de Obsidiana',
-        subtitle: 'Crónica visual sobre la fractura de la materia volcánica y sus reflejos en la arquitectura andina.',
-        image: '/images/posts/the-mistery/hero_image.webp',
-        link: '/architectures',
-        collectionLabel: activeLabel
-      }
-    ];
-    while (displayPosts.length < 3) {
-      displayPosts.push(fallbacks[displayPosts.length]);
-    }
-  }
 }
 
-// Tomamos 3 posts: 1 protagonista (arriba) y 2 secundarios (abajo)
-const heroPost = displayPosts[0] || null;
-const subPosts = displayPosts.slice(1, 3);
+// Sanitización segura de caracteres
+allNormalizedPosts = allNormalizedPosts.map(item => ({
+  ...item,
+  title: (item.title || '')
+    .replaceAll('Ã±', 'ñ')
+    .replaceAll('Ã¡', 'á')
+    .replaceAll('Ã©', 'é')
+    .replaceAll('Ã\u00AD', 'í')
+    .replaceAll('Ã\xAD', 'í')
+    .replaceAll('Ã³', 'ó')
+    .replaceAll('Ãº', 'ú')
+    .replaceAll('Ã‘', 'Ñ')
+    .replaceAll('Â', ''),
+  subtitle: (item.subtitle || '')
+    .replaceAll('Ã±', 'ñ')
+    .replaceAll('Ã¡', 'á')
+    .replaceAll('Ã©', 'é')
+    .replaceAll('Ã\u00AD', 'í')
+    .replaceAll('Ã\xAD', 'í')
+    .replaceAll('Ã³', 'ó')
+    .replaceAll('Ãº', 'ú')
+    .replaceAll('Ã‘', 'Ñ')
+    .replaceAll('Â', ''),
+}));
+
+// Separamos el Hero Principal (arriba) y los siguientes para el carrusel (debajo)
+const heroPost = allNormalizedPosts[0] || null;
+const rowPosts = allNormalizedPosts.slice(1, 16);
 ---
 
-<SliderCinematico
-  collection={collection}
-  currentSlug={currentSlug}
-  title={activeLabel}
-  eyebrow="Continuar Leyendo"
-  vibeClass={vibeClass}
-/>
+<section class={`editorial-read-more-wrapper w-full pt-12 pb-6 flex flex-col gap-10 select-none ${vibeClass}`}>
+  
+  <!-- ═══════════════════════════════════════════════════════════════════
+       1. CARD HERO PROTAGONISTA (Arriba)
+  ═══════════════════════════════════════════════════════════════════ -->
+  {heroPost && (
+    <div class="w-full">
+      <div class="flex items-center justify-between gap-4 mb-3 px-2">
+        <span class="text-[8px] md:text-[9px] tracking-[0.4em] uppercase font-mono text-amber-500/90 font-bold block">
+          Lectura Recomendada
+        </span>
+        <span class="text-[8px] tracking-[0.3em] font-mono uppercase text-white/30">
+          {heroPost.collectionLabel}
+        </span>
+      </div>
 
+      <a 
+        href={heroPost.link}
+        class="group block relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 hover:border-amber-500/40 transition-all duration-500 shadow-2xl bg-black/40"
+      >
+        <!-- Imagen de Fondo Panorámica con Efecto Ken Burns en Hover -->
+        <div class="relative w-full aspect-16/9 md:aspect-21/9 overflow-hidden bg-black">
+          <img 
+            src={heroPost.image} 
+            alt={heroPost.title} 
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover brightness-[0.75] group-hover:brightness-[0.9] group-hover:scale-[1.03] transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+          />
+          
+          <!-- Degradados cinematográficos superpuestos -->
+          <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/45 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-0 bg-linear-to-r from-black/80 via-transparent to-transparent hidden md:block pointer-events-none"></div>
 
+          <!-- Contenido Editorial sobre el Hero -->
+          <div class="absolute inset-x-0 bottom-0 p-6 md:p-10 lg:p-12 flex flex-col justify-end gap-3 z-20">
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-1 rounded-full text-[7.5px] tracking-[0.3em] uppercase font-mono bg-black/60 backdrop-blur-md text-amber-400 border border-amber-400/30">
+                {heroPost.collectionLabel}
+              </span>
+              {heroPost.date && (
+                <span class="text-[8px] font-mono tracking-widest text-white/40">
+                  {heroPost.date}
+                </span>
+              )}
+            </div>
+
+            <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-white font-bold tracking-tight leading-tight group-hover:text-amber-300 transition-colors duration-300 max-w-4xl">
+              {heroPost.title}
+            </h3>
+
+            {heroPost.subtitle && (
+              <p class="font-sans text-xs sm:text-sm md:text-base text-gray-300/80 font-light line-clamp-2 max-w-2xl leading-relaxed">
+                {heroPost.subtitle}
+              </p>
+            )}
+
+            <div class="pt-2">
+              <span class="inline-flex items-center gap-2 text-[8px] md:text-[9px] font-mono uppercase tracking-[0.25em] text-amber-400 group-hover:translate-x-1.5 transition-transform duration-300">
+                <span>Continuar Lectura</span>
+                <span>→</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  )}
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       2. CARRUSEL ROW NETFLIX CLÁSICO (Debajo — 4 columnas en Desktop)
+  ═══════════════════════════════════════════════════════════════════ -->
+  {rowPosts.length > 0 && (
+    <div class="w-full pt-2">
+      <RowNetflixClasico 
+        items={rowPosts}
+        title="Más Artículos Recientes"
+        eyebrow="Archivo Epistémico"
+        max={15}
+      />
+    </div>
+  )}
+
+</section>
