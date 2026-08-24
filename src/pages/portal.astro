@@ -16,6 +16,7 @@ import LayoutPortal from '../layouts/LayoutPortal.astro';
 import CinematicHeroV2 from '../components/CinematicHeroV2.astro';
 import BentoPortal from '../components/BentoPortal.astro';
 import ImmersiveSlider from '../components/ImmersiveSlider.astro';
+import ColeccionEnsayosRecientes from '../components/ColeccionEnsayosRecientes.astro';
 
 
 import { getCollection } from 'astro:content';
@@ -135,6 +136,10 @@ const sliderPosts = allPosts.slice(0, 8);
   {/* ── Divisor Sección Colección ── */}
   <div class="portal-section-label">
     <span>Colección</span>
+  </div>
+
+  <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+    <ColeccionEnsayosRecientes posts={ensayos} />
   </div>
 
   {/* ================================================================
