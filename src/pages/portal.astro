@@ -1,4 +1,4 @@
-﻿---
+---
 /**
  * portal.astro — Ruta: /portal
  *
@@ -44,7 +44,7 @@ const normalize = (post: any, col: string) => ({
   id:         post.id,
   title:      post.data?.title       ?? 'Sin título',
   subtitle:   post.data?.subtitle    ?? post.data?.description ?? undefined,
-  image:      post.data?.hero_image  ?? post.data?.coverImage  ?? 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  image:      post.data?.hero_image  ?? post.data?.coverImage  ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
   link:       col === 'test' ? `/test/${post.id}` : `/${col.replace('_', '-')}/${post.id}`,
   collection: col,
   date:       post.data?.date        ? String(post.data.date) : undefined,
@@ -80,7 +80,7 @@ const heroPost = allPosts[0] ?? {
   id: 'fallback',
   title: 'The Great Puzzle',
   subtitle: 'Portal Editorial 2026',
-  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670',
+  image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
   link: '#',
   collection: 'portal',
 };

@@ -91,7 +91,7 @@ if (customItems && customItems.length > 0) {
       return {
         title: p.data?.title ?? 'Sin título',
         subtitle: p.data?.subtitle ?? p.data?.description ?? '',
-        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop',
+        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
         link: `/${col.replace('_', '-')}/${p.id}`,
         collectionLabel: COLLECTION_LABELS[col] || activeLabel,
         date: p.data?.date ? String(p.data.date) : '',

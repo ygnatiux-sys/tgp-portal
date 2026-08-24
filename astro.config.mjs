@@ -24,6 +24,7 @@ export default defineConfig({
   
   image: {
     domains: [
+      'storage.thegreatpuzzleproject.com',
       'images.unsplash.com',
       'upload.wikimedia.org',
       'commons.wikimedia.org',

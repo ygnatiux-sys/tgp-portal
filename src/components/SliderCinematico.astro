@@ -88,7 +88,7 @@ if (customItems && customItems.length >= 3) {
     return {
       title: p.data?.title ?? 'Sin título',
       subtitle: p.data?.subtitle ?? p.data?.description ?? '',
-      image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop',
+      image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
       link: `/${col.replace('_', '-')}/${p.id}`,
       collectionLabel: COLLECTION_LABELS[col] || activeLabel,
       date: p.data?.date ? String(p.data.date) : '',
@@ -101,21 +101,21 @@ if (customItems && customItems.length >= 3) {
       {
         title: 'La Memoria Mineral',
         subtitle: 'Una aproximación arqueológica a los monolitos de basalto y su resonancia acústica en la pampa desértica.',
-        image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200',
+        image: 'https://storage.thegreatpuzzleproject.com/memoria-mineral.webp',
         link: '/ensayos',
         collectionLabel: 'Ensayos',
       },
       {
         title: 'Geometría del Vacío',
         subtitle: 'Espacios negativos en el brutalismo del siglo XX y la tensión volumétrica entre masa y silencio.',
-        image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200',
+        image: 'https://storage.thegreatpuzzleproject.com/geometria-del-vacio.webp',
         link: '/essays',
         collectionLabel: 'Dossiers',
       },
       {
         title: 'Ecos de Obsidiana',
         subtitle: 'Crónica visual sobre la fractura de la materia volcánica y sus reflejos en la arquitectura andina.',
-        image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200',
+        image: 'https://storage.thegreatpuzzleproject.com/ecos-obsidiana.webp',
         link: '/architectures',
         collectionLabel: 'Magazines',
       },

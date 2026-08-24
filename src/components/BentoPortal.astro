@@ -33,7 +33,7 @@ const { posts } = Astro.props;
 // Garantizar que siempre hay posts placeholder si no hay contenido
 const safePosts: Post[] = posts.length > 0 ? posts : Array.from({ length: 14 }, (_, i) => ({
   title: `Post ${i + 1}`,
-  image: `https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=800&h=600`,
+  image: `https://storage.thegreatpuzzleproject.com/default-hero.webp`,
   link:  '#',
   collection: 'essays',
   id: `placeholder-${i}`,

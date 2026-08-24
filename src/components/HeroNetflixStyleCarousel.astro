@@ -47,7 +47,7 @@ const extraClasses = classProp || className || '';
 const normalizedItems = items.map((item, idx) => {
   const itemTitle = item.title || item.data?.title || `Pieza ${idx + 1}`;
   const itemSubtitle = item.subtitle || item.description || item.excerpt || item.data?.subtitle || item.data?.description || '';
-  const itemImage = item.image || item.coverImage || item.hero_image || item.data?.hero_image || item.data?.coverImage || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200';
+  const itemImage = item.image || item.coverImage || item.hero_image || item.data?.hero_image || item.data?.coverImage || 'https://storage.thegreatpuzzleproject.com/default-hero.webp';
   const itemLink = item.link || item.href || (item.collection && item.id ? `/${item.collection.replace('_', '-')}/${item.id}` : '#');
   const itemCol = item.collection || item.data?.collection || 'TGP Editorial';
   const itemDate = item.date || item.data?.date || '';
@@ -72,7 +72,7 @@ const displayItems = normalizedItems.length > 0 ? normalizedItems : Array.from({
   id: `fallback-${i}`,
   title: `Publicación Cinemática ${i + 1}`,
   subtitle: 'Exploración arqueosemiótica y cartografía del pensamiento contemporáneo.',
-  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
   link: '#',
   collection: 'Ensayos',
   date: '2026',

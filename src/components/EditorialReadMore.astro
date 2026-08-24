@@ -1,4 +1,4 @@
-﻿---
+---
 /**
  * EditorialReadMore.astro
  * Modelo Tríptico Editorial de "Continuar Lectura":
@@ -84,7 +84,7 @@ if (customItems && customItems.length >= 2) {
       return {
         title: p.data?.title ?? 'Sin título',
         subtitle: p.data?.subtitle ?? p.data?.description ?? '',
-        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop',
+        image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
         link: `/${col.replace('_', '-')}/${p.id}`,
         collectionLabel: COLLECTION_LABELS[col] || activeLabel,
         date: p.data?.date ? String(p.data.date) : '',
@@ -143,7 +143,7 @@ const rowPosts = allNormalizedPosts.slice(1, 16);
         class="group block relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 hover:border-amber-500/40 transition-all duration-500 shadow-2xl bg-black/40"
       >
         <!-- Imagen de Fondo Panorámica con Efecto Ken Burns en Hover -->
-        <div class="relative w-full aspect-16/9 md:aspect-21/9 overflow-hidden bg-black">
+        <div class="relative w-full aspect-video md:aspect-21/9 overflow-hidden bg-black">
           <img 
             src={heroPost.image} 
             alt={heroPost.title} 
