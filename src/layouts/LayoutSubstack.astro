@@ -5,12 +5,15 @@ interface Props {
 	title: string;
 }
 const { title } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
 <!doctype html>
 <html lang="es" class="bg-[#26211E]">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="canonical" href={canonicalURL} />
 		<link rel="icon" type="image/png" href="/favicontgp.png" />
 		<link rel="shortcut icon" type="image/png" href="/favicontgp.png" />
 		<link rel="apple-touch-icon" href="/favicontgp.png" />

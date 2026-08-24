@@ -63,6 +63,9 @@ const {
   bgClass = "bg-racing-green",
   vibeClass = ""
 } = Astro.props;
+
+// Canonical URL sin parámetros de búsqueda para SEO y Google Search Console
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
 
 <!doctype html>
@@ -71,9 +74,11 @@ const {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="/favicontgp.png" />
     <link rel="shortcut icon" type="image/png" href="/favicontgp.png" />
