@@ -123,10 +123,10 @@ const vibeClass = themeKey;
               <EditorialStressTest />
             ) : (
               <>
-                {(!post.body || post.body.trim().length === 0 || post.data.ai_copilot?.trigger_both || post.data.ai_copilot?.trigger_text_only) && (
+                {(!post.body || post.body.trim().length === 0 || (post.data as any).ai_copilot?.trigger_both || (post.data as any).ai_copilot?.trigger_text_only) && (
                   <AIPendingNotice 
                     title={post.data.title} 
-                    copilotConfig={post.data.ai_copilot} 
+                    copilotConfig={(post.data as any).ai_copilot} 
                     collection="essays" 
                     slug={post.id} 
                   />

@@ -177,10 +177,10 @@ const formattedDate = date ? (() => {
               </div>
             ) : (
               <>
-                {(!ensayo.body || ensayo.body.trim().length === 0 || ensayo.data?.ai_copilot?.trigger_both || ensayo.data?.ai_copilot?.trigger_text_only) && (
+                {(!ensayo?.body || ensayo.body.trim().length === 0 || (ensayo?.data as any)?.ai_copilot?.trigger_both || (ensayo?.data as any)?.ai_copilot?.trigger_text_only) && (
                   <AIPendingNotice 
                     title={title} 
-                    copilotConfig={ensayo.data?.ai_copilot} 
+                    copilotConfig={(ensayo?.data as any)?.ai_copilot} 
                     collection="ensayos" 
                     slug={currentId} 
                   />

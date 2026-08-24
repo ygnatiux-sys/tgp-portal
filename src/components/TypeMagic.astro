@@ -76,7 +76,7 @@ if (!lines || lines.length === 0) {
   {/* Párrafos con interespacio generoso */}
   <div class="typemagic-container">
     {lines.map((_, index) => (
-      <div class="typemagic-block" key={index}>
+      <div class="typemagic-block">
         {index > 0 && <div class="h-[8vh] md:h-[11vh]" aria-hidden="true"></div>}
         <p class="typemagic-oracion" id={`${id}-p${index}`}>
           <span class="typemagic-cursor" aria-hidden="true"> |</span>
