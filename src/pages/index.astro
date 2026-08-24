@@ -17,6 +17,7 @@ import CinematicHeroV2 from '../components/CinematicHeroV2.astro';
 import BentoPortal from '../components/BentoPortal.astro';
 import ImmersiveSlider from '../components/ImmersiveSlider.astro';
 import ColeccionEnsayosRecientes from '../components/ColeccionEnsayosRecientes.astro';
+import HeroNetflixStyleCarousel from '../components/HeroNetflixStyleCarousel.astro';
 
 
 import { getCollection } from 'astro:content';
@@ -127,11 +128,16 @@ const sliderPosts = allPosts.slice(0, 8);
   </div>
 
   {/* ================================================================
-      3. IMMERSIVE SLIDER
-      Sección 100dvh con auto-slider de tarjetas gigantes.
-      Transición: GSAP clipPath horizontal (wipe cinematográfico).
+      3. HERO NETFLIX STYLE CAROUSEL (Reemplazo activo de slider/marquee)
+      (ImmersiveSlider preservado y deshabilitado abajo sin eliminar)
   ================================================================= */}
-  <ImmersiveSlider posts={sliderPosts} interval={6000} />
+  {/* <ImmersiveSlider posts={sliderPosts} interval={6000} /> */}
+  <HeroNetflixStyleCarousel 
+    items={sliderPosts} 
+    variant="16-9-trio" 
+    title="Novedades Cinemáticas" 
+    eyebrow="TGP Curaduría" 
+  />
 
   {/* ── Divisor Sección Colección ── */}
   <div class="portal-section-label">

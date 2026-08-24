@@ -1,0 +1,425 @@
+---
+import TgpImage from './TgpImage.astro';
+
+export interface CarouselItem {
+  id?: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  excerpt?: string;
+  image?: string;
+  coverImage?: string;
+  hero_image?: string;
+  link?: string;
+  href?: string;
+  collection?: string;
+  date?: string;
+  author?: string;
+  badge?: string;
+  [key: string]: any;
+}
+
+export type CarouselVariant = '16-9-trio' | '9-16-vertical' | '1-1-hero' | '1-1-bento';
+
+interface Props {
+  items?: CarouselItem[];
+  variant?: CarouselVariant;
+  title?: string;
+  eyebrow?: string;
+  class?: string;
+  className?: string;
+  id?: string;
+}
+
+const {
+  items = [],
+  variant = '16-9-trio',
+  title = '',
+  eyebrow = '',
+  class: classProp,
+  className,
+  id = `netflix-carousel-${Math.random().toString(36).substring(2, 9)}`,
+} = Astro.props;
+
+const extraClasses = classProp || className || '';
+
+// Normalizar items para asegurar que siempre haya propiedades válidas
+const normalizedItems = items.map((item, idx) => {
+  const itemTitle = item.title || item.data?.title || `Pieza ${idx + 1}`;
+  const itemSubtitle = item.subtitle || item.description || item.excerpt || item.data?.subtitle || item.data?.description || '';
+  const itemImage = item.image || item.coverImage || item.hero_image || item.data?.hero_image || item.data?.coverImage || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200';
+  const itemLink = item.link || item.href || (item.collection && item.id ? `/${item.collection.replace('_', '-')}/${item.id}` : '#');
+  const itemCol = item.collection || item.data?.collection || 'TGP Editorial';
+  const itemDate = item.date || item.data?.date || '';
+  const itemAuthor = item.author || item.data?.author || 'TGP';
+
+  return {
+    ...item,
+    id: item.id || `item-${idx}`,
+    title: itemTitle,
+    subtitle: itemSubtitle,
+    image: itemImage,
+    link: itemLink,
+    collection: itemCol,
+    date: itemDate,
+    author: itemAuthor,
+    badge: item.badge || (idx === 0 ? 'DESTACADO' : 'NUEVO')
+  };
+});
+
+// Fallback visual si items está vacío
+const displayItems = normalizedItems.length > 0 ? normalizedItems : Array.from({ length: 6 }, (_, i) => ({
+  id: `fallback-${i}`,
+  title: `Publicación Cinemática ${i + 1}`,
+  subtitle: 'Exploración arqueosemiótica y cartografía del pensamiento contemporáneo.',
+  image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1200',
+  link: '#',
+  collection: 'Ensayos',
+  date: '2026',
+  author: 'TGP',
+  badge: i === 0 ? 'DESTACADO' : 'NUEVO'
+}));
+---
+
+<section 
+  id={id}
+  class={`hero-netflix-carousel relative w-full overflow-hidden select-none py-8 ${extraClasses}`}
+  data-variant={variant}
+>
+  {/* Header de Sección si tiene título o eyebrow */}
+  {(title || eyebrow) && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8 mb-6 flex items-end justify-between gap-4">
+      <div>
+        {eyebrow && (
+          <span class="text-[8px] md:text-[9px] tracking-[0.45em] uppercase font-tgp-tech text-copper-ember/80 block mb-1">
+            {eyebrow}
+          </span>
+        )}
+        {title && (
+          <h2 class="font-tgp-gloock text-2xl sm:text-3xl md:text-4xl text-[#E3DDD3] tracking-tight">
+            {title}
+          </h2>
+        )}
+      </div>
+
+      {/* Controles de navegación estilo Netflix */}
+      <div class="hidden sm:flex items-center gap-2">
+        <button 
+          type="button"
+          class="carousel-nav-btn prev p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-md cursor-pointer"
+          aria-label="Anterior"
+          data-target={id}
+          data-direction="prev"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button 
+          type="button"
+          class="carousel-nav-btn next p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-md cursor-pointer"
+          aria-label="Siguiente"
+          data-target={id}
+          data-direction="next"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  )}
+
+  {/* =========================================================================
+      VARIANTE 1: 16-9-TRIO (Grid/Carousel 3 columnas apaisado cinematográfico)
+     ========================================================================= */}
+  {variant === '16-9-trio' && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+      <div 
+        class="carousel-track flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4"
+        tabindex="0"
+        aria-label="Carrusel 16:9"
+      >
+        {displayItems.map((item, idx) => (
+          <article class="carousel-card snap-start shrink-0 w-[85vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group relative flex flex-col">
+            <a 
+              href={item.link}
+              class="relative block w-full aspect-video overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-700 bg-[#0a0a0a] shadow-xl group-hover:shadow-2xl group-hover:shadow-copper-ember/10 group-hover:-translate-y-1"
+            >
+              <TgpImage
+                src={item.image}
+                alt={item.title}
+                width={800}
+                height={450}
+                format="webp"
+                class="w-full h-full object-cover brightness-[0.72] group-hover:brightness-[0.9] group-hover:scale-105 transition-all duration-700 ease-out"
+              />
+              
+              {/* Degradados cinematográficos estilo Netflix */}
+              <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
+              
+              {/* Badge superior */}
+              <div class="absolute top-4 left-4 z-10">
+                <span class="px-2.5 py-1 rounded-full text-[7px] tracking-[0.3em] uppercase font-tgp-tech bg-black/60 backdrop-blur-md text-copper-ember border border-copper-ember/30">
+                  {item.collection}
+                </span>
+              </div>
+
+              {/* Contenido inferior */}
+              <div class="absolute inset-x-0 bottom-0 p-5 md:p-6 z-10 flex flex-col justify-end">
+                <h3 class="font-tgp-gloock text-lg sm:text-xl md:text-2xl text-white group-hover:text-[#E3DDD3] leading-snug line-clamp-2 transition-colors duration-300 mb-1.5">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p class="text-white/60 text-xs font-tgp-body font-light line-clamp-2 mb-3">
+                    {item.subtitle}
+                  </p>
+                )}
+                
+                <div class="flex items-center justify-between text-[8px] font-tgp-tech uppercase tracking-widest text-white/40 pt-2 border-t border-white/10">
+                  <span>{item.date || 'Registro TGP'}</span>
+                  <span class="text-copper-ember group-hover:translate-x-1 transition-transform">Ver Pieza &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* =========================================================================
+      VARIANTE 2: 9-16-VERTICAL (Poster editorial vertical 4 columnas)
+     ========================================================================= */}
+  {variant === '9-16-vertical' && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+      <div 
+        class="carousel-track flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4"
+        tabindex="0"
+        aria-label="Carrusel Vertical 9:16"
+      >
+        {displayItems.map((item, idx) => (
+          <article class="carousel-card snap-start shrink-0 w-[65vw] sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] group relative flex flex-col">
+            <a 
+              href={item.link}
+              class="relative block w-full aspect-9/16 overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-700 bg-[#0a0a0a] shadow-xl group-hover:shadow-2xl group-hover:shadow-black/90 group-hover:-translate-y-1.5"
+            >
+              <TgpImage
+                src={item.image}
+                alt={item.title}
+                width={500}
+                height={888}
+                format="webp"
+                class="w-full h-full object-cover brightness-[0.7] group-hover:brightness-[0.92] group-hover:scale-105 transition-all duration-700 ease-out"
+              />
+
+              {/* Degradados verticales densos */}
+              <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/50 to-transparent pointer-events-none"></div>
+
+              {/* Badge superior */}
+              <div class="absolute top-4 left-4 z-10">
+                <span class="px-2.5 py-1 rounded-full text-[7px] tracking-[0.25em] uppercase font-tgp-tech bg-black/70 backdrop-blur-md text-[#E3DDD3] border border-white/20">
+                  {item.collection}
+                </span>
+              </div>
+
+              {/* Contenido inferior */}
+              <div class="absolute inset-x-0 bottom-0 p-5 md:p-6 z-10 flex flex-col justify-end">
+                <span class="text-[7.5px] tracking-[0.4em] uppercase text-copper-ember font-tgp-tech mb-1.5 block">
+                  Edición #{String(idx + 1).padStart(2, '0')}
+                </span>
+                <h3 class="font-tgp-gloock text-xl sm:text-2xl text-white group-hover:text-[#E3DDD3] leading-tight line-clamp-3 mb-2 transition-colors duration-300">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p class="text-white/60 text-xs font-tgp-body font-light line-clamp-2 mb-4">
+                    {item.subtitle}
+                  </p>
+                )}
+
+                <div class="flex items-center justify-between text-[8px] font-tgp-tech uppercase tracking-widest text-white/50 pt-3 border-t border-white/10">
+                  <span>{item.author || 'TGP'}</span>
+                  <span class="text-copper-ember group-hover:translate-x-1 transition-transform">Explorar &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* =========================================================================
+      VARIANTE 3: 1-1-HERO (Hero Masivo Cuadrado 1:1)
+     ========================================================================= */}
+  {variant === '1-1-hero' && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+      <div 
+        class="carousel-track flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4"
+        tabindex="0"
+        aria-label="Hero Cuadrado 1:1"
+      >
+        {displayItems.map((item, idx) => (
+          <article class="carousel-card snap-start shrink-0 w-[90vw] sm:w-[calc(60vw)] lg:w-[calc(45vw)] max-w-2xl group relative flex flex-col">
+            <a 
+              href={item.link}
+              class="relative block w-full aspect-square overflow-hidden rounded-3xl md:rounded-[36px] border border-white/10 group-hover:border-white/30 transition-all duration-700 bg-[#0a0a0a] shadow-2xl group-hover:shadow-copper-ember/15 group-hover:-translate-y-1.5"
+            >
+              <TgpImage
+                src={item.image}
+                alt={item.title}
+                width={900}
+                height={900}
+                format="webp"
+                class="w-full h-full object-cover brightness-[0.65] group-hover:brightness-[0.85] group-hover:scale-105 transition-all duration-700 ease-out"
+              />
+
+              {/* Degradados densos multi-capa */}
+              <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/45 to-transparent pointer-events-none"></div>
+              <div class="absolute inset-0 bg-linear-to-r from-black/70 via-transparent to-transparent hidden sm:block pointer-events-none"></div>
+
+              {/* Header flotante */}
+              <div class="absolute top-6 left-6 right-6 z-10 flex items-center justify-between">
+                <span class="px-3 py-1.5 rounded-full text-[8px] tracking-[0.3em] uppercase font-tgp-tech bg-black/70 backdrop-blur-md text-copper-ember border border-copper-ember/30">
+                  {item.collection}
+                </span>
+                <span class="text-[8px] tracking-[0.3em] font-tgp-tech text-white/50 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">
+                  {String(idx + 1).padStart(2, '0')} / {String(displayItems.length).padStart(2, '0')}
+                </span>
+              </div>
+
+              {/* Contenido Hero */}
+              <div class="absolute inset-x-0 bottom-0 p-6 sm:p-10 z-10 flex flex-col justify-end">
+                <span class="text-[8px] md:text-[9px] tracking-[0.45em] uppercase text-copper-ember font-tgp-tech mb-2 block">
+                  Pieza Destacada
+                </span>
+                <h3 class="font-tgp-gloock text-2xl sm:text-3xl md:text-4xl text-white group-hover:text-[#E3DDD3] leading-tight mb-3 transition-colors duration-300">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p class="text-white/70 text-xs sm:text-sm font-tgp-body font-light line-clamp-3 mb-6 max-w-xl">
+                    {item.subtitle}
+                  </p>
+                )}
+
+                <div class="flex items-center gap-4">
+                  <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 group-hover:bg-white text-white group-hover:text-black font-tgp-tech text-[8.5px] uppercase tracking-widest transition-all duration-300">
+                    Ver Registro Completo &rarr;
+                  </span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* =========================================================================
+      VARIANTE 4: 1-1-BENTO (Bento Ver Más Cuadrado 1:1)
+     ========================================================================= */}
+  {variant === '1-1-bento' && (
+    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
+      <div 
+        class="carousel-track grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        tabindex="0"
+        aria-label="Grid Bento 1:1"
+      >
+        {displayItems.slice(0, 4).map((item, idx) => (
+          <article class="carousel-card group relative flex flex-col">
+            <a 
+              href={item.link}
+              class="relative block w-full aspect-square overflow-hidden rounded-2xl md:rounded-3xl border border-white/10 group-hover:border-white/30 transition-all duration-700 bg-[#0a0a0a] shadow-lg group-hover:shadow-2xl group-hover:-translate-y-1"
+            >
+              <TgpImage
+                src={item.image}
+                alt={item.title}
+                width={600}
+                height={600}
+                format="webp"
+                class="w-full h-full object-cover brightness-[0.6] group-hover:brightness-[0.85] group-hover:scale-105 transition-all duration-700 ease-out"
+              />
+
+              <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
+
+              <div class="absolute top-4 left-4 z-10">
+                <span class="px-2 py-0.5 rounded-full text-[6.5px] tracking-[0.3em] uppercase font-tgp-tech bg-black/60 backdrop-blur-md text-copper-ember border border-copper-ember/30">
+                  {item.collection}
+                </span>
+              </div>
+
+              <div class="absolute inset-x-0 bottom-0 p-5 md:p-6 z-10 flex flex-col justify-end">
+                <h3 class="font-tgp-gloock text-lg sm:text-xl text-white group-hover:text-[#E3DDD3] leading-snug line-clamp-2 mb-2 transition-colors duration-300">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p class="text-white/60 text-xs font-tgp-body font-light line-clamp-2 mb-3">
+                    {item.subtitle}
+                  </p>
+                )}
+
+                <div class="flex items-center justify-between text-[7.5px] font-tgp-tech uppercase tracking-widest text-white/40 pt-2 border-t border-white/10">
+                  <span>{item.date || 'TGP Archivo'}</span>
+                  <span class="text-copper-ember group-hover:translate-x-1 transition-transform">Leer &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  /* Ocultar barra de desplazamiento manteniendo funcionalidad nativa de scroll */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+<script>
+  // Script para manejar los botones de desplazamiento interactivo del carrusel
+  function initNetflixCarousels() {
+    const buttons = document.querySelectorAll('.carousel-nav-btn');
+    
+    buttons.forEach((btn) => {
+      // Evitar doble listener
+      if (btn.hasAttribute('data-initialized')) return;
+      btn.setAttribute('data-initialized', 'true');
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.getAttribute('data-target');
+        const direction = btn.getAttribute('data-direction');
+        if (!targetId) return;
+
+        const section = document.getElementById(targetId);
+        if (!section) return;
+
+        const track = section.querySelector('.carousel-track');
+        if (!track) return;
+
+        const scrollAmount = track.clientWidth * 0.75;
+        const targetScroll = direction === 'next' 
+          ? track.scrollLeft + scrollAmount 
+          : track.scrollLeft - scrollAmount;
+
+        track.scrollTo({
+          left: targetScroll,
+          behavior: 'smooth'
+        });
+      });
+    });
+  }
+
+  // Inicializar en carga y tras navegaciones de Astro
+  if (typeof document !== 'undefined') {
+    initNetflixCarousels();
+    document.addEventListener('astro:page-load', initNetflixCarousels);
+  }
+</script>
