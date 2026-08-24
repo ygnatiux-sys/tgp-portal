@@ -6,6 +6,7 @@
  */
 import { getCollection } from 'astro:content';
 import TgpImage from './TgpImage.astro';
+import SliderCinematico from './SliderCinematico.astro';
 
 interface Props {
   collection?: 'ensayos' | 'essays' | 'architectures' | 'visual_signals' | 'capsulas' | string;
@@ -128,119 +129,12 @@ const heroPost = displayPosts[0] || null;
 const subPosts = displayPosts.slice(1, 3);
 ---
 
-{displayPosts.length > 0 && (
-<section class={`editorial-read-more not-prose w-full my-20 pt-12 border-t border-white/10 ${vibeClass}`}>
-  
-  {/* Encabezado Editorial Elegante */}
-  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-    <div>
-      <span class="text-[8px] md:text-[9px] tracking-[0.45em] uppercase font-tgp-tech text-copper-ember/70 block mb-2">
-        The Great Puzzle Project
-      </span>
-      <h3 class="font-tgp-gloock text-2xl sm:text-3xl text-white tracking-tight leading-none">
-        {activeLabel}
-      </h3>
-    </div>
-  </div>
+<SliderCinematico
+  collection={collection}
+  currentSlug={currentSlug}
+  title={activeLabel}
+  eyebrow="Continuar Leyendo"
+  vibeClass={vibeClass}
+/>
 
-  {/* Visual Bento Grid de Inicio: 1 Card Destacada Arriba + 2 Cards Abajo */}
-  <div class="flex flex-col gap-6">
-    
-    {/* Card 1: Protagonista / Destacada */}
-    {heroPost && (
-      <a 
-        href={heroPost.link}
-        class="group/bento-hero relative block w-full aspect-video md:aspect-21/9 overflow-hidden rounded-3xl border border-white/10 group-hover/bento-hero:border-white/25 transition-all duration-700 shadow-xl bg-black select-none no-underline"
-        aria-label={`Leer: ${heroPost.title}`}
-      >
-        <TgpImage
-          src={heroPost.image}
-          alt={heroPost.title}
-          width={1600}
-          height={700}
-          format="webp"
-          loading="lazy"
-          decoding="async"
-          class="w-full h-full object-cover brightness-[0.6] group-hover/bento-hero:brightness-[0.75] group-hover/bento-hero:scale-[1.03] transition-all duration-1000 ease-out"
-        />
 
-        {/* Gradiente de legibilidad */}
-        <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent"></div>
-        <div class="absolute inset-0 bg-linear-to-r from-black/80 via-transparent to-transparent hidden md:block"></div>
-
-        {/* Contenido en esquina inferior izquierda */}
-        <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-10 max-w-3xl">
-          <span class="inline-block mb-3 text-[8px] md:text-[9px] tracking-[0.4em] uppercase text-copper-ember font-tgp-tech">
-            {heroPost.collectionLabel || activeLabel} · Destacado
-          </span>
-          <h2 class="font-tgp-gloock text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight mb-3 group-hover/bento-hero:text-[#E3DDD3] transition-colors duration-500">
-            {heroPost.title}
-          </h2>
-          {heroPost.subtitle && (
-            <p class="text-white/60 text-xs md:text-sm font-tgp-body font-light leading-relaxed max-w-[55ch] line-clamp-2 hidden sm:block">
-              {heroPost.subtitle}
-            </p>
-          )}
-          {/* CTA */}
-          <div class="mt-4 flex items-center gap-3">
-            <span class="w-0 group-hover/bento-hero:w-10 h-px bg-copper-ember transition-all duration-500"></span>
-            <span class="text-[7.5px] tracking-[0.4em] uppercase text-white/40 group-hover/bento-hero:text-[#E3DDD3] font-tgp-tech transition-colors duration-300">
-              Leer Pieza
-            </span>
-          </div>
-        </div>
-      </a>
-    )}
-
-    {/* Fila Inferior: 2 Cards en Grid */}
-    {subPosts.length > 0 && (
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {subPosts.map((post: any, i: number) => (
-          <a 
-            href={post.link} 
-            class="group/bento-sub relative block w-full aspect-4/3 md:aspect-16/10 overflow-hidden rounded-3xl border border-white/10 group-hover/bento-sub:border-white/25 transition-all duration-700 shadow-lg bg-black select-none no-underline"
-            aria-label={`Leer: ${post.title}`}
-          >
-            <TgpImage
-              src={post.image}
-              alt={post.title}
-              width={800}
-              height={500}
-              format="webp"
-              loading="lazy"
-              decoding="async"
-              class="w-full h-full object-cover brightness-[0.55] group-hover/bento-sub:brightness-[0.75] group-hover/bento-sub:scale-[1.05] transition-all duration-1000 ease-out"
-            />
-            {/* Gradiente */}
-            <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-transparent"></div>
-
-            {/* Contenido */}
-            <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
-              <span class="block text-[7px] md:text-[7.5px] tracking-[0.4em] uppercase text-copper-ember mb-2.5 font-tgp-tech">
-                {post.collectionLabel || activeLabel} · 0{i + 1}
-              </span>
-              <h3 class="font-tgp-gloock text-lg sm:text-xl md:text-2xl text-white leading-tight group-hover/bento-sub:text-[#E3DDD3] transition-colors duration-500">
-                {post.title}
-              </h3>
-              {post.subtitle && (
-                <p class="text-white/50 text-xs font-tgp-body font-light mt-2 leading-relaxed line-clamp-2 hidden sm:block">
-                  {post.subtitle}
-                </p>
-              )}
-              {/* CTA */}
-              <div class="mt-3 flex items-center gap-2">
-                <span class="w-0 group-hover/bento-sub:w-8 h-px bg-copper-ember transition-all duration-500"></span>
-                <span class="text-[7.5px] tracking-[0.35em] uppercase text-white/40 group-hover/bento-sub:text-[#E3DDD3] font-tgp-tech transition-colors duration-300">
-                  Explorar
-                </span>
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    )}
-
-  </div>
-
-</section>
-)}

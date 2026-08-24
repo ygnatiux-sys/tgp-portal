@@ -1,0 +1,520 @@
+---
+/**
+ * SliderCinematico.astro
+ * Arquitectura Optimizada: Focus-Driven Immersive UI (GPU Accelerated)
+ * Muestra los 10 posts más recientes de las colecciones, perfectamente integrados con el fondo.
+ */
+import { getCollection } from 'astro:content';
+
+interface SliderItem {
+  title: string;
+  subtitle?: string;
+  image: string;
+  link: string;
+  collectionLabel: string;
+  date?: string;
+}
+
+interface Props {
+  collection?: 'ensayos' | 'essays' | 'architectures' | 'visual_signals' | 'capsulas' | string;
+  currentSlug?: string;
+  items?: SliderItem[];
+  title?: string;
+  eyebrow?: string;
+  vibeClass?: string;
+  max?: number;
+}
+
+const {
+  collection = 'ensayos',
+  currentSlug = '',
+  items: customItems,
+  title = 'Lecturas Relacionadas',
+  eyebrow = 'Continuar Leyendo',
+  vibeClass = '',
+  max = 10,
+} = Astro.props;
+
+const COLLECTION_LABELS: Record<string, string> = {
+  ensayos: 'Ensayos',
+  essays: 'Dossiers',
+  architectures: 'Magazines',
+  visual_signals: 'Collections',
+  'visual-signals': 'Collections',
+  capsulas: 'eBooks',
+  test: 'TEST',
+};
+
+const collectionKey = collection.replace('-', '_');
+const activeLabel = COLLECTION_LABELS[collection] || COLLECTION_LABELS[collectionKey] || 'TGP';
+
+let displayItems: SliderItem[] = [];
+
+if (customItems && customItems.length >= 3) {
+  displayItems = customItems.slice(0, max);
+} else {
+  // ── Obtenemos posts de todas las colecciones para armar los 10 más recientes ──
+  const allCollections = ['ensayos', 'essays', 'architectures', 'visual_signals', 'capsulas'];
+  let allPosts: any[] = [];
+
+  for (const col of allCollections) {
+    try {
+      const posts = await getCollection(col as any);
+      if (Array.isArray(posts)) {
+        posts.forEach((p: any) => {
+          allPosts.push({
+            ...p,
+            _collection: col,
+          });
+        });
+      }
+    } catch {}
+  }
+
+  // Filtrar el artículo actual
+  const filteredPosts = allPosts.filter((p: any) => p.id !== currentSlug);
+
+  // Ordenar por fecha reciente
+  filteredPosts.sort((a: any, b: any) => {
+    const dateA = a.data?.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data?.date ? new Date(b.data.date).getTime() : 0;
+    if (dateA && dateB && dateA !== dateB) return dateB - dateA;
+    return (b.id || '').localeCompare(a.id || '');
+  });
+
+  // Tomamos los 10 más recientes
+  displayItems = filteredPosts.slice(0, max).map((p: any) => {
+    const col = p._collection || collectionKey;
+    return {
+      title: p.data?.title ?? 'Sin título',
+      subtitle: p.data?.subtitle ?? p.data?.description ?? '',
+      image: p.data?.hero_image ?? p.data?.coverImage ?? 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200&auto=format&fit=crop',
+      link: `/${col.replace('_', '-')}/${p.id}`,
+      collectionLabel: COLLECTION_LABELS[col] || activeLabel,
+      date: p.data?.date ? String(p.data.date) : '',
+    };
+  });
+
+  // Fallbacks de alta estética si no hay posts
+  if (displayItems.length < 3) {
+    const fallbacks: SliderItem[] = [
+      {
+        title: 'La Memoria Mineral',
+        subtitle: 'Una aproximación arqueológica a los monolitos de basalto y su resonancia acústica en la pampa desértica.',
+        image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200',
+        link: '/ensayos',
+        collectionLabel: 'Ensayos',
+      },
+      {
+        title: 'Geometría del Vacío',
+        subtitle: 'Espacios negativos en el brutalismo del siglo XX y la tensión volumétrica entre masa y silencio.',
+        image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200',
+        link: '/essays',
+        collectionLabel: 'Dossiers',
+      },
+      {
+        title: 'Ecos de Obsidiana',
+        subtitle: 'Crónica visual sobre la fractura de la materia volcánica y sus reflejos en la arquitectura andina.',
+        image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1200',
+        link: '/architectures',
+        collectionLabel: 'Magazines',
+      },
+    ];
+    while (displayItems.length < 3) {
+      displayItems.push(fallbacks[displayItems.length % fallbacks.length]);
+    }
+  }
+}
+
+// Sanitización de acentos y caracteres especiales
+displayItems = displayItems.map(item => ({
+  ...item,
+  title: item.title
+    .replace(/Ã±/g, 'ñ')
+    .replace(/Ã¡/g, 'á')
+    .replace(/Ã©/g, 'é')
+    .replace(/Ã­/g, 'í')
+    .replace(/Ã³/g, 'ó')
+    .replace(/Ãº/g, 'ú')
+    .replace(/Ã‘/g, 'Ñ')
+    .replace(/Â/g, ''),
+}));
+
+// Triplicamos para la cinta infinita
+const infiniteItems = [...displayItems, ...displayItems, ...displayItems];
+const uid = `sc-${Math.random().toString(36).substring(2, 8)}`;
+---
+
+<section
+  id={uid}
+  class={`slider-cinematico-root w-full py-12 md:py-16 overflow-hidden relative select-none ${vibeClass}`}
+  style="background-color: var(--bg-current, transparent);"
+  data-uid={uid}
+  data-base-count={displayItems.length}
+>
+  <!-- Header Editorial Minimalista -->
+  <div class="max-w-[1720px] mx-auto px-4 md:px-8 mb-6 md:mb-8 flex items-end justify-between gap-4">
+    <div>
+      <span class="text-[8px] md:text-[9px] tracking-[0.45em] uppercase font-mono text-amber-500/80 block mb-1.5">
+        {eyebrow}
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl md:text-3xl text-[#E3DDD3] tracking-tight leading-tight">
+        {title}
+      </h2>
+    </div>
+  </div>
+
+  <!-- Contenedor Maestro -->
+  <div class="slider-cinematico-track-wrapper group/wrapper relative w-full h-full" data-wrapper={uid}>
+    
+    <!-- Máscaras de difuminación sutiles en los extremos exteriores -->
+    <div 
+      class="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-16 z-30"
+      style="background: linear-gradient(to right, var(--bg-current, #2a2e33) 0%, transparent 100%);"
+    ></div>
+    <div 
+      class="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-16 z-30"
+      style="background: linear-gradient(to left, var(--bg-current, #2a2e33) 0%, transparent 100%);"
+    ></div>
+
+    <!-- Controles Laterales Minimalistas -->
+    <button 
+      class="slider-nav-prev absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 w-9 md:w-11 h-20 md:h-24 rounded-full bg-black/40 hover:bg-black/80 text-white/60 hover:text-white border border-white/10 backdrop-blur transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
+      aria-label="Artículo anterior"
+    >
+      <svg class="w-5 h-5 -translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+
+    <button 
+      class="slider-nav-next absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-40 w-9 md:w-11 h-20 md:h-24 rounded-full bg-black/40 hover:bg-black/80 text-white/60 hover:text-white border border-white/10 backdrop-blur transition-all duration-300 flex items-center justify-center opacity-70 hover:opacity-100 hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
+      aria-label="Artículo siguiente"
+    >
+      <svg class="w-5 h-5 translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+
+    <!-- La Cinta (Grid Flex coordinado por GPU) -->
+    <div class="slider-cinematico-group flex items-center w-max" data-group={uid}>
+      {infiniteItems.map((item, idx) => (
+        <article 
+          class="slider-card relative shrink-0 overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer" 
+          data-index={idx}
+          data-link={item.link}
+        >
+          <!-- Imagen con Soft Zoom limpio -->
+          <div class="absolute inset-0 overflow-hidden bg-black">
+            <img 
+              src={item.image} 
+              alt={item.title} 
+              loading="lazy"
+              decoding="async"
+              class="slider-card-img w-full h-full object-cover" 
+            />
+          </div>
+
+          <!-- Viñeta suave para contraste de texto -->
+          <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/35 to-transparent pointer-events-none"></div>
+
+          <!-- Contenido Editorial -->
+          <div class="absolute inset-x-0 bottom-0 z-20 p-6 md:p-8 flex flex-col justify-end">
+            <span class="text-[8.5px] tracking-[0.35em] uppercase text-amber-500/90 mb-2 block font-mono">
+              {item.collectionLabel}
+            </span>
+            <h3 class="slider-card-title text-white font-serif tracking-wide">
+              <a 
+                href={item.link}
+                class="slider-title-link text-white hover:text-amber-400 transition-colors duration-200"
+                aria-label={`Leer: ${item.title}`}
+              >
+                {item.title}
+              </a>
+            </h3>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* 1. EL SECRETO: Contenedor con altura reservada para formato Hero 16:9 */
+  .slider-cinematico-track-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    /* Reservamos un carril fijo para formato Hero 16:9 */
+    min-height: clamp(420px, 54vh, 620px); 
+    display: flex;
+    align-items: center;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 3%,
+      black 97%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 3%,
+      black 97%,
+      transparent 100%
+    );
+  }
+
+  .slider-cinematico-group {
+    --face-width: 66vw;
+    --ear-width: 18vw;
+    --gap: 24px;
+    gap: var(--gap);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transition: transform 650ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* 2. Tarjeta Inactiva (La Oreja) */
+  .slider-card {
+    width: var(--ear-width);
+    height: clamp(350px, 44vh, 500px); 
+    opacity: 0.45;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    will-change: width, transform, opacity;
+    transform: translate3d(0, 0, 0); 
+    backface-visibility: hidden;     
+    -webkit-font-smoothing: antialiased;
+    transform-style: preserve-3d;
+    
+    transition:
+      width 650ms cubic-bezier(0.25, 1, 0.5, 1),
+      opacity 450ms ease,
+      box-shadow 450ms ease,
+      border-color 450ms ease;
+  }
+  
+  /* 3. Tarjeta Activa (El Rostro Central en Formato HERO 16:9 Ampliado) */
+  .slider-card.is-expanded {
+    width: var(--face-width);
+    height: clamp(400px, 50vh, 580px);
+    opacity: 1;
+    border-color: rgba(184, 115, 51, 0.6);
+    box-shadow: 
+      0 20px 45px -12px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(184, 115, 51, 0.3);
+  }
+
+  /* Títulos responsivos */
+  .slider-card-title {
+    font-size: 1rem;
+    line-clamp: 2;
+    opacity: 0.7;
+    transition: font-size 450ms ease, opacity 450ms ease;
+    will-change: opacity, font-size;
+  }
+  .slider-card.is-expanded .slider-card-title {
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    opacity: 1;
+  }
+
+  /* Soft Zoom In limpio */
+  .slider-card-img {
+    transform: scale(1);
+    filter: brightness(0.65) contrast(1.08);
+    transition: transform 650ms cubic-bezier(0.25, 1, 0.5, 1), filter 500ms ease;
+    will-change: transform, filter;
+  }
+  .slider-card.is-expanded .slider-card-img {
+    transform: scale(1.04);
+    filter: brightness(0.92) contrast(1.05);
+  }
+</style>
+
+<script>
+  function initSlider(sectionId: string) {
+    const section = document.getElementById(sectionId);
+    if (!section || !(section instanceof HTMLElement)) return;
+
+    const group = section.querySelector(".slider-cinematico-group");
+    if (!group || !(group instanceof HTMLElement)) return;
+
+    const sectionEl: HTMLElement = section;
+    const groupEl: HTMLElement = group;
+
+    const cards = sectionEl.querySelectorAll<HTMLElement>(".slider-card");
+    if (!cards.length) return;
+
+    const prevBtn = sectionEl.querySelector(".slider-nav-prev");
+    const nextBtn = sectionEl.querySelector(".slider-nav-next");
+
+    const baseCount = parseInt(sectionEl.getAttribute("data-base-count") || "10", 10);
+    let currentIndex = baseCount + Math.floor(baseCount / 2);
+    let autoplayTimer: ReturnType<typeof setInterval> | null = null;
+    let isUserActive = false;
+    let idleResumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let isAnimating = false;
+
+    // 1. Cálculo Geométrico Sincronizado (Formato HERO 16:9 + Orejas Amplias)
+    function updateStageMetrics() {
+      const sectionWidth = sectionEl.offsetWidth || window.innerWidth;
+      const isMobile = window.innerWidth < 768;
+
+      const faceWidth = isMobile
+        ? Math.min(sectionWidth * 0.88, 620)
+        : Math.min(sectionWidth * 0.66, 1020);
+      const earWidth = isMobile
+        ? Math.min(sectionWidth * 0.12, 120)
+        : Math.min(sectionWidth * 0.18, 280);
+      const gap = isMobile ? 12 : 24;
+
+      groupEl.style.setProperty("--face-width", `${faceWidth}px`);
+      groupEl.style.setProperty("--ear-width", `${earWidth}px`);
+      groupEl.style.setProperty("--gap", `${gap}px`);
+
+      return { sectionWidth, faceWidth, earWidth, gap };
+    }
+
+    // 2. Motor de Desplazamiento
+    function goToIndex(index: number, smooth = true) {
+      if (isAnimating && smooth) return;
+
+      if (index < 0) index = 0;
+      if (index >= cards.length) index = cards.length - 1;
+
+      const { sectionWidth, faceWidth, earWidth, gap } = updateStageMetrics();
+
+      cards.forEach((card, i) => {
+        card.classList.toggle("is-expanded", i === index);
+      });
+
+      const cardCenterInTrack = index * (earWidth + gap) + faceWidth / 2;
+      const targetX = sectionWidth / 2 - cardCenterInTrack;
+
+      if (!smooth) {
+        groupEl.style.transition = "none";
+        groupEl.style.transform = `translate3d(${targetX}px, 0, 0)`;
+        void groupEl.offsetWidth;
+      } else {
+        isAnimating = true;
+        groupEl.style.transition = "transform 650ms cubic-bezier(0.25, 1, 0.5, 1)";
+        groupEl.style.transform = `translate3d(${targetX}px, 0, 0)`;
+      }
+
+      currentIndex = index;
+
+      if (smooth) {
+        setTimeout(() => {
+          isAnimating = false;
+          if (currentIndex >= baseCount * 2) {
+            goToIndex(currentIndex - baseCount, false);
+          } else if (currentIndex < baseCount) {
+            goToIndex(currentIndex + baseCount, false);
+          }
+        }, 660);
+      }
+    }
+
+    // 3. Ritmo Automático Lento
+    function startSlowRhythm() {
+      stopSlowRhythm();
+      autoplayTimer = setInterval(() => {
+        if (!isUserActive && !isAnimating) {
+          goToIndex(currentIndex + 1, true);
+        }
+      }, 5500);
+    }
+
+    function stopSlowRhythm() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    }
+
+    function onUserInteraction() {
+      isUserActive = true;
+      stopSlowRhythm();
+      if (idleResumeTimer) clearTimeout(idleResumeTimer);
+      idleResumeTimer = setTimeout(() => {
+        isUserActive = false;
+        startSlowRhythm();
+      }, 6000);
+    }
+
+    // 4. Controles Manuales
+    prevBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      onUserInteraction();
+      goToIndex(currentIndex - 1, true);
+    });
+
+    nextBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      onUserInteraction();
+      goToIndex(currentIndex + 1, true);
+    });
+
+    cards.forEach((card, idx) => {
+      const titleLink = card.querySelector<HTMLAnchorElement>(".slider-title-link");
+      if (titleLink) {
+        titleLink.addEventListener("click", (e) => {
+          if (idx !== currentIndex) {
+            e.preventDefault();
+            e.stopPropagation();
+            onUserInteraction();
+            goToIndex(idx, true);
+          }
+        });
+      }
+
+      card.addEventListener("click", (e) => {
+        if (idx !== currentIndex) {
+          e.preventDefault();
+          onUserInteraction();
+          goToIndex(idx, true);
+        } else {
+          const link = card.getAttribute("data-link");
+          if (link && link !== "#") {
+            window.location.href = link;
+          }
+        }
+      });
+    });
+
+    section.addEventListener("mouseenter", () => {
+      isUserActive = true;
+      stopSlowRhythm();
+    });
+
+    section.addEventListener("mouseleave", () => {
+      isUserActive = false;
+      startSlowRhythm();
+    });
+
+    window.addEventListener("resize", () => goToIndex(currentIndex, false));
+
+    // Despliegue inicial sin transición
+    goToIndex(currentIndex, false);
+    startSlowRhythm();
+  }
+
+  function bootstrap() {
+    document
+      .querySelectorAll<HTMLElement>(".slider-cinematico-root")
+      .forEach((el) => {
+        if (!el.hasAttribute("data-init")) {
+          el.setAttribute("data-init", "true");
+          initSlider(el.id);
+        }
+      });
+  }
+
+  if (typeof document !== "undefined") {
+    bootstrap();
+    document.addEventListener("astro:page-load", bootstrap);
+  }
+</script>
