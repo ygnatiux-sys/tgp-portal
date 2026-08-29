@@ -87,7 +87,7 @@ function getVariant(index: number): CellVariant {
        BOTÓN DE SALTO INMEDIATO (Editorial Minimal, sin pills)
   =================================================== -->
   <aside class="void-quick-skip" aria-label="Navegación directa">
-    <a href="/" class="void-skip-btn">
+    <a href="/portal" class="void-skip-btn">
       <span class="void-skip-text">Saltar a la web</span>
       <span class="void-skip-arrow">→</span>
     </a>
@@ -127,7 +127,7 @@ function getVariant(index: number): CellVariant {
 
       <!-- CTA Inmediato en el Hero (Estilo editorial rectangular) -->
       <div class="void-hero-actions" id="void-hero-actions">
-        <a href="/" class="void-hero-direct-cta">
+        <a href="/portal" class="void-hero-direct-cta">
           <span>Entrar al Portal</span>
           <span class="void-direct-arrow">→</span>
         </a>
@@ -154,7 +154,7 @@ function getVariant(index: number): CellVariant {
     <div class="void-archive-header">
       <span class="void-archive-eyebrow">El Archivo</span>
       <h2 class="void-archive-title">{label}</h2>
-      <a href="/" class="void-archive-cta">
+      <a href="/portal" class="void-archive-cta">
         <span>Entrar al Portal</span>
         <span class="void-cta-arrow">→</span>
       </a>
@@ -372,12 +372,13 @@ function getVariant(index: number): CellVariant {
      VARIABLES DE COLOR Y ESTRUCTURA MINERAL
   ============================================================ */
   .void-intro-root {
-    --void-bg:      #060606;
+    --void-bg:      #080909;
     --void-text:    #E8E2DA;
     --void-accent:  #C9A96E;
     --void-ghost:   rgba(232,226,218,0.3);
     --void-eyebrow: rgba(201,169,110,0.85);
     --gap:          14px;
+    --pad:          18px;
     overflow-x: hidden;
     background-color: var(--void-bg);
   }
@@ -721,70 +722,88 @@ function getVariant(index: number): CellVariant {
     will-change: transform;
   }
 
-  /* ── Mosaico CSS Grid: 2 COLUMNAS DENSAS CON MARGEN / GAP HOLGADO ── */
+  /* ── Mosaico CSS Grid: 2 COLUMNAS CON AIRE OSCURO Y PIEZAS FLOTANTES ── */
   .mq-mosaic {
     display: grid;
     grid-template-columns: repeat(2, 1fr);  /* 2 COLUMNAS */
     grid-auto-rows: 175px;
     grid-auto-flow: dense;
-    gap: var(--gap);
-    padding: var(--gap);
+    gap: var(--gap, 14px);
+    padding: var(--pad, 18px);
+    background-color: var(--void-bg);
   }
 
   @media (max-width: 640px) {
     .mq-mosaic {
       grid-auto-rows: 140px;
-      gap: 10px;
-      padding: 10px;
+      gap: 8px;
+      padding: 9px;
     }
   }
 
-  /* ── Celdas con leve redondeo sutil ── */
+  /* ── Celdas: piezas independientes suspendidas sobre fondo negro ── */
   .mq-cell {
     position: relative;
     display: block;
     overflow: hidden;
-    border-radius: 4px; /* Unificado, sutil y sobrio */
+    border-radius: 4px;
     cursor: pointer;
     outline: none;
     text-decoration: none;
-    background: #0e0e0e;
-    border: 1px solid rgba(255,255,255,0.04);
-    transition: border-color 0.4s ease;
+    background: #0b0c0c;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 250ms ease-out, opacity 250ms ease-out, border-color 250ms ease-out;
+    will-change: transform, opacity;
   }
 
-  .mq-cell:hover {
-    border-color: rgba(201,169,110,0.4);
+  /* Al hacer hover en el mosaico, las demás tarjetas bajan a opacity: 0.78 */
+  .mq-mosaic:hover .mq-cell {
+    opacity: 0.78;
+  }
+
+  /* La celda activa en hover / focus-visible: scale(0.985) sobrio, opacity 1 */
+  .mq-mosaic .mq-cell:hover,
+  .mq-mosaic .mq-cell:focus-visible {
+    opacity: 1;
+    transform: scale(0.985);
+    border-color: rgba(201, 169, 110, 0.45);
+    z-index: 5;
+  }
+
+  .mq-cell:focus-visible {
+    outline: 1px solid rgba(201, 169, 110, 0.7);
+    outline-offset: 2px;
   }
 
   .mq-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover; display: block;
-    filter: brightness(.7) saturate(.8);
-    transition: filter .55s ease, transform .55s cubic-bezier(.25,.46,.45,.94);
+    filter: brightness(.7) saturate(.8) contrast(1.02);
+    transition: filter 250ms ease-out;
   }
 
-  /* hover / foco: zoom 1.025 máximo */
+  /* Imagen en hover: apenas aumenta luminosidad y contraste de forma sobria */
   .mq-cell:hover .mq-img,
-  .mq-cell:focus .mq-img {
-    filter: brightness(.85) saturate(1.05);
-    transform: scale(1.025);
+  .mq-cell:focus-visible .mq-img {
+    filter: brightness(.86) saturate(1.04) contrast(1.05);
   }
 
-  /* overlay hover */
+  /* Overlay hover editorial */
   .mq-hover-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top,
-      rgba(6,6,6,.96) 0%, rgba(6,6,6,.45) 55%, transparent 100%);
+      rgba(8,9,9,.94) 0%, rgba(8,9,9,.42) 55%, transparent 100%);
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: .85rem .95rem; gap: .2rem;
     opacity: 0;
-    transition: opacity .45s ease;
+    transition: opacity 250ms ease-out;
     z-index: 2;
   }
   .mq-cell:hover .mq-hover-overlay,
-  .mq-cell:focus .mq-hover-overlay { opacity: 1; }
+  .mq-cell:focus-visible .mq-hover-overlay {
+    opacity: 1;
+  }
 
   .mq-ol-eyebrow {
     font-family: 'IBM Plex Mono',monospace;

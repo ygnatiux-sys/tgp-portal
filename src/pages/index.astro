@@ -1,250 +1,88 @@
 ---
 /**
- * portal.astro — Ruta: /portal
+ * index.astro — Ruta: / (Página de Inicio por Defecto)
  *
- * Página de ensamblaje del nuevo layout editorial Fase 1.
- * Esta página NO reemplaza el index.astro existente.
- * Cuando esté aprobada, se puede hacer swap a /index.
+ * Pantalla de bienvenida cinematográfica de The Great Puzzle.
+ * Dos actos:
+ *   1. VOID HERO — letras que emergen del negro profundo
+ *   2. VERTICAL MARQUEE SEAMLESS — cinta de posts con formato editorial y navegación directa
  *
- * Arquitectura:
- * 1. CinematicHeroV2     — Hero 100dvh con GSAP scrub-scroll
- * 2. BentoPortal         — Grid Bento 3 bloques (A: Full-bleed | B: 2+1+2 | C: 4+Engine+4)
- *    └─ SidebarPortal    — Columna lateral de 320px (desktop) / scroll horizontal (mobile)
- * 3. ImmersiveSlider     — Slider 100dvh auto-advance con GSAP clipPath
+ * Usa VoidIntroPage.astro como componente principal.
  */
 import LayoutPortal from '../layouts/LayoutPortal.astro';
-import CinematicHeroV2 from '../components/CinematicHeroV2.astro';
-import BentoPortal from '../components/BentoPortal.astro';
-import ImmersiveSlider from '../components/ImmersiveSlider.astro';
-import ColeccionEnsayosRecientes from '../components/ColeccionEnsayosRecientes.astro';
-import HeroNetflixStyleCarousel from '../components/HeroNetflixStyleCarousel.astro';
-import RowNetflixClasico from '../components/RowNetflixClasico.astro';
-
-
+import VoidIntroPage from '../components/VoidIntroPage.astro';
 import { getCollection } from 'astro:content';
 
-// ─── DATA PHASE ──────────────────────────────────────────────────────────────
-// Recopilamos todas las colecciones.
-let essaysRaw:        any[] = [];
+// ─── DATA PHASE ────────────────────────────────────────────────────
+let essaysRaw: any[] = [];
 let architecturesRaw: any[] = [];
 let visualSignalsRaw: any[] = [];
-let ensayosRaw:       any[] = [];
-let capsulasRaw:      any[] = [];
-let testRaw:          any[] = [];
+let ensayosRaw: any[] = [];
+let capsulasRaw: any[] = [];
 
 try { essaysRaw        = await getCollection('essays'); }        catch {}
 try { architecturesRaw = await getCollection('architectures'); } catch {}
 try { visualSignalsRaw = await getCollection('visual_signals'); } catch {}
 try { ensayosRaw       = await getCollection('ensayos'); }       catch {}
 try { capsulasRaw      = await getCollection('capsulas'); }      catch {}
-try { testRaw          = await getCollection('test'); }          catch {}
 
-// ─── NORMALIZADOR: Transforma cualquier post en el formato común de Post ─────
-const normalize = (post: any, col: string) => ({
-  id:         post.id,
+// ─── NORMALIZADOR ──────────────────────────────────────────────────
+type SizeType = 'portrait' | 'square' | 'landscape';
+const SIZES: SizeType[] = ['portrait', 'square', 'landscape'];
+
+const normalize = (post: any, col: string, idx: number) => ({
   title:      post.data?.title       ?? 'Sin título',
-  subtitle:   post.data?.subtitle    ?? post.data?.description ?? undefined,
-  image:      post.data?.hero_image  ?? post.data?.coverImage  ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
-  link:       col === 'test' ? `/test/${post.id}` : `/${col.replace('_', '-')}/${post.id}`,
+  eyebrow:    post.data?.subtitle    ?? formatCol(col),
+  href:       `/${col.replace('_', '-')}/${post.id}`,
+  image:      post.data?.hero_image  ?? post.data?.coverImage ?? 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
+  alt:        post.data?.title       ?? '',
+  size:       SIZES[idx % 3] as SizeType,
   collection: col,
-  date:       post.data?.date        ? String(post.data.date) : undefined,
   author:     post.data?.author      ?? 'TGP',
+  date:       post.data?.date        ? String(post.data.date) : undefined,
 });
 
-// ─── SORT HELPER ─────────────────────────────────────────────────────────────
+function formatCol(col: string): string {
+  const c = col.toLowerCase();
+  if (c === 'essays') return 'Dossiers';
+  if (c === 'architectures') return 'Magazines';
+  if (c === 'visual_signals') return 'Collections';
+  if (c === 'capsulas') return 'eBooks';
+  if (c === 'ensayos') return 'Ensayos';
+  return col;
+}
+
 const sortByLatest = (a: any, b: any) => {
-  const dateA = a.data?.date ? new Date(String(a.data.date)).getTime() : (a.date ? new Date(String(a.date)).getTime() : Date.now());
-  const dateB = b.data?.date ? new Date(String(b.data.date)).getTime() : (b.date ? new Date(String(b.date)).getTime() : Date.now());
-  return dateB - dateA || b.id.localeCompare(a.id);
+  const dA = a.data?.date ? new Date(String(a.data.date)).getTime() : Date.now();
+  const dB = b.data?.date ? new Date(String(b.data.date)).getTime() : Date.now();
+  return dB - dA;
 };
 
-// ─── POOLS NORMALIZADOS (Excluye borradores draft: true) ─────────────────────
-const essays        = essaysRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'essays'));
-const architectures = architecturesRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'architectures'));
-const visualSignals = visualSignalsRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'visual_signals'));
-const ensayos       = ensayosRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'ensayos'));
-const capsulas      = capsulasRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'capsulas'));
-const testPosts     = testRaw.filter(p => !p.data?.draft).sort(sortByLatest).map(p => normalize(p, 'test'));
+const essays        = essaysRaw.filter(p => !p.data?.draft).sort(sortByLatest);
+const architectures = architecturesRaw.filter(p => !p.data?.draft).sort(sortByLatest);
+const visualSignals = visualSignalsRaw.filter(p => !p.data?.draft).sort(sortByLatest);
+const ensayos       = ensayosRaw.filter(p => !p.data?.draft).sort(sortByLatest);
+const capsulas      = capsulasRaw.filter(p => !p.data?.draft).sort(sortByLatest);
 
-// ─── POOL GLOBAL (Para Hero, Bento y Slider: excluye TEST según requerimiento) ──
-const allPosts = [
-  ...ensayos, 
-  ...essays, 
-  ...architectures, 
-  ...visualSignals, 
-  ...capsulas
-].sort(sortByLatest);
-
-// HERO: el post más reciente de las colecciones activas
-const heroPost = allPosts[0] ?? {
-  id: 'fallback',
-  title: 'The Great Puzzle',
-  subtitle: 'Portal Editorial 2026',
-  image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp',
-  link: '#',
-  collection: 'portal',
-};
-
-// BENTO: los siguientes 14 posts
-const bentoPosts = allPosts.slice(1, 15);
-
-// IMMERSIVE SLIDER: Los posts más recientes
-const sliderPosts = allPosts.slice(0, 8);
+// Pool mezclado para darle variedad visual
+const allMixed = [
+  ...ensayos.map((p, i) => normalize(p, 'ensayos', i)),
+  ...essays.map((p, i) => normalize(p, 'essays', i)),
+  ...architectures.map((p, i) => normalize(p, 'architectures', i)),
+  ...visualSignals.map((p, i) => normalize(p, 'visual_signals', i)),
+  ...capsulas.map((p, i) => normalize(p, 'capsulas', i)),
+].sort(() => Math.random() - 0.5);
 ---
 
-<LayoutPortal 
-  title="TGP — Portal Editorial | The Great Puzzle"
-  description="Portal editorial digital de The Great Puzzle. Ensayos, Dossiers, Magazines, Collections y eBooks de pensamiento contemporáneo."
+<LayoutPortal
+  title="Bienvenidos a The Great Puzzle | Portal Editorial"
+  description="Arqueosemiótica, filosofía y cartografía del pensamiento contemporáneo. Portal editorial de The Great Puzzle Project."
+  bgClass="bg-black"
+  showFooter={false}
+  showFooterMarquee={false}
 >
-
-  {/* ================================================================
-      1. CINEMATIC HERO V2
-      Ocupa el 100dvh inicial. GSAP scrub lo disuelve al scrollear,
-      revelando el grid de contenido por debajo.
-  ================================================================= */}
-  <CinematicHeroV2 posts={allPosts} />
-
-  {/* ── Divisor de sección entre hero y bento ── */}
-  <div class="portal-section-label">
-    <span>El Archivo</span>
-  </div>
-
-  {/* ================================================================
-      2. GRID BENTO + SIDEBAR
-      .portal-layout-wrapper: 2 cols en desktop (1fr + 320px)
-      1 col en tablet/mobile (sidebar va abajo)
-  ================================================================= */}
-  <div id="content-grid" class="portal-layout-wrapper">
-
-    {/* Bento Principal (col-1) */}
-    <div class="bento-main-col min-w-0">
-      <BentoPortal posts={bentoPosts} />
-    </div>
-
-  </div>
-
-  {/* ── Divisor antes del slider inmersivo ── */}
-  <div class="portal-section-label">
-    <span>Inmersivo</span>
-  </div>
-
-  {/* ================================================================
-      3. HERO NETFLIX STYLE CAROUSEL (Reemplazo activo de slider/marquee)
-      (ImmersiveSlider preservado y deshabilitado abajo sin eliminar)
-  ================================================================= */}
-  {/* <ImmersiveSlider posts={sliderPosts} interval={6000} /> */}
-  <HeroNetflixStyleCarousel 
-    items={sliderPosts} 
-    variant="16-9-trio" 
-    title="Novedades Cinemáticas" 
-    eyebrow="TGP Curaduría" 
+  <VoidIntroPage
+    items={allMixed}
+    label="Explorar el Archivo TGP"
   />
-
-  {/* ── Divisor Sección Colección ── */}
-  <div class="portal-section-label">
-    <span>Colección</span>
-  </div>
-
-    <div class="max-w-[1720px] mx-auto px-4 md:px-8">
-    <ColeccionEnsayosRecientes posts={ensayos} />
-  </div>
-
-  {/* ── Secciones de Colecciones (> 4 artículos) con RowNetflixClasico ── */}
-  {essays.length > 4 && (
-    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
-      <RowNetflixClasico 
-        items={essays} 
-        title="Dossiers & Ensayos Cinemáticos" 
-        eyebrow="Colección Dossiers" 
-        max={15} 
-      />
-    </div>
-  )}
-
-  {capsulas.length > 4 && (
-    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
-      <RowNetflixClasico 
-        items={capsulas} 
-        title="Arquetipos Globales & eBooks" 
-        eyebrow="Colección eBooks" 
-        max={15} 
-      />
-    </div>
-  )}
-
-  {architectures.length > 4 && (
-    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
-      <RowNetflixClasico 
-        items={architectures} 
-        title="Magazines & Arquitecturas" 
-        eyebrow="Colección Magazines" 
-        max={15} 
-      />
-    </div>
-  )}
-
-  {visualSignals.length > 4 && (
-    <div class="max-w-[1720px] mx-auto px-4 md:px-8 py-4">
-      <RowNetflixClasico 
-        items={visualSignals} 
-        title="Visual Signals & Curaduría" 
-        eyebrow="Colección Collections" 
-        max={15} 
-      />
-    </div>
-  )}
-
-  {/* ================================================================
-      4. SECCIÓN COLECCIÓN: TEST
-      Solo aquí se muestran todos los artículos de la colección TEST
-  ================================================================= */}
-  <section class="max-w-[1720px] mx-auto px-4 md:px-8 py-12">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-white/10 gap-4">
-      <div>
-        <span class="text-xs uppercase tracking-[0.3em] text-old-silver/60 font-mono">Colección</span>
-        <h2 class="text-3xl md:text-5xl font-serif text-[#E3DDD3] mt-1">TEST</h2>
-      </div>
-      <p class="text-sm text-gray-400 max-w-md font-sans">
-        Archivo consolidado de documentos, investigaciones y artículos clasificados en la colección TEST ({testPosts.length} publicaciones).
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {testPosts.map((post) => (
-        <a 
-          href={post.link} 
-          class="group block relative bg-[#0a0a0a] border border-white/10 hover:border-white/30 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/80"
-        >
-          <div class="aspect-16/10 overflow-hidden bg-black/60 relative">
-            <img 
-              src={post.image} 
-              alt={post.title}
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-              loading="lazy"
-            />
-            <div class="absolute top-3 left-3 px-2.5 py-1 bg-black/70 backdrop-blur-md rounded-full text-[10px] uppercase font-mono tracking-widest text-old-silver border border-white/10">
-              TEST
-            </div>
-          </div>
-          <div class="p-5 flex flex-col justify-between">
-            <div>
-              <h3 class="font-serif text-lg text-[#E3DDD3] group-hover:text-white line-clamp-2 transition-colors">
-                {post.title}
-              </h3>
-              {post.subtitle && (
-                <p class="text-xs text-gray-400 mt-2 line-clamp-2 leading-relaxed">
-                  {post.subtitle}
-                </p>
-              )}
-            </div>
-            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-gray-500 font-mono">
-              <span>{post.author || 'TGP'}</span>
-              <span>{post.date || '2026'}</span>
-            </div>
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
-
 </LayoutPortal>
