@@ -1,0 +1,836 @@
+---
+/**
+ * VoidIntroPage.astro (v4 — Pure Editorial Minimal, Seamless Fade & Multi-Scroll Masonry)
+ *
+ * ACTO I: VOID HERO — Letras emergen del vacío, fade to black mutuo al scrollear
+ * ACTO II: MASONRY ARCHIVE — Cinta continua vertical amplia (duración ~3 scrolls),
+ *          con 21% de margen negativo oscuro a los lados, sin pills,
+ *          desvaneciéndose hacia abajo en una máscara vignette profunda.
+ */
+
+interface PostItem {
+  title: string;
+  eyebrow?: string;
+  href: string;
+  image: string;
+  alt?: string;
+  size?: 'portrait' | 'square' | 'tall' | 'landscape' | 'wide';
+  collection?: string;
+  author?: string;
+  date?: string;
+}
+
+interface Props {
+  items?: PostItem[];
+  label?: string;
+  /** px/s — default 10 */
+  speed?: number;
+}
+
+const {
+  items = [],
+  label = 'Explorar el archivo TGP',
+  speed = 10,
+} = Astro.props;
+
+/* ---------- fallback si no vienen posts reales ---------- */
+const FALLBACK: PostItem[] = [
+  { title: 'Borges y los laberintos del tiempo', eyebrow: 'Literatura', href: '/ensayos/borges', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'portrait' },
+  { title: 'El mundo contenido en una vasija', eyebrow: 'Arqueologia', href: '/ensayos/vasija', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'square' },
+  { title: 'Invencion cartografica de Australia', eyebrow: 'Historia', href: '/ensayos/australia', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'landscape' },
+  { title: 'Semiotica del umbral', eyebrow: 'Filosofia', href: '/ensayos/semiotica', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'tall' },
+  { title: 'Cartografias del deseo', eyebrow: 'Ensayo', href: '/ensayos/cartografias', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'wide' },
+  { title: 'La arqueologia del silencio', eyebrow: 'Investigacion', href: '/ensayos/silencio', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'square' },
+  { title: 'El archivo de lo perdido', eyebrow: 'Archivo', href: '/ensayos/archivo', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'portrait' },
+  { title: 'Cronotopias del espacio andino', eyebrow: 'Etnografia', href: '/ensayos/cronotopias', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'landscape' },
+  { title: 'El lenguaje de las piedras', eyebrow: 'Arqueologia', href: '/ensayos/piedras', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'tall' },
+  { title: 'Geometrias de la memoria', eyebrow: 'Filosofia', href: '/ensayos/geometrias', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'square' },
+  { title: 'Gramatica del atlas', eyebrow: 'Cartografia', href: '/ensayos/atlas', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'wide' },
+  { title: 'Voces del estrato', eyebrow: 'Antropologia', href: '/ensayos/voces', image: 'https://storage.thegreatpuzzleproject.com/default-hero.webp', size: 'portrait' },
+];
+
+const posts: PostItem[] = items.length >= 4 ? items : FALLBACK;
+
+/*
+  Secuencia determinista de 12 variantes para el collage editorial irregular de 2 columnas:
+*/
+interface CellVariant {
+  cSpan: number; // 1 o 2
+  rSpan: number; // 1 o 2
+  objectPos?: string;
+  extraClass?: string;
+}
+
+const COLLAGE_CYCLE: CellVariant[] = [
+  { cSpan: 1, rSpan: 2, objectPos: 'center center', extraClass: 'cell--tall' },            // 0: Vertical alta
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--square' },          // 1: Cuadrada
+  { cSpan: 2, rSpan: 1, objectPos: 'center 40%',   extraClass: 'cell--wide' },            // 2: Ancha horizontal
+  { cSpan: 1, rSpan: 1, objectPos: 'top center',    extraClass: 'cell--small-landscape' }, // 3: Horizontal pequeña
+  { cSpan: 1, rSpan: 2, objectPos: 'center center', extraClass: 'cell--hero-vertical' },    // 4: Retrato alto
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--square' },          // 5: Cuadrada
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--quiet' },           // 6: Pequeña compacta
+  { cSpan: 2, rSpan: 1, objectPos: 'center 45%',   extraClass: 'cell--hero-horizontal' },  // 7: Banner 2 cols
+  { cSpan: 1, rSpan: 2, objectPos: 'center 30%',   extraClass: 'cell--tall' },            // 8: Vertical alta
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--square' },          // 9: Cuadrada
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--small-landscape' }, // 10: Pequeña
+  { cSpan: 1, rSpan: 1, objectPos: 'center center', extraClass: 'cell--quiet' },           // 11: Cuadrada de cierre
+];
+
+function getVariant(index: number): CellVariant {
+  return COLLAGE_CYCLE[index % COLLAGE_CYCLE.length];
+}
+---
+
+<div id="void-intro-wrapper" class="void-intro-root">
+
+  <!-- ===================================================
+       BOTÓN DE SALTO INMEDIATO (Editorial Minimal, sin pills)
+  =================================================== -->
+  <aside class="void-quick-skip" aria-label="Navegación directa">
+    <a href="/" class="void-skip-btn">
+      <span class="void-skip-text">Saltar a la web</span>
+      <span class="void-skip-arrow">→</span>
+    </a>
+  </aside>
+
+  <!-- ===================================================
+       ACTO I: VOID HERO (100dvh)
+  =================================================== -->
+  <section id="void-hero" class="void-hero-section" aria-label="Bienvenida">
+    <div class="void-grain" aria-hidden="true"></div>
+    <div class="void-scanlines" aria-hidden="true"></div>
+
+    <div class="void-hero-inner">
+      <!-- Badge sobrio y lineal (sin forma de píldora) -->
+      <div class="void-badge" id="void-badge">
+        <span class="void-badge-line"></span>
+        <span class="void-badge-text">The Great Puzzle Project &middot; Portal Editorial</span>
+        <span class="void-badge-line"></span>
+      </div>
+
+      <h1 class="void-headline" id="void-headline"
+          aria-label="Bienvenidos a The Great Puzzle (project)">
+        <span class="void-line">
+          <span class="void-word">Bienvenidos</span>&nbsp;<span class="void-word">a</span>
+        </span>
+        <span class="void-line">
+          <span class="void-word">The Great</span>&nbsp;<span class="void-word void-puzzle-word">Puzzle</span>
+        </span>
+        <span class="void-line">
+          <span class="void-word void-ghost">&lpar;project&rpar;</span>
+        </span>
+      </h1>
+
+      <p class="void-subtitle" id="void-subtitle">
+        Arqueosemiótica &middot; Filosofía &middot; Cartografía del pensamiento contemporáneo
+      </p>
+
+      <!-- CTA Inmediato en el Hero (Estilo editorial rectangular) -->
+      <div class="void-hero-actions" id="void-hero-actions">
+        <a href="/" class="void-hero-direct-cta">
+          <span>Entrar al Portal</span>
+          <span class="void-direct-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="void-scroll-hint" id="void-scroll-hint">
+        <span class="void-scroll-line"></span>
+        <span class="void-scroll-label">Scroll</span>
+      </div>
+    </div>
+
+    <!-- Fade a negro profundo al final del hero -->
+    <div class="void-hero-bottom-fade" aria-hidden="true"></div>
+  </section>
+
+  <!-- ===================================================
+       ACTO II: MASONRY MARQUEE (Duración de ~3 scrolls, 2 Cols, 21% lateral)
+  =================================================== -->
+  <section id="void-archive" class="void-archive-section" aria-label={label}>
+
+    <!-- Fade superior mutuo para transición fluida desde el Hero -->
+    <div class="void-archive-top-fade" aria-hidden="true"></div>
+
+    <div class="void-archive-header">
+      <span class="void-archive-eyebrow">El Archivo</span>
+      <h2 class="void-archive-title">{label}</h2>
+      <a href="/" class="void-archive-cta">
+        <span>Entrar al Portal</span>
+        <span class="void-cta-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Contenedor central con espacio negativo oscuro (21% a cada lado) -->
+    <div class="mq-layout-stage">
+      <div class="mq-negative-space mq-neg--left" aria-hidden="true"></div>
+
+      <!-- Ventana visual extendida (~3 scrolls de altura) -->
+      <div class="mq-window" id="mq-window">
+
+        <!-- Cinta animada vertical continua con rAF -->
+        <div class="mq-tape" id="mq-tape" data-speed={speed}>
+
+          <!-- Mosaico original (2 columnas densas) -->
+          <div class="mq-mosaic" id="mq-original">
+            {posts.map((post, idx) => {
+              const v = getVariant(idx);
+              return (
+                <a
+                  href={post.href}
+                  class={`mq-cell ${v.extraClass}`}
+                  style={`grid-column: span ${v.cSpan}; grid-row: span ${v.rSpan};`}
+                  aria-label={post.title}
+                >
+                  <img
+                    src={post.image}
+                    alt={post.alt ?? post.title}
+                    loading="lazy"
+                    decoding="async"
+                    class="mq-img"
+                    style={v.objectPos ? `object-position: ${v.objectPos};` : undefined}
+                  />
+                  <div class="mq-hover-overlay" aria-hidden="true">
+                    {post.eyebrow && <span class="mq-ol-eyebrow">{post.eyebrow}</span>}
+                    <span class="mq-ol-title">{post.title}</span>
+                    <span class="mq-ol-cta">Abrir ensayo &#8599;</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+
+          <!-- Mosaico duplicado para loop seamless continuo -->
+          <div class="mq-mosaic" id="mq-clone" aria-hidden="true">
+            {posts.map((post, idx) => {
+              const v = getVariant(idx);
+              return (
+                <a
+                  href={post.href}
+                  class={`mq-cell ${v.extraClass}`}
+                  style={`grid-column: span ${v.cSpan}; grid-row: span ${v.rSpan};`}
+                  tabindex="-1"
+                  aria-hidden="true"
+                >
+                  <img
+                    src={post.image}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="mq-img"
+                    style={v.objectPos ? `object-position: ${v.objectPos};` : undefined}
+                  />
+                  <div class="mq-hover-overlay" aria-hidden="true">
+                    {post.eyebrow && <span class="mq-ol-eyebrow">{post.eyebrow}</span>}
+                    <span class="mq-ol-title">{post.title}</span>
+                    <span class="mq-ol-cta">Abrir ensayo &#8599;</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+
+        </div><!-- /mq-tape -->
+
+        <!-- Vignettes superior e inferior profundas -->
+        <div class="mq-vig mq-vig--top"    aria-hidden="true"></div>
+        <div class="mq-vig mq-vig--bottom" aria-hidden="true"></div>
+
+      </div><!-- /mq-window -->
+
+      <div class="mq-negative-space mq-neg--right" aria-hidden="true"></div>
+    </div><!-- /mq-layout-stage -->
+
+    <!-- Máscara vignette profunda final para disolución total en negro al final de los 3 scrolls -->
+    <div class="void-archive-bottom-mask" aria-hidden="true"></div>
+
+  </section>
+
+</div>
+
+<!-- =====================================================
+     SCRIPT — JS Nativo (rAF + IntersectionObserver, sin GSAP)
+===================================================== -->
+<script>
+  /* -------------------------------------------------------
+   *  ACTO I: Reveal secuencial del hero nativo + fade suave
+   * ----------------------------------------------------- */
+  function initHeroAnim() {
+    const hero = document.getElementById('void-hero') as HTMLElement | null;
+    if (!hero) return;
+
+    const badge       = document.getElementById('void-badge');
+    const words       = Array.from(hero.querySelectorAll<HTMLElement>('.void-word'));
+    const subtitle    = document.getElementById('void-subtitle');
+    const heroActions = document.getElementById('void-hero-actions');
+    const scrollHint  = document.getElementById('void-scroll-hint');
+
+    // Ocultar al arranque
+    [badge, ...words, subtitle, heroActions, scrollHint].forEach(el => {
+      if (el) el.classList.add('hero-hidden');
+    });
+
+    requestAnimationFrame(() => {
+      let delay = 250;
+      if (badge) setTimeout(() => badge.classList.add('hero-visible'), delay);
+      delay += 160;
+
+      words.forEach((w, i) => {
+        setTimeout(() => w.classList.add('hero-visible'), delay + i * 90);
+      });
+      delay += words.length * 90 + 160;
+
+      if (subtitle) setTimeout(() => subtitle.classList.add('hero-visible'), delay);
+      delay += 300;
+      if (heroActions) setTimeout(() => heroActions.classList.add('hero-visible'), delay);
+      delay += 250;
+      if (scrollHint) setTimeout(() => scrollHint.classList.add('hero-visible'), delay);
+    });
+
+    // Fade suave a negro profundo conforme se scrollea
+    const onScroll = () => {
+      const sy = window.scrollY;
+      const h  = hero.offsetHeight;
+      if (sy <= 0) {
+        hero.style.opacity = '1';
+        hero.style.transform = 'scale(1)';
+        return;
+      }
+      const p = Math.min(sy / (h * 0.75), 1);
+      hero.style.opacity   = String(1 - p);
+      hero.style.transform = `translateY(${p * 20}px) scale(${1 - p * 0.05})`;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* -------------------------------------------------------
+   *  ACTO II: Cinta continua vertical con requestAnimationFrame
+   * ----------------------------------------------------- */
+  function initMasonryMarquee() {
+    const winEl    = document.getElementById('mq-window')   as HTMLElement | null;
+    const tape     = document.getElementById('mq-tape')     as HTMLElement | null;
+    const original = document.getElementById('mq-original') as HTMLElement | null;
+    const clone    = document.getElementById('mq-clone')    as HTMLElement | null;
+
+    if (!tape || !original || !clone || !winEl) return;
+
+    const pxPerSec = parseFloat((tape as HTMLElement & { dataset: DOMStringMap }).dataset.speed ?? '10');
+
+    // Respetar accesibilidad: prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      clone.remove();
+      return;
+    }
+
+    let offset = 0;
+    let paused = false;
+    let rafId  = 0;
+    let lastTs = 0;
+
+    const step = (ts: number) => {
+      const dt = lastTs ? Math.min(ts - lastTs, 50) : 16;
+      lastTs = ts;
+
+      if (!paused) {
+        offset += pxPerSec * (dt / 1000);
+        const h = original.offsetHeight;
+        if (h > 0 && offset >= h) {
+          offset -= h;
+        }
+        tape.style.transform = `translateY(-${offset}px)`;
+      }
+      rafId = requestAnimationFrame(step);
+    };
+
+    // IntersectionObserver para pausar cuando no está visible
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        lastTs = 0;
+        rafId = requestAnimationFrame(step);
+      } else {
+        cancelAnimationFrame(rafId);
+      }
+    }, { threshold: 0 });
+    io.observe(winEl);
+
+    // Hover o foco: pausa toda la cinta
+    tape.addEventListener('mouseenter', () => { paused = true; });
+    tape.addEventListener('mouseleave', () => { paused = false; lastTs = 0; });
+    tape.addEventListener('focusin',    () => { paused = true; });
+    tape.addEventListener('focusout',   () => { paused = false; lastTs = 0; });
+  }
+
+  function init() {
+    initHeroAnim();
+    initMasonryMarquee();
+  }
+
+  document.addEventListener('astro:page-load', init);
+</script>
+
+<style>
+  /* ============================================================
+     VARIABLES DE COLOR Y ESTRUCTURA MINERAL
+  ============================================================ */
+  .void-intro-root {
+    --void-bg:      #060606;
+    --void-text:    #E8E2DA;
+    --void-accent:  #C9A96E;
+    --void-ghost:   rgba(232,226,218,0.3);
+    --void-eyebrow: rgba(201,169,110,0.85);
+    --gap:          14px;
+    overflow-x: hidden;
+    background-color: var(--void-bg);
+  }
+
+  /* ============================================================
+     BOTÓN DE SALTO INMEDIATO (Editorial Minimal, SIN PILL)
+  ============================================================ */
+  .void-quick-skip {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 100;
+  }
+
+  .void-skip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.85rem;
+    border-bottom: 1px solid rgba(232,226,218,0.25);
+    background: transparent;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(232,226,218,0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .void-skip-btn:hover {
+    color: var(--void-accent);
+    border-color: var(--void-accent);
+  }
+
+  .void-skip-arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.75rem;
+  }
+  .void-skip-btn:hover .void-skip-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ============================================================
+     ACTO I: HERO (100dvh)
+  ============================================================ */
+  .void-hero-section {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    min-height: 100vh;
+    background-color: var(--void-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    will-change: opacity, transform;
+  }
+
+  /* Grain de fondo */
+  .void-grain {
+    position: absolute;
+    inset: -50%;
+    width: 200%; height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: .4;
+    animation: grain-shift .14s steps(1) infinite;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  @keyframes grain-shift {
+    0%  { transform: translate(0%,0%); }
+    20% { transform: translate(-3%,-4%); }
+    40% { transform: translate(2%,5%); }
+    60% { transform: translate(-4%,1%); }
+    80% { transform: translate(3%,-3%); }
+  }
+
+  /* Scanlines sutiles */
+  .void-scanlines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px,
+      rgba(255,255,255,.008) 2px, rgba(255,255,255,.008) 4px);
+    pointer-events: none;
+  }
+
+  .void-hero-inner {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    padding: 2rem; max-width: 80rem; width: 100%; gap: 1.8rem;
+  }
+
+  /* Transición de aparición letra/bloque */
+  .hero-hidden { opacity: 0; transform: translateY(35px); transition: none; }
+  .hero-visible {
+    opacity: 1; transform: translateY(0);
+    transition: opacity .9s cubic-bezier(.19,1,.22,1),
+                transform 1.1s cubic-bezier(.19,1,.22,1);
+  }
+  .void-word.hero-hidden  { transform: translateY(60px) rotateX(-50deg); filter: blur(8px); }
+  .void-word.hero-visible {
+    transform: translateY(0) rotateX(0deg); filter: blur(0);
+    transition: opacity 1.1s cubic-bezier(.19,1,.22,1),
+                transform 1.2s cubic-bezier(.19,1,.22,1),
+                filter .85s ease;
+  }
+
+  /* Badge sobrio y lineal (SIN FORMA DE PÍLDORA) */
+  .void-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--void-eyebrow);
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+  .void-badge-line {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: rgba(201,169,110,0.35);
+  }
+
+  /* Headline */
+  .void-headline {
+    font-family: 'Gloock', 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2.8rem, 8.5vw, 8.5rem);
+    font-weight: 400;
+    line-height: .92;
+    letter-spacing: -.035em;
+    color: var(--void-text);
+    display: flex; flex-direction: column; align-items: center; gap: .08em; margin: 0;
+    perspective: 900px;
+    cursor: default;
+  }
+  .void-line {
+    display: flex; gap: .25em; align-items: baseline; flex-wrap: wrap; justify-content: center;
+  }
+  .void-word { display: inline-block; transform-origin: center bottom; }
+
+  /* "Puzzle" comparte formato y se ilumina en hover */
+  .void-puzzle-word {
+    color: var(--void-text);
+    font-style: normal;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+  }
+  .void-headline:hover .void-puzzle-word,
+  .void-puzzle-word:hover {
+    color: var(--void-accent);
+    text-shadow: 0 0 60px rgba(201,169,110,.45), 0 0 120px rgba(201,169,110,.15);
+  }
+
+  .void-ghost {
+    font-size: .38em; font-family: 'Syne', 'DM Sans', sans-serif;
+    font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--void-ghost); font-style: normal;
+  }
+
+  /* Subtítulo */
+  .void-subtitle {
+    font-family: 'DM Sans', 'Inter', sans-serif;
+    font-size: clamp(.62rem, 1.1vw, .82rem); font-weight: 300;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(232,226,218,.4); max-width: 54ch; line-height: 2.1; margin: 0;
+  }
+
+  /* Acciones en el hero (SIN PILL, RECTANGULAR EDITORIAL) */
+  .void-hero-actions {
+    margin-top: 0.5rem;
+  }
+  .void-hero-direct-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.6rem;
+    border: 1px solid rgba(232,226,218,0.25);
+    border-radius: 2px;
+    background: rgba(232,226,218,0.03);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--void-text);
+    text-decoration: none;
+    transition: all 0.35s ease;
+  }
+  .void-hero-direct-cta:hover {
+    background: var(--void-accent);
+    border-color: var(--void-accent);
+    color: #000;
+    transform: translateY(-2px);
+  }
+  .void-direct-arrow {
+    transition: transform 0.3s ease;
+  }
+  .void-hero-direct-cta:hover .void-direct-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Scroll hint */
+  .void-scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  }
+  .void-scroll-line {
+    display: block; width: 1px; height: 44px;
+    background: linear-gradient(to bottom, transparent, rgba(232,226,218,.6) 60%, transparent);
+    animation: scroll-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse {
+    0%,100% { opacity:.25; transform:scaleY(.85); }
+    50%     { opacity:.9; transform:scaleY(1); }
+  }
+  .void-scroll-label {
+    font-family: 'IBM Plex Mono',monospace; font-size: .52rem;
+    letter-spacing: .45em; text-transform: uppercase; color: rgba(232,226,218,.4);
+  }
+
+  /* Fade inferior mutuo de Acto I a Acto II */
+  .void-hero-bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    background: linear-gradient(to bottom, transparent, var(--void-bg));
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* ============================================================
+     ACTO II: ARCHIVE + 2-COL MASONRY (AMPLIADO A 3 SCROLLS)
+  ============================================================ */
+  .void-archive-section {
+    position: relative;
+    width: 100%;
+    min-height: 250vh; /* Ampliado hacia abajo para ~3 scrolls de recorrido fluido */
+    background-color: var(--void-bg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 25vh;
+  }
+
+  /* Fade superior mutuo en Acto II */
+  .void-archive-top-fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 160px;
+    background: linear-gradient(to bottom, var(--void-bg), transparent);
+    pointer-events: none;
+    z-index: 25;
+  }
+
+  .void-archive-header {
+    position: relative; z-index: 20;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 6rem 2rem 3.5rem; gap: 1.1rem;
+  }
+  .void-archive-eyebrow {
+    font-family: 'IBM Plex Mono',monospace; font-size: .58rem;
+    letter-spacing: .38em; text-transform: uppercase; color: var(--void-eyebrow);
+  }
+  .void-archive-title {
+    font-family: 'Gloock',serif; font-size: clamp(1.6rem,3.5vw,3rem);
+    font-weight: 400; color: var(--void-text); margin: 0; letter-spacing: -.02em;
+  }
+  .void-archive-cta {
+    display: inline-flex; align-items: center; gap: .75rem;
+    padding: .65rem 1.6rem;
+    border: 1px solid rgba(232,226,218,0.25);
+    border-radius: 2px; /* Sin pill */
+    background: rgba(232,226,218,.03);
+    font-family: 'DM Sans',sans-serif; font-size: .65rem;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--void-text); text-decoration: none;
+    transition: all .35s ease;
+  }
+  .void-archive-cta:hover {
+    background: rgba(201,169,110,.15);
+    border-color: rgba(201,169,110,.5);
+    color: var(--void-accent);
+  }
+  .void-cta-arrow { transition: transform .4s ease; }
+  .void-archive-cta:hover .void-cta-arrow { transform: translateX(5px); }
+
+  /* ── STAGE CON ESPACIO NEGATIVO DARK (21% CADA LADO) ── */
+  .mq-layout-stage {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex: 1;
+    min-height: 200vh; /* Ventana extendida verticalmente */
+  }
+
+  /* Espacios negativos dark a los lados (21%) */
+  .mq-negative-space {
+    flex: 0 0 21%;
+    background-color: var(--void-bg);
+    pointer-events: none;
+  }
+
+  /* Ventana central: 58% en desktop, extendida en altura */
+  .mq-window {
+    position: relative;
+    flex: 0 0 58%;
+    width: 58%;
+    max-width: 1080px;
+    height: 190vh; /* Altura generosa para explorar durante el scroll */
+    overflow: hidden;
+    border-radius: 4px;
+    background: #060606;
+  }
+
+  @media (max-width: 1024px) {
+    .mq-negative-space { flex: 0 0 12%; }
+    .mq-window { flex: 0 0 76%; width: 76%; height: 170vh; }
+  }
+
+  @media (max-width: 640px) {
+    .mq-negative-space { display: none; }
+    .mq-window { flex: 1 1 100%; width: calc(100% - 24px); margin: 0 12px; height: 160vh; }
+  }
+
+  /* ── Cinta animada ── */
+  .mq-tape {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    will-change: transform;
+  }
+
+  /* ── Mosaico CSS Grid: 2 COLUMNAS DENSAS CON MARGEN / GAP HOLGADO ── */
+  .mq-mosaic {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* 2 COLUMNAS */
+    grid-auto-rows: 175px;
+    grid-auto-flow: dense;
+    gap: var(--gap);
+    padding: var(--gap);
+  }
+
+  @media (max-width: 640px) {
+    .mq-mosaic {
+      grid-auto-rows: 140px;
+      gap: 10px;
+      padding: 10px;
+    }
+  }
+
+  /* ── Celdas con leve redondeo sutil ── */
+  .mq-cell {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 4px; /* Unificado, sutil y sobrio */
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    background: #0e0e0e;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: border-color 0.4s ease;
+  }
+
+  .mq-cell:hover {
+    border-color: rgba(201,169,110,0.4);
+  }
+
+  .mq-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    filter: brightness(.7) saturate(.8);
+    transition: filter .55s ease, transform .55s cubic-bezier(.25,.46,.45,.94);
+  }
+
+  /* hover / foco: zoom 1.025 máximo */
+  .mq-cell:hover .mq-img,
+  .mq-cell:focus .mq-img {
+    filter: brightness(.85) saturate(1.05);
+    transform: scale(1.025);
+  }
+
+  /* overlay hover */
+  .mq-hover-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top,
+      rgba(6,6,6,.96) 0%, rgba(6,6,6,.45) 55%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: .85rem .95rem; gap: .2rem;
+    opacity: 0;
+    transition: opacity .45s ease;
+    z-index: 2;
+  }
+  .mq-cell:hover .mq-hover-overlay,
+  .mq-cell:focus .mq-hover-overlay { opacity: 1; }
+
+  .mq-ol-eyebrow {
+    font-family: 'IBM Plex Mono',monospace;
+    font-size: .5rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--void-eyebrow); line-height: 1;
+  }
+  .mq-ol-title {
+    font-family: 'Gloock',serif;
+    font-size: clamp(.68rem,1.25vw,.92rem); font-weight: 400;
+    color: var(--void-text); line-height: 1.25;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .mq-ol-cta {
+    font-family: 'DM Sans',sans-serif; font-size: .6rem;
+    letter-spacing: .18em; text-transform: uppercase; font-weight: 500;
+    color: var(--void-accent); margin-top: .25rem;
+  }
+
+  /* ── Vignettes superior e inferior profundas dentro de la ventana ── */
+  .mq-vig {
+    position: absolute; left: 0; right: 0; z-index: 10; pointer-events: none;
+  }
+  .mq-vig--top    { top: 0;    height: 120px; background: linear-gradient(to bottom, var(--void-bg), transparent); }
+  .mq-vig--bottom { bottom: 0; height: 180px; background: linear-gradient(to top,   var(--void-bg), transparent); }
+
+  /* Máscara vignette profunda final al terminar los 3 scrolls */
+  .void-archive-bottom-mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35vh;
+    background: linear-gradient(to bottom, transparent, var(--void-bg) 75%, var(--void-bg) 100%);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* ============================================================
+     REDUCED MOTION
+  ============================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .mq-tape          { transform: none !important; }
+    .mq-img           { transition: none; }
+    .void-grain       { animation: none; }
+    .void-scroll-line { animation: none; }
+    .hero-hidden  { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .hero-visible { transition: none; }
+  }
+</style>

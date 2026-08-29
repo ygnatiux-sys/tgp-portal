@@ -54,6 +54,8 @@ const spreadValueSchema = z.object({
 const commonSchema = z.object({
   title: z.string().optional().default(''),
   draft: z.boolean().optional().default(false),
+  subtitle: z.string().optional().default(''),
+  author: z.string().optional().default('The Great Puzzle'),
   template: z.string().optional().nullable(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
   hero_source_picker: fancyboxPickerSchema,
@@ -82,6 +84,8 @@ const ensayosFeedSchema = z.object({
 const capsulaSchema = z.object({
   title: z.string().optional().default(''),
   draft: z.boolean().optional().default(false),
+  subtitle: z.string().optional().default(''),
+  author: z.string().optional().default('The Great Puzzle'),
   template: z.string().optional().nullable(),
   hero_image: z.string().optional().default('/images/default-hero.jpg'),
   hero_source_picker: fancyboxPickerSchema,

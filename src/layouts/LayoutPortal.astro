@@ -52,8 +52,11 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  image?: string;
   bgClass?: string;
   vibeClass?: string;
+  showFooterMarquee?: boolean;
+  showFooter?: boolean;
 }
 
 const { 
@@ -62,7 +65,9 @@ const {
   ogImage = "/favicon.png",
   image,
   bgClass = "bg-racing-green",
-  vibeClass = ""
+  vibeClass = "",
+  showFooterMarquee = true,
+  showFooter = true
 } = Astro.props;
 
 // Canonical URL sin parámetros de búsqueda para SEO y Google Search Console
@@ -280,7 +285,7 @@ const socialImageURL = new URL(image || ogImage, Astro.site ?? Astro.url.origin)
     {/* Page Content */}
     <slot />
 
-    <EditorialFooter />
+    {showFooter && <EditorialFooter showMarquee={showFooterMarquee} />}
 
 
 
