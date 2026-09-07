@@ -2,12 +2,12 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';
 import { tgpIntegrations } from './tgp.integrations.mjs';
 
 // Creamos un logger personalizado de Vite para silenciar los warnings obsoletos
 // generados internamente por el plugin de React/Babel en las nuevas versiones de Vite.
 import { createLogger } from 'vite';
+import cloudflare from '@astrojs/cloudflare';
 const logger = createLogger();
 const originalWarn = logger.warn;
 logger.warn = (msg, options) => {
@@ -22,8 +22,7 @@ const isBuild = process.argv.includes('build');
 export default defineConfig({
   site: 'https://thegreatpuzzleproject.com',
   output: 'static',
-  adapter: cloudflare(),
-  
+
   image: {
     domains: [
       'storage.thegreatpuzzleproject.com',
@@ -36,11 +35,11 @@ export default defineConfig({
       'lh6.googleusercontent.com',
     ],
   },
-  
+
   server: {
     open: true,
   },
-  
+
   integrations: [
     sitemap(),
     keystatic(),
@@ -72,9 +71,11 @@ export default defineConfig({
     // Filtramos para evitar que se cargue una instancia duplicada desde tgp.integrations
     ...tgpIntegrations.filter(i => i.name !== 'keystatic')
   ],
-  
+
   vite: {
     customLogger: logger,
     plugins: [tailwindcss()],
-  }
+  },
+
+  adapter: cloudflare()
 });

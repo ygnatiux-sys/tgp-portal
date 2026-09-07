@@ -1,5 +1,5 @@
 {
-  "name": "tgp-Ediciones",
+  "name": "tgp-ediciones",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -10,7 +10,8 @@
     "admin": "start http://localhost:4321/keystatic",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && npx wrangler pages deploy dist"
+    "deploy": "astro build && npx wrangler pages deploy dist",
+    "generate-types": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -57,6 +58,6 @@
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
-    "wrangler": "^4.125.0"
+    "wrangler": "^4.129.1"
   }
 }
