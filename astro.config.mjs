@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
 import tailwindcss from '@tailwindcss/vite';
+import cloudflare from '@astrojs/cloudflare';
 import { tgpIntegrations } from './tgp.integrations.mjs';
 
 // Creamos un logger personalizado de Vite para silenciar los warnings obsoletos
@@ -20,7 +21,8 @@ const isBuild = process.argv.includes('build');
 
 export default defineConfig({
   site: 'https://thegreatpuzzleproject.com',
-  output: 'static',
+  output: 'hybrid',
+  adapter: cloudflare(),
   
   image: {
     domains: [
@@ -41,9 +43,9 @@ export default defineConfig({
   
   integrations: [
     sitemap(),
-    // Escudo de compilación: Keystatic y su admin solo se inyectan en desarrollo local
+    keystatic(),
+    // Escudo de compilación: el auto-open solo se inyecta en desarrollo local
     ...(isBuild ? [] : [
-      keystatic(), 
       {
         name: 'open-keystatic-admin',
         hooks: {

@@ -1,4 +1,4 @@
-﻿import { config, fields, collection } from '@keystatic/core';
+import { config, fields, collection } from '@keystatic/core';
 import {
   templateSchema,
   baseSchema,
@@ -48,8 +48,10 @@ const generadorMotorField = fields.text({
 // EXPORT DEFAULT — CONFIG MAESTRO TGP
 // ============================================================
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export default config({
-  storage: { kind: 'local' },
+  storage: isProd ? { kind: 'github', repo: { owner: 'ygnatiux-sys', name: 'tgp-portal' } } : { kind: 'local' },
   collections: {
 
     // ──────────────────────────────────────────────────────────
