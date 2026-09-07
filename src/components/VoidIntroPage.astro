@@ -84,16 +84,6 @@ function getVariant(index: number): CellVariant {
 <div id="void-intro-wrapper" class="void-intro-root">
 
   <!-- ===================================================
-       BOTÓN DE SALTO INMEDIATO (Editorial Minimal, sin pills)
-  =================================================== -->
-  <aside class="void-quick-skip" aria-label="Navegación directa">
-    <a href="/portal" class="void-skip-btn">
-      <span class="void-skip-text">Saltar a la web</span>
-      <span class="void-skip-arrow">→</span>
-    </a>
-  </aside>
-
-  <!-- ===================================================
        ACTO I: VOID HERO (100dvh)
   =================================================== -->
   <section id="void-hero" class="void-hero-section" aria-label="Bienvenida">
@@ -101,13 +91,6 @@ function getVariant(index: number): CellVariant {
     <div class="void-scanlines" aria-hidden="true"></div>
 
     <div class="void-hero-inner">
-      <!-- Badge sobrio y lineal (sin forma de píldora) -->
-      <div class="void-badge" id="void-badge">
-        <span class="void-badge-line"></span>
-        <span class="void-badge-text">The Great Puzzle Project &middot; Portal Editorial</span>
-        <span class="void-badge-line"></span>
-      </div>
-
       <h1 class="void-headline" id="void-headline"
           aria-label="Bienvenidos a The Great Puzzle (project)">
         <span class="void-line">
@@ -372,7 +355,7 @@ function getVariant(index: number): CellVariant {
      VARIABLES DE COLOR Y ESTRUCTURA MINERAL
   ============================================================ */
   .void-intro-root {
-    --void-bg:      #080909;
+    --void-bg:      #121413;
     --void-text:    #E8E2DA;
     --void-accent:  #C9A96E;
     --void-ghost:   rgba(232,226,218,0.3);
@@ -381,46 +364,6 @@ function getVariant(index: number): CellVariant {
     --pad:          18px;
     overflow-x: hidden;
     background-color: var(--void-bg);
-  }
-
-  /* ============================================================
-     BOTÓN DE SALTO INMEDIATO (Editorial Minimal, SIN PILL)
-  ============================================================ */
-  .void-quick-skip {
-    position: fixed;
-    top: 1.5rem;
-    right: 2rem;
-    z-index: 100;
-  }
-
-  .void-skip-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.4rem 0.85rem;
-    border-bottom: 1px solid rgba(232,226,218,0.25);
-    background: transparent;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.62rem;
-    font-weight: 400;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(232,226,218,0.8);
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .void-skip-btn:hover {
-    color: var(--void-accent);
-    border-color: var(--void-accent);
-  }
-
-  .void-skip-arrow {
-    transition: transform 0.3s ease;
-    font-size: 0.75rem;
-  }
-  .void-skip-btn:hover .void-skip-arrow {
-    transform: translateX(4px);
   }
 
   /* ============================================================
@@ -470,7 +413,14 @@ function getVariant(index: number): CellVariant {
     position: relative; z-index: 10;
     display: flex; flex-direction: column;
     align-items: center; text-align: center;
-    padding: 2rem; max-width: 80rem; width: 100%; gap: 1.8rem;
+    padding: 7rem 2rem 2.5rem; max-width: 80rem; width: 100%; gap: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .void-hero-inner {
+      padding: 5.5rem 1.25rem 2rem;
+      gap: 1.5rem;
+    }
   }
 
   /* Transición de aparición letra/bloque */
@@ -486,27 +436,6 @@ function getVariant(index: number): CellVariant {
     transition: opacity 1.1s cubic-bezier(.19,1,.22,1),
                 transform 1.2s cubic-bezier(.19,1,.22,1),
                 filter .85s ease;
-  }
-
-  /* Badge sobrio y lineal (SIN FORMA DE PÍLDORA) */
-  .void-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--void-eyebrow);
-    padding: 0;
-    background: transparent;
-    border: none;
-  }
-  .void-badge-line {
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: rgba(201,169,110,0.35);
   }
 
   /* Headline */
@@ -793,7 +722,7 @@ function getVariant(index: number): CellVariant {
   .mq-hover-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top,
-      rgba(8,9,9,.94) 0%, rgba(8,9,9,.42) 55%, transparent 100%);
+      rgba(18,20,19,.95) 0%, rgba(18,20,19,.45) 55%, transparent 100%);
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: .85rem .95rem; gap: .2rem;
     opacity: 0;
