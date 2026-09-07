@@ -21,7 +21,7 @@ const isBuild = process.argv.includes('build');
 
 export default defineConfig({
   site: 'https://thegreatpuzzleproject.com',
-  output: 'hybrid',
+  output: 'static',
   adapter: cloudflare(),
   
   image: {
