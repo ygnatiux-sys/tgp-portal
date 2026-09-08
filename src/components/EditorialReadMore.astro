@@ -153,8 +153,8 @@ const rowPosts = allNormalizedPosts.slice(1, 16);
             class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
           />
 
-          {/* ── REGLA 2: Scrim Localizado — solo protege la zona del texto ── */}
-          <div class="absolute bottom-0 left-0 w-3/4 sm:w-2/3 h-1/2 sm:h-2/3 bg-linear-to-tr from-black/95 via-black/70 to-transparent pointer-events-none"></div>
+          {/* ── REGLA 2: Scrim Radial — focalizado abajo-izq, sin hard-cut ── */}
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.55)_38%,transparent_65%)] pointer-events-none"></div>
 
           {/* ── REGLA 3: Contenedor del Texto — anclado abajo izq, z-10 ── */}
           <div class="absolute bottom-0 left-0 p-6 md:p-10 lg:p-12 flex flex-col justify-end gap-3 z-10">

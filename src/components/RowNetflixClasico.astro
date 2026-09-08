@@ -191,8 +191,8 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
                 />
               </div>
               
-              <!-- Viñeta degradada inferior: Opción A (Base recortada h-1/3) -->
-              <div class="absolute bottom-0 w-full h-1/3 bg-linear-to-t from-black/90 via-black/60 to-transparent pointer-events-none"></div>
+              <!-- Scrim inset-0: radial focalizado abajo, sin hard-cut -->
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(0,0,0,0.85)_0%,rgba(0,0,0,0.4)_40%,transparent_70%)] pointer-events-none"></div>
 
               <!-- Información Editorial -->
               <div class="card-info absolute inset-x-0 bottom-0 p-3.5 md:p-4 flex flex-col justify-end">
@@ -249,7 +249,7 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
   }
 
   .netflix-card-img {
-    filter: brightness(0.72) contrast(1.06);
+    filter: brightness(1) contrast(1.04);
     transition: filter 340ms ease;
   }
 
@@ -288,7 +288,7 @@ const uid = `row-${Math.random().toString(36).substring(2, 8)}`;
   }
 
   .netflix-card:hover .netflix-card-img {
-    filter: brightness(0.95) contrast(1.04);
+    filter: brightness(1.05) contrast(1.04);
     transition-delay: 260ms;
   }
 
