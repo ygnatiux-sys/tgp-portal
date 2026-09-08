@@ -2,8 +2,6 @@
 import { env } from 'cloudflare:workers';
 import config from '../../../../keystatic.config';
 import { makeGenericAPIRouteHandler } from '@keystatic/core/api/generic';
-// @ts-ignore
-import { parse as parseSetCookie } from 'set-cookie-parser';
 import type { APIContext } from 'astro';
 
 export const prerender = false;
@@ -16,56 +14,34 @@ const _config = {
 };
 
 const handler = makeGenericAPIRouteHandler(_config, {
-  slugEnvName: 'PUBLIC_KEYSTATIC_GITHUB_APP_SLUG'
+  slugEnvName: 'PUBLIC_KEYSTATIC_GITHUB_APP_SLUG',
 });
 
 export const all = async (context: APIContext) => {
   const { body, headers, status } = await handler(context.request);
-  
-  let headersInADifferentStructure = new Map();
+
+  const responseHeaders = new Headers();
+
   if (headers) {
     if (Array.isArray(headers)) {
       for (const [key, value] of headers) {
-        headersInADifferentStructure.set(key.toLowerCase(), value);
+        responseHeaders.append(key, value);
       }
-    } else if (headers instanceof Headers) {
-      for (const [key, value] of headers.entries()) {
-        headersInADifferentStructure.set(key.toLowerCase(), value);
-      }
-    } else {
+    } else if (typeof headers === 'object') {
       for (const [key, value] of Object.entries(headers)) {
-        headersInADifferentStructure.set(key.toLowerCase(), value);
+        if (Array.isArray(value)) {
+          for (const v of value) responseHeaders.append(key, v);
+        } else if (typeof value === 'string') {
+          responseHeaders.append(key, value);
+        }
       }
     }
   }
-  
-  const rawSetCookie = headersInADifferentStructure.has('set-cookie')
-    ? headersInADifferentStructure.get('set-cookie')
-    : null;
-  const parsedSetCookie = rawSetCookie ? parseSetCookie(rawSetCookie) : [];
 
-  if (parsedSetCookie.length) {
-    headersInADifferentStructure.delete('set-cookie');
-  }
-  
-  const response = new Response(body as BodyInit, {
-    status,
-    headers: [...headersInADifferentStructure.entries()] as HeadersInit
+  return new Response(body as BodyInit, {
+    status: status ?? 200,
+    headers: responseHeaders,
   });
-  
-  for (const cookie of parsedSetCookie) {
-    context.cookies.set(cookie.name, cookie.value, {
-      domain: cookie.domain,
-      expires: cookie.expires,
-      httpOnly: cookie.httpOnly,
-      maxAge: cookie.maxAge,
-      path: cookie.path,
-      sameSite: cookie.sameSite as any,
-      secure: cookie.secure
-    });
-  }
-  
-  return response;
 };
 
 export const ALL = all;
