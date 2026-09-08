@@ -8,36 +8,121 @@ const modalTitle = "El Oráculo de Delfos";
 const modalImage = "https://images.unsplash.com/photo-1541675154750-0444c7d51e8e?q=80&w=2000&auto=format&fit=crop";
 ---
 
-<LayoutApple title="Test Modal">
-  <main class="min-h-screen bg-neutral-950 text-white flex flex-col items-center justify-center p-8">
+<LayoutApple title="Test Gradientes y Modal">
+  <main class="min-h-screen bg-neutral-950 text-white flex flex-col items-center justify-center p-6 md:p-12">
     
-    <div class="max-w-2xl text-center space-y-8">
-      <h1 class="text-3xl font-bold">Prueba del Modal Expandible</h1>
-      <p class="text-neutral-400">Haz clic en la tarjeta de abajo para abrir el modal estilo Netflix que acabamos de crear.</p>
-      
-      {/* Tarjeta de prueba que dispara el modal */}
-      <button 
-        id="trigger-modal"
-        class="relative w-64 h-40 mx-auto rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-300 ring-2 ring-transparent hover:ring-white/50 text-left"
-        data-flip-id={`modal-container-${modalId}`}
-      >
-        <img 
-          src={modalImage} 
-          alt={modalTitle}
-          class="absolute inset-0 w-full h-full object-cover"
-          data-flip-id={`modal-image-${modalId}`}
-        />
-        <div class="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
-        <h3 
-          class="absolute bottom-4 left-4 font-bold text-lg"
-          data-flip-id={`modal-title-${modalId}`}
-        >
-          {modalTitle}
-        </h3>
-      </button>
+    <div class="max-w-4xl w-full text-center space-y-6 mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-mono uppercase tracking-widest">
+        Branch: test/card-gradients
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">Comparativa de Gradientes en Cards</h1>
+      <p class="text-neutral-400 text-sm max-w-xl mx-auto">
+        Compara la nueva <span class="text-white font-semibold">Opción B</span> (esquina focalizada abajo a la izquierda) frente a la <span class="text-white font-semibold">Opción A</span> y la anterior viñeta global. Haz clic en cualquiera para abrir el modal.
+      </p>
     </div>
 
-    {/* El Componente Modal */}
+    {/* Grid de Comparación de Cards */}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl w-full mb-16">
+      
+      {/* 1. OPCIÓN B: DOBLE GRADIENTE FOCALIZADO (ACTIVA EN EL SISTEMA) */}
+      <div class="flex flex-col gap-3">
+        <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Opción B (Aplicada Global)
+        </span>
+        <button 
+          id="trigger-modal-b"
+          class="relative w-full aspect-2/3 rounded-xl overflow-hidden group hover:scale-[1.03] transition-transform duration-300 ring-1 ring-white/10 hover:ring-white/40 text-left cursor-pointer"
+          data-flip-id={`modal-container-${modalId}`}
+        >
+          <img 
+            src={modalImage} 
+            alt={modalTitle}
+            class="absolute inset-0 w-full h-full object-cover"
+            data-flip-id={`modal-image-${modalId}`}
+          />
+          {/* Opción B: Sombra en esquina inferior izquierda */}
+          <div class="absolute bottom-0 left-0 w-2/3 h-1/2 bg-linear-to-tr from-black/90 via-black/50 to-transparent pointer-events-none"></div>
+          
+          <div class="absolute bottom-4 left-4 right-4 z-10">
+            <span class="text-[8px] tracking-[0.3em] uppercase text-amber-500 font-mono block mb-1">
+              Esquina Focalizada
+            </span>
+            <h3 class="font-serif font-bold text-lg text-white leading-snug" data-flip-id={`modal-title-${modalId}`}>
+              {modalTitle}
+            </h3>
+          </div>
+        </button>
+        <p class="text-[11px] text-neutral-400 leading-relaxed text-left">
+          <code class="text-neutral-300 bg-neutral-900 px-1 py-0.5 rounded">w-2/3 h-1/2 bg-linear-to-tr</code>: Deja el 50% superior y el tercio derecho 100% expuestos a la luz.
+        </p>
+      </div>
+
+      {/* 2. OPCIÓN A: GRADIENTE BASE h-1/3 */}
+      <div class="flex flex-col gap-3">
+        <span class="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold">
+          Opción A (Base Recortada)
+        </span>
+        <button 
+          id="trigger-modal-a"
+          class="relative w-full aspect-2/3 rounded-xl overflow-hidden group hover:scale-[1.03] transition-transform duration-300 ring-1 ring-white/10 hover:ring-white/40 text-left cursor-pointer"
+        >
+          <img 
+            src={modalImage} 
+            alt={modalTitle}
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Opción A: Base h-1/3 de lado a lado */}
+          <div class="absolute bottom-0 w-full h-1/3 bg-linear-to-t from-black/90 via-black/60 to-transparent pointer-events-none"></div>
+          
+          <div class="absolute bottom-4 left-4 right-4 z-10">
+            <span class="text-[8px] tracking-[0.3em] uppercase text-sky-400 font-mono block mb-1">
+              Base 33%
+            </span>
+            <h3 class="font-serif font-bold text-lg text-white leading-snug">
+              {modalTitle}
+            </h3>
+          </div>
+        </button>
+        <p class="text-[11px] text-neutral-400 leading-relaxed text-left">
+          <code class="text-neutral-300 bg-neutral-900 px-1 py-0.5 rounded">w-full h-1/3 bg-linear-to-t</code>: El 66% superior queda completamente libre de filtros.
+        </p>
+      </div>
+
+      {/* 3. ANTERIOR: VIÑETA GLOBAL INSET-0 */}
+      <div class="flex flex-col gap-3 sm:col-span-2 lg:col-span-1">
+        <span class="text-xs font-mono uppercase tracking-wider text-neutral-500">
+          Anterior (Viñeta Completa)
+        </span>
+        <button 
+          id="trigger-modal-old"
+          class="relative w-full aspect-2/3 rounded-xl overflow-hidden group hover:scale-[1.03] transition-transform duration-300 ring-1 ring-white/10 hover:ring-white/40 text-left cursor-pointer"
+        >
+          <img 
+            src={modalImage} 
+            alt={modalTitle}
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Viñeta Antigua que cubría toda la imagen */}
+          <div class="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
+          
+          <div class="absolute bottom-4 left-4 right-4 z-10">
+            <span class="text-[8px] tracking-[0.3em] uppercase text-neutral-400 font-mono block mb-1">
+              Filtro Global
+            </span>
+            <h3 class="font-serif font-bold text-lg text-white leading-snug">
+              {modalTitle}
+            </h3>
+          </div>
+        </button>
+        <p class="text-[11px] text-neutral-500 leading-relaxed text-left">
+          <code class="text-neutral-400 bg-neutral-900 px-1 py-0.5 rounded">inset-0</code>: Oscurecía toda la tarjeta desde arriba hasta abajo.
+        </p>
+      </div>
+
+    </div>
+
+    {/* El Componente Modal Expandible */}
     <ExpandableModal 
       id={modalId}
       title={modalTitle}
@@ -64,20 +149,15 @@ const modalImage = "https://images.unsplash.com/photo-1541675154750-0444c7d51e8e
 </LayoutApple>
 
 <script>
-  // Lógica para abrir el modal al hacer clic en la tarjeta
-  const trigger = document.getElementById('trigger-modal');
+  const triggers = ['trigger-modal-b', 'trigger-modal-a', 'trigger-modal-old'];
   const modal = document.getElementById('modal-test-1') as HTMLDialogElement;
 
-  if (trigger && modal) {
-    trigger.addEventListener('click', () => {
-      // Abre el modal de forma nativa
-      modal.showModal();
-      
-      // NOTA: Aquí es donde en el futuro implementarías GSAP FLIP.
-      // Sería algo como:
-      // 1. const state = Flip.getState('.flip-elements');
-      // 2. modal.showModal();
-      // 3. Flip.from(state, { duration: 0.6, ease: "power3.inOut" });
-    });
-  }
+  triggers.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn && modal) {
+      btn.addEventListener('click', () => {
+        modal.showModal();
+      });
+    }
+  });
 </script>
