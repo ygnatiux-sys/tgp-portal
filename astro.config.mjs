@@ -24,6 +24,9 @@ export default defineConfig({
   output: 'server',
 
   image: {
+    service: {
+      entrypoint: 'astro/assets/services/noop'
+    },
     domains: [
       'storage.thegreatpuzzleproject.com',
       'images.unsplash.com',

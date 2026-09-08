@@ -71,7 +71,11 @@ const allMixed = [
   ...architectures.map((p, i) => normalize(p, 'architectures', i)),
   ...visualSignals.map((p, i) => normalize(p, 'visual_signals', i)),
   ...capsulas.map((p, i) => normalize(p, 'capsulas', i)),
-].sort(() => Math.random() - 0.5);
+].sort((a, b) => {
+  const dA = a.date ? new Date(a.date).getTime() : 0;
+  const dB = b.date ? new Date(b.date).getTime() : 0;
+  return dB - dA;
+});
 ---
 
 <LayoutPortal

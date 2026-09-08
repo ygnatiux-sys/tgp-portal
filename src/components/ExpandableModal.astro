@@ -1,0 +1,117 @@
+---
+interface Props {
+  id: string; // The data-flip-id for GSAP FLIP
+  title: string;
+  imageSrc: string;
+}
+
+const { id, title, imageSrc } = Astro.props;
+---
+
+<dialog 
+  id={`modal-${id}`}
+  class="fixed inset-0 m-auto z-50 bg-black text-white w-full max-w-4xl border border-white/10 rounded-xl overflow-hidden shadow-2xl"
+  data-flip-id={`modal-container-${id}`}
+>
+  {/* 
+    Imagen Limpia (Top): La imagen de fondo ocupa el área superior, 
+    sin máscara global que ensucie la imagen principal.
+  */}
+  <div class="relative w-full h-[50vh] min-h-87.5">
+    <img 
+      src={imageSrc} 
+      alt={title}
+      class="absolute inset-0 w-full h-full object-cover"
+      data-flip-id={`modal-image-${id}`}
+    />
+    
+    {/* 
+      Bottom Scrim Limitado: Gradiente restringido a la mitad inferior 
+      para proteger el título y la transición hacia la zona de lectura.
+    */}
+    <div class="absolute bottom-0 w-full h-1/2 bg-linear-to-t from-black via-black/80 to-transparent pointer-events-none z-10"></div>
+    
+    {/* Título posicionado sobre el scrim */}
+    <div class="absolute bottom-8 left-8 right-8 z-20">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white" data-flip-id={`modal-title-${id}`}>
+        {title}
+      </h2>
+    </div>
+
+    {/* Botón de cierre (estilo Netflix) */}
+    <button 
+      class="absolute top-6 right-6 z-30 p-2.5 bg-neutral-900/60 hover:bg-neutral-800 transition-colors rounded-full text-white backdrop-blur-md"
+      aria-label="Cerrar"
+      data-modal-close={`modal-${id}`}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  {/* 
+    Zona de Lectura (Scroll): Contenedor con altura limitada, 
+    scroll vertical y barra de scroll oculta.
+  */}
+  <div class="relative bg-black px-8 pt-4 pb-8">
+    <div class="hide-scrollbar max-h-64 overflow-y-auto">
+      <div class="prose prose-invert prose-lg max-w-3xl text-gray-300 leading-relaxed">
+        <slot />
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* Reset por defecto del dialog de HTML */
+  dialog {
+    padding: 0;
+  }
+  
+  /* Backdrop (fondo oscuro detrás del modal) */
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  /* 
+    Ocultar la barra de scroll (scrollbar) pero mantener la 
+    capacidad de hacer scroll con la rueda del ratón o táctil.
+  */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+  }
+</style>
+
+<script>
+  // Lógica básica para cerrar el modal
+  // NOTA: La lógica de apertura y GSAP FLIP debe manejarse en el componente
+  // padre (la galería), ya que FLIP necesita leer el estado inicial (tarjeta) 
+  // y el final (este modal) de manera simultánea.
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const closeButtons = document.querySelectorAll('[data-modal-close]');
+    
+    closeButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const modalId = button.getAttribute('data-modal-close');
+        if (!modalId) return;
+        const modal = document.getElementById(modalId) as HTMLDialogElement;
+        
+        if (modal) {
+          // Si vas a usar GSAP Flip para cerrar, en lugar de modal.close() 
+          // directo, despacharías un evento o ejecutarías la animación inversa aquí.
+          modal.close();
+        }
+      });
+    });
+  });
+</script>

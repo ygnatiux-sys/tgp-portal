@@ -1,0 +1,13 @@
+{
+  "name": "tgp-opengraph",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "express": "^4.21.2",
+    "satori": "^0.12.0"
+  }
+}

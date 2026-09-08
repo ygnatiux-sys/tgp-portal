@@ -1,0 +1,83 @@
+---
+import LayoutApple from '../layouts/LayoutApple.astro';
+import ExpandableModal from '../components/ExpandableModal.astro';
+
+// Datos de prueba para el modal
+const modalId = "test-1";
+const modalTitle = "El Oráculo de Delfos";
+const modalImage = "https://images.unsplash.com/photo-1541675154750-0444c7d51e8e?q=80&w=2000&auto=format&fit=crop";
+---
+
+<LayoutApple title="Test Modal">
+  <main class="min-h-screen bg-neutral-950 text-white flex flex-col items-center justify-center p-8">
+    
+    <div class="max-w-2xl text-center space-y-8">
+      <h1 class="text-3xl font-bold">Prueba del Modal Expandible</h1>
+      <p class="text-neutral-400">Haz clic en la tarjeta de abajo para abrir el modal estilo Netflix que acabamos de crear.</p>
+      
+      {/* Tarjeta de prueba que dispara el modal */}
+      <button 
+        id="trigger-modal"
+        class="relative w-64 h-40 mx-auto rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-300 ring-2 ring-transparent hover:ring-white/50 text-left"
+        data-flip-id={`modal-container-${modalId}`}
+      >
+        <img 
+          src={modalImage} 
+          alt={modalTitle}
+          class="absolute inset-0 w-full h-full object-cover"
+          data-flip-id={`modal-image-${modalId}`}
+        />
+        <div class="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
+        <h3 
+          class="absolute bottom-4 left-4 font-bold text-lg"
+          data-flip-id={`modal-title-${modalId}`}
+        >
+          {modalTitle}
+        </h3>
+      </button>
+    </div>
+
+    {/* El Componente Modal */}
+    <ExpandableModal 
+      id={modalId}
+      title={modalTitle}
+      imageSrc={modalImage}
+    >
+      <p>
+        En la antigua Grecia, el Oráculo de Delfos era un recinto sagrado que servía como principal fuente de autoridad religiosa y guía espiritual. Situado en las laderas del Monte Parnaso, era considerado el centro del mundo (el "omphalos" o el ombligo del mundo).
+      </p>
+      <br/>
+      <p>
+        La Pitia, la sacerdotisa del templo de Apolo, entraba en trance para canalizar los mensajes del dios. Reyes, filósofos y ciudadanos comunes viajaban largas distancias para hacer preguntas sobre la guerra, el amor, la agricultura o la fundación de nuevas colonias.
+      </p>
+      <br/>
+      <p>
+        Sus profecías eran famosas por su ambigüedad. El famoso aforismo "Conócete a ti mismo" estaba inscrito en el pronaos (patio) del Templo de Apolo, recordando a los mortales sus limitaciones antes de consultar a la divinidad.
+      </p>
+      <br/>
+      <p>
+        Este es un párrafo extra para asegurar que el scroll funcione correctamente en el diseño. Puedes intentar hacer scroll con tu mouse o trackpad y notarás que fluye suavemente sin mostrar la antiestética barra lateral.
+      </p>
+    </ExpandableModal>
+
+  </main>
+</LayoutApple>
+
+<script>
+  // Lógica para abrir el modal al hacer clic en la tarjeta
+  const trigger = document.getElementById('trigger-modal');
+  const modal = document.getElementById('modal-test-1') as HTMLDialogElement;
+
+  if (trigger && modal) {
+    trigger.addEventListener('click', () => {
+      // Abre el modal de forma nativa
+      modal.showModal();
+      
+      // NOTA: Aquí es donde en el futuro implementarías GSAP FLIP.
+      // Sería algo como:
+      // 1. const state = Flip.getState('.flip-elements');
+      // 2. modal.showModal();
+      // 3. Flip.from(state, { duration: 0.6, ease: "power3.inOut" });
+    });
+  }
+</script>
