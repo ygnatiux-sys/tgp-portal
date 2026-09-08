@@ -14,18 +14,20 @@ interface CoverflowCarouselProps {
   posts: CoverflowPost[];
   eyebrow?: string;
   title?: string;
+  ctaText?: string;
 }
 
 export default function CoverflowCarousel({
   posts = [],
   eyebrow = 'Cinematografía Editorial',
   title = 'Publicaciones Recientes',
+  ctaText = 'Leer Ahora',
 }: CoverflowCarouselProps) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  // Inicializar en el medio si hay al menos 3 posts
+  // Centrar inicialmente si hay posts
   useEffect(() => {
     if (posts.length >= 3) {
       setActiveIndex(Math.floor(posts.length / 2));
@@ -42,7 +44,7 @@ export default function CoverflowCarousel({
     setActiveIndex((prev) => (prev < posts.length - 1 ? prev + 1 : 0));
   }, [posts.length]);
 
-  // Manejo de teclado
+  // Manejo de flechas de teclado
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') handlePrev();
@@ -52,7 +54,7 @@ export default function CoverflowCarousel({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handlePrev, handleNext]);
 
-  // Soporte Touch / Swipe en móviles
+  // Touch / Swipe para móviles
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
   };
@@ -64,10 +66,9 @@ export default function CoverflowCarousel({
   const onTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const distance = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 45;
-    if (distance > minSwipeDistance) {
+    if (distance > 40) {
       handleNext();
-    } else if (distance < -minSwipeDistance) {
+    } else if (distance < -40) {
       handlePrev();
     }
     touchStartX.current = null;
@@ -77,10 +78,10 @@ export default function CoverflowCarousel({
   if (!posts || posts.length === 0) return null;
 
   return (
-    <div className="w-full py-12 md:py-16 bg-[#0a0c0b] text-[#E3DDD3] select-none">
-      {/* Header Editorial Opcional */}
+    <div className="w-full py-8 md:py-14 bg-transparent text-[#E8E2DA] select-none relative overflow-hidden">
+      {/* Header Editorial */}
       {(title || eyebrow) && (
-        <div className="max-w-360 mx-auto px-6 mb-8 flex items-end justify-between">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 mb-6 sm:mb-8 flex items-end justify-between relative z-30">
           <div>
             {eyebrow && (
               <span className="text-[9px] tracking-[0.45em] uppercase font-mono text-amber-500/90 block mb-2 font-bold">
@@ -94,7 +95,7 @@ export default function CoverflowCarousel({
             )}
           </div>
 
-          {/* Contador de posición */}
+          {/* Contador de posición discreto */}
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono tracking-widest text-white/40">
             <span className="text-amber-400 font-bold">{String(activeIndex + 1).padStart(2, '0')}</span>
             <span>/</span>
@@ -103,51 +104,55 @@ export default function CoverflowCarousel({
         </div>
       )}
 
-      {/* ── REGLA ESTRUCTURAL: Contenedor Padre ── */}
+      {/* ── ESCENARIO PRINCIPAL: Extendido a los costados con fundido ── */}
       <div 
-        className="relative w-full h-120 sm:h-135 md:h-150 flex justify-center items-center overflow-hidden"
+        className="relative w-full h-135 sm:h-150 md:h-165 lg:h-175 flex justify-center items-center overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        {/* Pista de Tarjetas Coverflow */}
+        {/* ── Viñeta Lateral Izquierda: Fundido al fondo (como en el sample) ── */}
+        <div className="absolute inset-y-0 left-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-r from-[var(--void-bg,#121413)] via-[var(--void-bg,#121413)]/85 to-transparent pointer-events-none z-35" />
+
+        {/* ── Viñeta Lateral Derecha: Fundido al fondo (como en el sample) ── */}
+        <div className="absolute inset-y-0 right-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-l from-[var(--void-bg,#121413)] via-[var(--void-bg,#121413)]/85 to-transparent pointer-events-none z-35" />
+
+        {/* Pista de Tarjetas Coverflow (5 tarjetas en abanico) */}
         <div className="relative w-full h-full flex justify-center items-center">
           {posts.map((post, idx) => {
             const diff = idx - activeIndex;
             const isActive = diff === 0;
-            const isLeft = diff < 0;
-            const isRight = diff > 0;
             const absDiff = Math.abs(diff);
 
-            // Ocultar tarjetas muy alejadas para optimizar DOM
+            // Mostrar hasta 2 tarjetas a cada lado (5 en total)
             if (absDiff > 2) {
               return null;
             }
 
-            // Cálculo dinámico de transformaciones según reglas estrictas
+            // Clases de posición y escala para el abanico amplio del sample
             let positionClasses = '';
             let visualClasses = '';
 
             if (isActive) {
-              // ── REGLA: Tarjeta Central (Activa) ──
-              positionClasses = 'scale-100 z-30 translate-x-0 cursor-default shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] border-amber-400/40';
-              visualClasses = 'opacity-100';
+              // Tarjeta Central (Activa): 100% escala, al frente, sombra cinemática
+              positionClasses = 'scale-100 z-30 translate-x-0 cursor-default shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95)] border-white/20';
+              visualClasses = 'opacity-100 brightness-100';
             } else if (diff === -1) {
-              // Inmediata izquierda: -translate-x-1/4 o -translate-x-[45%] en móviles para visibilidad
-              positionClasses = 'scale-75 z-20 -translate-x-[45%] sm:-translate-x-1/3 md:-translate-x-1/4 cursor-pointer border-white/10 hover:border-white/30';
-              visualClasses = 'opacity-40 brightness-50';
+              // Inmediata izquierda: parcialmente superpuesta detrás de la central
+              positionClasses = 'scale-[0.84] sm:scale-[0.82] z-20 -translate-x-[52%] sm:-translate-x-[46%] md:-translate-x-[42%] cursor-pointer border-white/10 hover:border-white/30';
+              visualClasses = 'opacity-55 brightness-60 hover:opacity-75 hover:brightness-75';
             } else if (diff === 1) {
-              // Inmediata derecha: translate-x-1/4
-              positionClasses = 'scale-75 z-20 translate-x-[45%] sm:translate-x-1/3 md:translate-x-1/4 cursor-pointer border-white/10 hover:border-white/30';
-              visualClasses = 'opacity-40 brightness-50';
+              // Inmediata derecha: parcialmente superpuesta detrás de la central
+              positionClasses = 'scale-[0.84] sm:scale-[0.82] z-20 translate-x-[52%] sm:translate-x-[46%] md:translate-x-[42%] cursor-pointer border-white/10 hover:border-white/30';
+              visualClasses = 'opacity-55 brightness-60 hover:opacity-75 hover:brightness-75';
             } else if (diff === -2) {
-              // Segunda tarjeta a la izquierda
-              positionClasses = 'scale-[0.62] z-10 -translate-x-[85%] sm:-translate-x-[65%] md:-translate-x-[50%] cursor-pointer border-white/5';
-              visualClasses = 'opacity-25 brightness-40 hidden sm:block';
+              // Segunda a la izquierda: más afuera, fundiéndose con la viñeta izquierda
+              positionClasses = 'scale-[0.70] sm:scale-[0.68] z-10 -translate-x-[98%] sm:-translate-x-[86%] md:-translate-x-[76%] cursor-pointer border-white/5';
+              visualClasses = 'opacity-35 brightness-45 hidden sm:block hover:opacity-50';
             } else if (diff === 2) {
-              // Segunda tarjeta a la derecha
-              positionClasses = 'scale-[0.62] z-10 translate-x-[85%] sm:translate-x-[65%] md:translate-x-[50%] cursor-pointer border-white/5';
-              visualClasses = 'opacity-25 brightness-40 hidden sm:block';
+              // Segunda a la derecha: más afuera, fundiéndose con la viñeta derecha
+              positionClasses = 'scale-[0.70] sm:scale-[0.68] z-10 translate-x-[98%] sm:translate-x-[86%] md:translate-x-[76%] cursor-pointer border-white/5';
+              visualClasses = 'opacity-35 brightness-45 hidden sm:block hover:opacity-50';
             }
 
             return (
@@ -156,9 +161,9 @@ export default function CoverflowCarousel({
                 onClick={() => {
                   if (!isActive) setActiveIndex(idx);
                 }}
-                className={`absolute w-67.5 sm:w-80 md:w-90 aspect-2/3 rounded-2xl md:rounded-3xl overflow-hidden border transition-all duration-500 ease-out ${positionClasses} ${visualClasses}`}
+                className={`absolute w-72 sm:w-84 md:w-96 aspect-2/3 rounded-2xl md:rounded-3xl overflow-hidden border transition-all duration-500 ease-out ${positionClasses} ${visualClasses}`}
               >
-                {/* ── REGLA ESTRICTA: Imagen al 100% de brillo en la activa, sin overlays globales ── */}
+                {/* Imagen Base Pura al 100% de brillo */}
                 <img
                   src={post.image}
                   alt={post.title}
@@ -167,12 +172,12 @@ export default function CoverflowCarousel({
                   decoding="async"
                 />
 
-                {/* ── REGLA ESTRICTA: Scrim Localizado (w-full h-1/2 from-black via-black/80 to-transparent) ── */}
+                {/* Scrim Localizado inferior */}
                 <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black via-black/80 to-transparent pointer-events-none" />
 
-                {/* Badge de Categoría Superior */}
+                {/* Badge Superior */}
                 <div className="absolute top-4 left-4 z-20">
-                  <span className="px-3 py-1 rounded-full text-[7.5px] tracking-[0.3em] uppercase font-mono bg-black/70 backdrop-blur-md text-amber-400 border border-amber-400/30">
+                  <span className="px-3 py-1 rounded-full text-[7.5px] tracking-[0.3em] uppercase font-mono bg-black/75 backdrop-blur-md text-amber-400 border border-amber-400/30">
                     {post.collectionLabel || 'Editorial'}
                   </span>
                 </div>
@@ -185,7 +190,7 @@ export default function CoverflowCarousel({
                     </span>
                   )}
 
-                  {/* ── REGLA ESTRICTA: Título con fuente Cinzel, mix-blend-mode, font-semibold, tracking-wide. CERO text-shadow ── */}
+                  {/* Título Cinzel sin text-shadow */}
                   <h3 
                     style={{ fontFamily: "'Cinzel', 'Libre Bodoni', Georgia, serif" }}
                     className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-wide text-white mix-blend-plus-lighter leading-tight uppercase line-clamp-2 mb-4"
@@ -199,14 +204,16 @@ export default function CoverflowCarousel({
                     </p>
                   )}
 
-                  {/* Botón Call to Action Cinemático */}
+                  {/* Botón CTA Dorado tipo 'WATCH NOW' (como en el sample) */}
                   {isActive && (
                     <a
                       href={post.link}
-                      className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-mono font-bold text-[9px] uppercase tracking-[0.25em] transition-colors shadow-lg"
+                      className="inline-flex items-center justify-center gap-2.5 w-full py-3 px-5 rounded-md bg-[#f5b800] hover:bg-[#e0a700] text-black font-mono font-extrabold text-[10px] sm:text-[11px] uppercase tracking-[0.25em] transition-all shadow-[0_4px_20px_rgba(245,184,0,0.35)] hover:shadow-[0_6px_25px_rgba(245,184,0,0.5)] active:scale-[0.98]"
                     >
-                      <span>Leer Ahora</span>
-                      <span>&rarr;</span>
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path fillRule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                      </svg>
+                      <span>{ctaText}</span>
                     </a>
                   )}
                 </div>
@@ -215,33 +222,33 @@ export default function CoverflowCarousel({
           })}
         </div>
 
-        {/* ── Botón Anterior (<) Flotante ── */}
+        {/* ── Flecha Anterior (<): Más grande, elegante y estilizada (como en sample) ── */}
         <button
           type="button"
           onClick={handlePrev}
           aria-label="Anterior"
-          className="absolute left-3 sm:left-8 md:left-12 z-40 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/20 backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer shadow-2xl"
+          className="absolute left-2 sm:left-6 md:left-10 lg:left-14 z-40 p-2 sm:p-3 text-white/75 hover:text-white transition-all duration-300 hover:scale-125 active:scale-95 cursor-pointer drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
         >
-          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <svg className="w-8 h-8 sm:w-11 sm:h-11 md:w-14 md:h-14 stroke-[2.2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
 
-        {/* ── Botón Siguiente (>) Flotante ── */}
+        {/* ── Flecha Siguiente (>): Más grande, elegante y estilizada (como en sample) ── */}
         <button
           type="button"
           onClick={handleNext}
           aria-label="Siguiente"
-          className="absolute right-3 sm:right-8 md:right-12 z-40 p-3 sm:p-4 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/20 backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer shadow-2xl"
+          className="absolute right-2 sm:right-6 md:right-10 lg:right-14 z-40 p-2 sm:p-3 text-white/75 hover:text-white transition-all duration-300 hover:scale-125 active:scale-95 cursor-pointer drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
         >
-          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          <svg className="w-8 h-8 sm:w-11 sm:h-11 md:w-14 md:h-14 stroke-[2.2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </button>
       </div>
 
-      {/* Indicadores de Puntos (Dots) Inferiores */}
-      <div className="flex justify-center items-center gap-2 mt-6">
+      {/* Dots de navegación discretos */}
+      <div className="flex justify-center items-center gap-2 mt-4 sm:mt-6 relative z-30">
         {posts.map((_, idx) => (
           <button
             key={idx}
@@ -249,8 +256,8 @@ export default function CoverflowCarousel({
             aria-label={`Ir a publicación ${idx + 1}`}
             className={`transition-all duration-300 rounded-full cursor-pointer ${
               idx === activeIndex
-                ? 'w-7 h-1.5 bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]'
-                : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'
+                ? 'w-7 h-1.5 bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.7)]'
+                : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/50'
             }`}
           />
         ))}
