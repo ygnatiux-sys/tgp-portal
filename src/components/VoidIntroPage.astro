@@ -27,6 +27,8 @@ interface Props {
   speed?: number;
 }
 
+import CoverflowCarousel from './CoverflowCarousel';
+
 const {
   items = [],
   label = 'Explorar el archivo TGP',
@@ -50,6 +52,17 @@ const FALLBACK: PostItem[] = [
 ];
 
 const posts: PostItem[] = items.length >= 4 ? items : FALLBACK;
+
+// ── 5 a 6 posts más recientes adaptados al Coverflow 3D ──
+const coverflowItems = posts.slice(0, 6).map((it, idx) => ({
+  id: `cover-${idx}`,
+  title: it.title,
+  subtitle: it.eyebrow,
+  image: it.image,
+  link: it.href,
+  collectionLabel: it.collection || it.eyebrow,
+  date: it.date,
+}));
 
 /*
   Secuencia determinista de 12 variantes para el collage editorial irregular de 2 columnas:
@@ -141,6 +154,16 @@ function getVariant(index: number): CellVariant {
         <span>Entrar al Portal</span>
         <span class="void-cta-arrow">→</span>
       </a>
+    </div>
+
+    <!-- ── 3D COVERFLOW CAROUSEL (Posts más recientes con padding ampliado) ── -->
+    <div class="void-coverflow-wrapper">
+      <CoverflowCarousel 
+        client:visible 
+        posts={coverflowItems} 
+        eyebrow="Selección de Estrenos" 
+        title="Obras Destacadas" 
+      />
     </div>
 
     <!-- Contenedor central con espacio negativo oscuro (21% a cada lado) -->
@@ -575,7 +598,17 @@ function getVariant(index: number): CellVariant {
   .void-archive-header {
     position: relative; z-index: 20;
     display: flex; flex-direction: column; align-items: center; text-align: center;
-    padding: 6rem 2rem 3.5rem; gap: 1.1rem;
+    padding: 8rem 2rem 2.5rem; gap: 1.2rem;
+  }
+
+  /* Contenedor del Coverflow 3D en la presentación de El Archivo */
+  .void-coverflow-wrapper {
+    position: relative;
+    z-index: 25;
+    width: 100%;
+    max-width: 1520px;
+    margin: 0 auto 3.5rem;
+    padding: 0 1.5rem;
   }
   .void-archive-eyebrow {
     font-family: 'IBM Plex Mono',monospace; font-size: .58rem;
