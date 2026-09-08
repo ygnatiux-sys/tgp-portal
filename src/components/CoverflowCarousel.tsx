@@ -112,10 +112,10 @@ export default function CoverflowCarousel({
         onTouchEnd={onTouchEnd}
       >
         {/* ── Viñeta Lateral Izquierda: Fundido al fondo (como en el sample) ── */}
-        <div className="absolute inset-y-0 left-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-r from-[var(--void-bg,#121413)] via-[var(--void-bg,#121413)]/85 to-transparent pointer-events-none z-35" />
+        <div className="absolute inset-y-0 left-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-r from-(--void-bg,#121413) via-(--void-bg,#121413)/85 to-transparent pointer-events-none z-35" />
 
         {/* ── Viñeta Lateral Derecha: Fundido al fondo (como en el sample) ── */}
-        <div className="absolute inset-y-0 right-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-l from-[var(--void-bg,#121413)] via-[var(--void-bg,#121413)]/85 to-transparent pointer-events-none z-35" />
+        <div className="absolute inset-y-0 right-0 w-28 sm:w-48 md:w-72 lg:w-96 bg-linear-to-l from-(--void-bg,#121413) via-(--void-bg,#121413)/85 to-transparent pointer-events-none z-35" />
 
         {/* Pista de Tarjetas Coverflow (5 tarjetas en abanico) */}
         <div className="relative w-full h-full flex justify-center items-center">
