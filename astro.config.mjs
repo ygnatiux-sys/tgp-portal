@@ -21,7 +21,7 @@ const isBuild = process.argv.includes('build');
 
 export default defineConfig({
   site: 'https://thegreatpuzzleproject.com',
-  output: 'static',
+  output: 'server',
 
   image: {
     domains: [
@@ -42,6 +42,7 @@ export default defineConfig({
 
   integrations: [
     sitemap(),
+    // Integración oficial de Keystatic - maneja rutas /keystatic y /api/keystatic nativamente
     keystatic(),
     // Escudo de compilación: el auto-open solo se inyecta en desarrollo local
     ...(isBuild ? [] : [
@@ -76,11 +77,11 @@ export default defineConfig({
     customLogger: logger,
     plugins: [tailwindcss()],
     optimizeDeps: {
-      exclude: ['@keystatic/core', 'sharp', '@astrojs/cloudflare', 'astro/assets/services/noop', 'astro']
+      exclude: ['sharp', '@astrojs/cloudflare', 'astro/assets/services/noop', 'astro']
     }
   },
 
-  adapter: cloudflare({
+  adapter: isBuild ? cloudflare({
     imageService: 'passthrough'
-  })
+  }) : undefined
 });
