@@ -3,7 +3,7 @@ import { env } from 'cloudflare:workers';
 import config from '../../../../keystatic.config';
 import { makeGenericAPIRouteHandler } from '@keystatic/core/api/generic';
 // @ts-ignore
-import { parseString } from 'set-cookie-parser';
+import { parse as parseSetCookie } from 'set-cookie-parser';
 import type { APIContext } from 'astro';
 
 export const prerender = false;
@@ -39,10 +39,11 @@ export const all = async (context: APIContext) => {
     }
   }
   
-  let parsedSetCookie = headersInADifferentStructure.has('set-cookie') 
-    ? parseString(headersInADifferentStructure.get('set-cookie')) 
-    : [];
-    
+  const rawSetCookie = headersInADifferentStructure.has('set-cookie')
+    ? headersInADifferentStructure.get('set-cookie')
+    : null;
+  const parsedSetCookie = rawSetCookie ? parseSetCookie(rawSetCookie) : [];
+
   if (parsedSetCookie.length) {
     headersInADifferentStructure.delete('set-cookie');
   }
