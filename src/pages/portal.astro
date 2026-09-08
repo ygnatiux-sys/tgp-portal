@@ -19,6 +19,7 @@ import ImmersiveSlider from '../components/ImmersiveSlider.astro';
 import ColeccionEnsayosRecientes from '../components/ColeccionEnsayosRecientes.astro';
 import HeroNetflixStyleCarousel from '../components/HeroNetflixStyleCarousel.astro';
 import RowNetflixClasico from '../components/RowNetflixClasico.astro';
+import CoverflowCarousel from '../components/CoverflowCarousel';
 
 
 import { getCollection } from 'astro:content';
@@ -90,6 +91,17 @@ const bentoPosts = allPosts.slice(1, 15);
 
 // IMMERSIVE SLIDER: Los posts más recientes
 const sliderPosts = allPosts.slice(0, 8);
+
+// COVERFLOW: Los 5 posts más recientes para el carrusel 3D
+const coverflowPosts = allPosts.slice(0, 5).map(p => ({
+  id: p.id,
+  title: p.title,
+  subtitle: p.subtitle,
+  image: p.image,
+  link: p.link,
+  collectionLabel: p.collection,
+  date: p.date,
+}));
 ---
 
 <LayoutPortal 
@@ -103,6 +115,18 @@ const sliderPosts = allPosts.slice(0, 8);
       revelando el grid de contenido por debajo.
   ================================================================= */}
   <CinematicHeroV2 posts={allPosts} />
+  
+  {/* ================================================================
+      1.5 COVERFLOW CAROUSEL 3D (Posts Más Recientes)
+  ================================================================= */}
+  <section class="w-full relative z-20 bg-[#0a0c0b] border-y border-white/5">
+    <CoverflowCarousel 
+      client:visible 
+      posts={coverflowPosts} 
+      eyebrow="Estrenos Cinemáticos" 
+      title="Archivo Destacado" 
+    />
+  </section>
 
   {/* ── Divisor de sección entre hero y bento ── */}
   <div class="portal-section-label">
