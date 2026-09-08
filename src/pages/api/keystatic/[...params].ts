@@ -1,4 +1,5 @@
 import { makeGenericAPIRouteHandler } from '@keystatic/core/api/generic';
+// @ts-ignore: set-cookie-parser declaration
 import { parseString } from 'set-cookie-parser';
 import config from '../../../../keystatic.config';
 import type { APIContext } from 'astro';
@@ -22,7 +23,7 @@ export const ALL = async (context: APIContext) => {
 
   const handler = makeGenericAPIRouteHandler(
     {
-      ...config,
+      config,
       clientId,
       clientSecret,
       secret,
@@ -77,7 +78,7 @@ export const ALL = async (context: APIContext) => {
     }
   }
 
-  return new Response(body, {
+  return new Response(body as any, {
     status,
     headers: [...headersInADifferentStructure.entries()].flatMap(([key, val]) => val.map((x) => [key, x])),
   });
