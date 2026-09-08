@@ -75,6 +75,9 @@ export default defineConfig({
   vite: {
     customLogger: logger,
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ['@keystatic/core', 'sharp', '@astrojs/cloudflare', 'astro/assets/services/noop', 'astro']
+    }
   },
 
   adapter: cloudflare({
