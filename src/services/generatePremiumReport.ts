@@ -215,46 +215,37 @@ async function acquireVisualBuffer(
       return { buffer: Buffer.from(arrayBuffer), attribution: 'Fuente Externa Directa' };
     }
 
-    // Caso 2: Rama A - Archivo Histórico (Wikimedia Commons API)
-    if (source === 'wikimedia') {
-      const fallbackQuery = title.split(/[:\-]/)[0].trim();
-      const searchTerm = encodeURIComponent(query || fallbackQuery);
-      const searchUrl = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${searchTerm}&gsrlimit=1&prop=imageinfo&iiprop=url|extmetadata|mime&format=json&origin=*`;
-      
-      console.log(`🏛️ Buscando imagen histórica en Wikimedia Commons para: "${query || fallbackQuery}"...`);
-      const searchRes = await fetch(searchUrl, {
-        headers: { 'User-Agent': 'TGP-Portal-Curator/2.0 (contact@thegreatpuzzleproject.com)' }
-      });
-      
-      if (!searchRes.ok) throw new Error(`Fallo en Wikimedia API (HTTP ${searchRes.status})`);
-      
-      const searchData = await searchRes.json();
-      const pages = searchData.query?.pages;
-      if (pages) {
-        const firstPageKey = Object.keys(pages)[0];
-        const imageInfo = pages[firstPageKey]?.imageinfo?.[0];
-        if (imageInfo?.url) {
-          console.log(`📥 Descargando asset de Wikimedia: ${imageInfo.url}`);
-          const imgRes = await fetch(imageInfo.url, {
-            headers: { 'User-Agent': 'TGP-Portal-Curator/2.0 (contact@thegreatpuzzleproject.com)' }
-          });
-          if (imgRes.ok) {
-            const arrBuf = await imgRes.arrayBuffer();
-            const artist = imageInfo.extmetadata?.Artist?.value || 'Wikimedia Commons';
-            const license = imageInfo.extmetadata?.LicenseShortName?.value || 'Public Domain / CC';
-            return {
-              buffer: Buffer.from(arrBuf),
-              attribution: `${artist} (${license})`
-            };
-          }
-        }
-      }
-      console.warn(`⚠️ No se encontraron imágenes válidas en Wikimedia para: "${query || fallbackQuery}". Cayendo a fallback...`);
-    }
+    // FASE 3 ÚNICA: Adquisición Visual vía VEO3 / Imagen 3
+    const veoApiUrl = (typeof process !== 'undefined' && process.env.PUBLIC_TGP_VEO_API_URL) 
+      || (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.PUBLIC_TGP_VEO_API_URL);
 
-    // Caso 3: Rama B - VEO 3 / Imagen 3
-    if (source === 'veo3' || source === 'imagen3') {
-      console.log(`🎨 Adquiriendo asset representativo vía microservicio VEO/Imagen para "${title}"... (Modo Simulación)`);
+    console.log(`🎨 Adquiriendo asset representativo vía VEO3 para "${title}"...`);
+    
+    // Construimos el prompt canónico hiperrealista
+    const imagePrompt = `Fotografía histórica hiperrealista, estilo documental arqueológico de National Geographic, cámara Leica 35mm. Tema: ${title}. ${query ? `Contexto visual: ${query}.` : ''} Estética: realista, dramática, iluminación cinematográfica natural, alta fidelidad material, textura hiperdetallada, sin elementos fantasiosos ni anacrónicos, 8k, obra maestra visual.`;
+
+    if (veoApiUrl) {
+      try {
+        const veoRes = await fetch(veoApiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: imagePrompt, aspect_ratio: '16:9' })
+        });
+        
+        if (veoRes.ok) {
+          const arrBuf = await veoRes.arrayBuffer();
+          return {
+            buffer: Buffer.from(arrBuf),
+            attribution: 'Generado por TGP VEO3 (IA Sintética Hiperrealista)'
+          };
+        } else {
+          console.warn(`⚠️ Fallo en API VEO3 (HTTP ${veoRes.status}). Cayendo a fallback...`);
+        }
+      } catch (e: any) {
+        console.warn(`⚠️ Error de red contactando a VEO3: ${e.message}. Cayendo a fallback...`);
+      }
+    } else {
+      console.warn(`⚠️ PUBLIC_TGP_VEO_API_URL no está configurada. Cayendo a fallback...`);
     }
 
     // Fallback Curado
