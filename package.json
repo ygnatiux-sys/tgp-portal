@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "deploy": "astro build && npx wrangler pages deploy dist",
     "generate-types": "wrangler types",
+    "r2:upload": "node scripts/upload-r2.mjs",
     "sync": "astro sync && git pull && git add . && git commit -m \"update: publicaciones y mejoras del portal\" && git push origin main"
   },
   "dependencies": {
