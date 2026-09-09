@@ -3,6 +3,7 @@ import {
   templateSchema,
   fullEditorialSchema,
   capsulaSchema,
+  scriptoriumSchema,
 } from './src/config/tgp.schemas';
 
 // ============================================================
@@ -14,6 +15,18 @@ const isDev = import.meta.env.DEV;
 export default config({
   storage: isDev ? { kind: 'local' } : { kind: 'github', repo: { owner: 'ygnatiux-sys', name: 'tgp-portal' } },
   collections: {
+
+    // ──────────────────────────────────────────────────────────
+    // COLECCIÓN: SCRIPTORIUM LAB (TRABAJO ERUDITO & METADATA MUBI)
+    // path: src/content/scriptorium_lab/*
+    // ──────────────────────────────────────────────────────────
+    scriptoriumLab: collection({
+      label: '📜 Scriptorium AI Lab · Trabajo Erudito',
+      slugField: 'title',
+      path: 'src/content/scriptorium_lab/*',
+      format: { contentField: 'content' },
+      schema: scriptoriumSchema,
+    }),
 
     // ──────────────────────────────────────────────────────────
     // COLECCIÓN: PLANTILLAS EDITORIALES TGP  [PORTAL]
@@ -76,3 +89,4 @@ export default config({
 
   },
 });
+

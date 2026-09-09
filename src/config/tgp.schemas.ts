@@ -362,3 +362,80 @@ export const ensayosSchema = {
   date: fields.date({ label: 'Fecha' }),
   content: fields.document({ label: 'Contenido principal', formatting: true, dividers: true, links: true }),
 };
+
+// --- COLECCIÓN ESPECIAL: SCRIPTORIUM LAB (Trabajo Erudito & Metadata GalleryCard) ---
+export const scriptoriumSchema = {
+  title: fields.slug({ 
+    name: { 
+      label: 'Título del Proyecto / Tema Erudito',
+      validation: { isRequired: true }
+    }
+  }),
+  estado_investigacion: fields.select({
+    label: '📊 Estado del Trabajo Erudito',
+    options: [
+      { label: '📝 Borrador / Ficha Inicial', value: 'borrador' },
+      { label: '🔬 En Investigación (Búsqueda Bibliográfica)', value: 'investigacion' },
+      { label: '🎬 Listo para Galería MUBI / GalleryCard', value: 'listo_mubi' },
+      { label: '📜 Publicado como Ensayo Completo', value: 'publicado' },
+    ],
+    defaultValue: 'borrador',
+  }),
+
+  // Metadata para la Tarjeta Emergente (GalleryCard MUBI)
+  card_metadata: fields.object({
+    card_title: fields.text({ label: 'Título de la Pieza (MAYÚSCULAS)' }),
+    card_author: fields.text({ label: 'Autor / Investigador / Director (MAYÚSCULAS)' }),
+    card_region: fields.text({ label: 'País / Región o Zona (MAYÚSCULAS)' }),
+    card_year: fields.text({ label: 'Año o Periodo Histórico (Ej: 1989, S. VIII AC)' }),
+    card_excerpt: fields.text({ 
+      label: 'Excerpt Ensayístico MUBI (3-4 oraciones, máx 50 palabras)',
+      multiline: true,
+      description: 'Texto estilizado para el desplegable emergente de la tarjeta GalleryCard.'
+    }),
+    card_tags: fields.text({ 
+      label: 'Especificaciones Técnicas / Tags',
+      defaultValue: "4K | ENSAYO VISUAL | DOC | ESPAÑOL"
+    }),
+    badge: fields.text({ label: 'Insignia / Badge (Ej: ARQUEOLOGÍA, DESTACADO)', defaultValue: 'TRABAJO ERUDITO' }),
+    card_image: fields.image({
+      label: 'Imagen de la Tarjeta (Cover Poster)',
+      directory: 'src/assets/images/scriptorium',
+      publicPath: '@/assets/images/scriptorium/',
+    }),
+  }, {
+    label: '🎞️ METADATA DE TARJETA MUBI (GalleryCard)',
+    description: 'Campos consumidos directamente por el componente GalleryCard con efecto pop-out hover.'
+  }),
+
+  // Trabajo Erudito & Fuentes
+  trabajo_erudito: fields.object({
+    hipotesis_analitica: fields.text({
+      label: '💡 Hipótesis Analítica & Tensión Narrativa',
+      multiline: true,
+      description: 'Planteamiento central del conflicto simbólico o arqueológico.'
+    }),
+    bibliografia_sugerida: fields.text({
+      label: '📚 Bibliografía & Fuentes Académicas Sugeridas',
+      multiline: true,
+      description: 'Citas, libros clave, corpus de estudio y referencias primarias.'
+    }),
+    conceptos_clave: fields.text({
+      label: '🔑 Conceptos Clave (Separados por coma)',
+      description: 'Ej: Arqueosemiótica, Tensión mítica, Geopolítica oracular'
+    }),
+  }, {
+    label: '📚 INVESTIGACIÓN & BIBLIOGRAFÍA ERUDITA',
+    description: 'Corpus teórico, referencias primarias e hipótesis para la elaboración del ensayo.'
+  }),
+
+  // Asistente Gemini AI
+  ai_copilot: createAICopilotFields(),
+
+  content: fields.document({ 
+    label: 'Notas de Campo / Contenido Extenso', 
+    formatting: true, 
+    dividers: true, 
+    links: true 
+  }),
+};

@@ -22,11 +22,19 @@ interface Props {
 
 const { title, copilotConfig, collection = "essays", slug = "" } = Astro.props;
 
+// Interruptor Global: Deshabilitado de la vista pública en toda la web sin eliminar el código.
+const SHOW_NOTICE = false;
+if (!SHOW_NOTICE) {
+  // Retorna nulo / no renderiza nada en el HTML
+}
+
 const mode = copilotConfig?.generation_mode || (copilotConfig?.trigger_both ? 'both' : (copilotConfig?.trigger_text_only ? 'text_only' : (copilotConfig?.trigger_image_only ? 'image_only' : 'empty')));
 
 const hasApiKey = Boolean(import.meta.env.GEMINI_API_KEY && !import.meta.env.GEMINI_API_KEY.includes('tu_gemini_api_key'));
 const uniqueId = "ai-pending-" + Math.random().toString(36).substring(2, 9);
 ---
+
+{SHOW_NOTICE && (
 
 <div id={uniqueId} class="ai-pending-wrapper w-full max-w-4xl mx-auto my-12 p-8 md:p-12 rounded-2xl border border-amber-500/40 bg-linear-to-b from-[#16120c] via-[#0d0b08] to-black shadow-2xl relative overflow-hidden text-neutral-200">
   <!-- Glow decorativo superior -->
@@ -149,6 +157,7 @@ const uniqueId = "ai-pending-" + Math.random().toString(36).substring(2, 9);
     </div>
   </div>
 </div>
+)}
 
 <script>
   function setupAIGenerator() {

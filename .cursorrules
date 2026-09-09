@@ -1,0 +1,37 @@
+# Arquitectura Centralizada del Ecosistema TGP & Reglas de Desarrollo
+
+## 1. Arquitectura Centralizada del Ecosistema TGP
+- **Topología Frontend:** El proyecto opera con múltiples interfaces desplegadas en Cloudflare Pages (Hemeroteca, Ediciones, Alternative) utilizando Astro y React.
+- **Núcleo Backend Unificado:** Todas las interfaces interactúan con un único clúster de microservicios alojado en Google Cloud Run (ej. `tgp-picker-api`). La autorización OAuth 2.0 y los secretos están centralizados en Google Secret Manager; no se deben duplicar credenciales por subdominio.
+- **Gestión de Estado y Contenido:** La fuente de verdad se administra mediante Keystatic, operando tanto en entorno local para pruebas como conectado directamente al repositorio de GitHub para despliegues de producción.
+
+## 2. Pipeline de Adquisición y Procesamiento Visual
+- **Ingesta Dual:** El sistema se alimenta de dos fuentes visuales principales:
+  1. Extracción de documentos históricos o arte mediante la API de Wikimedia Commons.
+  2. Generación de material sintético a través de modelos de Google (VEO / Imagen 3).
+- **Transformación Obligatoria (Sharp):** Todo archivo visual recuperado o generado debe pasar por una capa intermedia de procesamiento utilizando la librería Sharp, forzando su compresión y conversión al formato moderno `.webp`.
+- **Almacenamiento Perimetral:** Ninguna imagen pesada se guarda en el repositorio de GitHub. Tras su conversión a `.webp`, el buffer de la imagen debe ser transferido automáticamente a los buckets de almacenamiento de Cloudflare R2 a través de su API S3-compatible (`https://storage.thegreatpuzzleproject.com/`).
+- **Flujo Maestro Visual:**
+  `Captura (Wikimedia / VEO)` → `Optimización (Sharp WebP)` → `Almacenamiento (Cloudflare R2)` → `Registro en Front-matter (Keystatic / GitHub)`
+
+## 3. Directrices para Scripts (.ts / .tsx)
+- **Gestión de Variables de Entorno:** Aplicar un aislamiento estricto. Las claves privadas (`AWS_SECRET_ACCESS_KEY` para R2, tokens de Gemini/VEO) jamás deben exponerse al cliente; solo las URLs de los microservicios pueden utilizar el prefijo público de Astro (`PUBLIC_`).
+- **Modularidad de los Conectores:** Escribir funciones asíncronas agnósticas. Un mismo script de subida a R2 o de llamada a Wikimedia debe poder ser importado y reutilizado sin modificaciones, independientemente del subdominio desde el que se invoque la interfaz de Keystatic.
+
+## 4. Regla de Despliegue y Git Obligatoria (Mandatory Deployment Template)
+Siempre que se solicite desplegar, publicar cambios o respaldar en GitHub, ofrecer inmediatamente esta plantilla de comandos:
+
+### 1. Despliegue a Producción (Cloudflare Workers / Pages)
+```powershell
+npm run build; npx wrangler deploy
+```
+
+### 2. Respaldo Completo a GitHub (Git Push)
+```powershell
+git add . ; git commit -m "update: publicaciones y mejoras del portal" ; git push origin main
+```
+
+### 3. Flujo Todo-en-Uno (Build + Deploy + Git Push)
+```powershell
+npm run build; npx wrangler deploy; git add .; git commit -m "deploy: produccion y git actualizados"; git push origin main
+```
