@@ -1,0 +1,90 @@
+---
+import GalleryCard, { type GalleryCardProps } from './GalleryCard';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  items?: GalleryCardProps[];
+  theme?: 'light' | 'dark' | 'tgp';
+}
+
+const {
+  title = "Muestra Curatorial & Ensayos Visuales",
+  subtitle = "Explora el archivo audiovisual con metadata ensayística y expansión dinámica al pausar la mirada.",
+  theme = 'light',
+  items = [
+    {
+      image: "https://storage.thegreatpuzzleproject.com/Lascaux_001.jpg",
+      title: "EL ABISMO DE LASCAUX",
+      author: "C. DE LEÓN",
+      region: "FRANCIA",
+      year: "17,000 AC",
+      excerpt: "Un recorrido por el santuario subterráneo que redefinió el origen de la conciencia simbólica humana. La penumbra parietal no revela simples bestias, sino la arquitectura primordial del mito y el tiempo.",
+      tags: "4K | ENSAYO VISUAL | DOC | ESPAÑOL",
+      badge: "ARCHIVO PRIMORDIAL",
+      href: "/ensayos/el-abismo-de-lascaux",
+    },
+    {
+      image: "https://storage.thegreatpuzzleproject.com/Oraculo_001.jpg",
+      title: "EL ORÁCULO DE DELFOS",
+      author: "MARCOS VITERI",
+      region: "GRECIA",
+      year: "S. VIII AC",
+      excerpt: "Entre los vapores telúricos de la Pitiocoria, Grecia gestó las decisiones de estado más trascendentales. Una disección semiótica del silencio oracular y el diseño de la geopolítica del mundo antiguo.",
+      tags: "HD | 95' | GRECIA | HISTORIA",
+      badge: "DESTACADO",
+      href: "/ensayos/el-oraculo-de-delfos",
+    },
+    {
+      image: "https://storage.thegreatpuzzleproject.com/Anticitera_001.jpg",
+      title: "MECANISMO DE ANTICITERA",
+      author: "E. SANTIAGO",
+      region: "MAR EGEO",
+      year: "150 AC",
+      excerpt: "El primer ordenador analógico de la humanidad codificó los ciclos helíacos y eclípticos en 30 engranajes de bronce. Un vestigio tecnocrático sumergido que desafía el paradigma del desarrollo antiguo.",
+      tags: "4K | RECONSTRUCCIÓN | ESPAÑOL",
+      badge: "ANOMALÍA TECNOLÓGICA",
+      href: "/ensayos/mecanismo-de-anticitera",
+    },
+    {
+      image: "https://storage.thegreatpuzzleproject.com/Boveda_001.jpg",
+      title: "LA BÓVEDA CELESTE DE Nebra",
+      author: "A. SCHMIDT",
+      region: "ALEMANIA",
+      year: "1600 AC",
+      excerpt: "El disco estelar de bronce y oro representa el firmamento conocido más antiguo. Análisis arqueoastronómico del conocimiento del firmamento en la Edad del Bronce europea.",
+      tags: "HD | 110' | ALEMANIA | ARQUEOASTRO",
+      badge: "COSMOLOGÍA",
+      href: "/ensayos/disco-de-nebra",
+    }
+  ]
+} = Astro.props;
+---
+
+<section class="w-full py-12 px-4 sm:px-8 max-w-7xl mx-auto">
+  {/* Header de Sección */}
+  <div class="mb-8 border-b border-white/10 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-blue-400 block mb-1">
+        • ARCHIVO CINEMATOGRÁFICO
+      </span>
+      <h2 class="font-gloock text-2xl sm:text-3xl md:text-4xl text-white tracking-wide">
+        {title}
+      </h2>
+    </div>
+    <p class="text-xs sm:text-sm text-gray-400 font-sans max-w-md">
+      {subtitle}
+    </p>
+  </div>
+
+  {/* Grilla de Galería con Espaciado Adecuado para Hover Pop-out */}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10 py-4">
+    {items.map((item) => (
+      <GalleryCard 
+        client:visible 
+        {...item} 
+        theme={theme} 
+      />
+    ))}
+  </div>
+</section>

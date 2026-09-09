@@ -1,0 +1,49 @@
+---
+import MubiGallerySection from '../components/MubiGallerySection.astro';
+import GalleryCard from '../components/GalleryCard';
+---
+
+<!DOCTYPE html>
+<html lang="es" class="bg-[#050505] text-white">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galería de Tarjetas MUBI | The Great Puzzle Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-[#050505] font-sans antialiased text-white selection:bg-blue-600 selection:text-white">
+  
+  {/* Header banner */}
+  <header class="border-b border-white/10 py-6 px-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+      <span class="font-mono text-xs tracking-widest uppercase text-white/70">TGP-PORTAL // LAB</span>
+    </div>
+    <a href="/" class="text-xs font-mono uppercase tracking-wider text-gray-400 hover:text-white transition-colors">
+      ← Volver al Portal
+    </a>
+  </header>
+
+  <main class="py-8 space-y-16">
+    {/* Demostración 1: Tema Light Invertido MUBI */}
+    <MubiGallerySection 
+      title="Galería Estilo MUBI (Blanco / Invertido)"
+      subtitle="Efecto pop-out con panel blanco al pasar el cursor (delay-200), manteniendo la estructura de la grilla intacta."
+      theme="light"
+    />
+
+    {/* Demostración 2: Tema Cinematográfico Oscuro TGP */}
+    <MubiGallerySection 
+      title="Galería Estilo Cinematográfico TGP (Oscuro)"
+      subtitle="Efecto pop-out integrado con estética de lujo oscuro, bordes traslúcidos y resplandor sutil."
+      theme="dark"
+    />
+  </main>
+
+  <footer class="border-t border-white/10 py-8 text-center text-xs font-mono text-gray-500">
+    The Great Puzzle Project • Componente GalleryCard (Hover Architecture)
+  </footer>
+</body>
+</html>
