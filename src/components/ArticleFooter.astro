@@ -112,60 +112,25 @@ import Marquee from './Marquee.astro';
     </div>
   </div>
 
-  <!-- ── ARTICLE INTERIOR FOOTER (3 niveles, adaptable al vibe) ── -->
+  <!-- ── ARTICLE INTERIOR FOOTER (3 niveles, estilo NatGeo, adaptable al vibe) ── -->
   <footer
-    class={`article-interior-footer w-full pt-8 pb-12 md:pb-16 border-t ${vibeClass}`}
+    class={`article-interior-footer w-full pt-8 pb-10 md:pb-12 border-t ${vibeClass}`}
     style="border-color: color-mix(in srgb, currentColor 25%, transparent); color: var(--color-old-silver); background-color: var(--bg-current);"
   >
-    <div class="max-w-4xl mx-auto px-6 text-old-silver">
+    <div class="max-w-4xl mx-auto px-6 text-old-silver flex flex-col gap-5">
 
-      <!-- Nivel 1: Brand (izq) | Menú (centro) -->
-      <div class="relative flex flex-col md:flex-row justify-between items-center gap-6 pb-6">
+      <!-- Nivel 1: Menús Principales Superiores Centrados -->
+      <nav class="flex flex-wrap items-center justify-center gap-5 sm:gap-7 font-tgp-tech text-[10.5px] tracking-[0.2em] uppercase select-none text-old-silver">
+        <a href="/ensayos"       class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Ensayos</a>
+        <a href="/essays"        class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Dossiers</a>
+        <a href="/architectures" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Magazines</a>
+        <a href="/visual-signals" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Collections</a>
+        <a href="/capsulas"      class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">eBooks</a>
+        <a href="https://thegreatpuzzleproject.com" target="_self" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Ir a TGP</a>
+      </nav>
 
-        <a href="/" class="flex items-center gap-3 shrink-0 group/article-brand transition-all duration-300 cursor-pointer no-underline select-none text-old-silver">
-          {/* Left stacked brand block */}
-          <div class="flex flex-col items-start leading-[1.05] tracking-tight">
-            <span class="font-tgp-tech text-[6.5px] tracking-[0.22em] text-old-silver/80 group-hover/article-brand:text-[#E3DDD3] uppercase transition-colors">
-              The Great
-            </span>
-            <div class="flex items-center gap-1.5 my-0.5">
-              <div class="brand-logo w-3.5 h-3.5 flex items-center justify-center overflow-hidden rounded-full border border-white/30 group-hover/article-brand:border-[#E3DDD3]/70 p-0.5 shrink-0 transition-all">
-                <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-full" />
-              </div>
-              <span class="font-tgp-gloock font-black text-xs tracking-wider uppercase text-old-silver group-hover/article-brand:text-white transition-colors">
-                Puzzle
-              </span>
-            </div>
-            <span class="font-tgp-tech text-[6px] tracking-[0.3em] text-old-silver/65 group-hover/article-brand:text-[#E3DDD3]/90 uppercase transition-colors">
-              Project
-            </span>
-          </div>
-
-          {/* Vertical Divider Line */}
-          <div class="h-7 w-px bg-white/20 group-hover/article-brand:bg-white/40 transition-colors mx-0.5"></div>
-
-          {/* Descriptor EDITIONS in Metallic Gradient */}
-          <div class="flex items-center">
-            <span class="font-tgp-gloock font-black text-xs md:text-sm tracking-[0.22em] uppercase gradient-brand-editions drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-              Editions
-            </span>
-          </div>
-        </a>
-
-        <nav class="md:absolute md:left-1/2 md:-translate-x-1/2 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-tgp-tech text-[10.5px] tracking-[0.18em] uppercase select-none text-old-silver">
-          <a href="/ensayos"       class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Ensayos</a>
-          <a href="/essays"        class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Dossiers</a>
-          <a href="/architectures" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Magazines</a>
-          <a href="/visual-signals" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Collections</a>
-          <a href="/capsulas"      class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">eBooks</a>
-          <a href="https://thegreatpuzzleproject.com" target="_self" class="inline-block opacity-90 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline footer-interactive-link">Ir a TGP</a>
-        </nav>
-
-        <div class="hidden md:block w-32 shrink-0"></div>
-      </div>
-
-      <!-- Nivel 2: Redes Sociales Centradas en Fila Intermedia -->
-      <div class="flex items-center justify-center gap-4 sm:gap-5 py-3 border-y border-white/10 my-2 text-old-silver/60 flex-wrap">
+      <!-- Nivel 2: Redes Sociales Centradas entre Líneas Delimitadoras -->
+      <div class="w-full border-y border-white/10 py-3 flex items-center justify-center gap-4 sm:gap-5 text-old-silver/60 flex-wrap">
         <a href="https://www.youtube.com/@thegreatpuzzleproject" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="opacity-80 hover:opacity-100 hover:text-[#E3DDD3] hover:scale-110 transition-all duration-300 no-underline inline-block p-1 footer-interactive-link">
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
@@ -186,24 +151,46 @@ import Marquee from './Marquee.astro';
         </a>
       </div>
 
-      <!-- Nivel 3: Créditos | Ubicación | Legal -->
-      <div class="relative flex flex-col md:flex-row items-center justify-between gap-3 pt-3 font-tgp-tech text-[9.5px] tracking-[0.22em] uppercase select-none text-old-silver">
-        <span class="opacity-80 text-center md:text-left">
-          &copy; {new Date().getFullYear()} <span class="tracking-[0.28em] text-old-silver">The Great Puzzle</span>. Todos los derechos reservados.
-        </span>
+      <!-- Nivel 3: Última Línea (Estilo National Geographic: Brand + Copyright + Legal) -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-tgp-tech text-[9.5px] tracking-[0.2em] uppercase select-none text-old-silver">
+        
+        {/* Left Block: Brand (NatGeo style) + Separator + Copyright & Location */}
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3.5">
+          
+          <a href="/" class="flex items-center gap-2 shrink-0 group/article-brand transition-all duration-300 no-underline select-none text-old-silver cursor-pointer">
+            <div class="brand-logo w-4.5 h-4.5 flex items-center justify-center overflow-hidden rounded border border-white/20 group-hover/article-brand:border-[#E3DDD3] p-0.5 shrink-0 transition-all bg-black/40">
+              <img src="/faviconTGP.jpeg" alt="TGP Logo" class="w-full h-full object-cover rounded-xs" />
+            </div>
+            <div class="flex flex-col items-start leading-[1.05]">
+              <span class="font-tgp-tech text-[6px] tracking-[0.22em] text-old-silver/70 group-hover/article-brand:text-[#E3DDD3] uppercase transition-colors">
+                The Great Puzzle
+              </span>
+              <span class="font-tgp-gloock font-black text-xs tracking-[0.22em] uppercase text-old-silver group-hover/article-brand:text-white transition-colors">
+                Editions
+              </span>
+            </div>
+          </a>
 
-        <div class="md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center gap-2.5 opacity-80 select-none">
-          <span>Buenos Aires</span>
-          <span class="w-0.5 h-0.5 rounded-full bg-current opacity-80 inline-block"></span>
-          <span>Argentina</span>
-          <span class="w-0.5 h-0.5 rounded-full bg-current opacity-80 inline-block"></span>
-          <a href="https://share.google/kk8OYubL2oxzRGNab" target="_blank" rel="noopener noreferrer" class="hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline inline-block footer-interactive-link text-old-silver">Sur Global</a>
+          <div class="h-3.5 w-px bg-white/15 hidden sm:block"></div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2 text-old-silver/60 text-[9px]">
+            <span>&copy; {new Date().getFullYear()} <span class="text-old-silver">The Great Puzzle</span>. Todos los derechos reservados.</span>
+            <span class="opacity-40 hidden sm:inline">&bull;</span>
+            <span>Buenos Aires</span>
+            <span class="opacity-40">&bull;</span>
+            <span>Argentina</span>
+            <span class="opacity-40">&bull;</span>
+            <a href="https://share.google/kk8OYubL2oxzRGNab" target="_blank" rel="noopener noreferrer" class="hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline inline-block footer-interactive-link text-old-silver underline decoration-white/20 underline-offset-2">Sur Global</a>
+          </div>
+
         </div>
 
-        <div class="flex gap-5 shrink-0 ml-auto md:ml-0">
+        {/* Right Block: Legal Links */}
+        <div class="flex items-center gap-5 shrink-0 text-[9px]">
           <a href="#" class="opacity-80 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline inline-block footer-interactive-link">Privacidad</a>
           <a href="#" class="opacity-80 hover:opacity-100 hover:text-[#E3DDD3] transition-all duration-300 no-underline inline-block footer-interactive-link">Términos</a>
         </div>
+
       </div>
 
     </div>
