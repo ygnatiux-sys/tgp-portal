@@ -84,16 +84,14 @@ const isSvg = format === 'svg' ||
     {...rest}
   />
 ) : isRemoteUrl ? (
-  <Image
+  <img
     src={resolved as string}
     alt={alt}
-    format={format}
-    quality={quality}
-    width={width || 1200}
-    height={height || 800}
     loading={loading}
     decoding={decoding}
     fetchpriority={fetchpriority}
+    width={width}
+    height={height}
     class={classes}
     style={style}
     id={id}
@@ -101,7 +99,7 @@ const isSvg = format === 'svg' ||
   />
 ) : (
   <img
-    src={typeof resolved === 'string' ? resolved : (src || '/images/default-hero.jpg')}
+    src={typeof resolved === 'string' ? resolved : (src || 'https://storage.thegreatpuzzleproject.com/default-hero.webp')}
     alt={alt}
     loading={loading}
     decoding={decoding}

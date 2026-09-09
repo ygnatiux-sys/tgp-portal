@@ -1,0 +1,674 @@
+[
+  {
+    "relPath": "default-hero.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\default-hero.jpg",
+    "r2Key": "default-hero.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/default-hero.webp",
+    "localSizeKb": "606.9",
+    "category": "default-hero.jpg"
+  },
+  {
+    "relPath": "ensayos/bossa and chill out/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\bossa and chill out\\coverImage.jpeg",
+    "r2Key": "ensayos/bossa-and-chill-out.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/bossa-and-chill-out.webp",
+    "localSizeKb": "81.8",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/cartago/coverImage.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\cartago\\coverImage.jpg",
+    "r2Key": "ensayos/cartago.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/cartago.webp",
+    "localSizeKb": "78.3",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/chill-out-and-bossa/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\chill-out-and-bossa\\coverImage.jpeg",
+    "r2Key": "ensayos/chill-out-and-bossa.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/chill-out-and-bossa.webp",
+    "localSizeKb": "81.8",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/ejemplo.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\ejemplo.jpg",
+    "r2Key": "ensayos/ejemplo.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/ejemplo.webp",
+    "localSizeKb": "749.0",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/la perla TGP/coverImage.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\la perla TGP\\coverImage.png",
+    "r2Key": "ensayos/la-perla-tgp.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/la-perla-tgp.webp",
+    "localSizeKb": "1978.4",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/la-momia-de-paracas/coverImage.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\la-momia-de-paracas\\coverImage.jpg",
+    "r2Key": "ensayos/la-momia-de-paracas.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/la-momia-de-paracas.webp",
+    "localSizeKb": "107.2",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/los-nestorianos/coverImage.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\los-nestorianos\\coverImage.jpg",
+    "r2Key": "ensayos/los-nestorianos.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/los-nestorianos.webp",
+    "localSizeKb": "809.6",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/mafalda-style/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\mafalda-style\\coverImage.jpeg",
+    "r2Key": "ensayos/mafalda-style.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/mafalda-style.webp",
+    "localSizeKb": "62.4",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/pedro-abrio-su-ventana/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\pedro-abrio-su-ventana\\coverImage.jpeg",
+    "r2Key": "ensayos/pedro-abrio-su-ventana.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/pedro-abrio-su-ventana.webp",
+    "localSizeKb": "69.7",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/rodin-de-burzaco/coverImage.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\rodin-de-burzaco\\coverImage.png",
+    "r2Key": "ensayos/rodin-de-burzaco.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/rodin-de-burzaco.webp",
+    "localSizeKb": "671.7",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/tablilla-sumeria-urnammu/coverImage.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\tablilla-sumeria-urnammu\\coverImage.webp",
+    "r2Key": "ensayos/tablilla-sumeria-urnammu.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/tablilla-sumeria-urnammu.webp",
+    "localSizeKb": "31.8",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/test 1/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\test 1\\coverImage.jpeg",
+    "r2Key": "ensayos/test-1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/test-1.webp",
+    "localSizeKb": "62.4",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/vacio.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\ensayos\\vacio.jpg",
+    "r2Key": "ensayos/vacio.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/vacio.webp",
+    "localSizeKb": "749.0",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "posts/america-invertida-el-sur-global/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\america-invertida-el-sur-global\\hero_image.jpg",
+    "r2Key": "posts/america-invertida-el-sur-global.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/america-invertida-el-sur-global.webp",
+    "localSizeKb": "111.1",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/angkor-wat/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\angkor-wat\\hero_image.png",
+    "r2Key": "posts/angkor-wat.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/angkor-wat.webp",
+    "localSizeKb": "1147.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/arkhaim/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\arkhaim\\hero_image.jpg",
+    "r2Key": "posts/arkhaim.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/arkhaim.webp",
+    "localSizeKb": "389.9",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/atacama-mummy/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\atacama-mummy\\hero_image.jpg",
+    "r2Key": "posts/atacama-mummy.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/atacama-mummy.webp",
+    "localSizeKb": "30.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/borges-y-su-prosa/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\borges-y-su-prosa\\hero_image.png",
+    "r2Key": "posts/borges-y-su-prosa.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/borges-y-su-prosa.webp",
+    "localSizeKb": "2811.3",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/buenos-aires-antano-2/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\buenos-aires-antano-2\\hero_image.jpg",
+    "r2Key": "posts/buenos-aires-antano-2.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/buenos-aires-antano-2.webp",
+    "localSizeKb": "141.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/buens-aires-antano/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\buens-aires-antano\\hero_image.jpg",
+    "r2Key": "posts/buens-aires-antano.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/buens-aires-antano.webp",
+    "localSizeKb": "142.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/burzaco-night-city/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\burzaco-night-city\\hero_image.png",
+    "r2Key": "posts/burzaco-night-city.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/burzaco-night-city.webp",
+    "localSizeKb": "87.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/cesare/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\cesare\\hero_image.webp",
+    "r2Key": "posts/cesare.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/cesare.webp",
+    "localSizeKb": "70.0",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/Charles Bucowsky/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\Charles Bucowsky\\hero_image.png",
+    "r2Key": "posts/charles-bucowsky.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/charles-bucowsky.webp",
+    "localSizeKb": "535.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/charles-bucowsky/hero_image.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\charles-bucowsky\\hero_image.jpeg",
+    "r2Key": "posts/charles-bucowsky.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/charles-bucowsky.webp",
+    "localSizeKb": "456.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/de-la-cueva-al-cosmos/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\de-la-cueva-al-cosmos\\hero_image.png",
+    "r2Key": "posts/de-la-cueva-al-cosmos.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/de-la-cueva-al-cosmos.webp",
+    "localSizeKb": "7805.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/donelly-atlantis/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\donelly-atlantis\\hero_image.png",
+    "r2Key": "posts/donelly-atlantis.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/donelly-atlantis.webp",
+    "localSizeKb": "1446.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-arbol-dragon-de-madagascar/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-arbol-dragon-de-madagascar\\hero_image.jpg",
+    "r2Key": "posts/el-arbol-dragon-de-madagascar.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-arbol-dragon-de-madagascar.webp",
+    "localSizeKb": "64.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-buda/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-buda\\hero_image.jpg",
+    "r2Key": "posts/el-buda.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-buda.webp",
+    "localSizeKb": "49.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-calendario-lunar/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-calendario-lunar\\hero_image.jpg",
+    "r2Key": "posts/el-calendario-lunar.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-calendario-lunar.webp",
+    "localSizeKb": "77.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-dinamo-de-tesla/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-dinamo-de-tesla\\hero_image.jpg",
+    "r2Key": "posts/el-dinamo-de-tesla.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-dinamo-de-tesla.webp",
+    "localSizeKb": "500.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-famoso-edzna/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-famoso-edzna\\hero_image.jpg",
+    "r2Key": "posts/el-famoso-edzna.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-famoso-edzna.webp",
+    "localSizeKb": "498.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-laberinto/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-laberinto\\hero_image.png",
+    "r2Key": "posts/el-laberinto.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-laberinto.webp",
+    "localSizeKb": "5530.1",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-mecanismo-de-antycitera/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-mecanismo-de-antycitera\\hero_image.jpg",
+    "r2Key": "posts/el-mecanismo-de-antycitera.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-mecanismo-de-antycitera.webp",
+    "localSizeKb": "59.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/el-tallado-neanderthal/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\el-tallado-neanderthal\\hero_image.jpg",
+    "r2Key": "posts/el-tallado-neanderthal.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-tallado-neanderthal.webp",
+    "localSizeKb": "60.4",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/example-one/hero_image.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\example-one\\hero_image.jpeg",
+    "r2Key": "posts/example-one.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/example-one.webp",
+    "localSizeKb": "24.6",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/fomenko-y-las-matematicas/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\fomenko-y-las-matematicas\\hero_image.jpg",
+    "r2Key": "posts/fomenko-y-las-matematicas.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/fomenko-y-las-matematicas.webp",
+    "localSizeKb": "46.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/friends-firecamp/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\friends-firecamp\\hero_image.png",
+    "r2Key": "posts/friends-firecamp.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/friends-firecamp.webp",
+    "localSizeKb": "67.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/hermes-arcaic-symbols/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\hermes-arcaic-symbols\\hero_image.webp",
+    "r2Key": "posts/hermes-arcaic-symbols.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/hermes-arcaic-symbols.webp",
+    "localSizeKb": "39.9",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/la-cautiva-2/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\la-cautiva-2\\hero_image.jpg",
+    "r2Key": "posts/la-cautiva-2.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/la-cautiva-2.webp",
+    "localSizeKb": "82.6",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/la-luna-lumiere/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\la-luna-lumiere\\hero_image.jpg",
+    "r2Key": "posts/la-luna-lumiere.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/la-luna-lumiere.webp",
+    "localSizeKb": "125.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/la-momia-civica-polinesia/hero_image.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\la-momia-civica-polinesia\\hero_image.jpeg",
+    "r2Key": "posts/la-momia-civica-polinesia.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/la-momia-civica-polinesia.webp",
+    "localSizeKb": "277.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/la-prensa-argentina-en-la-era-inmigratoria/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\la-prensa-argentina-en-la-era-inmigratoria\\hero_image.jpg",
+    "r2Key": "posts/la-prensa-argentina-en-la-era-inmigratoria.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/la-prensa-argentina-en-la-era-inmigratoria.webp",
+    "localSizeKb": "487.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/las-4-piramides-de-giza/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\las-4-piramides-de-giza\\hero_image.png",
+    "r2Key": "posts/las-4-piramides-de-giza.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/las-4-piramides-de-giza.webp",
+    "localSizeKb": "1291.1",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/moais-en-la-isla-de-pascua/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\moais-en-la-isla-de-pascua\\hero_image.webp",
+    "r2Key": "posts/moais-en-la-isla-de-pascua.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/moais-en-la-isla-de-pascua.webp",
+    "localSizeKb": "309.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/mu-the-lost-continent/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\mu-the-lost-continent\\hero_image.jpg",
+    "r2Key": "posts/mu-the-lost-continent.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/mu-the-lost-continent.webp",
+    "localSizeKb": "60.3",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/muro-incas-en-los-70-s/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\muro-incas-en-los-70-s\\hero_image.webp",
+    "r2Key": "posts/muro-incas-en-los-70-s.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/muro-incas-en-los-70-s.webp",
+    "localSizeKb": "273.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/old-buenos-ayres/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\old-buenos-ayres\\hero_image.jpg",
+    "r2Key": "posts/old-buenos-ayres.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/old-buenos-ayres.webp",
+    "localSizeKb": "37.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/old-victorian-dream/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\old-victorian-dream\\hero_image.jpg",
+    "r2Key": "posts/old-victorian-dream.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/old-victorian-dream.webp",
+    "localSizeKb": "63.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/olmecas-arcaicos/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\olmecas-arcaicos\\hero_image.jpg",
+    "r2Key": "posts/olmecas-arcaicos.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/olmecas-arcaicos.webp",
+    "localSizeKb": "468.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/palmira endpoint/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\palmira endpoint\\hero_image.webp",
+    "r2Key": "posts/palmira-endpoint.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/palmira-endpoint.webp",
+    "localSizeKb": "45.2",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/puntos test 4/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\puntos test 4\\hero_image.webp",
+    "r2Key": "posts/puntos-test-4.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/puntos-test-4.webp",
+    "localSizeKb": "47.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/puzzle-pieces/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\puzzle-pieces\\hero_image.png",
+    "r2Key": "posts/puzzle-pieces.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/puzzle-pieces.webp",
+    "localSizeKb": "1843.3",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/talking-heads/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\talking-heads\\hero_image.png",
+    "r2Key": "posts/talking-heads.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/talking-heads.webp",
+    "localSizeKb": "5632.9",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/Terraplanistas/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\Terraplanistas\\hero_image.png",
+    "r2Key": "posts/terraplanistas.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/terraplanistas.webp",
+    "localSizeKb": "1369.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/test 5 schema/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\test 5 schema\\hero_image.png",
+    "r2Key": "posts/test-5-schema.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/test-5-schema.webp",
+    "localSizeKb": "1708.4",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/test 7 echoes in clay/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\test 7 echoes in clay\\hero_image.png",
+    "r2Key": "posts/test-7-echoes-in-clay.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/test-7-echoes-in-clay.webp",
+    "localSizeKb": "1591.9",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/test-1/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\test-1\\hero_image.jpg",
+    "r2Key": "posts/test-1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/test-1.webp",
+    "localSizeKb": "836.6",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/test-2/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\test-2\\hero_image.jpg",
+    "r2Key": "posts/test-2.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/test-2.webp",
+    "localSizeKb": "836.6",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/the-byblos/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\the-byblos\\hero_image.jpg",
+    "r2Key": "posts/the-byblos.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/the-byblos.webp",
+    "localSizeKb": "177.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/the-great-puzzle-project/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\the-great-puzzle-project\\hero_image.jpg",
+    "r2Key": "posts/the-great-puzzle-project.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/the-great-puzzle-project.webp",
+    "localSizeKb": "24.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/the-mask/hero_image.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\the-mask\\hero_image.png",
+    "r2Key": "posts/the-mask.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/the-mask.webp",
+    "localSizeKb": "784.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/the-mask-2-the-original/hero_image.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\the-mask-2-the-original\\hero_image.jpeg",
+    "r2Key": "posts/the-mask-2-the-original.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/the-mask-2-the-original.webp",
+    "localSizeKb": "7.0",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/the-mistery/hero_image.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\the-mistery\\hero_image.webp",
+    "r2Key": "posts/the-mistery.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/the-mistery.webp",
+    "localSizeKb": "123.7",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/tuthankamon-royal-mask/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\tuthankamon-royal-mask\\hero_image.jpg",
+    "r2Key": "posts/tuthankamon-royal-mask.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/tuthankamon-royal-mask.webp",
+    "localSizeKb": "45.0",
+    "category": "posts"
+  },
+  {
+    "relPath": "posts/uf-os-fenomena-2026/hero_image.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\posts\\uf-os-fenomena-2026\\hero_image.jpg",
+    "r2Key": "posts/uf-os-fenomena-2026.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/uf-os-fenomena-2026.webp",
+    "localSizeKb": "35.8",
+    "category": "posts"
+  },
+  {
+    "relPath": "spreads/a-deusa-do-mar-iemanja/editorial_spreads/0/value/images/0.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\a-deusa-do-mar-iemanja\\editorial_spreads\\0\\value\\images\\0.jpeg",
+    "r2Key": "spreads/a-deusa-do-mar-iemanja/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/a-deusa-do-mar-iemanja/0_0.webp",
+    "localSizeKb": "7.3",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/a-deusa-do-mar-iemanja/editorial_spreads/0/value/images/1.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\a-deusa-do-mar-iemanja\\editorial_spreads\\0\\value\\images\\1.webp",
+    "r2Key": "spreads/a-deusa-do-mar-iemanja/0_1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/a-deusa-do-mar-iemanja/0_1.webp",
+    "localSizeKb": "31.4",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/angkor-wat/editorial_spreads/0/value/images/0.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\angkor-wat\\editorial_spreads\\0\\value\\images\\0.jpeg",
+    "r2Key": "spreads/angkor-wat/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/angkor-wat/0_0.webp",
+    "localSizeKb": "7.3",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/angkor-wat/editorial_spreads/0/value/images/1.webp",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\angkor-wat\\editorial_spreads\\0\\value\\images\\1.webp",
+    "r2Key": "spreads/angkor-wat/0_1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/angkor-wat/0_1.webp",
+    "localSizeKb": "31.4",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/buenos-aires-rural/editorial_spreads/0/value/images/0.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\buenos-aires-rural\\editorial_spreads\\0\\value\\images\\0.jpg",
+    "r2Key": "spreads/buenos-aires-rural/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/buenos-aires-rural/0_0.webp",
+    "localSizeKb": "285.0",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/dime-tu/editorial_spreads/0/value/images/0.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\dime-tu\\editorial_spreads\\0\\value\\images\\0.png",
+    "r2Key": "spreads/dime-tu/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/dime-tu/0_0.webp",
+    "localSizeKb": "139.6",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/el-arquetipo-y-borges/editorial_spreads/0/value/images/0.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\el-arquetipo-y-borges\\editorial_spreads\\0\\value\\images\\0.jpg",
+    "r2Key": "spreads/el-arquetipo-y-borges/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/el-arquetipo-y-borges/0_0.webp",
+    "localSizeKb": "985.8",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/el-arquetipo-y-borges/editorial_spreads/0/value/images/1.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\el-arquetipo-y-borges\\editorial_spreads\\0\\value\\images\\1.png",
+    "r2Key": "spreads/el-arquetipo-y-borges/0_1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/el-arquetipo-y-borges/0_1.webp",
+    "localSizeKb": "5345.5",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/el-arquetipo-y-borges/editorial_spreads/0/value/images/2.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\el-arquetipo-y-borges\\editorial_spreads\\0\\value\\images\\2.jpg",
+    "r2Key": "spreads/el-arquetipo-y-borges/0_2.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/el-arquetipo-y-borges/0_2.webp",
+    "localSizeKb": "21.3",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/el-famoso-edzna/editorial_spreads/0/value/images/0.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\el-famoso-edzna\\editorial_spreads\\0\\value\\images\\0.jpg",
+    "r2Key": "spreads/el-famoso-edzna/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/el-famoso-edzna/0_0.webp",
+    "localSizeKb": "659.2",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/el-mecanismo-de-antycitera/editorial_spreads/1/value/images/0.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\el-mecanismo-de-antycitera\\editorial_spreads\\1\\value\\images\\0.jpg",
+    "r2Key": "spreads/el-mecanismo-de-antycitera/1_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/el-mecanismo-de-antycitera/1_0.webp",
+    "localSizeKb": "76.2",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/hermes-arcaic-symbols/editorial_spreads/0/value/images/0.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\hermes-arcaic-symbols\\editorial_spreads\\0\\value\\images\\0.png",
+    "r2Key": "spreads/hermes-arcaic-symbols/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/hermes-arcaic-symbols/0_0.webp",
+    "localSizeKb": "1567.2",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/hermes-arcaic-symbols/editorial_spreads/0/value/images/1.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\hermes-arcaic-symbols\\editorial_spreads\\0\\value\\images\\1.png",
+    "r2Key": "spreads/hermes-arcaic-symbols/0_1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/hermes-arcaic-symbols/0_1.webp",
+    "localSizeKb": "605.5",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/la-prensa-argentina-en-la-era-inmigratoria/editorial_spreads/0/value/images/0.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\la-prensa-argentina-en-la-era-inmigratoria\\editorial_spreads\\0\\value\\images\\0.jpg",
+    "r2Key": "spreads/la-prensa-argentina-en-la-era-inmigratoria/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/la-prensa-argentina-en-la-era-inmigratoria/0_0.webp",
+    "localSizeKb": "474.2",
+    "category": "spreads"
+  },
+  {
+    "relPath": "spreads/old-bs-as-borges-writter/editorial_spreads/0/value/images/0.png",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\public\\images\\spreads\\old-bs-as-borges-writter\\editorial_spreads\\0\\value\\images\\0.png",
+    "r2Key": "spreads/old-bs-as-borges-writter/0_0.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/spreads/old-bs-as-borges-writter/0_0.webp",
+    "localSizeKb": "4757.9",
+    "category": "spreads"
+  },
+  {
+    "relPath": "posts/el-oraculo-de-delfos.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\src\\assets\\images\\posts\\el-oraculo-de-delfos.jpg",
+    "r2Key": "posts/el-oraculo-de-delfos.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/posts/el-oraculo-de-delfos.webp",
+    "localSizeKb": "698.5",
+    "category": "posts"
+  },
+  {
+    "relPath": "ensayos/la-torre-de-babel/coverImage.jpg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\src\\assets\\ensayos\\la-torre-de-babel\\coverImage.jpg",
+    "r2Key": "ensayos/la-torre-de-babel.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/la-torre-de-babel.webp",
+    "localSizeKb": "185.0",
+    "category": "ensayos"
+  },
+  {
+    "relPath": "ensayos/la-torre-de-babel-1/coverImage.jpeg",
+    "localAbs": "C:\\Users\\ygnat\\TGP-PORTAL\\src\\assets\\ensayos\\la-torre-de-babel-1\\coverImage.jpeg",
+    "r2Key": "ensayos/la-torre-de-babel-1.webp",
+    "r2Url": "https://storage.thegreatpuzzleproject.com/ensayos/la-torre-de-babel-1.webp",
+    "localSizeKb": "102.9",
+    "category": "ensayos"
+  }
+]
