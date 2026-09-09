@@ -4,6 +4,7 @@ import {
   fullEditorialSchema,
   capsulaSchema,
   scriptoriumSchema,
+  informesPremiumSchema,
 } from './src/config/tgp.schemas';
 
 // ============================================================
@@ -85,6 +86,18 @@ export default config({
       path: 'src/content/capsulas/*',
       format: { contentField: 'content' },
       schema: capsulaSchema,
+    }),
+
+    // ──────────────────────────────────────────────────────────
+    // COLECCIÓN: INFORMES PREMIUM (ORQUESTADOR)
+    // path: src/content/informes_premium/*
+    // ──────────────────────────────────────────────────────────
+    informesPremium: collection({
+      label: '🚀 Informes Premium (Orquestador)',
+      slugField: 'titulo',
+      path: 'src/content/informes_premium/*',
+      format: { contentField: 'contenido' },
+      schema: informesPremiumSchema,
     }),
 
   },

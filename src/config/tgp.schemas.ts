@@ -438,4 +438,67 @@ export const scriptoriumSchema = {
     dividers: true, 
     links: true 
   }),
-};
+};
+
+// --- COLECCIÓN ESPECIAL: INFORMES PREMIUM (Orquestador Automático) ---
+export const informesPremiumSchema = {
+  titulo: fields.slug({ 
+    name: { 
+      label: 'Título del Informe / Ensayo Maestro',
+      validation: { isRequired: true }
+    }
+  }),
+  coleccion: fields.select({
+    label: 'Colección de Destino',
+    description: '¿En qué colección se debe persistir el post final?',
+    options: [
+      { label: 'Essays & Vignettes', value: 'essays' },
+      { label: 'Architectures', value: 'architectures' },
+      { label: 'Visual Signals', value: 'visual_signals' },
+      { label: 'Cápsulas', value: 'capsulas' },
+      { label: 'Scriptorium Lab', value: 'scriptoriumLab' },
+      { label: 'Ensayos (Substack Feed)', value: 'ensayos' },
+    ],
+    defaultValue: 'essays',
+  }),
+  fuenteVisual: fields.select({
+    label: 'Fuente Visual (Portada)',
+    options: [
+      { label: '🏛️ Wikimedia Commons (Histórica / Dominio Público)', value: 'wikimedia' },
+      { label: '🎨 VEO 3 / Imagen 3 (Generación Sintética)', value: 'veo3' },
+      { label: '🔗 URL Directa Externa', value: 'direct_url' },
+    ],
+    defaultValue: 'wikimedia',
+  }),
+  tags_tematicos: fields.text({
+    label: 'Tags Temáticos (Separados por coma)',
+    defaultValue: 'Liminal, Heterodoxia, Filosofía, Mito',
+    description: 'Etiquetas conceptuales para orientar el motor analítico de TGP Mind.',
+  }),
+  directrices_tematicas: fields.text({
+    label: 'Directrices / Instrucciones Específicas para la IA',
+    multiline: true,
+    description: 'Enfoca la investigación: puntos clave, tesis a sostener o referencias particulares.',
+  }),
+  autor: fields.text({
+    label: 'Autor / Firma',
+    defaultValue: 'The Great Puzzle Project',
+  }),
+  imagenDestacada: fields.image({
+    label: 'Imagen Destacada (Opcional - Carga Manual)',
+    directory: 'src/assets/images/premium',
+    publicPath: '@/assets/images/premium/',
+  }),
+  disparar_pipeline: fields.checkbox({
+    label: '🚀 EJECUTAR PIPELINE COGNITIVO COMPLETO AL GUARDAR',
+    description: '🟢 Si marcas esta casilla, se enviará el payload a TGP Mind (Cloud Run), se procesará la portada con Sharp y se subirá a Cloudflare R2.',
+    defaultValue: false,
+  }),
+  contenido: fields.document({ 
+    label: 'Contenido Resultante (Notas o Previsualización)', 
+    formatting: true, 
+    dividers: true, 
+    links: true 
+  }),
+};
+
